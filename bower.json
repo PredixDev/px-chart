@@ -1,0 +1,19 @@
+{
+  "name": "px-time-series",
+  "version": "14.3",
+  "authors": [
+    "Predix Experience team"
+  ],
+  "description": "The official Predix Experience time series chart",
+  "main": "main.js",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "predix"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "spec"
+  ]
+}
