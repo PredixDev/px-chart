@@ -1,0 +1,41 @@
+{
+    "id": "px-timeseries",
+    "name": "Time Series",
+    "type": "time-series",
+    "schema": {
+        "type": "object",
+        "properties": {
+            "title": {
+                "type": "string",
+                "title": "Title"
+            },
+            "subtitle": {
+                "type": "string",
+                "title": "Subtitle"
+            },
+            "xAxisLabel": {
+                "type": "string",
+                "title": "X-axis label"
+            },
+            "yAxisLabel": {
+                "type": "string",
+                "title": "Y-axis label"
+            },
+            "showYAxisUnits": {
+                "type": "boolean",
+                "title": "Show y-axis units"
+            },
+            "plotType": {
+                "type": "string",
+                "title": "Plot type",
+                "enum": ["line","points"]
+            }
+        },
+        "required": ["title", "plotType", "showYAxisUnits"]
+    },
+    "defaultOptions": {
+        "title": "Time Series Data",
+        "plotType": "line",
+        "showYAxisUnits": true
+    }
+}
