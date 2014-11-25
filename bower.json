@@ -10,7 +10,9 @@
     "amd"
   ],
   "keywords": [
-    "predix"
+    "predix",
+    "time",
+    "series"
   ],
   "license": "MIT",
   "ignore": [
