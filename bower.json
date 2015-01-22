@@ -6,11 +6,10 @@
   ],
   "description": "The official Predix Experience time series chart",
   "main": [
-    "dist/main.js",
-    "dist/main.css",
-    "dist/schema.json",
-    "dist/freshproj.tmpl.html"
-	],  
+    "src/main.js",
+    "src/px-timeseries.js",
+    "src/schema.json"
+  ],  
   "moduleType": [
     "amd"
   ],
@@ -21,14 +20,13 @@
   ],
   "license": "MIT",
   "ignore": [
-    "Gruntfile.js",
-    "karma.conf.js",
-    "protractor.conf.js",
-    "requirejs.build.js",
-    "requirejs.config.js",
     ".*",
+    "Gruntfile.js",
+    "index.html",
+    "karma.conf.js",
+    "package.json",
+    "requirejs.config.js",
     "coverage",
-    ".tmp",
     "node_modules",
     "bower_components",
     "test",
