@@ -178,8 +178,8 @@ module.exports = function(grunt) {
 		}
 	});
 
-	//TODO - Grunt Tasks
-	//TODO - pull the vclient/iidx distributions from artifactory (configured above)
+	// Grunt Tasks
+	// pull the vclient/iidx distributions from artifactory (configured above)
 	grunt.registerTask('predix:update', [ 'clean', 'artifactory' ]);
 	grunt.registerTask('serve', [ 'build', 'connect:livereload', 'watch' ]);
 	grunt.registerTask('build', [ 'clean:dist', 'jshint']);

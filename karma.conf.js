@@ -4,14 +4,12 @@ module.exports = function (config) {
     basePath: '',
     frameworks: [ 'jasmine', 'requirejs' ],
     files: [
-        'src/*.*.html',
         'test/lib/jasmine-jquery.js',
         {pattern: 'requirejs.config.js', included: true},
         {pattern: 'test/test-config.js', included: true},
         {pattern: 'bower_components/**/*.js', included: false},
         {pattern: 'src/*.js', included: false},
-        {pattern: 'test/spec/**/*-spec.js', included: false},
-        {pattern: 'test/widgets-module.js', included: false}
+        {pattern: 'test/spec/**/*-spec.js', included: false}
     ],
 	exclude: [
 		'test/e2e/*.js',

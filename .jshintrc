@@ -31,9 +31,6 @@
 		"module": false,
 		"expect": false,
 		"element": false,
-		/* PROTRACTOR */
-		"browser": false,
-		"by": false,
 		/* Jasmine */
 		"describe": false,
 		"xdescribe": false,
