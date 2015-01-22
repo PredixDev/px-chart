@@ -10,11 +10,11 @@ Object.keys(window.__karma__.files).forEach(function (file) {
 require.config({
     //Karma serves files from /base
     baseUrl: '/base/src',
-    paths: {
-        'widgets-module': '../test/widgets-module'
-    },
     // ask Require.js to load these files (all our tests)
     deps: allTestFiles,
     // start test run, once Require.js is done
-    callback: window.__karma__.start
+    callback: window.__karma__.start,
+    paths: {
+        'widgets-module': 'widgets-module'
+    }
 });

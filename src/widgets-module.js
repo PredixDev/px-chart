@@ -1,5 +1,7 @@
 define(['angular'], function (angular) {
-    var module = angular.module('predix.dashboard.widgets', []);
+	'use strict';
+	
+    var module = angular.module('demoModule', []);
 
     module.config(function($compileProvider) {
         module.directive = function(name, factory) {

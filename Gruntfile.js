@@ -107,43 +107,16 @@ module.exports = function(grunt) {
 			}
 		},
 
-		//Copy
-		copy: {
-			dist: {
-				files: [
-					{ src: 'src/main.js', dest: 'dist/main.js' },
-					{ src: 'src/schema.json', dest: 'dist/schema.json' },
-					{ src: 'src/<%= pkg.name %>.tmpl.html', dest: 'dist/<%= pkg.name %>.tmpl.html' }
-				]
-			}
-		},
-
-		//Less
-		less: {
-			options: {
-				// dumpLineNumbers: 'all',
-				paths: ['<%= config.src %>']
-			},
-			dist: {
-				files: {
-					'<%= config.dist %>/<%= pkg.name %>.css': '<%= config.src %>/<%= pkg.name %>.less'
-				}
-			}
-		},
-
 		//JSHint
 		jshint: {
-			app: {
-				options: {
-					jshintrc: '.jshintrc'
-				},
+			options: {
+				jshintrc: '.jshintrc'
+			},
+			app: {				
 				src: ['<%= config.src %>/{,*/}*.js']
 			},
 			test: {
-				options: {
-					jshintrc: 'test/.jshintrc'
-				},
-				src: ['test/**/*.js']
+				src: ['test/spec/**/*.js']
 			}
 		},
 
@@ -158,117 +131,6 @@ module.exports = function(grunt) {
 			},
 			server: {
 				autoWatch: true
-			}
-		},
-
-		//ngAnnotate task
-		ngAnnotate: {
-			options: {
-				singleQuotes: true,
-				remove: false,
-				add: true
-			},
-			dist: {
-				files: [
-					{
-						expand: true,
-						src: ['<%= config.src %>/**/*.js'],
-						dest: '<%= config.tmp %>/',
-						ext: '.annotated.js',
-						extDot: 'last'
-					}
-				]
-			}
-		},
-
-		//ngDocs
-		ngdocs: {
-			options: {
-				html5Mode: false,
-				title: '<%= pkg.name %> Documentation',
-				scripts: ['angular.js', '<%= config.dist %>/main.js']
-			},
-			api: {
-				src: ['src/**/*.js'],
-				title: 'API Documentation'
-			}
-		},
-
-		//Concat
-		concat: {
-			options: {
-				banner: '<%= meta.banner %>',
-				stripBanners: true
-			},
-			dist: {
-				src: ['<%= config.src %>/main.js'],
-				dest: '<%= config.dist %>/main.js'
-			}
-		},
-
-		//Uglify
-		uglify : {
-			options : {
-				banner : '<%= meta.banner %>'
-			},
-			dist : {
-				src : '<%= concat.dist.dest %>',
-				dest : '<%= config.dist %>/main.min.js'
-			}
-		},
-
-		// Protractor runner - https://www.npmjs.org/package/grunt-protractor-runner
-		protractor: {
-			options: {
-				keepAlive: false,
-				noColor: false
-			},
-			e2e: {
-				options: {
-					configFile: 'protractor.conf.js'
-				}
-			}
-		},
-
-		// Protractor webdriver - https://www.npmjs.org/package/grunt-protractor-webdriver
-		protractor_webdriver: {
-			e2e: {
-				options: {
-					path: './node_modules/protractor/bin/webdriver-manager',
-					command: 'webdriver-manager start'
-				}
-			}
-		},
-
-		// Requirejs build configuration
-		requirejs: {
-			options: {
-				baseUrl: '<%= config.src %>/',
-				separateCSS: true,
-				mainConfigFile: 'requirejs.build.js',
-				stubModules: [ 'json', 'text', 'css' ],
-				include: [ 'main' ],
-				excludes: ['text', 'json', 'css'],
-				paths: {
-					text: '../bower_components/requirejs-plugins/lib/text',
-					json: '../bower_components/requirejs-plugins/src/json',
-					css: '../bower_components/require-css/css'
-				},
-				done: function (done, output) {
-					var duplicates = require('rjs-build-analysis').duplicates(output);
-					if (duplicates.length > 0) {
-						grunt.log.subhead('Duplicates found in requirejs build:');
-						grunt.log.warn(duplicates);
-						done(new Error('r.js built duplicate modules, please check the excludes option.'));
-					}
-					done();
-				}
-			},
-			optimized: {
-				options: {
-					optimize: 'uglify',
-					out: '<%= config.dist %>/main.min.js'
-				}
 			}
 		},
 
@@ -320,10 +182,7 @@ module.exports = function(grunt) {
 	//TODO - pull the vclient/iidx distributions from artifactory (configured above)
 	grunt.registerTask('predix:update', [ 'clean', 'artifactory' ]);
 	grunt.registerTask('serve', [ 'build', 'connect:livereload', 'watch' ]);
-	grunt.registerTask('build', [ 'clean:dist', 'jshint', 'less:dist', 'copy:dist', 'ngAnnotate', 'requirejs', 'uglify']);
+	grunt.registerTask('build', [ 'clean:dist', 'jshint']);
 	grunt.registerTask('test', [ 'clean:test', 'jshint', 'karma:unit' ]);
-	grunt.registerTask('test:e2e', [ 'clean:test', 'jshint', 'protractor_webdriver', 'protractor' ]);
-	grunt.registerTask('release', [ 'test', 'bump-only', 'build', 'ngdocs', 'bump-commit' ]);
-	grunt.registerTask('docs', [ 'build', 'connect:docs' ]);
 	grunt.registerTask('default', [ 'build', 'test' ]);
 };

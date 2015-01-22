@@ -31,7 +31,8 @@
     ".tmp",
     "node_modules",
     "bower_components",
-    "test"
+    "test",
+    "src/widgets-module.js"
   ],
   "dependencies": {
     "requirejs-plugins": "~1.0.2",

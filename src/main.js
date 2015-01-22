@@ -1,3 +1,3 @@
-define(['./src/px-timeseries'], function() {
+define(['./px-timeseries'], function() {
 
 });

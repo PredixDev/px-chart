@@ -1,29 +1,29 @@
-define([ "vruntime", "widgets-module", "line-chart" ], function(vRuntime, module) {
-    "use strict";
+define([ 'vruntime', 'widgets-module', 'line-chart' ], function(vRuntime, module) {
+    'use strict';
 
     var TimeSeriesChart = vRuntime.widget.BaseDirective.extend({
         replace: true,
         scope: {
-            title: "=",
-            series: "=",
-            showYAxisUnits: "=",
-            plotType: "=",
-            subtitle: "=?",
-            xAxisLabel: "=?",
-            yAxisLabel: "=?",
-            maxNumPoints: "=?"
+            title: '=',
+            series: '=',
+            showYAxisUnits: '=',
+            plotType: '=',
+            subtitle: '=?',
+            xAxisLabel: '=?',
+            yAxisLabel: '=?',
+            maxNumPoints: '=?'
         },
         template: '<div id="widget-{{$id}}" style="width:100%;margin: 0 auto"><div class="time-series-chart" style="width:100%;margin: 0 auto"></div></div>',
         vLink: function(scope, element, attrs) {
             this._super(scope, element, attrs);
 
-            this.logger = vRuntime.logger.create("pxTimeseries");
+            this.logger = vRuntime.logger.create('pxTimeseries');
 
             var chartConfig = this.buildConfig(scope);
             scope.maxNumPoints = scope.maxNumPoints || 10;
 
             var self = this;
-            scope.$watch("series", function(newData, oldData) {
+            scope.$watch('series', function(newData, oldData) {
                 self.dataChanged.call(self, scope, newData, oldData);
             }, true);
 
@@ -35,8 +35,8 @@ define([ "vruntime", "widgets-module", "line-chart" ], function(vRuntime, module
         buildConfig: function(scope) {
             var config = {
                 chart: {
-                    type: "spline",
-                    renderTo: scope.vElement.find(".time-series-chart").get(0)
+                    type: 'spline',
+                    renderTo: scope.vElement.find('.time-series-chart').get(0)
                 },
                 plotOptions: {
                     series: {
@@ -50,7 +50,7 @@ define([ "vruntime", "widgets-module", "line-chart" ], function(vRuntime, module
                     text: scope.subtitle
                 },
                 xAxis: {
-                    type: "datetime",
+                    type: 'datetime',
                     tickPixelInterval: 150,
                     title: {
                         text: scope.xAxisLabel
@@ -72,7 +72,7 @@ define([ "vruntime", "widgets-module", "line-chart" ], function(vRuntime, module
                 config.yAxis.labels.enabled = false;
             }
 
-            if (scope.plotType == "points") {
+            if (scope.plotType === 'points') {
                 config.plotOptions.series.lineWidth = 0;
                 config.plotOptions.series.marker.enabled = true;
             }
@@ -104,6 +104,7 @@ define([ "vruntime", "widgets-module", "line-chart" ], function(vRuntime, module
             // just start scrolling automatically
             scope.numPointsDisplayed[seriesId] = Number.MAX_SAFE_INTEGER;
         },
+        /*jshint unused:false */
         dataChanged: function(scope, newSeries, oldSeries) {
 
             if (newSeries) {
@@ -150,7 +151,7 @@ define([ "vruntime", "widgets-module", "line-chart" ], function(vRuntime, module
         }
     });
 
-    module.directive("pxTimeseries", function() {
+    module.directive('pxTimeseries', function() {
         return new TimeSeriesChart();
     });
 

@@ -1,47 +1,140 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset=utf-8/>
-	<title>freshproj Sandbox</title>
+    <meta charset=utf-8/>
+    <title>px-time-series sandbox</title>
 
-	<!-- TODO Styles -->
-	<link href="/bower_components/iids/dist/iidx/css/iids.min.css" rel="stylesheet" type="text/css"/>
-	<link href="/bower_components/iids/dist/iidx/css/responsive.min.css" rel="stylesheet" type="text/css"/>
+    <!-- Styles -->
+    <link href="/bower_components/iids/dist/iidx/css/iids.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/bower_components/iids/dist/iidx/css/responsive.min.css" rel="stylesheet" type="text/css"/>
 
-	<!-- TODO RequireJS -->
-	<script src="/bower_components/requirejs/require.js"></script>
-	<script src="/requirejs.config.js"></script>
+    <!-- RequireJS -->
+    <script src="/bower_components/requirejs/require.js"></script>
+    <script src="/requirejs.config.js"></script>
 
-	<script id="example-js">
-		require.config({
-			baseUrl: './src',
-			paths: {
-				'freshproj': 'main'
-			}
-		});
+    <script id="example-js">
 
-		var app;
+        var app;
 
-		require(['angular', 'freshproj'], function (angular, widgetModule) {
-			app = angular.module('demoApp', ['predixApp']);
+        require(['angular', 'widgets-module', 'src/main'], function (angular, widgetModule) {
+            app = angular.module('demoApp', ['demoModule']);
 
-			app.controller('MainCtrl', ['$scope', function ($scope) {
-				$scope.myModel = {
-					title: 'Freshproj Demo',
-					subtitle: 'This is a sub-title'
-				};
-			}]);
+            app.controller('MainCtrl', ['$scope', function ($scope) {
+                var timeSeriesData = [
+                    {
+                        'name': 'Winter 2007-2008',
+                        'data': [
+                            [
+                                25833600000,
+                                0
+                            ],
+                            [
+                                27043200000,
+                                0.6
+                            ],
+                            [
+                                27734400000,
+                                0.7
+                            ],
+                            [
+                                28944000000,
+                                0.8
+                            ],
+                            [
+                                29548800000,
+                                0.6
+                            ]
+                        ]
+                    },
+                    {
+                        'name': 'Winter 2008-2009',
+                        'data': [
+                            [
+                                25056000000,
+                                0
+                            ],
+                            [
+                                25747200000,
+                                0.2
+                            ],
+                            [
+                                28857600000,
+                                0.47
+                            ],
+                            [
+                                29721600000,
+                                0.55
+                            ],
+                            [
+                                30931200000,
+                                1.38
+                            ]
+                        ]
+                    },
+                    {
+                        'name': 'Winter 2009-2010',
+                        'data': [
+                            [
+                                24278400000,
+                                0
+                            ],
+                            [
+                                24710400000,
+                                0.15
+                            ],
+                            [
+                                28598400000,
+                                0.35
+                            ],
+                            [
+                                29808000000,
+                                0.46
+                            ],
+                            [
+                                31536000000,
+                                0.59
+                            ]
+                        ]
+                    }
+                ];
+                $scope.timeSeries = {
+                    // Required:
+                    title: 'Time Series Chart',
+                    series: timeSeriesData,
+                    showYAxisUnits: true,
+                    plotType: 'line',
+                    // Optional:
+                    xAxisLabel: 'Time',
+                    yAxisLabel: 'Pressure',
+                    maxNumPoints: 3,
+                    subtitle: 'Historical Pressure'
+                };
+            }]);
 
-			angular.element(document).ready(function () {
-				angular.bootstrap(document, [app.name]);
-				console.log('RequireJS bootstrapped ', app.name);
-			});
-		});
-	</script>
+            angular.element(document).ready(function () {
+                angular.bootstrap(document, [app.name]);
+                console.log('RequireJS bootstrapped ', app.name);
+            });
+        });
+    </script>
 </head>
 <body class="container content">
-	<section id="example-html" data-ng-controller="MainCtrl">
-			<freshproj title="myModel.title" subtitle="myModel.subtitle"></freshproj>
-	</section>
+    <section class="module" id="example-html" data-ng-controller="MainCtrl">
+        <header class="module-header">
+            <h3 class="voice voice-brand pull-left">px-timeseries</h3>
+        </header>
+        <div class="module-body">
+            <px-timeseries 
+                title="timeSeries.title"
+                subtitle="timeSeries.subtitle"
+                show-y-axis-units="timeSeries.showYAxisUnits"
+                plot-type="timeSeries.plotType" 
+                series="timeSeries.series"
+                data-x-axis-label="timeSeries.xAxisLabel"
+                data-y-axis-label="timeSeries.yAxisLabel"
+                max-num-points="timeSeries.maxNumPoints">
+            </px-timeseries>
+        </div>
+    </section>
 </body>
 </html>

@@ -1,40 +1,11 @@
-// define([ 'jquery', 'angular-mocks', 'text!freshproj.tmpl.html', 'main'], function ($, angular, myWidgetTmpl, myWidget) {
-// 	'use strict';
-
-// 	describe('Given a predixApp.freshproj directive', function () {
-// 		var $scope = null, $compile, elm, $httpBackend;
-	
-// 		beforeEach(module('predixApp'));
-	
-// 		beforeEach(inject(function ($rootScope, $injector) {
-// 			$scope = $rootScope.$new();
-// 			$scope.myModel = {
-// 				title: 'My Widget',
-// 				subtitle: 'My Subtitle'
-// 			};
-
-// 			$compile = $injector.get('$compile');
-// 			$httpBackend = $injector.get('$httpBackend');
-// 			$httpBackend.expectGET('freshproj.tmpl.html').respond(200, myWidgetTmpl);
-
-// 			elm = $('<freshproj title="myModel.title" subtitle="myModel.subtitle"></freshproj>');
-// 			$compile(elm)($scope);
-// 			$scope.$digest();
-// 		}));
-
-// 		it('should have a title with correct value', function () {
-// 			expect(elm.find('h3').text()).toContain('My Widget');
-// 		});
-// 	});
-// });
-
 define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks, PxTimeseries) {
+    'use strict';
 
     describe('px-timeseries', function () {
 
         var scope, $compile, $rootScope;
 
-        beforeEach(module('predix.dashboard.widgets'));
+        beforeEach(module('demoModule'));
         beforeEach(inject(function(_$rootScope_, _$compile_) {
             $rootScope = _$rootScope_;
             scope = _$rootScope_.$new();
@@ -56,7 +27,7 @@ define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks,
             beforeEach(function() {
                 spyOn(fakeScope.vElement, 'find').andReturn({
                     get: function() {
-                        return "thethingfromget";
+                        return 'thethingfromget';
                     }
                 });
             });
@@ -157,14 +128,14 @@ define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks,
                         xAxisLabel: 'xxx',
                         yAxisLabel: 'yyy',
                         showYAxisUnits: false,
-                        plotType: "points",
+                        plotType: 'points',
                         vElement: {
                             find: function() {}
                         }
                     };
                     spyOn(fakeScope.vElement, 'find').andReturn({
                         get: function() {
-                            return "thethingfromget";
+                            return 'thethingfromget';
                         }
                     });
                     var pxTimeseries = new PxTimeseries();
@@ -211,14 +182,14 @@ define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks,
                         xAxisLabel: 'xxx',
                         yAxisLabel: 'yyy',
                         showYAxisUnits: true,
-                        plotType: "line",
+                        plotType: 'line',
                         vElement: {
                             find: function() {}
                         }
                     };
                     spyOn(fakeScope.vElement, 'find').andReturn({
                         get: function() {
-                            return "thethingfromget";
+                            return 'thethingfromget';
                         }
                     });
                     var pxTimeseries = new PxTimeseries();
@@ -246,7 +217,7 @@ define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks,
 
             spyOn(fakeScope.vElement, 'find').andReturn({
                 get: function() {
-                    return "thethingfromget";
+                    return 'thethingfromget';
                 }
             });
 
@@ -278,7 +249,7 @@ define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks,
 
                 spyOn(scope.vElement, 'find').andReturn({
                     get: function() {
-                        return "thethingfromget";
+                        return 'thethingfromget';
                     }
                 });
 
@@ -317,8 +288,8 @@ define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks,
             describe('with the data we say we support', function() {
 
                 var mySeries = [{
-                    "name": "Tokyo",
-                    "data": [
+                    'name': 'Tokyo',
+                    'data': [
                         [
                             25833600000,
                             0
@@ -353,8 +324,8 @@ define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks,
                         ]
                     ]
                 }, {
-                    "name": "New York",
-                    "data": [
+                    'name': 'New York',
+                    'data': [
                         [
                             25833600000,
                             17
@@ -404,12 +375,12 @@ define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks,
                     expect(scope.chart.addSeries.calls.length).toBe(2);
                     expect(scope.chart.addSeries.calls[0].args[0]).toEqual({
                         id: 'Tokyo',
-                        name: "Tokyo",
+                        name: 'Tokyo',
                         data: mySeries[0].data
                     });
                     expect(scope.chart.addSeries.calls[1].args[0]).toEqual({
                         id: 'New York',
-                        name: "New York",
+                        name: 'New York',
                         data: mySeries[1].data
                     });
                 });
@@ -427,11 +398,11 @@ define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks,
                         spyOn(scope.chart, 'get').andReturn(aSeries);
                         spyOn(aSeries, 'addPoint');
                         scope.series = [{
-                            "name": "Tokyo",
-                            "data": [[1,2],[2,3]]
+                            'name': 'Tokyo',
+                            'data': [[1,2],[2,3]]
                         }, {
-                            "name": "New York",
-                            "data": [[19,20],[21,22]]
+                            'name': 'New York',
+                            'data': [[19,20],[21,22]]
                         }];
                         scope.$apply();
                         expect(aSeries.addPoint.calls.length).toBe(4);
@@ -452,17 +423,17 @@ define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks,
             describe('when the series is updated with valid data', function() {
 
                 var mySeries = [{
-                        "name": "Tokyo",
-                        "data": [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+                        'name': 'Tokyo',
+                        'data': [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
                     }, {
-                        "name": "New York",
-                        "data": [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+                        'name': 'New York',
+                        'data': [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
                     }, {
-                        "name": "Berlin",
-                        "data": [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+                        'name': 'Berlin',
+                        'data': [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
                     }, {
-                        "name": "London",
-                        "data": [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+                        'name': 'London',
+                        'data': [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
                     }];
 
                 beforeEach(function() {
@@ -479,22 +450,22 @@ define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks,
                     expect(scope.chart.addSeries.calls.length).toBe(4);
                     expect(scope.chart.addSeries.calls[0].args[0]).toEqual({
                         id: 'Tokyo',
-                        name: "Tokyo",
+                        name: 'Tokyo',
                         data: mySeries[0].data
                     });
                     expect(scope.chart.addSeries.calls[1].args[0]).toEqual({
                         id: 'New York',
-                        name: "New York",
+                        name: 'New York',
                         data: mySeries[1].data
                     });
                     expect(scope.chart.addSeries.calls[2].args[0]).toEqual({
                         id: 'Berlin',
-                        name: "Berlin",
+                        name: 'Berlin',
                         data: mySeries[2].data
                     });
                     expect(scope.chart.addSeries.calls[3].args[0]).toEqual({
                         id: 'London',
-                        name: "London",
+                        name: 'London',
                         data: mySeries[3].data
                     });
                 });
@@ -512,14 +483,14 @@ define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks,
                         spyOn(scope.chart, 'get').andReturn(aSeries);
                         spyOn(aSeries, 'addPoint');
                         scope.series = [{
-                            "name": "Tokyo",
-                            "data": [1, 2, 3]
+                            'name': 'Tokyo',
+                            'data': [1, 2, 3]
                         }, {
-                            "name": "New York",
-                            "data": [17, 18, 19]
+                            'name': 'New York',
+                            'data': [17, 18, 19]
                         }, {
-                            "name": "Berlin",
-                            "data": [-1, -2, -3]
+                            'name': 'Berlin',
+                            'data': [-1, -2, -3]
                         }];
                         scope.$apply();
                         expect(aSeries.addPoint.calls.length).toBe(9);
@@ -544,14 +515,14 @@ define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks,
             describe('when the series is updated with repeating series', function() {
 
                 var mySeries = [{
-                    "name": "Tokyo",
-                    "data": [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+                    'name': 'Tokyo',
+                    'data': [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
                 }, {
-                    "name": "New York",
-                    "data": [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+                    'name': 'New York',
+                    'data': [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
                 }, {
-                    "name": "Tokyo",
-                    "data": [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+                    'name': 'Tokyo',
+                    'data': [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
                 }];
 
                 beforeEach(function() {
@@ -563,17 +534,17 @@ define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks,
                     expect(scope.chart.addSeries.calls.length).toBe(3);
                     expect(scope.chart.addSeries.calls[0].args[0]).toEqual({
                         id: 'Tokyo',
-                        name: "Tokyo",
+                        name: 'Tokyo',
                         data: mySeries[0].data
                     });
                     expect(scope.chart.addSeries.calls[1].args[0]).toEqual({
                         id: 'New York',
-                        name: "New York",
+                        name: 'New York',
                         data: mySeries[1].data
                     });
                     expect(scope.chart.addSeries.calls[2].args[0]).toEqual({
                         id: 'Tokyo',
-                        name: "Tokyo",
+                        name: 'Tokyo',
                         data: mySeries[2].data
                     });
                 });
@@ -595,9 +566,9 @@ define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks,
 
                 it('writes to logger.warn', function() {
                     scope.series = [{
-                        "data": [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+                        'data': [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
                     }, {
-                        "data": [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+                        'data': [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
                     }];
                     scope.$apply();
                     expect(pxTimeseries.logger.warn).toHaveBeenCalledWith('Series cannot be added - is it formatted properly?');
@@ -605,13 +576,13 @@ define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks,
 
                 it('writes to logger.warn', function() {
                     scope.series = [{
-                        "name": "Tokyo",
-                        "data": [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+                        'name': 'Tokyo',
+                        'data': [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
                     }, {
-                        "name": "New York"
+                        'name': 'New York'
                     }, {
-                        "name": "Tokyo",
-                        "data": [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+                        'name': 'Tokyo',
+                        'data': [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
                     }];
                     scope.$apply();
                     expect(pxTimeseries.logger.warn).toHaveBeenCalledWith('Series cannot be added - is it formatted properly?');
@@ -621,13 +592,9 @@ define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks,
         });
 
         it('is compiled correctly', function() {
-                setFixtures(sandbox({
-                    id: 'test-container'
-                }));
-                $testContainer = $("#test-container");
-                var myDirective = $compile('<px-timeseries data-title=\"ok\" data-series=\"\"></px-timeseries>')(scope);
-                $rootScope.$apply();
-                expect(myDirective.html()).toContain('class=\"highcharts-container\"');
+            var myDirective = $compile('<px-timeseries data-title=\'ok\' data-series=\'\'></px-timeseries>')(scope);
+            $rootScope.$apply();
+            expect(myDirective.html()).toContain('class=\"highcharts-container\"');
         });
 
     });
