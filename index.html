@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8/>
+	<title>freshproj Sandbox</title>
+
+	<!-- TODO Styles -->
+	<link href="/bower_components/iids/dist/iidx/css/iids.min.css" rel="stylesheet" type="text/css"/>
+	<link href="/bower_components/iids/dist/iidx/css/responsive.min.css" rel="stylesheet" type="text/css"/>
+
+	<!-- TODO RequireJS -->
+	<script src="/bower_components/requirejs/require.js"></script>
+	<script src="/requirejs.config.js"></script>
+
+	<script id="example-js">
+		require.config({
+			baseUrl: './src',
+			paths: {
+				'freshproj': 'main'
+			}
+		});
+
+		var app;
+
+		require(['angular', 'freshproj'], function (angular, widgetModule) {
+			app = angular.module('demoApp', ['predixApp']);
+
+			app.controller('MainCtrl', ['$scope', function ($scope) {
+				$scope.myModel = {
+					title: 'Freshproj Demo',
+					subtitle: 'This is a sub-title'
+				};
+			}]);
+
+			angular.element(document).ready(function () {
+				angular.bootstrap(document, [app.name]);
+				console.log('RequireJS bootstrapped ', app.name);
+			});
+		});
+	</script>
+</head>
+<body class="container content">
+	<section id="example-html" data-ng-controller="MainCtrl">
+			<freshproj title="myModel.title" subtitle="myModel.subtitle"></freshproj>
+	</section>
+</body>
+</html>

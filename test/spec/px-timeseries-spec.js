@@ -1,4 +1,34 @@
-define([ 'angular', 'angular-mocks',  'widgets-module', 'px-widgets/px-timeseries/src/px-timeseries' ], function(angular, mocks, widgetsModule, PxTimeseries) {
+// define([ 'jquery', 'angular-mocks', 'text!freshproj.tmpl.html', 'main'], function ($, angular, myWidgetTmpl, myWidget) {
+// 	'use strict';
+
+// 	describe('Given a predixApp.freshproj directive', function () {
+// 		var $scope = null, $compile, elm, $httpBackend;
+	
+// 		beforeEach(module('predixApp'));
+	
+// 		beforeEach(inject(function ($rootScope, $injector) {
+// 			$scope = $rootScope.$new();
+// 			$scope.myModel = {
+// 				title: 'My Widget',
+// 				subtitle: 'My Subtitle'
+// 			};
+
+// 			$compile = $injector.get('$compile');
+// 			$httpBackend = $injector.get('$httpBackend');
+// 			$httpBackend.expectGET('freshproj.tmpl.html').respond(200, myWidgetTmpl);
+
+// 			elm = $('<freshproj title="myModel.title" subtitle="myModel.subtitle"></freshproj>');
+// 			$compile(elm)($scope);
+// 			$scope.$digest();
+// 		}));
+
+// 		it('should have a title with correct value', function () {
+// 			expect(elm.find('h3').text()).toContain('My Widget');
+// 		});
+// 	});
+// });
+
+define([ 'angular', 'angular-mocks', 'px-timeseries' ], function(angular, mocks, PxTimeseries) {
 
     describe('px-timeseries', function () {
 
