@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 			host: 'https://devcloud.swcoe.ge.com',
 			repo: 'DSP',
 			username: 'svc-dsp-reader',
-			password: '4wxKT8u8E2'
+			password: '\{DESede\}KdBJ8yO7kUyeAnzBMEg7KA=='
 		}
 	};
 
