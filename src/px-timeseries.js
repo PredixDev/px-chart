@@ -104,10 +104,46 @@ define([ 'vruntime', 'widgets-module', 'line-chart' ], function(vRuntime, module
             // just start scrolling automatically
             scope.numPointsDisplayed[seriesId] = Number.MAX_SAFE_INTEGER;
         },
-        /*jshint unused:false */
-        dataChanged: function(scope, newSeries, oldSeries) {
+        dataTransform: function(newData) {
+            var highchartSeries = [];
+            var self = this;
+            if (newData && newData.queries && newData.queries.constructor === Array) {
+                //series
+                newData.queries.forEach(function(query) {
+                    if (query.results && query.results.constructor === Array) {
+                        query.results.forEach(function(result) {
+                            //validate result format
+                            if (result.name && result.values && result.values.constructor === Array) {
+                                highchartSeries.push({
+                                    name: result.name,
+                                    data: result.values
+                                });
+                            }
+                            else {
+                                self.logger.warn('Series data is missing name or values property');
+                            }
+                        });
+                    }
+                    else {
+                        //TODO : add error and angular.emit at the base Directive level
+                        self.logger.error('Invalid time series data format');
+                        //throw new Error('px-time-series: Invalid time series data format');
+                    }
+                });
+            }
+            else {
+                self.logger.error('Invalid time series data format');
+                //throw new Error('px-time-series: Invalid time series data format');
+            }
 
-            if (newSeries) {
+            return highchartSeries;
+        },
+        /*jshint unused:false */
+        dataChanged: function(scope, newData, oldData) {
+
+            var newSeries = this.dataTransform(newData);
+
+            if (newSeries.length !== 0) {
 
                 var seriesId, chartSeries;
 
@@ -134,7 +170,7 @@ define([ 'vruntime', 'widgets-module', 'line-chart' ], function(vRuntime, module
                         }
                     }
                     else {
-                        this.logger.warn('Series cannot be added - is it formatted properly?');
+                        this.logger.warn('Series data is missing name or data property');
                     }
                 }
 
