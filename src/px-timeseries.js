@@ -5,7 +5,7 @@ define([ 'vruntime', 'widgets-module', 'line-chart' ], function(vRuntime, module
         replace: true,
         scope: {
             title: '=',
-            series: '=',
+            queries: '=',
             showYAxisUnits: '=',
             plotType: '=',
             subtitle: '=?',
@@ -23,7 +23,7 @@ define([ 'vruntime', 'widgets-module', 'line-chart' ], function(vRuntime, module
             scope.maxNumPoints = scope.maxNumPoints || 10;
 
             var self = this;
-            scope.$watch('series', function(newData, oldData) {
+            scope.$watch('queries', function(newData, oldData) {
                 self.dataChanged.call(self, scope, newData, oldData);
             }, true);
 
@@ -107,9 +107,9 @@ define([ 'vruntime', 'widgets-module', 'line-chart' ], function(vRuntime, module
         dataTransform: function(newData) {
             var highchartSeries = [];
             var self = this;
-            if (newData && newData.queries && newData.queries.constructor === Array) {
+            if (newData && newData.constructor === Array) {
                 //series
-                newData.queries.forEach(function(query) {
+                newData.forEach(function(query) {
                     if (query.results && query.results.constructor === Array) {
                         query.results.forEach(function(result) {
                             //validate result format
@@ -140,6 +140,11 @@ define([ 'vruntime', 'widgets-module', 'line-chart' ], function(vRuntime, module
         },
         /*jshint unused:false */
         dataChanged: function(scope, newData, oldData) {
+
+            if (!newData) {
+                //First time, angular gives us a empty string
+                return;
+            }
 
             var newSeries = this.dataTransform(newData);
 
