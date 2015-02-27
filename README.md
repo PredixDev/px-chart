@@ -6,6 +6,11 @@ px-time-series
 This is the Experience Time Series Widget that abstract HighChart and support KairosDB Time Series Format by default
 
 # Usage
+Add bower dependency by pointing to this repo in bower.json
+
+```json
+"px-time-series": "git://github.sw.ge.com/PredixWidgetCatalog/px-time-series.git#develop"
+```
 
 Add directive to the page
 
@@ -20,6 +25,14 @@ Add directive to the page
   yAxisLabel='yAxisLabel' 
   maxNumPoints='maxNumPoints'>
 </px-timeseries>
+```
+
+Add 'bower_components/px-time-series/src/main' to your controller require js dependency
+
+```js
+define(['angular', 'bower_components/px-time-series/src/main'], function(angular) {
+  ...
+});
 ```
 
 Add properties on your `$scope`
@@ -67,3 +80,4 @@ $scope.timeSeries = {
   maxNumPoints: 500           // Optional Maximum number of points to show
 };
 ```
+
