@@ -127,13 +127,11 @@ define([ 'vruntime', 'widgets-module', 'line-chart' ], function(vRuntime, module
                     else {
                         //TODO : add error and angular.emit at the base Directive level
                         self.logger.error('Invalid time series data format');
-                        //throw new Error('px-time-series: Invalid time series data format');
                     }
                 });
             }
             else {
                 self.logger.error('Invalid time series data format');
-                //throw new Error('px-time-series: Invalid time series data format');
             }
 
             return highchartSeries;
