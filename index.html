@@ -22,85 +22,63 @@
             app.controller('MainCtrl', ['$scope', function ($scope) {
                 var timeSeriesData = [
                     {
-                        'name': 'Winter 2007-2008',
-                        'data': [
-                            [
-                                25833600000,
-                                0
-                            ],
-                            [
-                                27043200000,
-                                0.6
-                            ],
-                            [
-                                27734400000,
-                                0.7
-                            ],
-                            [
-                                28944000000,
-                                0.8
-                            ],
-                            [
-                                29548800000,
-                                0.6
-                            ]
-                        ]
-                    },
-                    {
-                        'name': 'Winter 2008-2009',
-                        'data': [
-                            [
-                                25056000000,
-                                0
-                            ],
-                            [
-                                25747200000,
-                                0.2
-                            ],
-                            [
-                                28857600000,
-                                0.47
-                            ],
-                            [
-                                29721600000,
-                                0.55
-                            ],
-                            [
-                                30931200000,
-                                1.38
-                            ]
-                        ]
-                    },
-                    {
-                        'name': 'Winter 2009-2010',
-                        'data': [
-                            [
-                                24278400000,
-                                0
-                            ],
-                            [
-                                24710400000,
-                                0.15
-                            ],
-                            [
-                                28598400000,
-                                0.35
-                            ],
-                            [
-                                29808000000,
-                                0.46
-                            ],
-                            [
-                                31536000000,
-                                0.59
-                            ]
+                        "sample_size": 14368,
+                        "results": [
+                            {
+                                "name": "abc_123",
+                                "group_by": [
+                                    {
+                                        "name": "type",
+                                        "type": "number"
+                                    },
+                                    {
+                                        "name": "tag",
+                                        "tags": [
+                                            "host"
+                                        ],
+                                        "group": {
+                                            "host": "server1"
+                                        }
+                                    }
+                                ],
+                                "tags": {
+                                    "host": [
+                                        "server1"
+                                    ],
+                                    "customer": [
+                                        "bar"
+                                    ]
+                                },
+                                "values": [
+                                    [
+                                        25833600000,
+                                        0
+                                    ],
+                                    [
+                                        27043200000,
+                                        0.6
+                                    ],
+                                    [
+                                        27734400000,
+                                        0.7
+                                    ],
+                                    [
+                                        28944000000,
+                                        0.8
+                                    ],
+                                    [
+                                        29548800000,
+                                        0.6
+                                    ]
+                                ]
+                            }
                         ]
                     }
                 ];
                 $scope.timeSeries = {
                     // Required:
                     title: 'Time Series Chart',
-                    series: timeSeriesData,
+                    queries: timeSeriesData,
                     showYAxisUnits: true,
                     plotType: 'line',
                     // Optional:
@@ -119,22 +97,22 @@
     </script>
 </head>
 <body class="container content">
-    <section class="module" id="example-html" data-ng-controller="MainCtrl">
-        <header class="module-header">
-            <h3 class="voice voice-brand pull-left">px-timeseries</h3>
-        </header>
-        <div class="module-body">
-            <px-timeseries 
+<section class="module" id="example-html" data-ng-controller="MainCtrl">
+    <header class="module-header">
+        <h3 class="voice voice-brand pull-left">px-timeseries</h3>
+    </header>
+    <div class="module-body">
+        <px-timeseries
                 title="timeSeries.title"
                 subtitle="timeSeries.subtitle"
                 show-y-axis-units="timeSeries.showYAxisUnits"
-                plot-type="timeSeries.plotType" 
-                series="timeSeries.series"
+                plot-type="timeSeries.plotType"
+                queries="timeSeries.queries"
                 data-x-axis-label="timeSeries.xAxisLabel"
                 data-y-axis-label="timeSeries.yAxisLabel"
                 max-num-points="timeSeries.maxNumPoints">
-            </px-timeseries>
-        </div>
-    </section>
+        </px-timeseries>
+    </div>
+</section>
 </body>
 </html>

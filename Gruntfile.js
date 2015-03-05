@@ -74,7 +74,7 @@ module.exports = function(grunt) {
 					'src/*.js',
 					'dist/*.js'
 				],
-				tasks: ['jshint:app', 'requirejs']
+				tasks: ['jshint:app']
 			},
 			test: {
 				files: '<%= jshint.test.src %>',
