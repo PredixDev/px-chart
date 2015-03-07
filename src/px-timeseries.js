@@ -11,8 +11,7 @@ define(['vruntime', 'widgets-module', 'line-chart'], function (vRuntime, module)
                 subtitle: '=?',
                 xAxisLabel: '=?',
                 yAxisLabel: '=?',
-                maxNumPoints: '=?',
-                onXAxisChange: '&'
+                maxNumPoints: '=?'
             },
             template: '<div id="widget-{{$id}}" style="width:100%;margin: 0 auto"><div class="time-series-chart" style="width:100%;margin: 0 auto"></div></div>',
             vLink: function (scope, element, attrs) {
@@ -70,12 +69,20 @@ define(['vruntime', 'widgets-module', 'line-chart'], function (vRuntime, module)
                         },
                         events: {
                             afterSetExtremes: function (event) {
-                                var chart = $('.time-series-chart').highcharts();
-                                chart.showLoading('Loading data from server...');
-                                scope.onXAxisChange({event: event}).then(function (data) {
-                                    chart.series[0].setData(data);
-                                    chart.hideLoading();
-                                });
+                                console.log('setting extremes', event);
+
+                                // TODO this is where we want to do an emit, but we can't without real data (otherwise get in infinite loop with scope watch/setextremes)
+                                //scope.$emit('px-dashboard-event', 'after-set-extremes', event);
+
+                                // NOTE: this is called tons of times when rangeselector is used -- need to throttle or something
+
+                            //    var chart = $('.time-series-chart').highcharts();
+                            //    chart.showLoading('Loading data from server...');
+                            //    scope.$emit('px-dashboard-event', 'abc', 5);
+                            //    //scope.onXAxisChange({event: event}).then(function (data) {
+                            //    //    chart.series[0].setData(data);
+                            //    //    chart.hideLoading();
+                            //    //});
                             }
                         },
                         minRange: 3600 * 1000 // one hour
