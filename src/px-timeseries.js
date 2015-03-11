@@ -76,8 +76,7 @@ define(['vruntime', 'widgets-module', 'line-chart'], function (vRuntime, module)
                             scope.$emit('px-dashboard-event', 'after-set-extremes', event);
                             self.showLoading(scope);
                         }
-                    },
-                    minRange: 3600 * 1000 // one hour
+                    }
                 },
                 scrollbar: {
                     liveRedraw: false
@@ -104,18 +103,6 @@ define(['vruntime', 'widgets-module', 'line-chart'], function (vRuntime, module)
             }
 
             return config;
-        },
-        addPoint: function (scope, chartSeries, seriesId, point) {
-            // usually, 1 point will scroll off the screen when a new one is added
-            var isScrolling = true;
-
-            // if there are less points displayed then the max number, then just add the points without scrolling
-            if (scope.maxNumPoints > scope.numPointsDisplayed[seriesId]) {
-                isScrolling = false;
-                scope.numPointsDisplayed[seriesId]++;
-            }
-
-            chartSeries.addPoint(point, true, isScrolling);
         },
         addSeries: function (scope, seriesId, data) {
 
