@@ -43,6 +43,7 @@
 		"spyOn": false,
 		"setFixtures": false,
 		"sandbox": false,
+        "jasmine": false,
 		/* Widgets */
 		"Highcharts": false
 	}
