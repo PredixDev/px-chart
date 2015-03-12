@@ -204,8 +204,8 @@ define(['vruntime', 'widgets-module', 'line-chart'], function (vRuntime, module)
         }
     });
 
-    module.directive('pxTimeseries', function ($timeout) {
-        return new TimeSeriesChart($timeout);
+    module.directive('pxTimeseries', function () {
+        return new TimeSeriesChart();
     });
 
     return TimeSeriesChart;
