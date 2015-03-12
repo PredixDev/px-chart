@@ -19,95 +19,181 @@
         require(['angular', 'widgets-module', 'src/main'], function (angular, widgetModule) {
             app = angular.module('demoApp', ['demoModule']);
 
-            app.controller('MainCtrl', ['$scope', function ($scope) {
+            app.controller('MainCtrl', ['$scope', '$q', function ($scope, $q) {
                 var timeSeriesData = [
                     {
-                        'name': 'Winter 2007-2008',
-                        'data': [
-                            [
-                                25833600000,
-                                0
-                            ],
-                            [
-                                27043200000,
-                                0.6
-                            ],
-                            [
-                                27734400000,
-                                0.7
-                            ],
-                            [
-                                28944000000,
-                                0.8
-                            ],
-                            [
-                                29548800000,
-                                0.6
-                            ]
-                        ]
-                    },
-                    {
-                        'name': 'Winter 2008-2009',
-                        'data': [
-                            [
-                                25056000000,
-                                0
-                            ],
-                            [
-                                25747200000,
-                                0.2
-                            ],
-                            [
-                                28857600000,
-                                0.47
-                            ],
-                            [
-                                29721600000,
-                                0.55
-                            ],
-                            [
-                                30931200000,
-                                1.38
-                            ]
-                        ]
-                    },
-                    {
-                        'name': 'Winter 2009-2010',
-                        'data': [
-                            [
-                                24278400000,
-                                0
-                            ],
-                            [
-                                24710400000,
-                                0.15
-                            ],
-                            [
-                                28598400000,
-                                0.35
-                            ],
-                            [
-                                29808000000,
-                                0.46
-                            ],
-                            [
-                                31536000000,
-                                0.59
-                            ]
+                        "sample_size": 14368,
+                        "results": [
+                            {
+                                "name": "Series A",
+                                "group_by": [
+                                    {
+                                        "name": "type",
+                                        "type": "number"
+                                    },
+                                    {
+                                        "name": "tag",
+                                        "tags": [
+                                            "host"
+                                        ],
+                                        "group": {
+                                            "host": "server1"
+                                        }
+                                    }
+                                ],
+                                "tags": {
+                                    "host": [
+                                        "server1"
+                                    ],
+                                    "customer": [
+                                        "bar"
+                                    ]
+                                },
+                                "values": [
+                                    /* May 2008 */
+                                    [1209600000000, 25.71],
+                                    [1209686400000, 25.85],
+                                    [1209945600000, 26.39],
+                                    [1210032000000, 26.67],
+                                    [1210118400000, 26.08],
+                                    [1210204800000, 26.44],
+                                    [1210291200000, 26.21],
+                                    [1210550400000, 26.88],
+                                    [1210636800000, 27.14],
+                                    [1210723200000, 26.61],
+                                    [1210809600000, 27.10],
+                                    [1210896000000, 26.80],
+                                    [1211155200000, 26.23],
+                                    [1211241600000, 26.56],
+                                    [1211328000000, 25.46],
+                                    [1211414400000, 25.29],
+                                    [1211500800000, 25.88],
+                                    [1211846400000, 26.63],
+                                    [1211932800000, 26.72],
+                                    [1212019200000, 26.67],
+                                    [1212105600000, 26.96],
+                                    /* Jun 2008 */
+                                    [1212364800000, 26.59],
+                                    [1212451200000, 26.48],
+                                    [1212537600000, 26.46],
+                                    [1212624000000, 27.06],
+                                    [1212710400000, 26.52],
+                                    [1212969600000, 25.94],
+                                    [1213056000000, 26.52],
+                                    [1213142400000, 25.83],
+                                    [1213228800000, 24.75],
+                                    [1213315200000, 24.62],
+                                    [1213574400000, 25.26],
+                                    [1213660800000, 25.92],
+                                    [1213747200000, 25.54],
+                                    [1213833600000, 25.84],
+                                    [1213920000000, 25.04],
+                                    [1214179200000, 24.74],
+                                    [1214265600000, 24.75],
+                                    [1214352000000, 25.34],
+                                    [1214438400000, 24.04],
+                                    [1214524800000, 24.30],
+                                    [1214784000000, 23.92]
+                                ]
+                            },
+                            {
+                                "name": "Series B",
+                                "group_by": [
+                                    {
+                                        "name": "type",
+                                        "type": "number"
+                                    },
+                                    {
+                                        "name": "tag",
+                                        "tags": [
+                                            "host"
+                                        ],
+                                        "group": {
+                                            "host": "server1"
+                                        }
+                                    }
+                                ],
+                                "tags": {
+                                    "host": [
+                                        "server1"
+                                    ],
+                                    "customer": [
+                                        "bar"
+                                    ]
+                                },
+                                "values": [
+                                    /* May 2008 */
+                                    [1209600000000, 29.40],
+                                    [1209686400000, 29.24],
+                                    [1209945600000, 29.08],
+                                    [1210032000000, 29.70],
+                                    [1210118400000, 29.21],
+                                    [1210204800000, 29.27],
+                                    [1210291200000, 29.39],
+                                    [1210550400000, 29.99],
+                                    [1210636800000, 29.78],
+                                    [1210723200000, 29.93],
+                                    [1210809600000, 30.45],
+                                    [1210896000000, 29.99],
+                                    [1211155200000, 29.46],
+                                    [1211241600000, 28.76],
+                                    [1211328000000, 28.25],
+                                    [1211414400000, 28.47],
+                                    [1211500800000, 28.05],
+                                    [1211846400000, 28.44],
+                                    [1211932800000, 28.18],
+                                    [1212019200000, 28.31],
+                                    [1212105600000, 28.32],
+                                    /* Jun 2008 */
+                                    [1212364800000, 27.80],
+                                    [1212451200000, 27.31],
+                                    [1212537600000, 27.54],
+                                    [1212624000000, 28.30],
+                                    [1212710400000, 27.49],
+                                    [1212969600000, 27.71],
+                                    [1213056000000, 27.89],
+                                    [1213142400000, 27.12],
+                                    [1213228800000, 28.24],
+                                    [1213315200000, 29.07],
+                                    [1213574400000, 28.93],
+                                    [1213660800000, 28.80],
+                                    [1213747200000, 28.46],
+                                    [1213833600000, 28.93],
+                                    [1213920000000, 28.23],
+                                    [1214179200000, 27.97],
+                                    [1214265600000, 27.73],
+                                    [1214352000000, 28.35],
+                                    [1214438400000, 27.75],
+                                    [1214524800000, 27.63],
+                                    [1214784000000, 27.51]
+                                ]
+                            }
                         ]
                     }
                 ];
                 $scope.timeSeries = {
                     // Required:
                     title: 'Time Series Chart',
-                    series: timeSeriesData,
+                    queries: timeSeriesData,
                     showYAxisUnits: true,
                     plotType: 'line',
                     // Optional:
                     xAxisLabel: 'Time',
                     yAxisLabel: 'Pressure',
                     maxNumPoints: 3,
-                    subtitle: 'Historical Pressure'
+                    subtitle: 'Historical Pressure',
+                    onXAxisChange: function (event) {
+                        console.log(event.min, event.max);
+
+                        var defer = $q.defer();
+
+                        $.getJSON('http://www.highcharts.com/samples/data/from-sql.php?start=' + Math.round(event.min) +
+                        '&end=' + Math.round(event.max) + '&callback=?', function (data) {
+                            defer.resolve(data);
+                        });
+
+                        return defer.promise;
+                    }
                 };
             }]);
 
@@ -119,22 +205,23 @@
     </script>
 </head>
 <body class="container content">
-    <section class="module" id="example-html" data-ng-controller="MainCtrl">
-        <header class="module-header">
-            <h3 class="voice voice-brand pull-left">px-timeseries</h3>
-        </header>
-        <div class="module-body">
-            <px-timeseries 
+<section class="module" id="example-html" data-ng-controller="MainCtrl">
+    <header class="module-header">
+        <h3 class="voice voice-brand pull-left">px-timeseries</h3>
+    </header>
+    <div class="module-body">
+        <px-timeseries
                 title="timeSeries.title"
                 subtitle="timeSeries.subtitle"
                 show-y-axis-units="timeSeries.showYAxisUnits"
-                plot-type="timeSeries.plotType" 
-                series="timeSeries.series"
+                plot-type="timeSeries.plotType"
+                queries="timeSeries.queries"
                 data-x-axis-label="timeSeries.xAxisLabel"
                 data-y-axis-label="timeSeries.yAxisLabel"
-                max-num-points="timeSeries.maxNumPoints">
-            </px-timeseries>
-        </div>
-    </section>
+                max-num-points="timeSeries.maxNumPoints"
+                on-x-axis-change="timeSeries.onXAxisChange(event)">
+        </px-timeseries>
+    </div>
+</section>
 </body>
 </html>

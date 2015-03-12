@@ -1,4 +1,4 @@
-define([ 'vruntime', 'widgets-module', 'line-chart' ], function(vRuntime, module) {
+define(['vruntime', 'widgets-module', 'line-chart'], function (vRuntime, module) {
     'use strict';
 
     var TimeSeriesChart = vRuntime.widget.BaseDirective.extend({
@@ -13,35 +13,48 @@ define([ 'vruntime', 'widgets-module', 'line-chart' ], function(vRuntime, module
             yAxisLabel: '=?',
             maxNumPoints: '=?'
         },
-        template: '<div id="widget-{{$id}}" style="width:100%;margin: 0 auto"><div class="time-series-chart" style="width:100%;margin: 0 auto"></div></div>',
-        vLink: function(scope, element, attrs) {
+        template: '<div class="time-series-chart" style="margin: 0;"></div>',
+        vLink: function (scope, element, attrs) {
+            var self = this;
             this._super(scope, element, attrs);
 
             this.logger = vRuntime.logger.create('pxTimeseries');
 
-            var chartConfig = this.buildConfig(scope);
+            scope.numPointsDisplayed = {};
             scope.maxNumPoints = scope.maxNumPoints || 10;
 
-            var self = this;
-            scope.$watch('queries', function(newData, oldData) {
+            var chartConfig = self.buildConfig(scope);
+            scope.chart = new Highcharts.StockChart(chartConfig);
+
+            scope.$watch('queries', function (newData, oldData) {
                 self.dataChanged.call(self, scope, newData, oldData);
             }, true);
 
-            scope.chart = new Highcharts.Chart(chartConfig);
-            scope.numPointsDisplayed = {};
 
-            scope.chart.reflow();
         },
-        buildConfig: function(scope) {
+        buildConfig: function (scope) {
+            var self = this;
             var config = {
                 chart: {
                     type: 'spline',
-                    renderTo: scope.vElement.find('.time-series-chart').get(0)
+                    renderTo: scope.vElement.get(0),
+                    zoomType: 'x'
                 },
                 plotOptions: {
                     series: {
                         marker: {}
                     }
+                },
+                rangeSelector: {
+                    selected: 0,
+                    inputEnabled: true,
+                    inputDateFormat: '%H:%M %m/%d/%Y',
+                    inputEditDateFormat: '%H:%M %m/%d/%Y',
+                    inputBoxWidth: 110
+                },
+                legend: {
+                    align: 'right',
+                    enabled: true
                 },
                 title: {
                     text: scope.title
@@ -49,12 +62,24 @@ define([ 'vruntime', 'widgets-module', 'line-chart' ], function(vRuntime, module
                 subtitle: {
                     text: scope.subtitle
                 },
+                navigator: {
+                    adaptToUpdatedData: false
+                },
                 xAxis: {
                     type: 'datetime',
                     tickPixelInterval: 150,
                     title: {
                         text: scope.xAxisLabel
+                    },
+                    events: {
+                        afterSetExtremes: function (event) {
+                            scope.$emit('px-dashboard-event', 'after-set-extremes', event);
+                            self.showLoading(scope);
+                        }
                     }
+                },
+                scrollbar: {
+                    liveRedraw: false
                 },
                 yAxis: {
                     title: {
@@ -79,19 +104,7 @@ define([ 'vruntime', 'widgets-module', 'line-chart' ], function(vRuntime, module
 
             return config;
         },
-        addPoint: function(scope, chartSeries, seriesId, point) {
-            // usually, 1 point will scroll off the screen when a new one is added
-            var isScrolling = true;
-
-            // if there are less points displayed then the max number, then just add the points without scrolling
-            if (scope.maxNumPoints > scope.numPointsDisplayed[seriesId]) {
-                isScrolling = false;
-                scope.numPointsDisplayed[seriesId]++;
-            }
-
-            chartSeries.addPoint(point, true, isScrolling);
-        },
-        addSeries: function(scope, seriesId, data) {
+        addSeries: function (scope, seriesId, data) {
 
             var newseries = {
                 id: seriesId,
@@ -104,14 +117,14 @@ define([ 'vruntime', 'widgets-module', 'line-chart' ], function(vRuntime, module
             // just start scrolling automatically
             scope.numPointsDisplayed[seriesId] = Number.MAX_SAFE_INTEGER;
         },
-        dataTransform: function(newData) {
+        dataTransform: function (newData) {
             var highchartSeries = [];
             var self = this;
             if (newData && newData.constructor === Array) {
                 //series
-                newData.forEach(function(query) {
+                newData.forEach(function (query) {
                     if (query.results && query.results.constructor === Array) {
-                        query.results.forEach(function(result) {
+                        query.results.forEach(function (result) {
                             //validate result format
                             if (result.name && result.values && result.values.constructor === Array) {
                                 highchartSeries.push({
@@ -137,10 +150,12 @@ define([ 'vruntime', 'widgets-module', 'line-chart' ], function(vRuntime, module
             return highchartSeries;
         },
         /*jshint unused:false */
-        dataChanged: function(scope, newData, oldData) {
+        dataChanged: function (scope, newData, oldData) {
+            scope.chart.hideLoading();
 
             if (!newData) {
                 //First time, angular gives us a empty string
+                this.showLoading(scope);
                 return;
             }
 
@@ -159,10 +174,7 @@ define([ 'vruntime', 'widgets-module', 'line-chart' ], function(vRuntime, module
                         if (seriesId !== null) {
                             chartSeries = scope.chart.get(seriesId);
                             if (chartSeries) {
-                                //Add Point to the series
-                                for (var i = 0; i < newSeries[index].data.length; i++) {
-                                    this.addPoint(scope, chartSeries, seriesId, newSeries[index].data[i]);
-                                }
+                                scope.chart.series[index].setData(newSeries[index].data);
                             }
                             else {
                                 this.addSeries(scope, seriesId, newSeries[index].data);
@@ -177,11 +189,13 @@ define([ 'vruntime', 'widgets-module', 'line-chart' ], function(vRuntime, module
                     }
                 }
 
-                scope.chart.reflow();
             }
-
+            scope.chart.reflow();
         },
-        vDestroy: function(scope) {
+        showLoading: function (scope) {
+            scope.chart.showLoading('Loading data from server..');
+        },
+        vDestroy: function (scope) {
             this._super(scope);
             if (scope.chart) {
                 scope.chart.destroy();
@@ -190,8 +204,8 @@ define([ 'vruntime', 'widgets-module', 'line-chart' ], function(vRuntime, module
         }
     });
 
-    module.directive('pxTimeseries', function() {
-        return new TimeSeriesChart();
+    module.directive('pxTimeseries', function ($timeout) {
+        return new TimeSeriesChart($timeout);
     });
 
     return TimeSeriesChart;
