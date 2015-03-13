@@ -34,7 +34,9 @@ require.config({
 		jquery: '../bower_components/iids/dist/iidx/components/jquery/jquery.min',
 		'line-chart': '../bower_components/iids/dist/iidx/components/charts/js/charts/line',
 		vruntime: '../bower_components/vruntime/dist/vruntime',
-		'widgets-module': 'src/widgets-module'
+		'widgets-module': 'src/widgets-module',
+		text: '../bower_components/requirejs-plugins/lib/text',
+		css: '../bower_components/require-css/css'
 	},
 	priority: [
 		'jquery',

@@ -1,0 +1,23 @@
+<div>
+    <div id="customTopPanel" style='padding:10px;z-index: 99;'> 
+        <div style='float:right;'>
+            From
+            <input ng-model="rangeStartStr" ng-class='getRangeClasses(rangeStartStr)' class='btn' style='margin-right:8px;width:120px;' placeholder="From Date"></input>
+            To
+            <input ng-model="rangeEndStr" ng-class='getRangeClasses(rangeEndStr)' class='btn' style='width:120px;'placeholder="To Date"></input>
+            <button ng-click="submitHandler()" class='btn'>Submit</button>
+            <!-- <button class="btn btn-icon"><i class="icon-repeat"></i></button> -->
+        </div>
+        <div style='clear:both'></div>
+        <div style='float:right;margin-top:10px;'>
+            Zoom
+            <button ng-click='setMonthsOfRange(1)' class='btn'>1m</button>
+            <button ng-click='setMonthsOfRange(3)' class='btn'>3m</button>
+            <button ng-click='setMonthsOfRange(6)' class='btn'>6m</button>
+            <button ng-click='setMonthsOfRange(12)' class='btn'>1y</button>
+            <button ng-click='setRangeToYTD()' class='btn'>YTD</button>  
+        </div>
+    </div>
+    <div class="time-series-chart" style="margin: 0;"></div>
+
+<div>

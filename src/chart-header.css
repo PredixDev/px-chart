@@ -1,0 +1,23 @@
+#customTopPanel {
+    width:100%;
+    height: 92px;
+    /*background-color : orange;*/
+    position:absolute;
+    left:0;
+    top:0;
+    /*opacity : 20%;*/
+}
+.highcharts-button {
+    visibility: hidden;
+}
+.highcharts-legend {
+    
+}
+.highcharts-title, .highcharts-input-group {
+    visibility: hidden;
+}
+.invalid-date {
+    outline:none;
+    border-color:red;
+    box-shadow: 0 0 4px red;
+}

@@ -1,4 +1,5 @@
-define(['vruntime', 'widgets-module', 'line-chart'], function (vRuntime, module) {
+
+define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-chart', 'css!./chart-header.css'], function (vRuntime, module, headerTemplate) {
     'use strict';
 
     var TimeSeriesChart = vRuntime.widget.BaseDirective.extend({
@@ -13,7 +14,7 @@ define(['vruntime', 'widgets-module', 'line-chart'], function (vRuntime, module)
             yAxisLabel: '=?',
             maxNumPoints: '=?'
         },
-        template: '<div class="time-series-chart" style="margin: 0;"></div>',
+        template: headerTemplate,
         vLink: function (scope, element, attrs) {
             var self = this;
             this._super(scope, element, attrs);
@@ -30,15 +31,77 @@ define(['vruntime', 'widgets-module', 'line-chart'], function (vRuntime, module)
                 self.dataChanged.call(self, scope, newData, oldData);
             }, true);
 
+            scope.submitHandler = function(){
+                scope.chart.xAxis[0].setExtremes(scope.rangeStart,scope.rangeEnd);
+            };
 
+            scope.setMonthsOfRange = function(months){
+                scope.rangeEnd = scope.rangeEnd || new Date();
+                scope.rangeStart = new Date(scope.rangeEnd);
+                var month = scope.rangeEnd.getMonth() - months;
+                scope.rangeStart.setMonth(month);
+                scope.rangeStartStr = scope.getDateStr(scope.rangeStart);
+            };
+            scope.setRangeToYTD = function(){
+                scope.rangeEnd = new Date();
+                scope.rangeStart = new Date();
+                scope.rangeStart.setMonth(0);
+                scope.rangeStart.setDate(1);
+                scope.rangeStart.setHours(0);
+                scope.rangeStart.setMinutes(0);
+                scope.rangeStart.setSeconds(0);
+                scope.rangeStartStr = scope.getDateStr(scope.rangeStart);
+                scope.rangeEndStr = scope.getDateStr(scope.rangeEnd);
+            };
+
+            scope.isValidDate = function(s){
+                var re = /^[012]?\d:[012345]\d\s+(0?[1-9]|1[012])\/(0?[1-9]|[1-2]\d|3[01])\/[12][90]\d\d$/;
+                return re.test(s);
+            };
+            scope.getRangeClasses = function(s){
+                var isValid = scope.isValidDate(s);
+                return isValid ? '' : 'invalid-date';
+            };
+            scope.getDateStr = function(d){
+                function ensureTwoDigits(s){
+                    s = '' + s;
+                    while (s.length < 2) {s = '0' + s;}
+                    return s;
+                }
+                if (!d || !d.getHours) { return 'bad date'; }
+                return (ensureTwoDigits(d.getHours())) + ':' + ensureTwoDigits(d.getMinutes()) +
+                    ' ' + (d.getMonth()+1) + '/' + (d.getDate()) + '/' + (d.getFullYear());
+            };
+            scope.rangeEnd = new Date();
+            scope.rangeEndStr = scope.getDateStr(scope.rangeEnd);
+            scope.setMonthsOfRange(3);
         },
         buildConfig: function (scope) {
             var self = this;
+
+            function getRenderEl(){
+                return $(scope.vElement).find('.time-series-chart').get(0);
+            }
+
             var config = {
+
+
                 chart: {
+                    spacingLeft : 40,
                     type: 'spline',
-                    renderTo: scope.vElement.get(0),
-                    zoomType: 'x'
+                    renderTo: getRenderEl(), //scope.vElement.get(0),
+                    zoomType: 'x',
+                    events: {
+                        redraw: function () {
+                            var extremes = this.xAxis[0].getExtremes();
+                            scope.rangeStart = new Date(extremes.min);
+                            scope.rangeEnd   = new Date(extremes.max);
+                            scope.rangeStartStr = scope.getDateStr(scope.rangeStart);
+                            scope.rangeEndStr = scope.getDateStr(scope.rangeEnd);
+                        }
+                    }
+
+
                 },
                 plotOptions: {
                     series: {
@@ -50,14 +113,16 @@ define(['vruntime', 'widgets-module', 'line-chart'], function (vRuntime, module)
                     inputEnabled: true,
                     inputDateFormat: '%H:%M %m/%d/%Y',
                     inputEditDateFormat: '%H:%M %m/%d/%Y',
-                    inputBoxWidth: 110
+                    inputBoxWidth: 110,
+                    inputPosition: { x : -300, y : 50 }
                 },
                 legend: {
-                    align: 'right',
+                    align: 'left',
                     enabled: true
                 },
                 title: {
-                    text: scope.title
+                    text: scope.title,
+                    enabled : false
                 },
                 subtitle: {
                     text: scope.subtitle
@@ -85,7 +150,8 @@ define(['vruntime', 'widgets-module', 'line-chart'], function (vRuntime, module)
                     title: {
                         text: scope.yAxisLabel
                     },
-                    labels: {}
+                    labels: { x : -30 },
+                    lineWidth : 0 // TODO
                 },
                 series: []
             };
