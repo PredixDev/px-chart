@@ -51,6 +51,9 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
                     $watch: function () {
                     },
                     $emit: function() {
+                    },
+                    getRenderEl: function() {
+                        return 'fakeRenderElement';
                     }
                 };
 
@@ -73,7 +76,7 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
                     });
 
                     it('has renderTo set correctly', function () {
-                        expect(config.chart.renderTo).toBe('thethingfromget');
+                        expect(config.chart.renderTo).toBe('fakeRenderElement');
                     });
 
                     it('has title set to scope.title', function () {
