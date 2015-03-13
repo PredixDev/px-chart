@@ -75,13 +75,14 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
             scope.rangeEnd = new Date();
             scope.rangeEndStr = scope.getDateStr(scope.rangeEnd);
             scope.setMonthsOfRange(3);
+
         },
         buildConfig: function (scope) {
             var self = this;
 
-            function getRenderEl(){
+            scope.getRenderEl = scope.getRenderEl || function(){
                 return $(scope.vElement).find('.time-series-chart').get(0);
-            }
+            };
 
             var config = {
 
@@ -89,7 +90,7 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
                 chart: {
                     spacingLeft : 40,
                     type: 'spline',
-                    renderTo: getRenderEl(), //scope.vElement.get(0),
+                    renderTo: scope.getRenderEl(), //scope.vElement.get(0),
                     zoomType: 'x',
                     events: {
                         redraw: function () {
