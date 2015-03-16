@@ -21,3 +21,9 @@
     border-color:red;
     box-shadow: 0 0 4px red;
 }
+.margin-right-5 {
+    margin-right: 5px;
+}
+.margin-left-5 {
+    margin-left: 3px;  /*TODO figure out where the 2 pixels are coming from*/
+}
