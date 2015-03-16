@@ -41,6 +41,7 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
                 var month = scope.rangeEnd.getMonth() - months;
                 scope.rangeStart.setMonth(month);
                 scope.rangeStartStr = scope.getDateStr(scope.rangeStart);
+                scope.submitHandler();
             };
             scope.setRangeToYTD = function(){
                 scope.rangeEnd = new Date();
@@ -52,6 +53,7 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
                 scope.rangeStart.setSeconds(0);
                 scope.rangeStartStr = scope.getDateStr(scope.rangeStart);
                 scope.rangeEndStr = scope.getDateStr(scope.rangeEnd);
+                scope.submitHandler();
             };
 
             scope.isValidDate = function(s){
@@ -76,6 +78,11 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
             scope.rangeEndStr = scope.getDateStr(scope.rangeEnd);
             scope.setMonthsOfRange(3);
 
+            scope.rangeStart = new Date();
+            scope.rangeEnd = new Date();
+            scope.rangeStartStr = scope.getDateStr(scope.rangeStart);
+            scope.rangeEndStr = scope.getDateStr(scope.rangeEnd);
+            
         },
         buildConfig: function (scope) {
             var self = this;
@@ -86,10 +93,9 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
 
             var config = {
 
-
                 chart: {
                     spacingLeft : 40,
-                    type: 'spline',
+                    type: 'line',
                     renderTo: scope.getRenderEl(), //scope.vElement.get(0),
                     zoomType: 'x',
                     events: {

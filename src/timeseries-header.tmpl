@@ -1,10 +1,10 @@
 <div>
     <div id="customTopPanel" style='padding:10px;z-index: 99;'> 
         <div style='float:right;'>
-            From
-            <input ng-model="rangeStartStr" ng-class='getRangeClasses(rangeStartStr)' class='btn' style='margin-right:8px;width:120px;' placeholder="From Date"></input>
-            To
-            <input ng-model="rangeEndStr" ng-class='getRangeClasses(rangeEndStr)' class='btn' style='width:120px;'placeholder="To Date"></input>
+            <span style='margin-right:4px;'>From</span>
+            <input ng-model="rangeStartStr" ng-class='getRangeClasses(rangeStartStr)' class='btn' style='margin-right:8px;width:140px;' placeholder="HH:MM MM/DD/YYYY" value=''></input>
+            <span style='margin-right:4px;'>To</span>
+            <input ng-model="rangeEndStr" ng-class='getRangeClasses(rangeEndStr)' class='btn' style='width:140px;'placeholder="HH:MM MM/DD/YYYY" value=''></input>
             <button ng-click="submitHandler()" class='btn'>Submit</button>
             <!-- <button class="btn btn-icon"><i class="icon-repeat"></i></button> -->
         </div>
