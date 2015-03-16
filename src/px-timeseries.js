@@ -32,7 +32,7 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
             }, true);
 
             scope.submitHandler = function(){
-                scope.chart.xAxis[0].setExtremes(scope.rangeStart,scope.rangeEnd);
+                scope.chart.xAxis[0].setExtremes(scope.rangeStart.getTime(),scope.rangeEnd.getTime());
             };
 
             scope.setMonthsOfRange = function(months){
