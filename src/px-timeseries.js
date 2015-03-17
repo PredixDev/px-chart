@@ -1,4 +1,5 @@
-define(['vruntime', 'widgets-module', 'line-chart'], function (vRuntime, module) {
+
+define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-chart', 'css!./chart-header.css'], function (vRuntime, module, headerTemplate) {
     'use strict';
 
     var TimeSeriesChart = vRuntime.widget.BaseDirective.extend({
@@ -11,13 +12,14 @@ define(['vruntime', 'widgets-module', 'line-chart'], function (vRuntime, module)
             subtitle: '=?',
             xAxisLabel: '=?',
             yAxisLabel: '=?',
-            maxNumPoints: '=?'
+            maxNumPoints: '=?',
+            submitHandler: '=?'
         },
-        template: '<div class="time-series-chart" style="margin: 0;"></div>',
+        template: headerTemplate,
+
         vLink: function (scope, element, attrs) {
             var self = this;
             this._super(scope, element, attrs);
-
             this.logger = vRuntime.logger.create('pxTimeseries');
 
             scope.numPointsDisplayed = {};
@@ -29,20 +31,81 @@ define(['vruntime', 'widgets-module', 'line-chart'], function (vRuntime, module)
             scope.$watch('queries', function (newData, oldData) {
                 self.dataChanged.call(self, scope, newData, oldData);
             }, true);
+            // if user changes the text field, we need to change the Date in our model:
+            scope.$watch('rangeStartStr', function() {
+                scope.rangeStart = new Date(scope.rangeStartStr);
+            });
+            scope.$watch('rangeEndStr', function() {
+                scope.rangeEnd = new Date(scope.rangeEndStr);
+            });
 
+            scope.submitHandler = scope.submitHandler || function(){
+                if (self.isValidDate(scope.rangeStartStr, true) && self.isValidDate(scope.rangeEndStr, true)) {
+                    scope.chart.xAxis[0].setExtremes(scope.rangeStart.getTime(),scope.rangeEnd.getTime());
+                }
+            };
+
+            scope.setMonthsOfRange = function(months){
+                self._setMonthsOfRange(months, scope);
+            };
+            scope.setRangeToYTD = function(){
+                self._setRangeToYTD(scope);
+            };
+
+            scope.getRangeClasses = function(s){
+                var isValid = self.isValidDate(s);
+                return isValid ? '' : 'invalid-date';
+            };
 
         },
+        getDateStr: function(d){
+            function ensureTwoDigits(s){
+                s = '' + s;
+                while (s.length < 2) {s = '0' + s;}
+                return s;
+            }
+            if (!d || !d.getHours) { return 'invalid date'; }
+            return (ensureTwoDigits(d.getHours())) + ':' + ensureTwoDigits(d.getMinutes()) +
+                ' ' + (d.getMonth()+1) + '/' + (d.getDate()) + '/' + (d.getFullYear());
+        },
+
         buildConfig: function (scope) {
             var self = this;
+
+            scope.getRenderEl = scope.getRenderEl || function(){
+                return $(scope.vElement).find('.time-series-chart').get(0);
+            };
+
             var config = {
+
                 chart: {
-                    type: 'spline',
-                    renderTo: scope.vElement.get(0),
-                    zoomType: 'x'
+                    spacingLeft : 40,
+                    type: 'line',
+                    renderTo: scope.getRenderEl(),
+                    zoomType: 'x',
+                    events: {
+                        redraw: function () {
+                            var extremes = this.xAxis[0].getExtremes();
+                            scope.rangeStart = new Date(extremes.min);
+                            scope.rangeEnd   = new Date(extremes.max);
+                            scope.rangeStartStr = self.getDateStr(scope.rangeStart);
+                            scope.rangeEndStr = self.getDateStr(scope.rangeEnd);
+                        }
+                    }
+
+
                 },
                 plotOptions: {
                     series: {
                         marker: {}
+                    },
+                    line: {
+                        lineWidth: 1,
+                        states: {
+                            hover: {
+                                lineWidth: 1
+                            }
+                        }
                     }
                 },
                 rangeSelector: {
@@ -50,14 +113,16 @@ define(['vruntime', 'widgets-module', 'line-chart'], function (vRuntime, module)
                     inputEnabled: true,
                     inputDateFormat: '%H:%M %m/%d/%Y',
                     inputEditDateFormat: '%H:%M %m/%d/%Y',
-                    inputBoxWidth: 110
+                    inputBoxWidth: 110,
+                    inputPosition: { x : -300, y : 50 }
                 },
                 legend: {
-                    align: 'right',
+                    align: 'left',
                     enabled: true
                 },
                 title: {
-                    text: scope.title
+                    text: scope.title,
+                    enabled : false
                 },
                 subtitle: {
                     text: scope.subtitle
@@ -83,9 +148,11 @@ define(['vruntime', 'widgets-module', 'line-chart'], function (vRuntime, module)
                 },
                 yAxis: {
                     title: {
-                        text: scope.yAxisLabel
+                        text: scope.yAxisLabel,
+                        offset: 40
                     },
-                    labels: {}
+                    labels: { x : -20 },
+                    lineWidth : 0
                 },
                 series: []
             };
@@ -152,25 +219,17 @@ define(['vruntime', 'widgets-module', 'line-chart'], function (vRuntime, module)
         /*jshint unused:false */
         dataChanged: function (scope, newData, oldData) {
             scope.chart.hideLoading();
-
             if (!newData) {
                 //First time, angular gives us a empty string
                 this.showLoading(scope);
                 return;
             }
-
             var newSeries = this.dataTransform(newData);
-
             if (newSeries.length !== 0) {
-
                 var seriesId, chartSeries;
-
                 for (var index in newSeries) {
-
                     if (newSeries[index] && newSeries[index].name && newSeries[index].data) {
-
                         seriesId = newSeries[index].name;
-
                         if (seriesId !== null) {
                             chartSeries = scope.chart.get(seriesId);
                             if (chartSeries) {
@@ -194,6 +253,33 @@ define(['vruntime', 'widgets-module', 'line-chart'], function (vRuntime, module)
         },
         showLoading: function (scope) {
             scope.chart.showLoading('Loading data from server..');
+        },
+        _setMonthsOfRange: function (months, scope) {
+            var self = this;
+            scope.rangeEnd = scope.rangeEnd || new Date();
+            scope.rangeStart = new Date(scope.rangeEnd);
+            var month = scope.rangeEnd.getMonth() - months;
+            scope.rangeStart.setMonth(month);
+            scope.rangeStartStr = self.getDateStr(scope.rangeStart);
+            scope.submitHandler();
+        },
+        _setRangeToYTD: function(scope) {
+            var self = this;
+            scope.rangeEnd = new Date();
+            scope.rangeStart = new Date();
+            scope.rangeStart.setMonth(0);
+            scope.rangeStart.setDate(1);
+            scope.rangeStart.setHours(0);
+            scope.rangeStart.setMinutes(0);
+            scope.rangeStart.setSeconds(0);
+            scope.rangeStartStr = self.getDateStr(scope.rangeStart);
+            scope.rangeEndStr = self.getDateStr(scope.rangeEnd);
+            scope.submitHandler();
+        },
+        isValidDate: function(s, checkForNull){
+            if (!checkForNull && !s) { return true;}
+            var re = /^[012]?\d:[012345]\d\s+(0?[1-9]|1[012])\/(0?[1-9]|[1-2]\d|3[01])\/[12][90]\d\d$/;
+            return re.test(s);
         },
         vDestroy: function (scope) {
             this._super(scope);
