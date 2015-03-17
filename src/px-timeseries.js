@@ -211,25 +211,17 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
         /*jshint unused:false */
         dataChanged: function (scope, newData, oldData) {
             scope.chart.hideLoading();
-
             if (!newData) {
                 //First time, angular gives us a empty string
                 this.showLoading(scope);
                 return;
             }
-
             var newSeries = this.dataTransform(newData);
-
             if (newSeries.length !== 0) {
-
                 var seriesId, chartSeries;
-
                 for (var index in newSeries) {
-
                     if (newSeries[index] && newSeries[index].name && newSeries[index].data) {
-
                         seriesId = newSeries[index].name;
-
                         if (seriesId !== null) {
                             chartSeries = scope.chart.get(seriesId);
                             if (chartSeries) {

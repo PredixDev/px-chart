@@ -20,8 +20,8 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
 
         describe('getDateStr', function() {
             it('formats date correctly', function () {
-                var pxTimeseries = new PxTimeseries(),
-                    dateStr = pxTimeseries.getDateStr(new Date(1426074583355));
+                var pxTimeseries = new PxTimeseries();
+                var dateStr = pxTimeseries.getDateStr(new Date(1426074583355));
                 expect(dateStr).toBe('04:49 3/11/2015');
             });
 
@@ -32,25 +32,53 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
             });
         });
 
-        describe('isValidDate', function() {
+        describe('header template support functions', function() {
             var pxTimeseries;
             beforeEach(function() {
                 pxTimeseries = new PxTimeseries();
             });
-            it('returns true for valid date', function() {
+            it('isValidDate returns true for valid date', function() {
                 expect(pxTimeseries.isValidDate('3:30 3/3/2013')).toBe(true);
                 expect(pxTimeseries.isValidDate('3:30 3/3/2013', true)).toBe(true);
             });
-            it('returns true for undefined', function() {
+            it('isValidDate returns true for undefined', function() {
                 expect(pxTimeseries.isValidDate(undefined)).toBe(true);
             });
-            it('returns false for undefined if checkForNull arg is true', function() {
+            it('isValidDate returns false for undefined if checkForNull arg is true', function() {
                 expect(pxTimeseries.isValidDate(undefined, true)).toBe(false);
             });
-            it('returns false for invalid date', function() {
+            it('isValidDate returns false for invalid date', function() {
                 expect(pxTimeseries.isValidDate('asdf')).toBe(false);
                 expect(pxTimeseries.isValidDate('2:2 4/4/2013')).toBe(false);
                 expect(pxTimeseries.isValidDate('2:20 4/4/13')).toBe(false);
+            });
+            it('setMonthsOfRange correctly sets time range', function() {
+                var scope = {
+                    rangeEnd : new Date('2/1/2000'),
+                    submitHandler : function(){}
+                };
+                pxTimeseries._setMonthsOfRange(1,scope);
+                expect(scope.rangeStart.getTime()).toBe(new Date('1/1/2000').getTime());
+            });
+            it('_setRangeToYTD sets end time to current time', function() {
+                var scope = {
+                    submitHandler : function(){}
+                };
+                pxTimeseries._setRangeToYTD(scope);
+                expect(scope.rangeEnd.getTime()).toBe(new Date().getTime());
+            });
+            it('_setRangeToYTD sets start time to start of year', function() {
+                var scope = {
+                    submitHandler : function(){}
+                };
+                var fromTime = new Date();
+                fromTime.setMonth(0);
+                fromTime.setDate(1);
+                fromTime.setHours(0);
+                fromTime.setMinutes(0);
+                fromTime.setSeconds(0);
+                pxTimeseries._setRangeToYTD(scope);
+                expect(scope.rangeStart.getTime()).toBe(fromTime.getTime());
             });
         });
 
@@ -73,7 +101,6 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
             });
 
             describe('when initialized with only the required parameters and vLink is called', function () {
-
                 var fakeScope = {
                     title: 'This is my AWESOME title',
                     vElement: {
@@ -164,13 +191,11 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
                         pxTimeseries = new PxTimeseries();
                         config = pxTimeseries.buildConfig(fakeScope);
                         pxTimeseries.vLink(fakeScope);
-
                     });
 
                     it('setsMonthsOfRange sets month correctly, and calls submit handler', function() {
                         pxTimeseries._setMonthsOfRange(1, fakeScope);
                         expect(fakeScope.rangeStart.getMonth()).toEqual(fakeScope.rangeEnd.getMonth()-1);
-                        // console.log(JSON.stringify(fakeScope));
                         expect(fakeScope.submitHandler).toHaveBeenCalled();
                     });
 
