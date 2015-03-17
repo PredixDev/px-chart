@@ -18,6 +18,42 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
             expect(myDirective.html()).toContain('class=\"highcharts-container\"');
         });
 
+        describe('getDateStr', function() {
+            it('formats date correctly', function () {
+                var pxTimeseries = new PxTimeseries(),
+                    dateStr = pxTimeseries.getDateStr(new Date(1426074583355));
+                expect(dateStr).toBe('04:49 3/11/2015');
+            });
+
+            it('returns "invalid date" for undefined arg', function() {
+                var pxTimeseries = new PxTimeseries(),
+                    dateStr = pxTimeseries.getDateStr(undefined);
+                expect(dateStr).toBe('invalid date');
+            });
+        });
+
+        describe('isValidDate', function() {
+            var pxTimeseries;
+            beforeEach(function() {
+                pxTimeseries = new PxTimeseries();
+            });
+            it('returns true for valid date', function() {
+                expect(pxTimeseries.isValidDate('3:30 3/3/2013')).toBe(true);
+                expect(pxTimeseries.isValidDate('3:30 3/3/2013', true)).toBe(true);
+            });
+            it('returns true for undefined', function() {
+                expect(pxTimeseries.isValidDate(undefined)).toBe(true);
+            });
+            it('returns false for undefined if checkForNull arg is true', function() {
+                expect(pxTimeseries.isValidDate(undefined, true)).toBe(false);
+            });
+            it('returns false for invalid date', function() {
+                expect(pxTimeseries.isValidDate('asdf')).toBe(false);
+                expect(pxTimeseries.isValidDate('2:2 4/4/2013')).toBe(false);
+                expect(pxTimeseries.isValidDate('2:20 4/4/13')).toBe(false);
+            });
+        });
+
         describe('Using Highcharts spy', function () {
             beforeEach(function () {
                 spyOn(Highcharts, 'StockChart').andReturn({
@@ -54,12 +90,14 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
                     },
                     getRenderEl: function() {
                         return 'fakeRenderElement';
-                    }
+                    },
+                    submitHandler: function() {}
                 };
 
                 beforeEach(function () {
                     spyOn(fakeScope.vElement, 'get').andReturn('thethingfromget');
                     spyOn(fakeScope, '$emit');
+                    spyOn(fakeScope, 'submitHandler');
                 });
 
                 describe('the config object', function () {
@@ -117,6 +155,34 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
                     });
                     it('has an event handle for exteme changes', function() {
                         expect(typeof config.xAxis.events.afterSetExtremes === 'function').toBeTruthy();
+                    });
+                });
+
+                describe('sets functions for header: ', function() {
+                    var pxTimeseries, config;
+                    beforeEach(function() {
+                        pxTimeseries = new PxTimeseries();
+                        config = pxTimeseries.buildConfig(fakeScope);
+                        pxTimeseries.vLink(fakeScope);
+
+                    });
+
+                    it('setsMonthsOfRange sets month correctly, and calls submit handler', function() {
+                        pxTimeseries._setMonthsOfRange(1, fakeScope);
+                        expect(fakeScope.rangeStart.getMonth()).toEqual(fakeScope.rangeEnd.getMonth()-1);
+                        // console.log(JSON.stringify(fakeScope));
+                        expect(fakeScope.submitHandler).toHaveBeenCalled();
+                    });
+
+                    it('setRangeToYTD sets range correctly, and calls submit handler', function() {
+                        pxTimeseries._setRangeToYTD(fakeScope);
+                        var now = new Date();
+                        expect(fakeScope.rangeStart.getMonth()).toEqual(0);
+                        expect(fakeScope.rangeStart.getDate()).toEqual(1);
+                        expect(fakeScope.rangeEnd.getMonth()).toEqual(now.getMonth());
+                        expect(fakeScope.rangeEnd.getDate()).toEqual(now.getDate());
+                        expect(fakeScope.rangeEnd.getYear()).toEqual(now.getYear());
+                        expect(fakeScope.submitHandler).toHaveBeenCalled();
                     });
                 });
 
