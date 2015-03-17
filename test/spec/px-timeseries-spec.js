@@ -21,8 +21,12 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
         describe('getDateStr', function() {
             it('formats date correctly', function () {
                 var pxTimeseries = new PxTimeseries();
-                var dateStr = pxTimeseries.getDateStr(new Date(1426074583355));
-                expect(dateStr).toBe('04:49 3/11/2015');
+                var aTime = new Date('1/1/2000');
+                aTime.setHours(3);
+                aTime.setMinutes(33);
+                aTime.setSeconds(0);
+                var dateStr = pxTimeseries.getDateStr(aTime);
+                expect(dateStr).toBe('03:33 1/1/2000');
             });
 
             it('returns "invalid date" for undefined arg', function() {
