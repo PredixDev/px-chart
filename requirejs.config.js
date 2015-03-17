@@ -33,6 +33,7 @@ require.config({
 		highstock: '../bower_components/iids/dist/iidx/components/highcharts-amd/js/highstock.src',
 		jquery: '../bower_components/iids/dist/iidx/components/jquery/jquery.min',
 		'line-chart': '../bower_components/iids/dist/iidx/components/charts/js/charts/line',
+        underscore: '../bower_components/iids/dist/iidx/components/underscore-amd/index',
 		vruntime: '../bower_components/vruntime/dist/vruntime',
 		'widgets-module': 'src/widgets-module',
 		text: '../bower_components/requirejs-plugins/lib/text',

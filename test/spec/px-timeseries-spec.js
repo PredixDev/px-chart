@@ -560,6 +560,7 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
 
                 });
 
+
                 describe('when the series is updated with repeating series', function () {
 
                     var mySeries = [
@@ -590,11 +591,12 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
                     ];
 
                     beforeEach(function () {
+                        console.log('mySeries: ', mySeries);
                         scope.queries = mySeries;
                         scope.$apply();
                     });
 
-                    it('still calls addSeries with all the series (lets highcharts handles as it will)', function () {
+                    iit('still calls addSeries with all the series (lets highcharts handles as it will)', function () {
                         expect(scope.chart.addSeries.calls.length).toBe(3);
                         expect(scope.chart.addSeries.calls[0].args[0]).toEqual({
                             id: 'Tokyo',

@@ -45,6 +45,7 @@
 		"setFixtures": false,
 		"sandbox": false,
         "jasmine": false,
+        "iit": false,
 		/* Widgets */
 		"Highcharts": false
 	}
