@@ -34,17 +34,15 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
             // if user changes the text field, we need to change the Date in our model:
             scope.$watch('rangeStartStr', function() {
                 scope.rangeStart = new Date(scope.rangeStartStr);
-                // console.log('rangeStart is now: ' + scope.rangeStart);
             });
             scope.$watch('rangeEndStr', function() {
                 scope.rangeEnd = new Date(scope.rangeEndStr);
             });
 
             scope.submitHandler = scope.submitHandler || function(){
-                // if (self.isValidDate(scope.rangeStartStr, true) && self.isValidDate(scope.rangeEndStr, true)) {
-                //     scope.chart.xAxis[0].setExtremes(scope.rangeStart.getTime(),scope.rangeEnd.getTime());
-                // }
-                scope.chart.xAxis[0].setExtremes('foo',scope.rangeEnd.getTime());
+                if (self.isValidDate(scope.rangeStartStr, true) && self.isValidDate(scope.rangeEndStr, true)) {
+                    scope.chart.xAxis[0].setExtremes(scope.rangeStart.getTime(),scope.rangeEnd.getTime());
+                }
             };
 
             scope.setMonthsOfRange = function(months){
@@ -83,7 +81,7 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
                 chart: {
                     spacingLeft : 40,
                     type: 'line',
-                    renderTo: scope.getRenderEl(), //scope.vElement.get(0),
+                    renderTo: scope.getRenderEl(),
                     zoomType: 'x',
                     events: {
                         redraw: function () {
@@ -154,7 +152,7 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
                         offset: 40
                     },
                     labels: { x : -20 },
-                    lineWidth : 0 // TODO
+                    lineWidth : 0
                 },
                 series: []
             };
