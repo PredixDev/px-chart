@@ -41,9 +41,10 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
             });
 
             scope.submitHandler = scope.submitHandler || function(){
-                if (self.isValidDate(scope.rangeStartStr, true) && self.isValidDate(scope.rangeEndStr, true)) {
-                    scope.chart.xAxis[0].setExtremes(scope.rangeStart.getTime(),scope.rangeEnd.getTime());
-                }
+                // if (self.isValidDate(scope.rangeStartStr, true) && self.isValidDate(scope.rangeEndStr, true)) {
+                //     scope.chart.xAxis[0].setExtremes(scope.rangeStart.getTime(),scope.rangeEnd.getTime());
+                // }
+                scope.chart.xAxis[0].setExtremes('foo',scope.rangeEnd.getTime());
             };
 
             scope.setMonthsOfRange = function(months){
@@ -99,6 +100,14 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
                 plotOptions: {
                     series: {
                         marker: {}
+                    },
+                    line: {
+                        lineWidth: 1,
+                        states: {
+                            hover: {
+                                lineWidth: 1
+                            }
+                        }
                     }
                 },
                 rangeSelector: {
@@ -141,9 +150,10 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
                 },
                 yAxis: {
                     title: {
-                        text: scope.yAxisLabel
+                        text: scope.yAxisLabel,
+                        offset: 40
                     },
-                    labels: { x : -30 },
+                    labels: { x : -20 },
                     lineWidth : 0 // TODO
                 },
                 series: []
