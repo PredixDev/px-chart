@@ -71,8 +71,8 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
                         config = pxTimeseries.buildConfig(fakeScope);
                     });
 
-                    it('has chart type spline', function () {
-                        expect(config.chart.type).toBe('spline');
+                    it('has chart type line', function () {
+                        expect(config.chart.type).toBe('line');
                     });
 
                     it('has renderTo set correctly', function () {

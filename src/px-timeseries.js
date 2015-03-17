@@ -15,15 +15,16 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
             maxNumPoints: '=?'
         },
         template: headerTemplate,
+
         vLink: function (scope, element, attrs) {
             var self = this;
             this._super(scope, element, attrs);
-
+            self.isFirstLoad = true;  // hack so we don't validate the empty field and show an error for no reason.
             this.logger = vRuntime.logger.create('pxTimeseries');
 
             scope.numPointsDisplayed = {};
             scope.maxNumPoints = scope.maxNumPoints || 10;
-
+            
             var chartConfig = self.buildConfig(scope);
             scope.chart = new Highcharts.StockChart(chartConfig);
 
@@ -40,7 +41,7 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
                 scope.rangeStart = new Date(scope.rangeEnd);
                 var month = scope.rangeEnd.getMonth() - months;
                 scope.rangeStart.setMonth(month);
-                scope.rangeStartStr = scope.getDateStr(scope.rangeStart);
+                scope.rangeStartStr = self.getDateStr(scope.rangeStart);
                 scope.submitHandler();
             };
             scope.setRangeToYTD = function(){
@@ -51,12 +52,13 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
                 scope.rangeStart.setHours(0);
                 scope.rangeStart.setMinutes(0);
                 scope.rangeStart.setSeconds(0);
-                scope.rangeStartStr = scope.getDateStr(scope.rangeStart);
-                scope.rangeEndStr = scope.getDateStr(scope.rangeEnd);
+                scope.rangeStartStr = self.getDateStr(scope.rangeStart);
+                scope.rangeEndStr = self.getDateStr(scope.rangeEnd);
                 scope.submitHandler();
             };
 
             scope.isValidDate = function(s){
+                if (self.isFirstLoad) { return true; }
                 var re = /^[012]?\d:[012345]\d\s+(0?[1-9]|1[012])\/(0?[1-9]|[1-2]\d|3[01])\/[12][90]\d\d$/;
                 return re.test(s);
             };
@@ -64,26 +66,19 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
                 var isValid = scope.isValidDate(s);
                 return isValid ? '' : 'invalid-date';
             };
-            scope.getDateStr = function(d){
-                function ensureTwoDigits(s){
-                    s = '' + s;
-                    while (s.length < 2) {s = '0' + s;}
-                    return s;
-                }
-                if (!d || !d.getHours) { return 'bad date'; }
-                return (ensureTwoDigits(d.getHours())) + ':' + ensureTwoDigits(d.getMinutes()) +
-                    ' ' + (d.getMonth()+1) + '/' + (d.getDate()) + '/' + (d.getFullYear());
-            };
-            scope.rangeEnd = new Date();
-            scope.rangeEndStr = scope.getDateStr(scope.rangeEnd);
-            scope.setMonthsOfRange(3);
 
-            scope.rangeStart = new Date();
-            scope.rangeEnd = new Date();
-            scope.rangeStartStr = scope.getDateStr(scope.rangeStart);
-            scope.rangeEndStr = scope.getDateStr(scope.rangeEnd);
-            
         },
+        getDateStr: function(d){
+            function ensureTwoDigits(s){
+                s = '' + s;
+                while (s.length < 2) {s = '0' + s;}
+                return s;
+            }
+            if (!d || !d.getHours) { return 'bad date'; }
+            return (ensureTwoDigits(d.getHours())) + ':' + ensureTwoDigits(d.getMinutes()) +
+                ' ' + (d.getMonth()+1) + '/' + (d.getDate()) + '/' + (d.getFullYear());
+        },
+
         buildConfig: function (scope) {
             var self = this;
 
@@ -103,8 +98,8 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
                             var extremes = this.xAxis[0].getExtremes();
                             scope.rangeStart = new Date(extremes.min);
                             scope.rangeEnd   = new Date(extremes.max);
-                            scope.rangeStartStr = scope.getDateStr(scope.rangeStart);
-                            scope.rangeEndStr = scope.getDateStr(scope.rangeEnd);
+                            scope.rangeStartStr = self.getDateStr(scope.rangeStart);
+                            scope.rangeEndStr = self.getDateStr(scope.rangeEnd);
                         }
                     }
 
@@ -225,6 +220,7 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
         /*jshint unused:false */
         dataChanged: function (scope, newData, oldData) {
             scope.chart.hideLoading();
+            scope.firstLoad = false;
 
             if (!newData) {
                 //First time, angular gives us a empty string
