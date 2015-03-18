@@ -32,7 +32,7 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
             it('returns "invalid date" for undefined arg', function () {
                 var pxTimeseries = new PxTimeseries(),
                     dateStr = pxTimeseries.getDateStr(undefined);
-                expect(dateStr).toBe('invalid date');
+                expect(dateStr).toBe('');
             });
         });
 

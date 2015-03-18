@@ -19,8 +19,8 @@
     </div>
 
     <div class='time-series-chart-wrapper'>
-        <div class='loading-status'ng-show="errorLoading">Failed to load data.</div>
-        <div class="time-series-chart" style="margin: 0;"></div>
+        <div class='loading-status'ng-show="statusMessage">{{statusMessage}}</div>
+        <div class="time-series-chart" style="margin: 0;height: auto"></div>
     </div>
 
 <div>
