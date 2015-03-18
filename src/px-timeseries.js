@@ -13,7 +13,8 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
             xAxisLabel: '=?',
             yAxisLabel: '=?',
             maxNumPoints: '=?',
-            submitHandler: '=?'
+            submitHandler: '=?',
+            errorLoading: '=?'
         },
         template: headerTemplate,
 
@@ -38,6 +39,9 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
             scope.$watch('rangeEndStr', function() {
                 scope.rangeEnd = new Date(scope.rangeEndStr);
             });
+            // scope.$watch('errorLoading', function(){
+            //     console.log('errorLoading:'+scope.errorLoading);
+            // });
 
             scope.submitHandler = scope.submitHandler || function(){
                 if (self.isValidDate(scope.rangeStartStr, true) && self.isValidDate(scope.rangeEndStr, true)) {
