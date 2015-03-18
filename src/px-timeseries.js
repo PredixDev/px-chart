@@ -254,14 +254,12 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
             _.each(idsToRemove, function (idToRemove) {
                 scope.chart.get(idToRemove).remove();
             });
-console.log('befrejrosfd');
+
             // Add new series
             var self = this;
             _.each(idsToAdd, function (idToAdd) {
-                console.log(idsToAdd);
                 _.each(seriesToShow, function (series) {
                     if (series.name === idToAdd) {
-                        console.log('addSeries: ', series);
                         self.addSeries(scope, idToAdd, series.data);
                     }
                 });

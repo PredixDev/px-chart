@@ -214,7 +214,7 @@
                         "sample_size": 14368,
                         "results": [
                             seriesA,
-                            seriesA,
+                            seriesB,
                             seriesC,
                             seriesD
                         ]
@@ -223,15 +223,12 @@
 
                 $scope.timeSeries = {
                     // Required:
-                    title: 'Time Series Chart',
                     queries: timeSeriesData,
                     showYAxisUnits: true,
                     plotType: 'line',
                     // Optional:
                     xAxisLabel: 'Time',
-                    yAxisLabel: 'Pressure',
-                    maxNumPoints: 3,
-                    subtitle: 'Historical Pressure'
+                    yAxisLabel: 'Pressure'
                 };
 
                 $scope.isDisplayed = {
@@ -247,7 +244,7 @@
                         series = seriesC;
                     }
                     if(seriesString === 'Series B') {
-                        series = seriesA;
+                        series = seriesB;
                     }
                     if(seriesString === 'Series A') {
                         series = seriesA;

@@ -1,4 +1,4 @@
-define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, PxTimeseries) {
+define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (angular, mocks, PxTimeseries, _) {
     'use strict';
 
     describe('px-timeseries', function () {
@@ -18,58 +18,61 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
             expect(myDirective.html()).toContain('class=\"highcharts-container\"');
         });
 
-        describe('getDateStr', function() {
+        describe('getDateStr', function () {
             it('formats date correctly', function () {
                 var pxTimeseries = new PxTimeseries();
                 var dateStr = pxTimeseries.getDateStr(new Date(1426074583355));
                 expect(dateStr).toBe('04:49 3/11/2015');
             });
 
-            it('returns "invalid date" for undefined arg', function() {
+            it('returns "invalid date" for undefined arg', function () {
                 var pxTimeseries = new PxTimeseries(),
                     dateStr = pxTimeseries.getDateStr(undefined);
                 expect(dateStr).toBe('invalid date');
             });
         });
 
-        describe('header template support functions', function() {
+        describe('header template support functions', function () {
             var pxTimeseries;
-            beforeEach(function() {
+            beforeEach(function () {
                 pxTimeseries = new PxTimeseries();
             });
-            it('isValidDate returns true for valid date', function() {
+            it('isValidDate returns true for valid date', function () {
                 expect(pxTimeseries.isValidDate('3:30 3/3/2013')).toBe(true);
                 expect(pxTimeseries.isValidDate('3:30 3/3/2013', true)).toBe(true);
             });
-            it('isValidDate returns true for undefined', function() {
+            it('isValidDate returns true for undefined', function () {
                 expect(pxTimeseries.isValidDate(undefined)).toBe(true);
             });
-            it('isValidDate returns false for undefined if checkForNull arg is true', function() {
+            it('isValidDate returns false for undefined if checkForNull arg is true', function () {
                 expect(pxTimeseries.isValidDate(undefined, true)).toBe(false);
             });
-            it('isValidDate returns false for invalid date', function() {
+            it('isValidDate returns false for invalid date', function () {
                 expect(pxTimeseries.isValidDate('asdf')).toBe(false);
                 expect(pxTimeseries.isValidDate('2:2 4/4/2013')).toBe(false);
                 expect(pxTimeseries.isValidDate('2:20 4/4/13')).toBe(false);
             });
-            it('setMonthsOfRange correctly sets time range', function() {
+            it('setMonthsOfRange correctly sets time range', function () {
                 var scope = {
-                    rangeEnd : new Date('2/1/2000'),
-                    submitHandler : function(){}
+                    rangeEnd: new Date('2/1/2000'),
+                    submitHandler: function () {
+                    }
                 };
-                pxTimeseries._setMonthsOfRange(1,scope);
+                pxTimeseries._setMonthsOfRange(1, scope);
                 expect(scope.rangeStart.getTime()).toBe(new Date('1/1/2000').getTime());
             });
-            it('_setRangeToYTD sets end time to current time', function() {
+            it('_setRangeToYTD sets end time to current time', function () {
                 var scope = {
-                    submitHandler : function(){}
+                    submitHandler: function () {
+                    }
                 };
                 pxTimeseries._setRangeToYTD(scope);
                 expect(scope.rangeEnd.getTime()).toBe(new Date().getTime());
             });
-            it('_setRangeToYTD sets start time to start of year', function() {
+            it('_setRangeToYTD sets start time to start of year', function () {
                 var scope = {
-                    submitHandler : function(){}
+                    submitHandler: function () {
+                    }
                 };
                 var fromTime = new Date();
                 fromTime.setMonth(0);
@@ -83,9 +86,18 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
         });
 
         describe('Using Highcharts spy', function () {
+
+            var fakeSeries = {
+                setData: function () {
+                },
+                remove: function () {
+                }
+            };
+
             beforeEach(function () {
                 spyOn(Highcharts, 'StockChart').andReturn({
                     get: function () {
+                        return fakeSeries;
                     },
                     reflow: function () {
                     },
@@ -113,12 +125,13 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
                     },
                     $watch: function () {
                     },
-                    $emit: function() {
+                    $emit: function () {
                     },
-                    getRenderEl: function() {
+                    getRenderEl: function () {
                         return 'fakeRenderElement';
                     },
-                    submitHandler: function() {}
+                    submitHandler: function () {
+                    }
                 };
 
                 beforeEach(function () {
@@ -180,26 +193,26 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
                     it('has yaxis labels disabled', function () {
                         expect(config.yAxis.labels.enabled).toBe(false);
                     });
-                    it('has an event handle for exteme changes', function() {
+                    it('has an event handle for exteme changes', function () {
                         expect(typeof config.xAxis.events.afterSetExtremes === 'function').toBeTruthy();
                     });
                 });
 
-                describe('sets functions for header: ', function() {
+                describe('sets functions for header: ', function () {
                     var pxTimeseries, config;
-                    beforeEach(function() {
+                    beforeEach(function () {
                         pxTimeseries = new PxTimeseries();
                         config = pxTimeseries.buildConfig(fakeScope);
                         pxTimeseries.vLink(fakeScope);
                     });
 
-                    it('setsMonthsOfRange sets month correctly, and calls submit handler', function() {
+                    it('setsMonthsOfRange sets month correctly, and calls submit handler', function () {
                         pxTimeseries._setMonthsOfRange(1, fakeScope);
-                        expect(fakeScope.rangeStart.getMonth()).toEqual(fakeScope.rangeEnd.getMonth()-1);
+                        expect(fakeScope.rangeStart.getMonth()).toEqual(fakeScope.rangeEnd.getMonth() - 1);
                         expect(fakeScope.submitHandler).toHaveBeenCalled();
                     });
 
-                    it('setRangeToYTD sets range correctly, and calls submit handler', function() {
+                    it('setRangeToYTD sets range correctly, and calls submit handler', function () {
                         pxTimeseries._setRangeToYTD(fakeScope);
                         var now = new Date();
                         expect(fakeScope.rangeStart.getMonth()).toEqual(0);
@@ -230,8 +243,8 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
                     expect(fakeScope.chart.destroy).toHaveBeenCalled();
                 });
 
-                describe('when the x-axis changes', function() {
-                    it('fires px-dashboard-event', function() {
+                describe('when the x-axis changes', function () {
+                    it('fires px-dashboard-event', function () {
                         var pxTimeseries = new PxTimeseries();
                         var config = pxTimeseries.buildConfig(fakeScope);
                         config.xAxis.events.afterSetExtremes({});
@@ -558,62 +571,77 @@ define(['angular', 'angular-mocks', 'px-timeseries'], function (angular, mocks, 
                         expect(scope.chart.reflow).toHaveBeenCalled();
                     });
 
-                });
+                    describe('when it is updated again with different data', function () {
 
+                        var myUpdatedSeries = [
+                            {
+                                results: [
+                                    {
+                                        'name': 'Tokyo',
+                                        'values': [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+                                    }
+                                ]
+                            },
+                            {
+                                results: [
+                                    {
+                                        'name': 'London',
+                                        'values': [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+                                    }
+                                ]
+                            },
+                            {
+                                results: [
+                                    {
+                                        'name': 'San Ramon',
+                                        'values': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                                    }
+                                ]
+                            }
+                        ];
 
-                describe('when the series is updated with repeating series', function () {
+                        beforeEach(function () {
+                            scope.chart.addSeries.isSpy = false; // clear the spy to restart it
+                            spyOn(scope.chart, 'addSeries').andCallThrough();
+                            spyOn(scope.chart, 'get').andReturn(fakeSeries);
+                            spyOn(fakeSeries, 'remove');
+                            spyOn(fakeSeries, 'setData');
 
-                    var mySeries = [
-                        {
-                            results: [
-                                {
-                                    'name': 'Tokyo',
-                                    'values': [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-                                }
-                            ]
-                        },
-                        {
-                            results: [
-                                {
-                                    'name': 'New York',
-                                    'values': [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
-                                }
-                            ]
-                        },
-                        {
-                            results: [
-                                {
-                                    'name': 'Tokyo',
-                                    'values': [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
-                                }
-                            ]
-                        }
-                    ];
+                            scope.chart.series = _.chain(mySeries).pluck('results').flatten(true).value();
+                            scope.chart.series.push({name: 'Navigator'}); // add this because the real chart has this
+                            scope.queries = myUpdatedSeries;
+                            scope.$apply();
+                        });
 
-                    beforeEach(function () {
-                        console.log('mySeries: ', mySeries);
-                        scope.queries = mySeries;
-                        scope.$apply();
+                        it('adds San Ramon', function () {
+                            expect(scope.chart.addSeries.calls.length).toBe(1);
+                            expect(scope.chart.addSeries.calls[0].args[0]).toEqual({
+                                id: 'San Ramon',
+                                name: 'San Ramon',
+                                data: myUpdatedSeries[2].results[0].values
+                            });
+                        });
+
+                        it('updates London and Tokyo', function () {
+                            expect(scope.chart.get.calls[0].args[0]).toEqual('Tokyo');
+                            expect(scope.chart.get.calls[1].args[0]).toEqual('London');
+                            expect(fakeSeries.setData.calls.length).toBe(2);
+                            expect(fakeSeries.setData.calls[0].args[0]).toEqual(myUpdatedSeries[0].results[0].values);
+                            expect(fakeSeries.setData.calls[1].args[0]).toEqual(myUpdatedSeries[1].results[0].values);
+                        });
+
+                        it('deletes New York and Berlin', function () {
+                            expect(scope.chart.get.calls[2].args[0]).toEqual('New York');
+                            expect(scope.chart.get.calls[3].args[0]).toEqual('Berlin');
+                            expect(fakeSeries.remove.calls.length).toBe(2);
+                        });
+
+                        it('calls reflow', function () {
+                            expect(scope.chart.reflow).toHaveBeenCalled();
+                        });
+
                     });
 
-                    iit('still calls addSeries with all the series (lets highcharts handles as it will)', function () {
-                        expect(scope.chart.addSeries.calls.length).toBe(3);
-                        expect(scope.chart.addSeries.calls[0].args[0]).toEqual({
-                            id: 'Tokyo',
-                            name: 'Tokyo',
-                            data: mySeries[0].results[0].values
-                        });
-                        expect(scope.chart.addSeries.calls[1].args[0]).toEqual({
-                            id: 'New York',
-                            name: 'New York',
-                            data: mySeries[1].results[0].values
-                        });
-                        expect(scope.chart.addSeries.calls[2].args[0]).toEqual({
-                            id: 'Tokyo',
-                            name: 'Tokyo',
-                            data: mySeries[2].results[0].values
-                        });
-                    });
                 });
 
                 describe('when the series is updated with bad data', function () {
