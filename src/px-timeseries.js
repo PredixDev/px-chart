@@ -42,8 +42,10 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
 
             function hasRangeChanged(scope) {
                 var extremes = scope.chart.xAxis[0].getExtremes();
-                return self.isValidDate(scope.rangeStartStr, true) && self.isValidDate(scope.rangeEndStr, true) &&
-                        extremes.min !== scope.rangeStart.getTime() && extremes.max !== scope.rangeEnd.getTime();
+                if (self.isValidDate(scope.rangeStartStr, true) && self.isValidDate(scope.rangeEndStr, true)){
+                    return extremes.min !== scope.rangeStart.getTime() || extremes.max !== scope.rangeEnd.getTime();
+                }
+                return false;
             }
 
             scope.submitHandler = scope.submitHandler || function () {
