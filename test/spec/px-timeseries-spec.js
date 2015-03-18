@@ -18,6 +18,26 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
             expect(myDirective.html()).toContain('class=\"highcharts-container\"');
         });
 
+        describe('should setup error listener', function(){
+            var pxTimeseries;
+
+            beforeEach(function(){
+                pxTimeseries = new PxTimeseries();
+                spyOn(Highcharts, 'StockChart').andReturn({});
+                pxTimeseries.vLink(scope);
+            });
+
+            it('should listen to datasource-fetch-error event and show message', function(){
+                scope.$broadcast('px-dashboard-event', 'datasource-fetch-error', 'Failed to fetch data from datasource', '', {});
+                expect(scope.statusMessage).toBe('Failed to fetch data from datasource');
+            });
+
+            it('should not respond to other events', function(){
+                scope.$broadcast('px-dashboard-event', 'datasource-another-event', 'Failed to fetch data from datasource', '', {});
+                expect(scope.statusMessage).toBe(null);
+            });
+        });
+
         describe('getDateStr', function () {
             it('formats date correctly', function () {
                 var pxTimeseries = new PxTimeseries();
@@ -108,10 +128,6 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
                     addSeries: function () {
                     },
                     destroy: function () {
-                    },
-                    hideLoading: function () {
-                    },
-                    showLoading: function () {
                     }
                 });
             });
@@ -130,6 +146,9 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
                     $watch: function () {
                     },
                     $emit: function () {
+                    },
+                    $on: function () {
+
                     },
                     getRenderEl: function () {
                         return 'fakeRenderElement';
@@ -389,8 +408,6 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
                     spyOn(pxTimeseries, 'dataChanged').andCallThrough();
                     spyOn(scope.chart, 'reflow');
                     spyOn(scope.chart, 'addSeries').andCallThrough();
-                    spyOn(scope.chart, 'hideLoading').andCallThrough();
-                    spyOn(scope.chart, 'showLoading').andCallThrough();
                     spyOn(pxTimeseries.logger, 'warn').andCallThrough();
                     spyOn(pxTimeseries.logger, 'error').andCallThrough();
 
@@ -402,6 +419,7 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
                     it('calls dataChanged with an undefined series once', function () {
                         expect(pxTimeseries.dataChanged).toHaveBeenCalledWith(scope, undefined, undefined);
                         expect(pxTimeseries.dataChanged.calls.length).toBe(1);
+                        expect(scope.statusMessage).toBe('Loading data from server...');
                     });
 
                     it('does not call scope.chart methods', function () {
@@ -478,6 +496,7 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
                     it('calls dataChanged with the updated series from the $watch', function () {
                         expect(pxTimeseries.dataChanged.calls.length).toBe(2);
                         expect(pxTimeseries.dataChanged).toHaveBeenCalledWith(scope, mySeries, undefined);
+                        expect(scope.statusMessage).toBe(null);
                     });
 
                     it('adds each series', function () {
