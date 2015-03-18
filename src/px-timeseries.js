@@ -1,5 +1,4 @@
-
-define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-chart', 'css!./chart-header.css'], function (vRuntime, module, headerTemplate) {
+define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'underscore', 'line-chart', 'css!./chart-header.css'], function (vRuntime, module, headerTemplate, _) {
     'use strict';
 
     var TimeSeriesChart = vRuntime.widget.BaseDirective.extend({
@@ -33,57 +32,62 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
                 self.dataChanged.call(self, scope, newData, oldData);
             }, true);
             // if user changes the text field, we need to change the Date in our model:
-            scope.$watch('rangeStartStr', function() {
+            scope.$watch('rangeStartStr', function () {
                 scope.rangeStart = new Date(scope.rangeStartStr);
             });
-            scope.$watch('rangeEndStr', function() {
+            scope.$watch('rangeEndStr', function () {
                 scope.rangeEnd = new Date(scope.rangeEndStr);
             });
             // scope.$watch('errorLoading', function(){
             //     console.log('errorLoading:'+scope.errorLoading);
             // });
 
-            scope.submitHandler = scope.submitHandler || function(){
+            scope.submitHandler = scope.submitHandler || function () {
                 if (self.isValidDate(scope.rangeStartStr, true) && self.isValidDate(scope.rangeEndStr, true)) {
-                    scope.chart.xAxis[0].setExtremes(scope.rangeStart.getTime(),scope.rangeEnd.getTime());
+                    scope.chart.xAxis[0].setExtremes(scope.rangeStart.getTime(), scope.rangeEnd.getTime());
                 }
             };
 
-            scope.setMonthsOfRange = function(months){
+            scope.setMonthsOfRange = function (months) {
                 self._setMonthsOfRange(months, scope);
             };
-            scope.setRangeToYTD = function(){
+            scope.setRangeToYTD = function () {
                 self._setRangeToYTD(scope);
             };
 
-            scope.getRangeClasses = function(s){
+            scope.getRangeClasses = function (s) {
                 var isValid = self.isValidDate(s);
                 return isValid ? '' : 'invalid-date';
             };
 
         },
-        getDateStr: function(d){
-            function ensureTwoDigits(s){
+        getDateStr: function (d) {
+            function ensureTwoDigits(s) {
                 s = '' + s;
-                while (s.length < 2) {s = '0' + s;}
+                while (s.length < 2) {
+                    s = '0' + s;
+                }
                 return s;
             }
-            if (!d || !d.getHours) { return 'invalid date'; }
+
+            if (!d || !d.getHours) {
+                return 'invalid date';
+            }
             return (ensureTwoDigits(d.getHours())) + ':' + ensureTwoDigits(d.getMinutes()) +
-                ' ' + (d.getMonth()+1) + '/' + (d.getDate()) + '/' + (d.getFullYear());
+                ' ' + (d.getMonth() + 1) + '/' + (d.getDate()) + '/' + (d.getFullYear());
         },
 
         buildConfig: function (scope) {
             var self = this;
 
-            scope.getRenderEl = scope.getRenderEl || function(){
+            scope.getRenderEl = scope.getRenderEl || function () {
                 return $(scope.vElement).find('.time-series-chart').get(0);
             };
 
             var config = {
 
                 chart: {
-                    spacingLeft : 40,
+                    spacingLeft: 40,
                     type: 'line',
                     renderTo: scope.getRenderEl(),
                     zoomType: 'x',
@@ -91,7 +95,7 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
                         redraw: function () {
                             var extremes = this.xAxis[0].getExtremes();
                             scope.rangeStart = new Date(extremes.min);
-                            scope.rangeEnd   = new Date(extremes.max);
+                            scope.rangeEnd = new Date(extremes.max);
                             scope.rangeStartStr = self.getDateStr(scope.rangeStart);
                             scope.rangeEndStr = self.getDateStr(scope.rangeEnd);
                         }
@@ -118,7 +122,7 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
                     inputDateFormat: '%H:%M %m/%d/%Y',
                     inputEditDateFormat: '%H:%M %m/%d/%Y',
                     inputBoxWidth: 110,
-                    inputPosition: { x : -300, y : 50 }
+                    inputPosition: {x: -300, y: 50}
                 },
                 legend: {
                     align: 'left',
@@ -126,7 +130,7 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
                 },
                 title: {
                     text: scope.title,
-                    enabled : false
+                    enabled: false
                 },
                 subtitle: {
                     text: scope.subtitle
@@ -155,8 +159,8 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
                         text: scope.yAxisLabel,
                         offset: 40
                     },
-                    labels: { x : -20 },
-                    lineWidth : 0
+                    labels: {x: -20},
+                    lineWidth: 0
                 },
                 series: []
             };
@@ -223,36 +227,48 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
         /*jshint unused:false */
         dataChanged: function (scope, newData, oldData) {
             scope.chart.hideLoading();
+
             if (!newData) {
                 //First time, angular gives us a empty string
                 this.showLoading(scope);
                 return;
             }
-            var newSeries = this.dataTransform(newData);
-            if (newSeries.length !== 0) {
-                var seriesId, chartSeries;
-                for (var index in newSeries) {
-                    if (newSeries[index] && newSeries[index].name && newSeries[index].data) {
-                        seriesId = newSeries[index].name;
-                        if (seriesId !== null) {
-                            chartSeries = scope.chart.get(seriesId);
-                            if (chartSeries) {
-                                scope.chart.series[index].setData(newSeries[index].data);
-                            }
-                            else {
-                                this.addSeries(scope, seriesId, newSeries[index].data);
-                            }
-                        }
-                        else {
-                            this.logger.warn('seriesId is null');
-                        }
-                    }
-                    else {
-                        this.logger.warn('Series data is missing name or data property');
-                    }
-                }
 
-            }
+            var seriesToShow = this.dataTransform(newData);
+
+            var newIds = _.pluck(seriesToShow, 'name');
+            var currentIds = _.pluck(scope.chart.series, 'name');
+            newIds.push('Navigator'); // HACK: Need 'Navigator' series to exist in the newIds so we do not remove it.
+
+            // Get ids of series that we will be touching
+            var idsToUpdate = _.intersection(currentIds, newIds);
+            var idsToRemove = _.difference(currentIds, newIds);
+            var idsToAdd = _.difference(newIds, currentIds);
+
+            // Update series that already exist
+            _.each(idsToUpdate, function (idToUpdate) {
+                _.each(seriesToShow, function (series) {
+                    if (series.name === idToUpdate) {
+                        scope.chart.get(idToUpdate).setData(series.data);
+                    }
+                });
+            });
+
+            // Remove old ones
+            _.each(idsToRemove, function (idToRemove) {
+                scope.chart.get(idToRemove).remove();
+            });
+
+            // Add new series
+            var self = this;
+            _.each(idsToAdd, function (idToAdd) {
+                _.each(seriesToShow, function (series) {
+                    if (series.name === idToAdd) {
+                        self.addSeries(scope, idToAdd, series.data);
+                    }
+                });
+            });
+
             scope.chart.reflow();
         },
         showLoading: function (scope) {
@@ -267,7 +283,7 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
             scope.rangeStartStr = self.getDateStr(scope.rangeStart);
             scope.submitHandler();
         },
-        _setRangeToYTD: function(scope) {
+        _setRangeToYTD: function (scope) {
             var self = this;
             scope.rangeEnd = new Date();
             scope.rangeStart = new Date();
@@ -280,8 +296,10 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'line-cha
             scope.rangeEndStr = self.getDateStr(scope.rangeEnd);
             scope.submitHandler();
         },
-        isValidDate: function(s, checkForNull){
-            if (!checkForNull && !s) { return true;}
+        isValidDate: function (s, checkForNull) {
+            if (!checkForNull && !s) {
+                return true;
+            }
             var re = /^[012]?\d:[012345]\d\s+(0?[1-9]|1[012])\/(0?[1-9]|[1-2]\d|3[01])\/[12][90]\d\d$/;
             return re.test(s);
         },
