@@ -11,8 +11,7 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
             subtitle: '=?',
             xAxisLabel: '=?',
             yAxisLabel: '=?',
-            maxNumPoints: '=?',
-            hideHeader: '=?'
+            maxNumPoints: '=?'
         },
         template: headerTemplate,
 
