@@ -35,6 +35,7 @@
 		/* Jasmine */
 		"describe": false,
 		"xdescribe": false,
+		"ddescribe": false,
 		"it": false,
 		"xit": false,
 		"before": false,

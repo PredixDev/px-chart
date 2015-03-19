@@ -11,8 +11,7 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
             subtitle: '=?',
             xAxisLabel: '=?',
             yAxisLabel: '=?',
-            maxNumPoints: '=?',
-            submitHandler: '=?'
+            maxNumPoints: '=?'
         },
         template: headerTemplate,
 
@@ -40,8 +39,8 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
                 scope.rangeEnd = new Date(scope.rangeEndStr);
             });
 
-            scope.submitHandler = scope.submitHandler || function () {
-                if (self.isValidDate(scope.rangeStartStr, true) && self.isValidDate(scope.rangeEndStr, true)) {
+            scope.submitHandler = function () {
+                if (self.hasExtremeChanged(scope)) {
                     scope.chart.xAxis[0].setExtremes(scope.rangeStart.getTime(), scope.rangeEnd.getTime());
                 }
             };
@@ -65,6 +64,13 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
                 scope.statusMessage = errorMessage;
             });
         },
+        hasExtremeChanged: function (scope) {
+            var extremes = scope.chart.xAxis[0].getExtremes();
+            if (this.isValidDate(scope.rangeStartStr, true) && this.isValidDate(scope.rangeEndStr, true)){
+                return extremes.min !== scope.rangeStart.getTime() || extremes.max !== scope.rangeEnd.getTime();
+            }
+            return false;
+        },
         getDateStr: function (d) {
             function ensureTwoDigits(s) {
                 s = '' + s;
@@ -74,8 +80,8 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
                 return s;
             }
 
-            if (!d || !d.getHours) {
-                return 'invalid date';
+            if (!d || !d.getHours || isNaN(d.getTime())) {
+                return '';
             }
             return (ensureTwoDigits(d.getHours())) + ':' + ensureTwoDigits(d.getMinutes()) +
                 ' ' + (d.getMonth() + 1) + '/' + (d.getDate()) + '/' + (d.getFullYear());
@@ -89,8 +95,8 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
             };
 
             var config = {
-
                 chart: {
+                    height: 290,
                     spacingLeft: 40,
                     type: 'line',
                     renderTo: scope.getRenderEl(),
@@ -104,8 +110,6 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
                             scope.rangeEndStr = self.getDateStr(scope.rangeEnd);
                         }
                     }
-
-
                 },
                 plotOptions: {
                     series: {
