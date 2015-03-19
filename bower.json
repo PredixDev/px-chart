@@ -1,6 +1,6 @@
 {
   "name": "px-time-series",
-  "version": "14.3",
+  "version": "1.0.0",
   "authors": [
     "Predix Experience team"
   ],
@@ -9,7 +9,7 @@
     "src/main.js",
     "src/px-timeseries.js",
     "src/schema.json"
-  ],  
+  ],
   "moduleType": [
     "amd"
   ],
