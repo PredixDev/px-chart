@@ -241,7 +241,7 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
                         pxTimeseries._setMonthsOfRange(1, fakeScope);
                         expect(fakeScope.rangeStart.getMonth()).toEqual(fakeScope.rangeEnd.getMonth() - 1);
                         expect(fakeScope.submitHandler).toHaveBeenCalled();
-                        expect(fakeScope.chart.xAxis[0].setExtremes).toHaveBeenCalledWith(1424370420000,fakeScope.rangeEnd.getTime());
+                        expect(fakeScope.chart.xAxis[0].setExtremes).toHaveBeenCalledWith(fakeScope.rangeStart.getTime(),fakeScope.rangeEnd.getTime());
                     });
 
                     it('setRangeToYTD sets range correctly, and calls submit handler', function () {
