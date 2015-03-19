@@ -40,7 +40,9 @@
     "angular": "~1.3.12",
     "angular-resource": "~1.3.12",
     "angular-route": "~1.3.12",
-    "angular-ui-router": "~0.2.10"
+    "angular-ui-router": "~0.2.10",
+    "iids": "git://github.sw.ge.com/Predix-Experience/iidx#release/3.0",
+    "vruntime": "git://github.sw.ge.com/Predix-Experience/vclient#release/1.0"
   },
   "devDependencies": {
     "angular-mocks": "~1.3.12"
