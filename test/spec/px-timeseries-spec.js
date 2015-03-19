@@ -128,7 +128,10 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
                     addSeries: function () {
                     },
                     destroy: function () {
-                    }
+                    },
+                    xAxis: [{setExtremes: function(){}, getExtremes: function(){
+                        return {min:0, max:1};
+                    }}]
                 });
             });
 
@@ -221,7 +224,7 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
                     });
                 });
 
-                describe('sets functions for header: ', function () {
+                ddescribe('sets functions for header: ', function () {
                     var pxTimeseries, config;
                     beforeEach(function () {
                         pxTimeseries = new PxTimeseries();
