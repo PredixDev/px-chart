@@ -12,13 +12,14 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
             xAxisLabel: '=?',
             yAxisLabel: '=?',
             maxNumPoints: '=?',
-            submitHandler: '=?',
-            errorLoading: '=?'
+            submitHandler: '=?'
         },
         template: headerTemplate,
 
         vLink: function (scope, element, attrs) {
             var self = this;
+            scope.statusMessage = null;
+            this.loadingMessage =  'Loading data from server...';
             this._super(scope, element, attrs);
             this.logger = vRuntime.logger.create('pxTimeseries');
 
@@ -38,9 +39,6 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
             scope.$watch('rangeEndStr', function () {
                 scope.rangeEnd = new Date(scope.rangeEndStr);
             });
-            // scope.$watch('errorLoading', function(){
-            //     console.log('errorLoading:'+scope.errorLoading);
-            // });
 
             scope.submitHandler = scope.submitHandler || function () {
                 if (self.isValidDate(scope.rangeStartStr, true) && self.isValidDate(scope.rangeEndStr, true)) {
@@ -60,6 +58,12 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
                 return isValid ? '' : 'invalid-date';
             };
 
+            scope.$on('px-dashboard-event', function(event, name, errorMessage){
+                if ('datasource-fetch-error' !== name){
+                    return;
+                }
+                scope.statusMessage = errorMessage;
+            });
         },
         getDateStr: function (d) {
             function ensureTwoDigits(s) {
@@ -147,7 +151,7 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
                     events: {
                         afterSetExtremes: function (event) {
                             scope.$emit('px-dashboard-event', 'after-set-extremes', event);
-                            self.showLoading(scope);
+                            scope.statusMessage = self.loadingMessage;
                         }
                     }
                 },
@@ -226,13 +230,14 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
         },
         /*jshint unused:false */
         dataChanged: function (scope, newData, oldData) {
-            scope.chart.hideLoading();
-
+            
             if (!newData) {
                 //First time, angular gives us a empty string
-                this.showLoading(scope);
+                scope.statusMessage = this.loadingMessage;
                 return;
             }
+
+            scope.statusMessage = null;
 
             var seriesToShow = this.dataTransform(newData);
 
@@ -270,9 +275,6 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
             });
 
             scope.chart.reflow();
-        },
-        showLoading: function (scope) {
-            scope.chart.showLoading('Loading data from server..');
         },
         _setMonthsOfRange: function (months, scope) {
             var self = this;
