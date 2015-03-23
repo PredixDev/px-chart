@@ -18,7 +18,7 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
         vLink: function (scope, element, attrs) {
             var self = this;
             scope.statusMessage = null;
-            this.loadingMessage =  'Loading data from server...';
+            this.loadingMessage = 'Loading data from server...';
             this._super(scope, element, attrs);
             this.logger = vRuntime.logger.create('pxTimeseries');
 
@@ -31,20 +31,44 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
             scope.$watch('queries', function (newData, oldData) {
                 self.dataChanged.call(self, scope, newData, oldData);
             }, true);
-            // if user changes the text field, we need to change the Date in our model:
-            scope.$watch('rangeStartStr', function () {
-                scope.rangeStart = new Date(scope.rangeStartStr);
+
+            scope.$watch('rangeStart', function () {
+                scope.rangeStartStr = scope.getDateStr(scope.rangeStart);
             });
-            scope.$watch('rangeEndStr', function () {
-                scope.rangeEnd = new Date(scope.rangeEndStr);
+            scope.$watch('rangeEnd', function () {
+                scope.rangeEndStr = scope.getDateStr(scope.rangeEnd);
+            });
+
+            scope.$on('px-dashboard-event', function(event, name) {
+                if(name !== 'fetch-completed'){
+                    return;
+                }
+                scope.statusMessage = null;
             });
 
             scope.submitHandler = function () {
-                if (self.hasExtremeChanged(scope)) {
-                    scope.chart.xAxis[0].setExtremes(scope.rangeStart.getTime(), scope.rangeEnd.getTime());
+                if (self.isValidDate(scope.rangeStartStr, true) && self.isValidDate(scope.rangeEndStr, true)) {
+                    var startTime = new Date(scope.rangeStartStr).getTime();
+                    var endTime = new Date(scope.rangeEndStr).getTime();
+                    scope.setExtremesIfChanged(scope, startTime, endTime);
                 }
             };
 
+            scope.setExtremesIfChanged = function (scope, startTime, endTime) {
+                if (self.hasExtremeChanged(scope, startTime, endTime)) {
+                    scope.rangeStart = startTime;
+                    scope.rangeEnd = endTime;
+                    scope.chart.xAxis[0].setExtremes(scope.rangeStart, scope.rangeEnd);
+                }
+
+                // always set the visible strings back to a good value
+                scope.rangeStartStr = scope.getDateStr(scope.rangeStart);
+                scope.rangeEndStr = scope.getDateStr(scope.rangeEnd);
+            };
+
+            scope.getDateStr = function (time) {
+                return self._getDateStr(time);
+            };
             scope.setMonthsOfRange = function (months) {
                 self._setMonthsOfRange(months, scope);
             };
@@ -57,21 +81,18 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
                 return isValid ? '' : 'invalid-date';
             };
 
-            scope.$on('px-dashboard-event', function(event, name, errorMessage){
-                if ('datasource-fetch-error' !== name){
+            scope.$on('px-dashboard-event', function (event, name, errorMessage) {
+                if ('datasource-fetch-error' !== name) {
                     return;
                 }
                 scope.statusMessage = errorMessage;
             });
         },
-        hasExtremeChanged: function (scope) {
+        hasExtremeChanged: function (scope, rangeStart, rangeEnd) {
             var extremes = scope.chart.xAxis[0].getExtremes();
-            if (this.isValidDate(scope.rangeStartStr, true) && this.isValidDate(scope.rangeEndStr, true)){
-                return extremes.min !== scope.rangeStart.getTime() || extremes.max !== scope.rangeEnd.getTime();
-            }
-            return false;
+            return extremes.min !== rangeStart || extremes.max !== rangeEnd;
         },
-        getDateStr: function (d) {
+        _getDateStr: function (d) {
             function ensureTwoDigits(s) {
                 s = '' + s;
                 while (s.length < 2) {
@@ -80,11 +101,13 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
                 return s;
             }
 
-            if (!d || !d.getHours || isNaN(d.getTime())) {
+            var date = new Date(d);
+
+            if (!date || !date.getHours || isNaN(date.getTime())) {
                 return '';
             }
-            return (ensureTwoDigits(d.getHours())) + ':' + ensureTwoDigits(d.getMinutes()) +
-                ' ' + (d.getMonth() + 1) + '/' + (d.getDate()) + '/' + (d.getFullYear());
+            return (ensureTwoDigits(date.getHours())) + ':' + ensureTwoDigits(date.getMinutes()) +
+                ' ' + (date.getMonth() + 1) + '/' + (date.getDate()) + '/' + (date.getFullYear());
         },
 
         buildConfig: function (scope) {
@@ -104,10 +127,8 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
                     events: {
                         redraw: function () {
                             var extremes = this.xAxis[0].getExtremes();
-                            scope.rangeStart = new Date(extremes.min);
-                            scope.rangeEnd = new Date(extremes.max);
-                            scope.rangeStartStr = self.getDateStr(scope.rangeStart);
-                            scope.rangeEndStr = self.getDateStr(scope.rangeEnd);
+                            scope.rangeStart = extremes.min;
+                            scope.rangeEnd = extremes.max;
                         }
                     }
                 },
@@ -234,7 +255,7 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
         },
         /*jshint unused:false */
         dataChanged: function (scope, newData, oldData) {
-            
+
             if (!newData) {
                 //First time, angular gives us a empty string
                 scope.statusMessage = this.loadingMessage;
@@ -281,26 +302,28 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
             scope.chart.reflow();
         },
         _setMonthsOfRange: function (months, scope) {
-            var self = this;
-            scope.rangeEnd = scope.rangeEnd || new Date();
-            scope.rangeStart = new Date(scope.rangeEnd);
-            var month = scope.rangeEnd.getMonth() - months;
-            scope.rangeStart.setMonth(month);
-            scope.rangeStartStr = self.getDateStr(scope.rangeStart);
-            scope.submitHandler();
+            scope.rangeEnd = scope.rangeEnd || Date.now();
+
+            var temp = new Date(scope.rangeEnd);
+            var month = temp.getMonth() - months;
+            temp.setMonth(month);
+
+            scope.rangeStart = temp.getTime();
+
+            scope.setExtremesIfChanged(scope, scope.rangeStart, scope.rangeEnd);
         },
         _setRangeToYTD: function (scope) {
-            var self = this;
-            scope.rangeEnd = new Date();
-            scope.rangeStart = new Date();
-            scope.rangeStart.setMonth(0);
-            scope.rangeStart.setDate(1);
-            scope.rangeStart.setHours(0);
-            scope.rangeStart.setMinutes(0);
-            scope.rangeStart.setSeconds(0);
-            scope.rangeStartStr = self.getDateStr(scope.rangeStart);
-            scope.rangeEndStr = self.getDateStr(scope.rangeEnd);
-            scope.submitHandler();
+            scope.rangeEnd = Date.now();
+
+            var tempStartDate = new Date();
+            tempStartDate.setMonth(0);
+            tempStartDate.setDate(1);
+            tempStartDate.setHours(0);
+            tempStartDate.setMinutes(0);
+            tempStartDate.setSeconds(0);
+
+            scope.rangeStart = tempStartDate.getTime();
+            scope.setExtremesIfChanged(scope, scope.rangeStart, scope.rangeEnd);
         },
         isValidDate: function (s, checkForNull) {
             if (!checkForNull && !s) {
