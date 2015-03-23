@@ -18,21 +18,21 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
             expect(myDirective.html()).toContain('class=\"highcharts-container\"');
         });
 
-        describe('should setup error listener', function(){
+        describe('should setup error listener', function () {
             var pxTimeseries;
 
-            beforeEach(function(){
+            beforeEach(function () {
                 pxTimeseries = new PxTimeseries();
                 spyOn(Highcharts, 'StockChart').andReturn({});
                 pxTimeseries.vLink(scope);
             });
 
-            it('should listen to datasource-fetch-error event and show message', function(){
+            it('should listen to datasource-fetch-error event and show message', function () {
                 scope.$broadcast('px-dashboard-event', 'datasource-fetch-error', 'Failed to fetch data from datasource', '', {});
                 expect(scope.statusMessage).toBe('Failed to fetch data from datasource');
             });
 
-            it('should not respond to other events', function(){
+            it('should not respond to other events', function () {
                 scope.$broadcast('px-dashboard-event', 'datasource-another-event', 'Failed to fetch data from datasource', '', {});
                 expect(scope.statusMessage).toBe(null);
             });
@@ -45,13 +45,13 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
                 aTime.setHours(3);
                 aTime.setMinutes(33);
                 aTime.setSeconds(0);
-                var dateStr = pxTimeseries.getDateStr(aTime);
+                var dateStr = pxTimeseries._getDateStr(aTime);
                 expect(dateStr).toBe('03:33 1/1/2000');
             });
 
             it('returns "invalid date" for undefined arg', function () {
                 var pxTimeseries = new PxTimeseries(),
-                    dateStr = pxTimeseries.getDateStr(undefined);
+                    dateStr = pxTimeseries._getDateStr(undefined);
                 expect(dateStr).toBe('');
             });
         });
@@ -78,24 +78,31 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
             });
             it('setMonthsOfRange correctly sets time range', function () {
                 var scope = {
-                    rangeEnd: new Date('2/1/2000'),
+                    rangeEnd: new Date('2/1/2000').getTime(),
                     submitHandler: function () {
+                    },
+                    setExtremesIfChanged: function () {
+
                     }
                 };
                 pxTimeseries._setMonthsOfRange(1, scope);
-                expect(scope.rangeStart.getTime()).toBe(new Date('1/1/2000').getTime());
+                expect(scope.rangeStart).toBe(new Date('1/1/2000').getTime());
             });
             it('_setRangeToYTD sets end time to current time', function () {
                 var scope = {
                     submitHandler: function () {
+                    },
+                    setExtremesIfChanged: function () {
                     }
                 };
                 pxTimeseries._setRangeToYTD(scope);
-                expect(scope.rangeEnd.getTime()).toBe(new Date().getTime());
+                expect(Math.abs(scope.rangeEnd - new Date().getTime()) < 2).toBeTruthy();
             });
             it('_setRangeToYTD sets start time to start of year', function () {
                 var scope = {
                     submitHandler: function () {
+                    },
+                    setExtremesIfChanged: function () {
                     }
                 };
                 var fromTime = new Date();
@@ -105,7 +112,7 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
                 fromTime.setMinutes(0);
                 fromTime.setSeconds(0);
                 pxTimeseries._setRangeToYTD(scope);
-                expect(scope.rangeStart.getTime()).toBe(fromTime.getTime());
+                expect(Math.abs(scope.rangeStart - fromTime.getTime()) < 2).toBeTruthy();
             });
         });
 
@@ -129,9 +136,13 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
                     },
                     destroy: function () {
                     },
-                    xAxis: [{setExtremes: function(){}, getExtremes: function(){
-                        return {min:0, max:1};
-                    }}]
+                    xAxis: [{
+                        setExtremes: function () {
+                        },
+                        getExtremes: function () {
+                            return {min: 0, max: 1};
+                        }
+                    }]
                 });
             });
 
@@ -156,7 +167,7 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
                     getRenderEl: function () {
                         return 'fakeRenderElement';
                     },
-                    submitHandler: function () {
+                    setExtremesIfChanged: function () {
                     }
                 };
 
@@ -223,36 +234,43 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
                     });
                 });
 
-                describe('if the 3m, 1y, etc. buttons are clicked (a different selection than currently) ', function () {
+                describe('if the 3m, 1y, etc. buttons are clicked (a different selection than currently)', function () {
                     var pxTimeseries, config;
                     beforeEach(function () {
                         pxTimeseries = new PxTimeseries();
                         config = pxTimeseries.buildConfig(fakeScope);
                         pxTimeseries.vLink(fakeScope);
-                        spyOn(fakeScope, 'submitHandler').andCallThrough();
-                        spyOn(fakeScope.chart.xAxis[0],'setExtremes');
+                        spyOn(fakeScope, 'setExtremesIfChanged').andCallThrough();
+                        spyOn(fakeScope.chart.xAxis[0], 'setExtremes');
+                        spyOn(fakeScope.chart.xAxis[0], 'getExtremes').andReturn({
+                            min: 12,
+                            max: 234
+                        });
                     });
 
                     it('setsMonthsOfRange sets month correctly, and calls submit handler and set new extremes', function () {
                         fakeScope.rangeStartStr = '10:27 12/19/2014';
                         fakeScope.rangeEndStr = '10:27 3/19/2015';
-                        fakeScope.rangeStart = new Date(1419013620000);
-                        fakeScope.rangeEnd = new Date(1426786020000);
+                        fakeScope.rangeStart = 1419013620000;
+                        fakeScope.rangeEnd = 1426786020000;
                         pxTimeseries._setMonthsOfRange(1, fakeScope);
-                        expect(fakeScope.rangeStart.getMonth()).toEqual(fakeScope.rangeEnd.getMonth() - 1);
-                        expect(fakeScope.submitHandler).toHaveBeenCalled();
-                        expect(fakeScope.chart.xAxis[0].setExtremes).toHaveBeenCalledWith(fakeScope.rangeStart.getTime(),fakeScope.rangeEnd.getTime());
+                        expect(new Date(fakeScope.rangeStart).getMonth()).toEqual(new Date(fakeScope.rangeEnd).getMonth() - 1);
+                        expect(fakeScope.setExtremesIfChanged).toHaveBeenCalled();
+                        expect(fakeScope.chart.xAxis[0].setExtremes).toHaveBeenCalledWith(fakeScope.rangeStart, fakeScope.rangeEnd);
                     });
 
                     it('setRangeToYTD sets range correctly, and calls submit handler', function () {
                         pxTimeseries._setRangeToYTD(fakeScope);
                         var now = new Date();
-                        expect(fakeScope.rangeStart.getMonth()).toEqual(0);
-                        expect(fakeScope.rangeStart.getDate()).toEqual(1);
-                        expect(fakeScope.rangeEnd.getMonth()).toEqual(now.getMonth());
-                        expect(fakeScope.rangeEnd.getDate()).toEqual(now.getDate());
-                        expect(fakeScope.rangeEnd.getYear()).toEqual(now.getYear());
-                        expect(fakeScope.submitHandler).toHaveBeenCalled();
+                        var startDate = new Date(fakeScope.rangeStart);
+                        var endDate = new Date(fakeScope.rangeEnd);
+
+                        expect(startDate.getMonth()).toEqual(0);
+                        expect(startDate.getDate()).toEqual(1);
+                        expect(endDate.getMonth()).toEqual(now.getMonth());
+                        expect(endDate.getDate()).toEqual(now.getDate());
+                        expect(endDate.getYear()).toEqual(now.getYear());
+                        expect(fakeScope.setExtremesIfChanged).toHaveBeenCalled();
                         expect(fakeScope.chart.xAxis[0].setExtremes).toHaveBeenCalled();
                     });
                 });
@@ -267,30 +285,43 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
                     });
 
                     it('if xAxis extreme has not changed, hasExtremeChanged should return false', function () {
-                        spyOn(fakeScope.chart.xAxis[0], 'getExtremes').andReturn({min: 1419013620000, max: 1426786020000});
+                        spyOn(fakeScope.chart.xAxis[0], 'getExtremes').andReturn({
+                            min: 1419013620000,
+                            max: 1426786020000
+                        });
                         fakeScope.rangeStartStr = '10:27 12/19/2014';
                         fakeScope.rangeEndStr = '10:27 3/19/2015';
-                        fakeScope.rangeStart = new Date(1419013620000);
-                        fakeScope.rangeEnd = new Date(1426786020000);
-                        expect(pxTimeseries.hasExtremeChanged(fakeScope)).toBe(false);
+                        fakeScope.rangeStart = 1419013620000;
+                        fakeScope.rangeEnd = 1426786020000;
+                        expect(pxTimeseries.hasExtremeChanged(fakeScope, fakeScope.rangeStart, fakeScope.rangeEnd)).toBe(false);
                     });
 
                     it('if xAxis extreme has changed, hasExtremeChanged should return true', function () {
-                        spyOn(fakeScope.chart.xAxis[0], 'getExtremes').andReturn({min: 1424370473253, max: 1426786073253});
+                        spyOn(fakeScope.chart.xAxis[0], 'getExtremes').andReturn({
+                            min: 1424370473253,
+                            max: 1426786073253
+                        });
                         fakeScope.rangeStartStr = '10:27 12/19/2014';
                         fakeScope.rangeEndStr = '10:27 3/19/2014';
-                        fakeScope.rangeStart = new Date(1424370473253);
-                        fakeScope.rangeEnd = new Date(1426786073250);
-                        expect(pxTimeseries.hasExtremeChanged(fakeScope)).toBe(true);
+                        fakeScope.rangeStart = 1424370473253;
+                        fakeScope.rangeEnd = 1426786073250;
+                        expect(pxTimeseries.hasExtremeChanged(fakeScope, fakeScope.rangeStart, fakeScope.rangeEnd)).toBe(true);
+                    });
+                });
+
+                describe('when the user hits submit', function() {
+                    var pxTimeseries, config;
+                    beforeEach(function () {
+                        pxTimeseries = new PxTimeseries();
+                        config = pxTimeseries.buildConfig(fakeScope);
+                        pxTimeseries.vLink(fakeScope);
+                        spyOn(fakeScope.chart.xAxis[0], 'setExtremes');
                     });
 
-                    it('if the user does not type in a valid start/end string, hasExtremeChanged should return false', function () {
-                        spyOn(fakeScope.chart.xAxis[0], 'getExtremes').andReturn({min: 1424370473253, max: 1426786073253});
+                    it('if the user does not type in a valid start/end string, setExtremes is not called', function () {
                         fakeScope.rangeStartStr = '1asdf0:27 12/19/2014';
                         fakeScope.rangeEndStr = '10:27 3/sdfsdf19/2014';
-                        fakeScope.rangeStart = new Date(1424370473253);
-                        fakeScope.rangeEnd = new Date(1426786073250);
-                        expect(pxTimeseries.hasExtremeChanged(fakeScope)).toBe(false);
+                        expect(fakeScope.chart.xAxis[0].setExtremes).not.toHaveBeenCalled();
                     });
                 });
 
