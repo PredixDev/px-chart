@@ -13,7 +13,7 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
         }));
 
         it('is compiled correctly', function () {
-            var myDirective = $compile('<px-timeseries data-title=\'ok\' data-series=\'\'></px-timeseries>')(scope);
+            var myDirective = $compile('<px-timeseries data-series=\'\'></px-timeseries>')(scope);
             $rootScope.$apply();
             expect(myDirective.html()).toContain('class=\"highcharts-container\"');
         });
@@ -148,7 +148,6 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
 
             describe('when initialized with only the required parameters and vLink is called', function () {
                 var fakeScope = {
-                    title: 'This is my AWESOME title',
                     vElement: {
                         remove: function () {
                         },
@@ -191,14 +190,6 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
 
                     it('has renderTo set correctly', function () {
                         expect(config.chart.renderTo).toBe('fakeRenderElement');
-                    });
-
-                    it('has title set to scope.title', function () {
-                        expect(config.title.text).toBe('This is my AWESOME title');
-                    });
-
-                    it('has subtitle set to undefined', function () {
-                        expect(config.subtitle.text).toBe(undefined);
                     });
 
                     it('has xAxis type as datetime', function () {
@@ -361,12 +352,9 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
                     var config;
                     beforeEach(function () {
                         var fakeScope = {
-                            title: 'Yay titles!',
-                            subtitle: 'my subtitle',
                             xAxisLabel: 'xxx',
                             yAxisLabel: 'yyy',
                             showYAxisUnits: false,
-                            plotType: 'points',
                             vElement: {
                                 get: function () {
                                 }
@@ -376,14 +364,6 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
                         spyOn(fakeScope.vElement, 'get').andReturn('thethingfromget');
                         var pxTimeseries = new PxTimeseries();
                         config = pxTimeseries.buildConfig(fakeScope);
-                    });
-
-                    it('has title set to scope.title', function () {
-                        expect(config.title.text).toBe('Yay titles!');
-                    });
-
-                    it('has subtitle set to undefined', function () {
-                        expect(config.subtitle.text).toBe('my subtitle');
                     });
 
                     it('has xAxis title to xxx', function () {
@@ -398,11 +378,6 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
                         expect(config.series).toEqual([]);
                     });
 
-                    it('changes the config to show points', function () {
-                        expect(config.plotOptions.series.marker.enabled).toBe(true);
-                        expect(config.plotOptions.series.lineWidth).toEqual(0);
-                    });
-
                     it('has yaxis labels disabled', function () {
                         expect(config.yAxis.labels.enabled).toBe(false);
                     });
@@ -413,8 +388,6 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
                     var config;
                     beforeEach(function () {
                         var fakeScope = {
-                            title: 'Yay titles!',
-                            subtitle: 'my subtitle',
                             xAxisLabel: 'xxx',
                             yAxisLabel: 'yyy',
                             showYAxisUnits: true,
@@ -456,10 +429,6 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
 
                 describe('the config object', function () {
 
-                    it('has title set to undefined', function () {
-                        expect(config.title.text).toBe(undefined);
-                    });
-
                     it('has series to empty array', function () {
                         expect(config.series).toEqual([]);
                     });
@@ -472,7 +441,6 @@ define(['angular', 'angular-mocks', 'px-timeseries', 'underscore'], function (an
 
                 beforeEach(function () {
 
-                    scope.title = 'This is my AWESOME title';
                     scope.vElement = {
                         get: function () {
                         }
