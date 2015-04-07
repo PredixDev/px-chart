@@ -1,4 +1,4 @@
-[![Build Status](http://alpha.menlo-ci.sw.ge.com:11112/job/px-timeseries/badge/icon)](http://alpha.menlo-ci.sw.ge.com:11112/job/px-timeseries/)
+[![Build Status](http://sjc1jenkins01.crd.ge.com:8080/buildStatus/icon?job=Predix-Experience/px-timeseries)](http://sjc1jenkins01.crd.ge.com:8080/job/Predix-Experience/job/px-timeseries/)
 
 px-time-series
 ==============
