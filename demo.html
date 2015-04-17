@@ -8,7 +8,7 @@
   <script src="../webcomponentsjs/webcomponents.js"></script>
 
   <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
-  <link rel="import" href="px-time-series.html"/>
+  <link rel="import" href="px-timeseries.html"/>
 </head>
 
 <body>
@@ -25,11 +25,11 @@
   </p>
 
   <p>
-    Click on the counter to make it increment:
+    Checkout the Graph below, You will <span style="color:red">&hearts;</span> it
   </p>
 
   <!-- instance 1, "predix" theme -->
-  <px-time-series queries='
+  <px-timeseries queries='
     [{
                 "sample_size": 14368,
                 "results": [
@@ -50,6 +50,6 @@
                       ]
                   }
                 ]
-            }]'></px-time-series>
+            }]'></px-timeseries>
 </body>
 </html>
