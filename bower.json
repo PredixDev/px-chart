@@ -1,0 +1,29 @@
+{
+  "name": "px-time-series",
+  "version": "0.0.1",
+  "main": [
+    "px-time-series.html"
+  ],
+  "ignore": [
+    ".*",
+    "npm-debug.log",
+    "Gruntfile.js",
+    "sass",
+    "bower_components",
+    "node_modules",
+    "test"
+  ],
+  "dependencies": {
+    "polymer": "~v0.8.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#~v0.6.1",
+    "highstock-release": "~2.1.5",
+    "underscore": "~1.8.3"
+  },
+  "devDependencies": {
+    "core-doc-viewer": "https://github.com/Polymer/core-doc-viewer.git#0.8-preview",
+    "px-starter-kit-design": "git://github.sw.ge.com/PXd/px-starter-kit-design.git#master"
+  },
+  "resolutions": {
+    "polymer": "~v0.8.0"
+  }
+}
