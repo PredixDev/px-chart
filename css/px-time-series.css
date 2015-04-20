@@ -39,16 +39,3 @@
   margin-top:10px;
   white-space: nowrap;
 }
-.loading-status{
-  position:absolute;
-  width:50%;
-  margin-left:25%;
-  margin-top:10%;
-  height:80px;
-  background-color:white;
-  padding:25px;
-  border:1px solid gray;
-  border-radius:7px;
-  text-align: center;
-  z-index:1000;
-}

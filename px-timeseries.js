@@ -1,18 +1,12 @@
-
-var HighChart = {
-
+Polymer({
 
     is: 'px-timeseries',
 
     ready: function() {
-        this.statusMessage = null;
-        this.loadingMessage = 'Loading data from server...';
-
         var chartConfig = this.buildConfig();
         this.chart = new Highcharts.StockChart(chartConfig);
 
         this.doSomething([], this.queries);
-
     },
 
     buildConfig: function() {
@@ -80,7 +74,6 @@ var HighChart = {
                 events: {
                     afterSetExtremes: function(event) {
                         self.fire('after-set-extremes', event);
-                        self.statusMessage = self.loadingMessage;
                     }
                 }
             },
@@ -115,7 +108,6 @@ var HighChart = {
     queriesChanged: function(oldData, newData) {
         this.doSomething(oldData, newData);
     },
-
     /**
      * Properties block, expose attribute values to the DOM via 'reflect'
      *
@@ -129,12 +121,8 @@ var HighChart = {
     },
     doSomething: function(oldData, newData) {
         if (!newData) {
-            //First time, angular gives us a empty string
-            this.statusMessage = this.loadingMessage;
             return;
         }
-
-        this.statusMessage = null;
 
         var seriesToShow = this.dataTransform(newData);
 
@@ -215,7 +203,88 @@ var HighChart = {
         }
 
         return highchartSeries;
-    }
-};
+    },
+    hasExtremeChanged: function (rangeStart, rangeEnd) {
+        var extremes = this.chart.xAxis[0].getExtremes();
+        return extremes.min !== rangeStart || extremes.max !== rangeEnd;
+    },
+    getDateStr: function (d) {
+        function ensureTwoDigits(s) {
+            s = '' + s;
+            while (s.length < 2) {
+                s = '0' + s;
+            }
+            return s;
+        }
 
-Polymer(HighChart);
+        var date = new Date(d);
+
+        if (!date || !date.getHours || isNaN(date.getTime())) {
+            return '';
+        }
+        return (ensureTwoDigits(date.getHours())) + ':' + ensureTwoDigits(date.getMinutes()) +
+            ' ' + (date.getMonth() + 1) + '/' + (date.getDate()) + '/' + (date.getFullYear());
+    },
+    setMonthsOfRange: function (event, detail, sender) {
+        var months = parseInt(event.target.getAttribute('data-month'));
+
+        this.rangeEnd = this.rangeEnd || Date.now();
+
+        var temp = new Date(this.rangeEnd);
+        var month = temp.getMonth() - months;
+        temp.setMonth(month);
+
+        this.rangeStart = temp.getTime();
+
+        this.setExtremesIfChanged(this.rangeStart, this.rangeEnd);
+    },
+    setRangeToYTD: function () {
+        this.rangeEnd = Date.now();
+
+        var tempStartDate = new Date();
+        tempStartDate.setMonth(0);
+        tempStartDate.setDate(1);
+        tempStartDate.setHours(0);
+        tempStartDate.setMinutes(0);
+        tempStartDate.setSeconds(0);
+
+        this.rangeStart = tempStartDate.getTime();
+        this.setExtremesIfChanged(this.rangeStart, this.rangeEnd);
+    },
+    submitHandler: function () {
+        if (this.isValidDate(this.rangeStartStr, true) && this.isValidDate(this.rangeEndStr, true)) {
+            var startTime = new Date(this.rangeStartStr).getTime();
+            var endTime = new Date(this.rangeEndStr).getTime();
+            this.setExtremesIfChanged(startTime, endTime);
+        }
+    },
+    setExtremesIfChanged: function (startTime, endTime) {
+        if (this.hasExtremeChanged(startTime, endTime)) {
+            this.rangeStart = startTime;
+            this.rangeEnd = endTime;
+            this.chart.xAxis[0].setExtremes(this.rangeStart, this.rangeEnd);
+        }
+
+        // always set the visible strings back to a good value
+        this.rangeStartStr = this.getDateStr(this.rangeStart);
+        this.rangeEndStr = this.getDateStr(this.rangeEnd);
+    },
+    getRangeClasses: function (s) {
+        var isValid = this.isValidDate(s);
+        return isValid ? '' : 'invalid-date';
+    },
+    isValidDate: function (s, checkForNull) {
+        if (!checkForNull && !s) {
+            return true;
+        }
+        var re = /^[012]?\d:[012345]\d\s+(0?[1-9]|1[012])\/(0?[1-9]|[1-2]\d|3[01])\/[12][90]\d\d$/;
+        return re.test(s);
+    }//,
+//            vDestroy: function () {
+//                if (this.chart) {
+//                    this.chart.destroy();
+//                }
+////                this.vElement.remove();
+//            }
+
+});
