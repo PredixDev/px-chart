@@ -1,6 +1,19 @@
 Polymer({
 
     is: 'px-timeseries',
+    /**
+     * Properties block, expose attribute values to the DOM via 'reflect'
+     *
+     * @property properties
+     * @type Object
+     */
+    properties: {
+        queries: {
+            type: Array,
+            notify: true,
+            observer: 'queriesChanged'
+        }
+    },
 
     ready: function() {
         var chartConfig = this.buildConfig();
@@ -106,20 +119,10 @@ Polymer({
 
         return config;
     },
-    queriesChanged: function(oldData, newData) {
+   queriesChanged: function(newData, oldData) {
         this.doSomething(oldData, newData);
     },
-    /**
-     * Properties block, expose attribute values to the DOM via 'reflect'
-     *
-     * @property properties
-     * @type Object
-     */
-    properties: {
-        queries: {
-            type: Array
-        }
-    },
+
     doSomething: function(oldData, newData) {
         if (!newData) {
             return;
