@@ -45,6 +45,7 @@ Polymer({
                 }
             },
             rangeSelector: {
+                enabled:false,
                 inputEnabled: true,
                 inputDateFormat: '%H:%M %m/%d/%Y',
                 inputEditDateFormat: '%H:%M %m/%d/%Y',

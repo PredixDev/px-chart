@@ -1,8 +1,8 @@
 {
-  "name": "px-time-series",
+  "name": "px-timeseries",
   "version": "0.0.1",
   "main": [
-    "px-time-series.html"
+    "px-timeseries.html"
   ],
   "ignore": [
     ".*",
