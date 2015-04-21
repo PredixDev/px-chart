@@ -25,16 +25,14 @@ Element providing solution to no problem in particular. As a simple, increments 
     <link rel="import" type="css" href="css/px-time-series.css"/>
     <template>
         <div>
-            <h1>{{rangeStart}}</h1><h3>{{rangeStartStr}}</h3>
-            <h1>{{rangeEnd}}</h1><h3>{{rangeEndStr}}</h3>
             <div class="time-series-header-panel">
                 <div class='time-series-header-row-1'>
                     <span>From</span>
-                    <input value="{{rangeStartStr::change}}"
-                           class='btn margin-left-5 margin-right-5' style='width:140px;' placeholder="HH:MM MM/DD/YYYY"></input>
+                    <input value="{{rangeStartStr::change}}" class="btn"  class$='[[getRangeClasses(rangeStartStr)]]'
+                           placeholder="HH:MM MM/DD/YYYY"></input>
                     <span class='margin-left-5'>To</span>
-                    <input value="{{rangeEndStr::change}}" class='btn margin-left-5'
-                           style='width:140px;' placeholder="HH:MM MM/DD/YYYY"></input>
+                    <input value="{{rangeEndStr::change}}" class="btn" class$="[[getRangeClasses(rangeEndStr)]]"
+                           placeholder="HH:MM MM/DD/YYYY"></input>
                     <button on-click="submitHandler" class='btn margin-left-5'>Submit</button>
                 </div>
                 <div style='clear:both'></div>
@@ -56,6 +54,5 @@ Element providing solution to no problem in particular. As a simple, increments 
 </dom-module>
 
 <script type="text/javascript" src="px-timeseries.js"></script>
-
-<!--class='{{ rangeEndStr | getRangeClasses}}'-->
-<!--class='{{ rangeStartStr | getRangeClasses}}'-->
+<!--class="btn margin-left-5 margin-right" style='width:140px;--> <!-- TODO need to put these back on inputs -->
+<!--class='btn margin-left-5' style='width:140px;-->

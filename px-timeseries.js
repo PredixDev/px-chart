@@ -21,17 +21,16 @@ Polymer({
             type: String,
             observer: 'rangeEndUpdated'
         },
-        rangeStartStr: {
-            type: String,
-            notify: true,
-            reflectToAttribute: true,
-            observer: 'rangeStartStrUpdated'
-        },
         rangeEndStr: {
+            type: String
+        },
+        computeClass2: {
             type: String,
-            notify: true,
-            reflectToAttribute: true,
-            observer: 'rangeEndStrUpdated'
+            computed: 'getRangeClasses(rangeEndStr)'
+        },
+        computeClass: {
+            type: String,
+            value: 'invalid-date'
         }
     },
 
@@ -39,19 +38,15 @@ Polymer({
         var chartConfig = this.buildConfig();
         this.chart = new Highcharts.StockChart(chartConfig);
     },
-
-    rangeStartStrUpdated: function() {
-        console.log(arguments);
-    },
-
-    rangeEndStrUpdated: function() {
-        console.log(arguments);
-    },
     rangeStartUpdated: function () {
+        console.log('classlist', this.classList);
         this.rangeStartStr = this.getDateStr(this.rangeStart);
     },
     rangeEndUpdated: function () {
         this.rangeEndStr = this.getDateStr(this.rangeEnd);
+    },
+    _computeButtonHidden: function(dirty) {
+        return !dirty;
     },
 
     buildConfig: function() {
