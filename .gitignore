@@ -1,7 +1,10 @@
 bower_components
 node_modules
 npm-debug.log
-.idea
 dist
 coverage
-.idea
+temp
+
+# Allow for other idea files which help define the project.
+.idea/workspace.xml
+.idea/dictionaries
