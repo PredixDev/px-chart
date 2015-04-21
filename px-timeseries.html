@@ -25,25 +25,26 @@ Element providing solution to no problem in particular. As a simple, increments 
     <link rel="import" type="css" href="css/px-time-series.css"/>
     <template>
         <div>
+            <h1>{{rangeStart}}</h1><h3>{{rangeStartStr}}</h3>
+            <h1>{{rangeEnd}}</h1><h3>{{rangeEndStr}}</h3>
             <div class="time-series-header-panel">
                 <div class='time-series-header-row-1'>
                     <span>From</span>
-                    <input value="{{rangeStartStr}}" class='{{ rangeStartStr | getRangeClasses}}'
-                           class='btn margin-left-5 margin-right-5' style='width:140px;' placeholder="HH:MM MM/DD/YYYY"
-                           value=''></input>
+                    <input value="{{rangeStartStr::change}}"
+                           class='btn margin-left-5 margin-right-5' style='width:140px;' placeholder="HH:MM MM/DD/YYYY"></input>
                     <span class='margin-left-5'>To</span>
-                    <input value="{{rangeEndStr}}" class='{{ rangeEndStr | getRangeClasses}}' class='btn margin-left-5'
-                           style='width:140px;' placeholder="HH:MM MM/DD/YYYY" value=''></input>
-                    <button on-click="{{submitHandler}}" class='btn margin-left-5'>Submit</button>
+                    <input value="{{rangeEndStr::change}}" class='btn margin-left-5'
+                           style='width:140px;' placeholder="HH:MM MM/DD/YYYY"></input>
+                    <button on-click="submitHandler" class='btn margin-left-5'>Submit</button>
                 </div>
                 <div style='clear:both'></div>
                 <div class='time-series-header-row-2'>
                     Zoom
-                    <button on-click='{{setMonthsOfRange}}' data-month='1' class='btn margin-left-5'>1m</button>
-                    <button on-click='{{setMonthsOfRange}}' data-month='3' class='btn margin-left-5'>3m</button>
-                    <button on-click='{{setMonthsOfRange}}' data-month='6' class='btn margin-left-5'>6m</button>
-                    <button on-click='{{setMonthsOfRange}}' data-month='12' class='btn margin-left-5'>1y</button>
-                    <button on-click='{{setRangeToYTD}}' class='btn margin-left-5'>YTD</button>
+                    <button on-click='setMonthsOfRange' data-month='1' class='btn margin-left-5'>1m</button>
+                    <button on-click='setMonthsOfRange' data-month='3' class='btn margin-left-5'>3m</button>
+                    <button on-click='setMonthsOfRange' data-month='6' class='btn margin-left-5'>6m</button>
+                    <button on-click='setMonthsOfRange' data-month='12' class='btn margin-left-5'>1y</button>
+                    <button on-click='setRangeToYTD' class='btn margin-left-5'>YTD</button>
                 </div>
             </div>
             <div class='time-series-chart-wrapper'>
@@ -55,3 +56,6 @@ Element providing solution to no problem in particular. As a simple, increments 
 </dom-module>
 
 <script type="text/javascript" src="px-timeseries.js"></script>
+
+<!--class='{{ rangeEndStr | getRangeClasses}}'-->
+<!--class='{{ rangeStartStr | getRangeClasses}}'-->

@@ -12,12 +12,46 @@ Polymer({
             type: Array,
             notify: true,
             observer: 'queriesChanged'
+        },
+        rangeStart: {
+            type: String,
+            observer: 'rangeStartUpdated'
+        },
+        rangeEnd: {
+            type: String,
+            observer: 'rangeEndUpdated'
+        },
+        rangeStartStr: {
+            type: String,
+            notify: true,
+            reflectToAttribute: true,
+            observer: 'rangeStartStrUpdated'
+        },
+        rangeEndStr: {
+            type: String,
+            notify: true,
+            reflectToAttribute: true,
+            observer: 'rangeEndStrUpdated'
         }
     },
 
     ready: function() {
         var chartConfig = this.buildConfig();
         this.chart = new Highcharts.StockChart(chartConfig);
+    },
+
+    rangeStartStrUpdated: function() {
+        console.log(arguments);
+    },
+
+    rangeEndStrUpdated: function() {
+        console.log(arguments);
+    },
+    rangeStartUpdated: function () {
+        this.rangeStartStr = this.getDateStr(this.rangeStart);
+    },
+    rangeEndUpdated: function () {
+        this.rangeEndStr = this.getDateStr(this.rangeEnd);
     },
 
     buildConfig: function() {
