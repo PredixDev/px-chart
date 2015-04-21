@@ -25,27 +25,27 @@ Element providing solution to no problem in particular. As a simple, increments 
     <link rel="import" type="css" href="css/px-time-series.css"/>
     <template>
         <div>
-            <!--<div class="time-series-header-panel">-->
-                <!--<div class='time-series-header-row-1'>-->
-                    <!--<span>From</span>-->
-                    <!--<input value="{{rangeStartStr}}" class='{{ rangeStartStr | getRangeClasses}}'-->
-                           <!--class='btn margin-left-5 margin-right-5' style='width:140px;' placeholder="HH:MM MM/DD/YYYY"-->
-                           <!--value=''></input>-->
-                    <!--<span class='margin-left-5'>To</span>-->
-                    <!--<input value="{{rangeEndStr}}" class='{{ rangeEndStr | getRangeClasses}}' class='btn margin-left-5'-->
-                           <!--style='width:140px;' placeholder="HH:MM MM/DD/YYYY" value=''></input>-->
-                    <!--<button on-click="{{submitHandler}}" class='btn margin-left-5'>Submit</button>-->
-                <!--</div>-->
-                <!--<div style='clear:both'></div>-->
-                <!--<div class='time-series-header-row-2'>-->
-                    <!--Zoom-->
-                    <!--<button on-click='{{setMonthsOfRange}}' data-month='1' class='btn margin-left-5'>1m</button>-->
-                    <!--<button on-click='{{setMonthsOfRange}}' data-month='3' class='btn margin-left-5'>3m</button>-->
-                    <!--<button on-click='{{setMonthsOfRange}}' data-month='6' class='btn margin-left-5'>6m</button>-->
-                    <!--<button on-click='{{setMonthsOfRange}}' data-month='12' class='btn margin-left-5'>1y</button>-->
-                    <!--<button on-click='{{setRangeToYTD}}' class='btn margin-left-5'>YTD</button>-->
-                <!--</div>-->
-            <!--</div>-->
+            <div class="time-series-header-panel">
+                <div class='time-series-header-row-1'>
+                    <span>From</span>
+                    <input value="{{rangeStartStr}}" class='{{ rangeStartStr | getRangeClasses}}'
+                           class='btn margin-left-5 margin-right-5' style='width:140px;' placeholder="HH:MM MM/DD/YYYY"
+                           value=''></input>
+                    <span class='margin-left-5'>To</span>
+                    <input value="{{rangeEndStr}}" class='{{ rangeEndStr | getRangeClasses}}' class='btn margin-left-5'
+                           style='width:140px;' placeholder="HH:MM MM/DD/YYYY" value=''></input>
+                    <button on-click="{{submitHandler}}" class='btn margin-left-5'>Submit</button>
+                </div>
+                <div style='clear:both'></div>
+                <div class='time-series-header-row-2'>
+                    Zoom
+                    <button on-click='{{setMonthsOfRange}}' data-month='1' class='btn margin-left-5'>1m</button>
+                    <button on-click='{{setMonthsOfRange}}' data-month='3' class='btn margin-left-5'>3m</button>
+                    <button on-click='{{setMonthsOfRange}}' data-month='6' class='btn margin-left-5'>6m</button>
+                    <button on-click='{{setMonthsOfRange}}' data-month='12' class='btn margin-left-5'>1y</button>
+                    <button on-click='{{setRangeToYTD}}' class='btn margin-left-5'>YTD</button>
+                </div>
+            </div>
             <div class='time-series-chart-wrapper'>
                 <div class="time-series-chart" style="margin: 0;height: auto"></div>
             </div>

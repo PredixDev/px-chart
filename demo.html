@@ -1,18 +1,18 @@
 <!doctype html>
 
-<html>
+<html ng-app="demo">
 <head>
   <title>px-time-series Demo</title>
 
   <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
   <script src="../webcomponentsjs/webcomponents.js"></script>
-    <script src="bower_components/knockout/dist/knockout.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
 
   <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
   <link rel="import" href="px-timeseries.html"/>
 </head>
 
-<body>
+<body ng-controller="DemoController">
 
   <h3>Demo</h3>
 
@@ -30,8 +30,34 @@
   </p>
 
   <!-- instance 1, "predix" theme -->
-    <px-timeseries data-bind="attr: { queries: queries }"></px-timeseries>
+    <px-timeseries queries="{{queries}}"></px-timeseries>
 </body>
 
-<script src="demo.js"></script>
+<script>
+
+    angular.module('demo', [])
+        .controller('DemoController', function($scope) {
+            $scope.queries =  [{
+                "sample_size": 14368,
+                "results": [
+                    {
+                        "name": "Series C",
+                        "values": [
+                            [1209600000000, 50.71],
+                            [1209686400000, 51.85],
+                            [1209945600000, 52.39],
+                            [1210032000000, 53.67],
+                            [1210118400000, 54.08],
+                            [1210204800000, 52.44],
+                            [1210291200000, 52.21],
+                            [1210550400000, 52.88],
+                            [1212364800000, 29.59],
+                            [1212451200000, 29.48],
+                            [1212537600000, 39.46]
+                        ]
+                    }
+                ]
+            }];
+        });
+</script>
 </html>

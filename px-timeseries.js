@@ -18,8 +18,6 @@ Polymer({
     ready: function() {
         var chartConfig = this.buildConfig();
         this.chart = new Highcharts.StockChart(chartConfig);
-
-        this.doSomething([], this.queries);
     },
 
     buildConfig: function() {
@@ -58,7 +56,6 @@ Polymer({
                 }
             },
             rangeSelector: {
-                enabled:false,
                 inputEnabled: true,
                 inputDateFormat: '%H:%M %m/%d/%Y',
                 inputEditDateFormat: '%H:%M %m/%d/%Y',
@@ -119,11 +116,7 @@ Polymer({
 
         return config;
     },
-   queriesChanged: function(newData, oldData) {
-        this.doSomething(oldData, newData);
-    },
-
-    doSomething: function(oldData, newData) {
+    queriesChanged: function(newData, oldData) {
         if (!newData) {
             return;
         }
