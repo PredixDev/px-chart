@@ -5,6 +5,4 @@ dist
 coverage
 temp
 
-# Allow for other idea files which help define the project.
-.idea/workspace.xml
-.idea/dictionaries
+.idea
