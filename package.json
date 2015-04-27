@@ -5,11 +5,10 @@
     "version": "0.0.1",
     "private": true,
     "fwk": "polymer08",
-    "extName" : null,
-    "repository" :
-    {
+    "extName": null,
+    "repository": {
         "type": "git",
-        "url": "https://github.sw.ge.com/change-this-in-package.json-please.git"
+        "url": "https://github.sw.ge.com/PredixWidgetCatalog/px-time-series.git"
     },
     "homepage": "http://predix.sw.ge.com/",
     "devDependencies": {
