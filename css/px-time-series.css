@@ -7,12 +7,10 @@
   padding:10px;
   z-index: 99;
 }
-.highcharts-button {
+::content .highcharts-range-selector-buttons, ::content .highcharts-title, ::content .highcharts-input-group  {
   visibility: hidden;
 }
-.highcharts-title, .highcharts-input-group {
-  visibility: hidden;
-}
+
 .invalid-date {
   outline:none;
   border-color:red;
