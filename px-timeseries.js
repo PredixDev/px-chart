@@ -2,7 +2,7 @@ Polymer({
 
     is: 'px-timeseries',
 
-    initialSeries: [],
+    initialSeries: null,
 
     /**
      * Properties block, expose attribute values to the DOM via 'reflect'
@@ -40,6 +40,9 @@ Polymer({
     ready: function() {
         var chartConfig = this.buildConfig();
         this.chart = new Highcharts.StockChart(chartConfig);
+        if(this.initialSeries) {
+            this.updateChartSeries(this.initialSeries);
+        }
     },
     rangeStartUpdated: function () {
         this.rangeStartStr = this.getDateStr(this.rangeStart);
@@ -127,7 +130,7 @@ Polymer({
                 labels: {x: -20},
                 lineWidth: 0
             },
-            series: this.initialSeries
+            series: []
         };
 
         if (this.showYAxisUnits) {
@@ -152,6 +155,9 @@ Polymer({
             return;
         }
 
+        this.updateChartSeries(seriesToShow);
+    },
+    updateChartSeries: function(seriesToShow) {
         var newIds = _.pluck(seriesToShow, 'name');
         var currentIds = _.pluck(this.chart.series, 'name');
         newIds.push('Navigator'); // HACK: Need 'Navigator' series to exist in the newIds so we do not remove it.
