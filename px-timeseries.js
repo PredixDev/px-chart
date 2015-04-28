@@ -24,16 +24,14 @@ Polymer({
             type: String,
             observer: 'rangeEndUpdated'
         },
-        rangeEndStr: {
+        showyaxisunits: {
+            type: Boolean
+        },
+        xAxisLabel: {
             type: String
         },
-        computeClass2: {
-            type: String,
-            computed: 'getRangeClasses(rangeEndStr)'
-        },
-        computeClass: {
-            type: String,
-            value: 'invalid-date'
+        yAxisLabel: {
+            type: String
         }
     },
 
@@ -133,7 +131,7 @@ Polymer({
             series: []
         };
 
-        if (this.showYAxisUnits) {
+        if (this.showyaxisunits) {
           config.yAxis.labels.enabled = true;
         }
         else {

@@ -28,10 +28,10 @@ Element providing solution to no problem in particular. As a simple, increments 
             <div class="time-series-header-panel">
                 <div class='time-series-header-row-1'>
                     <span>From</span>
-                    <input value="{{rangeStartStr::change}}" class="btn"  class$='[[getRangeClasses(rangeStartStr)]]'
+                    <input value="{{rangeStartStr::change}}" class$='[[getRangeClasses(rangeStartStr)]]'
                            placeholder="HH:MM MM/DD/YYYY"></input>
                     <span class='margin-left-5'>To</span>
-                    <input value="{{rangeEndStr::change}}" class="btn" class$="[[getRangeClasses(rangeEndStr)]]"
+                    <input value="{{rangeEndStr::change}}" class$="[[getRangeClasses(rangeEndStr)]]"
                            placeholder="HH:MM MM/DD/YYYY"></input>
                     <button on-click="submitHandler" class='btn margin-left-5'>Submit</button>
                 </div>
@@ -54,5 +54,3 @@ Element providing solution to no problem in particular. As a simple, increments 
 </dom-module>
 
 <script type="text/javascript" src="px-timeseries.js"></script>
-<!--class="btn margin-left-5 margin-right" style='width:140px;--> <!-- TODO need to put these back on inputs -->
-<!--class='btn margin-left-5' style='width:140px;-->
