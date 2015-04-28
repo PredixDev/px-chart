@@ -36,3 +36,31 @@
   margin-top:10px;
   white-space: nowrap;
 }
+
+.btn, .btn-default, .btn:hover, .btn:focus, input {
+    color: #575757;
+    background-color: #f5f5f5;
+    border-color: #d4d4d4;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #d4d4d4;
+    white-space: nowrap;
+    padding: 6px 12px;
+    border-radius: 3px;
+    -webkit-font-smoothing: inherit;
+    font-smoothing: inherit;
+    background: #f5f5f5 none;
+    font-family: "GE Sans","ge-sans","GE Inspira","ge-inspira",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 19px;
+    padding: 3px 10px 2px 10px;
+    font-weight: inherit;
+    text-decoration: none;
+    -webkit-transition: background-color .1s linear, border-color .1s linear, color .1s linear;
+    -moz-transition: background-color .1s linear, border-color .1s linear, color .1s linear;
+    -o-transition: background-color .1s linear, border-color .1s linear, color .1s linear;
+    transition: background-color .1s linear, border-color .1s linear, color .1s linear;
+}
