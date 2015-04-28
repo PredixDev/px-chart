@@ -1,6 +1,9 @@
 Polymer({
 
     is: 'px-timeseries',
+
+    initialSeries: [],
+
     /**
      * Properties block, expose attribute values to the DOM via 'reflect'
      *
@@ -39,14 +42,10 @@ Polymer({
         this.chart = new Highcharts.StockChart(chartConfig);
     },
     rangeStartUpdated: function () {
-        console.log('classlist', this.classList);
         this.rangeStartStr = this.getDateStr(this.rangeStart);
     },
     rangeEndUpdated: function () {
         this.rangeEndStr = this.getDateStr(this.rangeEnd);
-    },
-    _computeButtonHidden: function(dirty) {
-        return !dirty;
     },
 
     buildConfig: function() {
@@ -128,20 +127,15 @@ Polymer({
                 labels: {x: -20},
                 lineWidth: 0
             },
-            series: []
+            series: this.initialSeries
         };
-//
-//        if (this.showYAxisUnits) {
-//          config.yAxis.labels.enabled = true;
-//        }
-//        else {
-//          config.yAxis.labels.enabled = false;
-//        }
-//
-//        if (this.plotType === 'points') {
-//          config.plotOptions.series.lineWidth = 0;
-//          config.plotOptions.series.marker.enabled = true;
-//        }
+
+        if (this.showYAxisUnits) {
+          config.yAxis.labels.enabled = true;
+        }
+        else {
+          config.yAxis.labels.enabled = false;
+        }
 
         return config;
     },
@@ -151,6 +145,12 @@ Polymer({
         }
 
         var seriesToShow = this.dataTransform(newData);
+
+        // if the chart is not initialized yet... don't do any of this, just store series for later
+        if(this.chart === undefined) {
+            this.initialSeries = seriesToShow;
+            return;
+        }
 
         var newIds = _.pluck(seriesToShow, 'name');
         var currentIds = _.pluck(this.chart.series, 'name');
