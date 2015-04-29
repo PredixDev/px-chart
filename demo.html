@@ -9,7 +9,7 @@
     <script src="bower_components/angular/angular.min.js"></script>
 
   <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
-  <link rel="import" href="px-timeseries.html"/>
+  <link rel="import" href="px-time-series.html"/>
 </head>
 
 <body ng-controller="DemoController">
@@ -29,10 +29,10 @@
     Checkout the Graph below, You will <span style="color:red">&hearts;</span> it
   </p>
 
-    <px-timeseries queries="{{queries}}" showyaxisunits
+    <px-time-series queries="{{queries}}" showyaxisunits
                     x-axis-label="time"
                     y-axis-label="values">
-    </px-timeseries>
+    </px-time-series>
 
     <button ng-click="addSeries('Series A')">Add Series A</button>
     <button ng-click="removeSeries('Series A')">Remove Series A</button>

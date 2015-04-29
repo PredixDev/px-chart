@@ -1,6 +1,6 @@
 Polymer({
 
-    is: 'px-timeseries',
+    is: 'px-time-series',
 
     initialSeries: null,
 
