@@ -20,7 +20,7 @@
     },
     "devDependencies": {
       "iron-doc-viewer": "PolymerElements/iron-doc-viewer#~v0.8.3",
-      "px-starter-kit-design": "git://github.sw.ge.com/PXd/px-starter-kit-design.git#master",
+      "px-starter-kit-design": "git://github.sw.ge.com/PXd/px-starter-kit-design.git#~0.1.0",
       "web-component-tester": "Polymer/web-component-tester#^2.2.3"
     },
     "resolutions": {
