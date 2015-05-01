@@ -1,7 +1,8 @@
 bower_components
 node_modules
 npm-debug.log
-.idea
 dist
 coverage
+temp
+
 .idea

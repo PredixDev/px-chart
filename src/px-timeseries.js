@@ -4,14 +4,10 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
     var TimeSeriesChart = vRuntime.widget.BaseDirective.extend({
         replace: true,
         scope: {
-            title: '=',
             queries: '=',
             showYAxisUnits: '=',
-            plotType: '=',
-            subtitle: '=?',
             xAxisLabel: '=?',
-            yAxisLabel: '=?',
-            maxNumPoints: '=?'
+            yAxisLabel: '=?'
         },
         template: headerTemplate,
 
@@ -21,9 +17,6 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
             this.loadingMessage = 'Loading data from server...';
             this._super(scope, element, attrs);
             this.logger = vRuntime.logger.create('pxTimeseries');
-
-            scope.numPointsDisplayed = {};
-            scope.maxNumPoints = scope.maxNumPoints || 10;
 
             var chartConfig = self.buildConfig(scope);
             scope.chart = new Highcharts.StockChart(chartConfig);
@@ -157,13 +150,6 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
                     align: 'left',
                     enabled: true
                 },
-                title: {
-                    text: scope.title,
-                    enabled: false
-                },
-                subtitle: {
-                    text: scope.subtitle
-                },
                 navigator: {
                     adaptToUpdatedData: false
                 },
@@ -201,11 +187,6 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
                 config.yAxis.labels.enabled = false;
             }
 
-            if (scope.plotType === 'points') {
-                config.plotOptions.series.lineWidth = 0;
-                config.plotOptions.series.marker.enabled = true;
-            }
-
             return config;
         },
         addSeries: function (scope, seriesId, data) {
@@ -217,9 +198,6 @@ define(['vruntime', 'widgets-module', 'text!./timeseries-header.tmpl', 'undersco
             };
 
             scope.chart.addSeries(newseries);
-
-            // just start scrolling automatically
-            scope.numPointsDisplayed[seriesId] = Number.MAX_SAFE_INTEGER;
         },
         dataTransform: function (newData) {
             var highchartSeries = [];

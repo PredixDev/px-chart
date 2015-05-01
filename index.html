@@ -225,7 +225,6 @@
                     // Required:
                     queries: timeSeriesData,
                     showYAxisUnits: true,
-                    plotType: 'line',
                     // Optional:
                     xAxisLabel: 'Time',
                     yAxisLabel: 'Pressure'
@@ -287,14 +286,10 @@
     </header>
     <div class="module-body">
         <px-timeseries
-                title="timeSeries.title"
-                subtitle="timeSeries.subtitle"
                 show-y-axis-units="timeSeries.showYAxisUnits"
-                plot-type="timeSeries.plotType"
                 queries="timeSeries.queries"
                 data-x-axis-label="timeSeries.xAxisLabel"
                 data-y-axis-label="timeSeries.yAxisLabel"
-                max-num-points="timeSeries.maxNumPoints"
                 on-x-axis-change="timeSeries.onXAxisChange(event)">
         </px-timeseries>
     </div>

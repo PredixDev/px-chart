@@ -1,4 +1,4 @@
-[![Build Status](http://alpha.menlo-ci.sw.ge.com:11112/job/px-timeseries/badge/icon)](http://alpha.menlo-ci.sw.ge.com:11112/job/px-timeseries/)
+[![Build Status](http://sjc1jenkins01.crd.ge.com:8080/buildStatus/icon?job=Predix-Experience/px-timeseries)](http://sjc1jenkins01.crd.ge.com:8080/job/Predix-Experience/job/px-timeseries/)
 
 px-time-series
 ==============
@@ -16,14 +16,10 @@ Add directive to the page
 
 ```html
 <px-timeseries 
-  title='title' 
-  queries='queries' 
+  queries='queries'
   showYAxisUnits='showYAxisUnits' 
-  plotType='plotType' 
-  subtitle='subtitle' 
-  xAxisLabel='xAxisLabel' 
-  yAxisLabel='yAxisLabel' 
-  maxNumPoints='maxNumPoints'>
+  xAxisLabel='xAxisLabel'
+  yAxisLabel='yAxisLabel'>
 </px-timeseries>
 ```
 
@@ -70,14 +66,10 @@ var timeSeriesData =  [
 }];
 
 $scope.timeSeries = {
-  title: 'Time Series Chart',
-  queries: timeSeriesData,    // Time series data 
+  queries: timeSeriesData,    // Time series data
   showYAxisUnits: true,       // Show Y Axis units? true/false
-  plotType: 'line',           // Can be: line, scatter, or area
-  subtitle: 'subtitle',       // Optional Subtitle of chart
   xAxisLabel: 'xAxisLabel',   // Optional X Axis label
-  yAxisLabel: 'yAxisLabel',   // Optional Y Axis label
-  maxNumPoints: 500           // Optional Maximum number of points to show
+  yAxisLabel: 'yAxisLabel'    // Optional Y Axis label
 };
 ```
 
