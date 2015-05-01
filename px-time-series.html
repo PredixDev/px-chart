@@ -1,0 +1,56 @@
+<!--
+    Relative paths assume component is being run from inside an app or another component, where dependencies are flat
+    siblings. When this component is run from its own repo (e.g. ui tests, examples), we assume the server is started with
+    'grunt depserve' (or similar server setup) to enable correct finding of bower dependencies for local runs
+    See https://github.sw.ge.com/jreichenberg/grunt-dep-serve#why-do-we-need-this
+-->
+<link rel="import" href="../polymer/polymer.html"/>
+
+<!--
+Element providing solution to no problem in particular. As a simple, increments a counter when clicked.
+
+##### Usage
+
+    <px-time-series queries="queries">Hi</px-time-series>
+
+@element px-time-series
+@blurb Element providing solution to no problem in particular.
+@homepage index.html
+-->
+<script src="../../bower_components/highstock-release/adapters/standalone-framework.js"></script>
+<script src="../../bower_components/highstock-release/highstock.js"></script>
+<script src="../../bower_components/underscore/underscore-min.js"></script>
+
+<dom-module id="px-time-series">
+    <link rel="import" type="css" href="css/px-time-series.css"/>
+    <template>
+        <div>
+            <div class="time-series-header-panel">
+                <div class='time-series-header-row-1'>
+                    <span>From</span>
+                    <input value="{{rangeStartStr::change}}" class$='[[getRangeClasses(rangeStartStr)]]'
+                           placeholder="HH:MM MM/DD/YYYY"></input>
+                    <span class='margin-left-5'>To</span>
+                    <input value="{{rangeEndStr::change}}" class$="[[getRangeClasses(rangeEndStr)]]"
+                           placeholder="HH:MM MM/DD/YYYY"></input>
+                    <button on-click="submitHandler" class='btn margin-left-5'>Submit</button>
+                </div>
+                <div style='clear:both'></div>
+                <div class='time-series-header-row-2'>
+                    Zoom
+                    <button on-click='setMonthsOfRange' data-month='1' class='btn margin-left-5'>1m</button>
+                    <button on-click='setMonthsOfRange' data-month='3' class='btn margin-left-5'>3m</button>
+                    <button on-click='setMonthsOfRange' data-month='6' class='btn margin-left-5'>6m</button>
+                    <button on-click='setMonthsOfRange' data-month='12' class='btn margin-left-5'>1y</button>
+                    <button on-click='setRangeToYTD' class='btn margin-left-5'>YTD</button>
+                </div>
+            </div>
+            <div class='time-series-chart-wrapper'>
+                <div class="time-series-chart" style="margin: 0;height: auto"></div>
+            </div>
+            <div id="container"></div>
+        </div>
+    </template>
+</dom-module>
+
+<script type="text/javascript" src="px-time-series.js"></script>

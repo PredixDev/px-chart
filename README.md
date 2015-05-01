@@ -1,75 +1,53 @@
-[![Build Status](http://sjc1jenkins01.crd.ge.com:8080/buildStatus/icon?job=Predix-Experience/px-timeseries)](http://sjc1jenkins01.crd.ge.com:8080/job/Predix-Experience/job/px-timeseries/)
+Px-Time-Series
+-----------------------------------------------
 
-px-time-series
-==============
+## Overview
 
-This is the Experience Time Series Widget that abstract HighChart and support KairosDB Time Series Format by default
+Px-Time-Series is a Predix Experience ('Px') component
 
-# Usage
-Add bower dependency by pointing to this repo in bower.json
+## Getting Started
 
-```json
-"px-time-series": "git://github.sw.ge.com/PredixWidgetCatalog/px-time-series.git#develop"
+Read https://github.sw.ge.com/pages/PX/technical-principles/
+
+From the component's directory...
+
+```
+$ npm install
+$ bower install
+$ grunt sass
 ```
 
-Add directive to the page
+### API and examples
 
-```html
-<px-timeseries 
-  queries='queries'
-  showYAxisUnits='showYAxisUnits' 
-  xAxisLabel='xAxisLabel'
-  yAxisLabel='yAxisLabel'>
-</px-timeseries>
+From the component's directory
+
+```
+$ grunt depserve
 ```
 
-Add 'bower_components/px-time-series/src/main' to your controller require js dependency
+Starts a local server. Navigate to the root of that server (e.g. http://localhost:8080/) in a browser to open the API documentation page, with link to the "Demo" / working examples.
 
-```js
-define(['angular', 'bower_components/px-time-series/src/main'], function(angular) {
-  ...
-});
-```
+### Options
 
-Add properties on your `$scope`
+Does this component have runtime configuration options?  If so, they should be able to be passed as attributes on the element with examples shown below.
 
-```js
-var timeSeriesData =  [
-{
-    'results': [
-        {
-            'name': 'Winter 2007-2008',
-            'values': [
-                [
-                    25833600000,
-                    0
-                ],
-                [
-                    27043200000,
-                    0.6
-                ],
-                [
-                    27734400000,
-                    0.7
-                ],
-                [
-                    28944000000,
-                    0.8
-                ],
-                [
-                    29548800000,
-                    0.6
-                ]
-            ]
-        }
-    ]
-}];
+### Function calls
 
-$scope.timeSeries = {
-  queries: timeSeriesData,    // Time series data
-  showYAxisUnits: true,       // Show Y Axis units? true/false
-  xAxisLabel: 'xAxisLabel',   // Optional X Axis label
-  yAxisLabel: 'yAxisLabel'    // Optional Y Axis label
-};
-```
+What is the public API of this component?
+
+### Extending styles
+
+Documented CSS extension points?
+
+### Extending behavior
+
+See Polymer composition patterns
+
+GE Coding Style Guide
+---------------------
+
+[GE JS Developer's Guide](https://github.com/GeneralElectric/javascript)
+
+
+### Known Issues
 

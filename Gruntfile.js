@@ -1,137 +1,111 @@
 'use strict';
-module.exports = function(grunt) {
 
-	//Local server ports
-	var LIVERELOAD_PORT = 35724;
-	var SERVER_PORT = 9001;
-	var RUNNER_PORT = 9002;
+module.exports = function (grunt) {
 
-	//Project config
-	var CONFIG = {
-		app: 'src',
-		test: 'test',
-		src: 'src',
-		dist: 'dist',
-		bower: 'bower_components',
-		tmp: '.tmp'
-	};
+    // Project configuration.
+    grunt.initConfig({
 
+        clean: {
+            css: ['css'],
+            bower: ['bower_components'],
+            reports: ['reports']
+        },
 
-	// Time grunt tasks
-	require('time-grunt')(grunt);
+        sass: {
+            options: {
+                sourceMap: false, //no source maps b/c web-components inline css anyway...
 
-	// Load all grunt tasks
-	require('load-grunt-tasks')(grunt);
+                 /*
+                  See https://github.sw.ge.com/pxc/px-getting-started#a-note-about-relative-import-paths for an explanation
+                  of the contents of the includePaths option for Sass
+                 */
+                includePaths: ['bower_components/*']
+            },
+            dist: {
+                files: {
+                    'css/px-time-series-sketch.css': 'sass/px-time-series-sketch.scss',
+                    'css/px-time-series.css': 'sass/px-time-series-predix.scss'
+                }
+            }
+        },
 
-	// Livereload setup
-	var lrSnippet = require('connect-livereload')({
-		port: LIVERELOAD_PORT
-	});
-	var mountFolder = function (connect, dir) {
-		return connect.static(require('path').resolve(dir));
-	};
+        shell: {
+            options: {
+                stdout: true,
+                stderr: true
+            },
+            bower: {
+                command: 'bower install'
+            }
+        },
 
-	// Project configuration
-	grunt.initConfig({
-		pkg: grunt.file.readJSON('package.json'),
-		config: CONFIG,
-		meta: {
-			banner: '/*Banner*/'
-		},
+        jshint: {
+            all: [
+                'Gruntfile.js',
+                'js/**/*.js'
+            ],
+            options: {
+                jshintrc: '.jshintrc'
+            }
+        },
 
-		//Clean
-		clean: {
-			dist: {
-				files: [{
-					dot: true,
-					src: ['.tmp', '<%= config.dist %>/*', '!<%= config.dist %>/.git*']
-				}]
-			},
-			test: 'test/temp',
-			temp: '.tmp'
-		},
+        watch: {
+            sass: {
+                files: ['sass/**/*.scss'],
+                tasks: ['sass'],
+                options: {
+                    interrupt: true
+                }
+            }
+        },
 
-		//Watch
-		watch: {
-			options: {
-				nospawn: true,
-				livereload: LIVERELOAD_PORT
-			},
-			less: {
-				files: ['src/{,*/}*.less'],
-				tasks: ['less:dist']
-			},
-			app: {
-				files: [
-					'index.html',
-					'src/{,*/}*.html',
-					'src/*.js',
-					'dist/*.js'
-				],
-				tasks: ['jshint:app']
-			},
-			test: {
-				files: '<%= jshint.test.src %>',
-				tasks: ['jshint:test', 'karma:unit']
-			}
-		},
+        depserve: {
+            options: {
+                open: '<%= depserveOpenUrl %>'
+            }
+        },
 
-		//Connect
-		connect: {
-			options: {
-				livereload: LIVERELOAD_PORT,
-				port: SERVER_PORT,
-				hostname: 'localhost',
-				open: true
-			},
-			livereload: {
-				options: {
-					middleware: function (connect) {
-						return [lrSnippet, mountFolder(connect, '.'), mountFolder(connect, '.tmp')];
-					}
-				}
-			},
-			docs: {
-				options: {
-					keepalive: true,
-					middleware: function (connect) {
-						return [mountFolder(connect, '.'), mountFolder(connect, '.tmp'), mountFolder(connect, 'docs')];
-					}
-				}
-			}
-		},
+        webdriver: {
+            options: {
+                specFiles: ['test/*spec.js']
+            },
+            local: {
+                webdrivers: ['chrome']
+            }
+        }
+    });
 
-		//JSHint
-		jshint: {
-			options: {
-				jshintrc: '.jshintrc'
-			},
-			app: {				
-				src: ['<%= config.src %>/{,*/}*.js']
-			},
-			test: {
-				src: ['test/spec/**/*.js']
-			}
-		},
+    grunt.loadNpmTasks('grunt-sass');
+    grunt.loadNpmTasks('grunt-shell');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-dep-serve');
+    grunt.loadNpmTasks('webdriver-support');
 
-		//Karma
-		karma: {
-			options: {
-				configFile: 'karma.conf.js',
-				browsers: ['PhantomJS']
-			},
-			unit: {
-				singleRun: true
-			},
-			server: {
-				autoWatch: true
-			}
-		}
-	});
+    // Default task.
+    grunt.registerTask('default', 'Basic build', [
+        'sass'
+    ]);
 
-	// Grunt Tasks
-	grunt.registerTask('serve', [ 'build', 'connect:livereload', 'watch' ]);
-	grunt.registerTask('build', [ 'jshint']);
-	grunt.registerTask('test', [ 'clean:test', 'jshint', 'karma:unit' ]);
-	grunt.registerTask('default', [ 'test' ]);
+    // First run task.
+    grunt.registerTask('firstrun', 'Basic first run', function() {
+        grunt.config.set('depserveOpenUrl', '/index.html');
+        grunt.task.run('default');
+        grunt.task.run('depserve');
+    });
+
+    // Default task.
+    grunt.registerTask('test', 'Test', [
+        'jshint',
+        'webdriver'
+    ]);
+
+    grunt.registerTask('release', 'Release', [
+        'clean',
+        'shell:bower',
+        'default',
+        'test'
+    ]);
+
 };
