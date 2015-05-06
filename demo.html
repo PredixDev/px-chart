@@ -6,43 +6,63 @@
 
   <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
   <script src="../webcomponentsjs/webcomponents.js"></script>
-    <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular/angular.min.js"></script>
 
   <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
+  <link rel="import" href="../px-theme/px-theme.html"/>
   <link rel="import" href="px-time-series.html"/>
+  
+  <style is="x-style">
+    html {
+      height: 100%;
+      font-size:0.9375em;
+    }
+    body {
+      height: 100%;
+      margin: 0;
+    }
+    .demo {
+      padding: 1rem;
+    }
+  </style>
+
 </head>
 
 <body ng-controller="DemoController">
+  
+  <article class="demo" role="article">
+    <h3>Demo</h3>
+    <p>Although related, examples are /not/ the same as the test fixtures. Tests are tests, examples are examples.</p>
+    <p>
+      Also see the
+      <a href="index.html">documentation</a>
+      and the
+      <a href="test/fixture.html">UI test fixture</a>.
+    </p>
+    <p>
+      Checkout the Graph below, You will
+      <span style="color:red">&hearts;</span>
+      it.
+    </p>
+  </article>
 
-  <h3>Demo</h3>
-
-  <p>
-    Although related, examples are /not/ the same as the test fixtures.
-    Tests are tests, examples are examples.
-  </p>
-
-  <p>
-    Also see the <a href="index.html">documentation</a> and the <a href="test/fixture.html">UI test fixture</a>.
-  </p>
-
-  <p>
-    Checkout the Graph below, You will <span style="color:red">&hearts;</span> it
-  </p>
-
-    <px-time-series queries="{{queries}}" showyaxisunits
-                    x-axis-label="time"
-                    y-axis-label="values">
-    </px-time-series>
-
-    <button ng-click="addSeries('Series A')">Add Series A</button>
-    <button ng-click="removeSeries('Series A')">Remove Series A</button>
-    <button ng-click="addSeries('Series B')">Add Series B</button>
-    <button ng-click="removeSeries('Series B')">Remove Series B</button>
-    <button ng-click="addSeries('Series C')">Add Series C</button>
-    <button ng-click="removeSeries('Series C')">Remove Series C</button>
-    <button ng-click="addSeries('Series D')">Add Series D</button>
-    <button ng-click="removeSeries('Series D')">Remove Series D</button>
-</body>
+  <px-time-series queries="{{queries}}" showyaxisunits
+                  x-axis-label="time"
+                  y-axis-label="values">
+  </px-time-series>
+  
+  <div class="demo">
+    <p>
+      <button ng-click="addSeries('Series A')">Add Series A</button>
+      <button ng-click="removeSeries('Series A')">Remove Series A</button>
+      <button ng-click="addSeries('Series B')">Add Series B</button>
+      <button ng-click="removeSeries('Series B')">Remove Series B</button>
+      <button ng-click="addSeries('Series C')">Add Series C</button>
+      <button ng-click="removeSeries('Series C')">Remove Series C</button>
+      <button ng-click="addSeries('Series D')">Add Series D</button>
+      <button ng-click="removeSeries('Series D')">Remove Series D</button>
+    </p>
+  </div>
 
 <script>
 
@@ -291,4 +311,5 @@
     };
 
 </script>
+</body>
 </html>
