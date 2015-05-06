@@ -6,7 +6,6 @@
 
   <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
   <script src="../webcomponentsjs/webcomponents.js"></script>
-  <script src="bower_components/angular/angular.min.js"></script>
 
   <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
   <link rel="import" href="../px-theme/px-theme.html"/>
@@ -53,77 +52,18 @@
   
   <div class="demo">
     <p>
-      <button ng-click="addSeries('Series A')">Add Series A</button>
-      <button ng-click="removeSeries('Series A')">Remove Series A</button>
-      <button ng-click="addSeries('Series B')">Add Series B</button>
-      <button ng-click="removeSeries('Series B')">Remove Series B</button>
-      <button ng-click="addSeries('Series C')">Add Series C</button>
-      <button ng-click="removeSeries('Series C')">Remove Series C</button>
-      <button ng-click="addSeries('Series D')">Add Series D</button>
-      <button ng-click="removeSeries('Series D')">Remove Series D</button>
+      <button onclick="addSeries('Series A')">Add Series A</button>
+      <button onclick="removeSeries('Series A')">Remove Series A</button>
+      <button onclick="addSeries('Series B')">Add Series B</button>
+      <button onclick="removeSeries('Series B')">Remove Series B</button>
+      <button onclick="addSeries('Series C')">Add Series C</button>
+      <button onclick="removeSeries('Series C')">Remove Series C</button>
+      <button onclick="addSeries('Series D')">Add Series D</button>
+      <button onclick="removeSeries('Series D')">Remove Series D</button>
     </p>
   </div>
 
 <script>
-
-    angular.module('demo', [])
-        .controller('DemoController', function($scope) {
-            $scope.queries = [
-                {
-                    "sample_size": 14368,
-                    "results": [
-                        seriesA,
-                        seriesB,
-                        seriesC,
-                        seriesD
-                    ]
-                }
-            ];
-            $scope.showYAxisUnits = "true";
-            $scope.xAxisLabel = "xxx";
-            $scope.yAxisLabel = "yyy";
-
-            /** adding/removing series logic just for demo purposes **/
-
-            $scope.isDisplayed = {
-                "Series A": true,
-                "Series B": true,
-                "Series C": true,
-                "Series D": true
-            };
-
-            $scope.addSeries = function (seriesString) {
-                var series = seriesD;
-                if(seriesString === 'Series C') {
-                    series = seriesC;
-                }
-                if(seriesString === 'Series B') {
-                    series = seriesB;
-                }
-                if(seriesString === 'Series A') {
-                    series = seriesA;
-                }
-                $scope.isDisplayed[seriesString] = true;
-                $scope.queries[0].results.push(series);
-            };
-            $scope.removeSeries = function (seriesString) {
-                $scope.isDisplayed[seriesString] = false;
-                $scope.queries[0].results = [];
-                if($scope.isDisplayed["Series A"]) {
-                    $scope.queries[0].results.push(seriesA);
-                }
-                if($scope.isDisplayed["Series B"]) {
-                    $scope.queries[0].results.push(seriesB);
-                }
-                if($scope.isDisplayed["Series C"]) {
-                    $scope.queries[0].results.push(seriesC);
-                }
-                if($scope.isDisplayed["Series D"]) {
-                    $scope.queries[0].results.push(seriesD);
-                }
-            };
-        });
-
 
     var seriesA =
     {
@@ -309,6 +249,77 @@
             [1212537600000, 34.46]
         ]
     };
+
+
+
+    var isDisplayed = {
+      "Series A": true,
+      "Series B": true,
+      "Series C": true,
+      "Series D": true
+    };
+
+    var queries = [
+      {
+        "sample_size": 14368,
+        "results": [
+          seriesA,
+          seriesB,
+          seriesC,
+          seriesD
+        ]
+      }
+    ];
+
+
+    function addSeries(seriesString) {
+      var series = seriesD;
+      if(seriesString === 'Series C') {
+        series = seriesC;
+      }
+      if(seriesString === 'Series B') {
+        series = seriesB;
+      }
+      if(seriesString === 'Series A') {
+        series = seriesA;
+      }
+      isDisplayed[seriesString] = true;
+      queries[0].results.push(series);
+      updateTimeSeries();
+    }
+
+    function removeSeries (seriesString) {
+      isDisplayed[seriesString] = false;
+      queries[0].results = [];
+      if(isDisplayed["Series A"]) {
+        queries[0].results.push(seriesA);
+      }
+      if(isDisplayed["Series B"]) {
+        queries[0].results.push(seriesB);
+      }
+      if(isDisplayed["Series C"]) {
+        queries[0].results.push(seriesC);
+      }
+      if(isDisplayed["Series D"]) {
+        queries[0].results.push(seriesD);
+      }
+      updateTimeSeries();
+    }
+
+
+function updateTimeSeries() {
+  var timeSeriesComp = document.querySelector("px-time-series");
+
+  //cheating...make sure Polymer sees a new "queries" object each time so the observer fires.
+  queries = [].concat(queries);
+
+  timeSeriesComp.queries = queries;
+}
+
+window.addEventListener('WebComponentsReady', function() {
+  updateTimeSeries();
+});
+
 
 </script>
 </body>

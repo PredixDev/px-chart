@@ -24,7 +24,6 @@
         "px-starter-kit-design": "git://github.sw.ge.com/PXd/px-starter-kit-design.git#~0.1.0",
         "px-buttons-design": "git://github.sw.ge.com/PXd/px-buttons-design.git#~0.1.0",
         "px-forms-design": "git://github.sw.ge.com/PXd/px-forms-design.git#~0.1.0",
-        "angular": "~1.3.0",
         "web-component-tester": "Polymer/web-component-tester#^2.2.3"
     },
     "resolutions": {
