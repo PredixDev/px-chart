@@ -93,20 +93,9 @@ Polymer({
             'blueDark': '#00366e'
         };
 
-        var typography = {
-            'sansFontFamily': '"ge-sans", "Helvetica Neue", Helvetica, Arial, sans-serif',
-            'serifFontFamily': '"ge-serif", Georgia, serif',
-            'monoFontFamily': 'Inconsolata, Consolas, monospace',
-            'brandFontFamily': '"ge-inspira", "Helvetica Neue", Helvetica, Arial, sans-serif',
-            'baseFontSize': '14px',
-            'baseLineHeight': '20px',
-            'textColor': monochromePalette.grayDarker
-        };
-
         var brandkit = {
             'accentPalette': accentPalette,
-            'monochromePalette': monochromePalette,
-            'typography': typography
+            'monochromePalette': monochromePalette
         };
 
         var convertMapToValueArray = function(map){
@@ -120,272 +109,31 @@ Polymer({
         };
 
         var defaultChartConfig = {
-            colors: convertMapToValueArray(brandkit.accentPalette),
-            lang: {
-                rangeSelectorZoom: ''
-            },
             chart: {
-                borderWidth: 0,
-                plotBackgroundColor: null,
-                backgroundColor: null,
-                plotShadow: false,
-                plotBorderWidth: 0,
-                spacingTop: 0,
-                spacingLeft: 0,
-                spacingRight: 0,
-                spacingBottom: 1,
-                borderRadius: 0,
+                margin: [70,20,20,20],
+                spacing: [50,20,20,20],
                 style: {
-                    color: brandkit.typography.textColor,
-                    fontFamily: brandkit.typography.sansFontFamily,
-                    fontSize: brandkit.typography.baseFontSize
+                    fontFamily: 'inherit',
+                    fontSize: 'inherit'
                 }
             },
-            title: {
-                text: ' ', // an empty title makes the spacing correct
-                x: 0,
-                y: 20,
-                align: 'left',
-                margin: 40,
-                style: {
-                    color: brandkit.typography.textColor,
-                    fontFamily: brandkit.typography.sansFontFamily,
-                    fontWeight: 'bold',
-                    fontSize: brandkit.typography.baseFontSize
-                }
-            },
-            subtitle: {
-                x: 0,
-                y: 37,
-                align: 'left',
-                style: {
-                    color: brandkit.typography.textColor,
-                    fontFamily: brandkit.typography.sansFontFamily,
-                    fontWeight: 'normal',
-                    fontSize: parseInt(brandkit.typography.baseFontSize) - 1 + 'px'
-                }
-            },
-            xAxis: {
-                gridLineWidth: 0,
-                tickWidth: 0,
-                lineWidth: 0,
-                offset: 10,
-                labels: {
-                    style: {
-                        color: brandkit.monochromePalette.grayDark,
-                        fontFamily: brandkit.typography.sansFontFamily,
-                        fontSize: parseInt(brandkit.typography.baseFontSize) - 1 + 'px'
-                    }
-                },
-                title: {
-                    margin: 20,
-                    style: {
-                        color: brandkit.typography.textColor,
-                        fontFamily: brandkit.typography.sansFontFamily,
-                        fontWeight: 'normal',
-                        fontSize: parseInt(brandkit.typography.baseFontSize) - 1 + 'px'
-                    }
-                }
-            },
-            yAxis: {
-                gridLineWidth: 1,
-                gridLineColor: brandkit.monochromePalette.grayLight,
-                lineWidth: 0,
-                tickWidth: 0,
-                offset: 10,
-                labels: {
-                    align: 'right',
-                    style: {
-                        color: brandkit.monochromePalette.grayDark,
-                        fontFamily: brandkit.typography.sansFontFamily,
-                        fontSize: parseInt(brandkit.typography.baseFontSize) - 1 + 'px'
-                    }
-                },
-                title: {
-                    margin: 20,
-                    style: {
-                        color: brandkit.typography.textColor,
-                        fontFamily: brandkit.typography.sansFontFamily,
-                        fontWeight: 'normal',
-                        fontSize: parseInt(brandkit.typography.baseFontSize) - 1 + 'px'
-                    }
-                }
+            colors: convertMapToValueArray(brandkit.accentPalette),
+            credits: {
+                enabled: false
             },
             legend: {
-                borderWidth: 0,
-                align: 'right',
+                align: 'left',
+                itemMarginBottom: 10,
+                margin: 0,
+                padding: 0,
+                symbolPadding: 5,
+                symbolWidth: 10,
                 verticalAlign: 'top',
-                floating: true,
-                y: 3,
-                style: {
-                    color: brandkit.typography.textColor,
-                    fontFamily: brandkit.typography.sansFontFamily,
-                    fontWeight: 'normal',
-                    fontSize: parseInt(brandkit.typography.baseFontSize) - 1 + 'px'
-                }
-            },
-            labels: {
-                style: {
-                    color: brandkit.typography.textColor,
-                    fontFamily: brandkit.typography.sansFontFamily,
-                    fontWeight: 'normal',
-                    fontSize: parseInt(brandkit.typography.baseFontSize) - 1 + 'px'
-                }
-            },
-            tooltip: {
-                backgroundColor: 'rgba(247, 248, 250, 0.85)',
-                borderWidth: 1,
-                borderColor: brandkit.monochromePalette.grayLighter,
-                borderRadius: 3,
-                shadow: false,
-                style: {
-                    color: brandkit.monochromePalette.grayDarker,
-                    fontFamily: brandkit.typography.sansFontFamily,
-                    fontWeight: 'normal',
-                    fontSize: parseInt(brandkit.typography.baseFontSize) - 1 + 'px',
-                    padding: '15px'
-                },
-                headerFormat: '<span>{point.key}</span><br/>',
-                pointFormat: '<span style="color:{series.color}">{series.name}: {point.y}</span><br/>'
-            },
-            plotOptions: {
-                series: {
-                    animation: false,
-                    marker: {
-                        radius: 5
-                    },
-                    dataLabels: {
-                        style: {
-                            color: brandkit.typography.textColor,
-                            fontFamily: brandkit.typography.sansFontFamily,
-                            fontWeight: 'normal',
-                            fontSize: parseInt(brandkit.typography.baseFontSize) - 1 + 'px'
-                        }
-                    },
-                    shadow: false
-                },
-                area: {
-                    marker: {
-                        enabled: false
-                    }
-                },
-                line: {
-                    marker: {
-                        enabled: false,
-                        lineWidth: 1,
-                        lineColor: brandkit.monochromePalette.white
-                    },
-                    lineWidth: 3
-                },
-                pie: {
-                    allowPointSelect: true,
-                    dataLabels: {
-                        softConnector: false,
-                        connectorColor: brandkit.monochromePalette.grayDarker,
-                        formatter: function() {
-                            return '<b>'+ this.point.name +'</b>: '+ Highcharts.numberFormat(this.percentage, 2, '.') +'%';
-                        }
-                    },
-                    tooltip: {
-                        headerFormat: '<span>{point.key}</span><br/>',
-                        pointFormat: '<span style="color:{point.color}">{point.percentage}</span><br/>',
-                        percentageDecimals: 2,
-                        percentageSuffix: '%'
-                    }
-                },
-                spline: {
-                    marker: {
-                        enabled: false
-                    }
-                },
-                scatter: {
-                    marker: {
-                        enabled: true
-                    }
-                },
-                candlestick: {
-                }
+                y: -30
             },
             navigation: {
                 buttonOptions: {
-                    backgroundColor: {
-                        linearGradient: [0, 0, 0, 20],
-                        stops: [
-                            [0.4, '#606060'],
-                            [0.6, '#333333']
-                        ]
-                    },
-                    borderColor: brandkit.monochromePalette.black,
-                    symbolStroke: '#C0C0C0',
-                    hoverSymbolStroke: brandkit.monochromePalette.white
-                }
-            },
-            exporting: {
-                buttons: {
-                    exportButton: {
-                        symbolFill: '#55BE3B'
-                    },
-                    printButton: {
-                        symbolFill: '#7797BE'
-                    }
-                }
-            },
-            rangeSelector: {
-                inputEnabled: false,
-                labelStyle: {
-                    fontFamily: brandkit.typography.sansFontFamily,
-                    color: brandkit.typography.textColor,
-                    fontSize: parseInt(brandkit.typography.baseFontSize) - 1 + 'px'
-                },
-                buttonSpacing: 5,
-                buttonTheme: {
-                    stroke: 'none',
-                    fill: {
-                        linearGradient: [0, 19, 0, 20],
-                        stops: [
-                            [0, brandkit.monochromePalette.white],
-                            [1, brandkit.monochromePalette.gray]
-                        ]
-                    },
-                    style: {
-                        color: brandkit.typography.textColor,
-                        fontFamily: brandkit.typography.sansFontFamily,
-                        fontSize: '0.9em' // don't resize to px or the month/year buttons
-                                          // on the stock chart will visually break
-                    },
-                    padding: 2,
-                    states: {
-                        hover: {
-                            stroke: 'none',
-                            fill: {
-                                linearGradient: [0, 19, 0, 20],
-                                stops: [
-                                    [0, brandkit.monochromePalette.white],
-                                    [1, brandkit.monochromePalette.gray]
-                                ]
-                            },
-                            style: {
-                                color: brandkit.typography.textColor,
-                                fontFamily: brandkit.typography.sansFontFamily,
-                                fontSize: parseInt(brandkit.typography.baseFontSize) - 1 + 'px'
-                            }
-                        },
-                        select: {
-                            stroke: 'none',
-                            fill: {
-                                linearGradient: [0, 17, 0, 18],
-                                stops: [
-                                    [0, brandkit.monochromePalette.white],
-                                    [1, brandkit.accentPalette.blue]
-                                ]
-                            },
-                            style: {
-                                color: brandkit.typography.textColor,
-                                fontFamily: brandkit.typography.sansFontFamily,
-                                fontSize: parseInt(brandkit.typography.baseFontSize) - 1 + 'px'
-                            }
-                        }
-                    }
+                  enabled: false
                 }
             },
             navigator: {
@@ -406,12 +154,7 @@ Polymer({
                     gridLineWidth: 0,
                     labels: {
                         y: 15,
-                        align: 'center',
-                        style: {
-                            color: brandkit.monochromePalette.gray,
-                            fontFamily: brandkit.typography.sansFontFamily,
-                            fontSize: '0.6em'
-                        }
+                        align: 'center'
                     }
                 },
                 yAxis: {
@@ -419,63 +162,11 @@ Polymer({
                     tickWidth: 0,
                     gridLineWidth: 0,
                     labels: {
-                        x: 15,
-                        style: {
-                            color: brandkit.typography.textColor,
-                            fontFamily: brandkit.typography.sansFontFamily,
-                            fontSize: parseInt(brandkit.typography.baseFontSize) - 1 + 'px'
-                        }
-                    }
-                }
-            },
-            scrollbar: {
-                barBackgroundColor: {
-                    linearGradient: [0, 0, 0, 16],
-                    stops: [
-                        [0, brandkit.monochromePalette.white],
-                        [1, brandkit.monochromePalette.grayLighter]
-                    ]
-                },
-                barBorderColor: brandkit.monochromePalette.grayDarker,
-                buttonArrowColor: brandkit.monochromePalette.grayDarker,
-                buttonBackgroundColor: {
-                    linearGradient: [0, 0, 0, 16],
-                    stops: [
-                        [0, brandkit.monochromePalette.white],
-                        [1, brandkit.monochromePalette.grayLighter]
-                    ]
-                },
-                buttonBorderColor: brandkit.monochromePalette.grayDarker,
-                rifleColor: brandkit.monochromePalette.grayDarker,
-                trackBackgroundColor: brandkit.monochromePalette.grayLighter,
-                trackBorderWidth: 0
-            },
-            credits: {
-                enabled: false
-            }
-        };
-
-        Highcharts.setOptions(defaultChartConfig);
-
-        var config = {
-            chart: {
-                height: 400,
-                spacingLeft: 40,
-                type: 'line',
-                renderTo: this.getRenderEl(),
-                zoomType: 'x',
-                events: {
-                    redraw: function() {
-                        var extremes = this.xAxis[0].getExtremes();
-                        self.rangeStart = extremes.min;
-                        self.rangeEnd = extremes.max;
+                        x: 15
                     }
                 }
             },
             plotOptions: {
-                series: {
-                    marker: {}
-                },
                 line: {
                     lineWidth: 1,
                     states: {
@@ -483,32 +174,63 @@ Polymer({
                             lineWidth: 1
                         }
                     }
+                },
+                scatter: {
+                    marker: {
+                        enabled: true
+                    }
                 }
             },
-            rangeSelector: {
-                inputEnabled: true,
-                inputDateFormat: '%H:%M %m/%d/%Y',
-                inputEditDateFormat: '%H:%M %m/%d/%Y',
-                inputBoxWidth: 110,
-                inputPosition: {x: -300, y: 50}
+            tooltip: {
+                backgroundColor: brandkit.monochromePalette.white,
+                borderColor: brandkit.monochromePalette.grayLighter,
+                shadow: false,
+                style: {
+                    fontFamily: 'inherit',
+                    fontSize: 'inherit'
+                },
+                headerFormat: '<span>{point.key}</span><br/>',
+                pointFormat: '<span style="color:{series.color}">{series.name}: {point.y}</span><br/>'
+            }
+        };
+
+        Highcharts.setOptions(defaultChartConfig);
+
+        var config = {
+            chart: {
+                events: {
+                    redraw: function() {
+                        var extremes = this.xAxis[0].getExtremes();
+                        self.rangeStart = extremes.min;
+                        self.rangeEnd = extremes.max;
+                    }
+                },
+                height: 400,
+                renderTo: this.getRenderEl(),
+                zoomType: 'x'
             },
             legend: {
-                align: 'left',
                 enabled: true
-            },
-            title: {
-                text: this.title,
-                enabled: false
-            },
-            subtitle: {
-                text: this.subtitle
             },
             navigator: {
                 adaptToUpdatedData: false
             },
+            plotOptions: {
+                series: {
+                    marker: {}
+                }
+            },
+            rangeSelector: {
+                enabled: false
+            },
+            series: [],
+            scrollbar: {
+                enabled: false
+            },
+            title: {
+                text: null
+            },
             xAxis: {
-                type: 'datetime',
-                tickPixelInterval: 150,
                 title: {
                     text: this.xAxisLabel
                 },
@@ -518,18 +240,13 @@ Polymer({
                     }
                 }
             },
-            scrollbar: {
-                liveRedraw: false
-            },
             yAxis: {
+                labels: {
+                },
                 title: {
                     text: this.yAxisLabel,
-                    offset: 40
-                },
-                labels: {x: -20},
-                lineWidth: 0
-            },
-            series: []
+                }
+            }
         };
 
         if (this.showyaxisunits) {
@@ -702,7 +419,7 @@ Polymer({
     },
     getRangeClasses: function (s) {
         var isValid = this.isValidDate(s);
-        return isValid ? '' : 'invalid-date';
+        return isValid ? 'text-input' : 'invalid-date text-input';
     },
     isValidDate: function (s, checkForNull) {
         if (!checkForNull && !s) {
