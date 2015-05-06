@@ -21,37 +21,37 @@ Predix branding rules go in px-time-series-predix.scss, not in this file.
 
 $imported-once-files: ();
 
-
-
 /*
 See https://github.sw.ge.com/pxc/px-getting-started#a-note-about-relative-import-paths for an explanation of the `../`
 in import paths
 */
 
+// Settings
+@import "../px-defaults-design/settings.defaults";
+@import "../inuit-responsive-settings/settings.responsive";
 
+// Tools
+@import "../px-mixins-design/tools.mixins";
+@import "../inuit-responsive-tools/tools.responsive";
 
+// Generic
+@import "../px-normalize-design/generic.normalize";
+@import "../px-box-sizing-design/generic.box-sizing";
+@import "../px-helpers-design/generic.helpers";
 
+// Base
+@import "../px-flexbox-design/base.flexbox";
+@import "../px-viewport-design/base.viewport";
+@import "../px-typography-design/base.typography";
+@import "../px-forms-design/base.forms";
 
-.circle {
-  cursor: pointer;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+// Objects
+@import "../px-buttons-design/objects.buttons";
 
-  box-sizing: content-box; /* Even though we use shadow DOM in this component, Safari insists on bleeding styles through from outside, so reset the resetting of this */
+// Trumps
+@import "../px-clearfix-design/trumps.clearfix";
 
-  border: 1px black dashed;
-  font-size: 2.0rem;
-  text-align: center;
-  padding: 1.25rem 0.4rem 0.4rem 0.4rem;
-  border-radius: 50%;
-}
-.counter {
-  display: inline-block;
-  background-color: #ececec;
-  min-width: 6.5rem;
-  height: 3rem;
-}
+$inuit-enable-margins--none : true;
+
+@import "../px-spacing-responsive-design/trumps.spacing-responsive";
+@import "../px-widths-responsive-design/trumps.widths-responsive";

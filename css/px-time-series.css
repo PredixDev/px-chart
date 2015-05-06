@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*
  * Copyright (c) 2014 GE Global Research. All rights reserved.
  *
@@ -28,35 +29,1572 @@ Predix branding rules go in px-time-series-predix.scss, not in this file.
 See https://github.sw.ge.com/pxc/px-getting-started#a-note-about-relative-import-paths for an explanation of the `../`
 in import paths
 */
-.circle {
-  cursor: pointer;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  box-sizing: content-box;
-  /* Even though we use shadow DOM in this component, Safari insists on bleeding styles through from outside, so reset the resetting of this */
-  border: 1px black dashed;
-  font-size: 2rem;
-  text-align: center;
-  padding: 1.25rem 0.4rem 0.4rem 0.4rem;
-  border-radius: 50%; }
+/*!
+ * inuitcss, by @csswizardry
+ *
+ * github.com/inuitcss | inuitcss.com
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/*------------------------------------*\
+    #PX-MIXINS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass mixins for Predix Experience
+ */
+/*!
+ * inuitcss, by @csswizardry
+ *
+ * github.com/inuitcss | inuitcss.com
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+/*!
+ * inuitcss, by @csswizardry
+ *
+ * github.com/inuitcss | inuitcss.com
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/**
+   *
+   * 1. Set the default `font-size` and `line-height` for the entire project,
+   *    sourced from our default variables. The `font-size` is calculated to exist
+   *    in ems, the `line-height` is calculated to exist unitlessly.
+   * 2. Force scrollbars to always be visible to prevent awkward ‘jumps’ when
+   *    navigating between pages that do/do not have enough content to produce
+   *    scrollbars naturally.
+   * 3. Ensure the page always fills at least the entire height of the viewport.
+   * 4. Prevent certain mobile browsers from automatically zooming fonts.
+   * 5. Fonts on OSX will look more consistent with other systems that do not
+   *    render text using sub-pixel anti-aliasing.
+   */
+html {
+  font-size: 0.9375em;
+  /* [1] */
+  line-height: 1.3333333333;
+  /* [1] */
+  background-color: #fff;
+  color: #000;
+  overflow-y: scroll;
+  /* [2] */
+  min-height: 100%;
+  /* [3] */
+  text-size-adjust: 100%;
+  /* [4] */
+  -moz-osx-font-smoothing: grayscale;
+  /* [5] */
+  -webkit-font-smoothing: antialiased;
+  /* [5] */ }
 
-.counter {
+/**
+   * Remove default margin.
+   */
+body {
+  margin: 0; }
+
+/* HTML5 display definitions
+     ========================================================================== */
+/**
+   * Correct `block` display not defined for any HTML5 element in IE 8/9.
+   * Correct `block` display not defined for `details` or `summary` in IE 10/11
+   * and Firefox.
+   * Correct `block` display not defined for `main` in IE 11.
+   */
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+  display: block; }
+
+/**
+   * 1. Correct `inline-block` display not defined in IE 8/9.
+   * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.
+   */
+audio, canvas, progress, video {
   display: inline-block;
-  background-color: #ececec;
-  min-width: 6.5rem;
-  height: 3rem; }
+  /* 1 */
+  vertical-align: baseline;
+  /* 2 */ }
 
-.circle {
-  border-style: none;
-  -webkit-box-shadow: 0.2rem 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 0.2rem 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.5);
-  box-shadow: 0.2rem 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.5); }
+/**
+   * Prevent modern browsers from displaying `audio` without controls.
+   * Remove excess height in iOS 5 devices.
+   */
+audio:not([controls]) {
+  display: none;
+  height: 0; }
 
-.counter {
-  background-color: #005cb9;
-  color: white;
-  font-family: "GE Sans", sans-serif; }
+/**
+   * Address `[hidden]` styling not present in IE 8/9/10.
+   * Hide the `template` element in IE 8/9/11, Safari, and Firefox < 22.
+   */
+[hidden], template {
+  display: none; }
+
+/* Margins
+     ========================================================================== */
+/**
+   * Where `margin-bottom` is concerned,this value will be the same as the
+   * base line-height. This allows us to keep a consistent vertical rhythm.
+   * As per: csswizardry.com/2012/06/single-direction-margin-declarations
+   */
+h1, h2, h3, h4, h5, h6, ul, ol, dl, blockquote, p, address, hr, table, fieldset, figure, pre {
+  margin-bottom: 1rem; }
+
+/**
+   * Remove extra vertical spacing when nesting lists.
+   */
+li > ul, li > ol {
+  margin-bottom: 0; }
+
+/**
+   * Where `margin-left` is concerned we want to try and indent certain elements
+   * by a consistent amount. Define that amount once,here.
+   */
+ul, ol, dd {
+  margin-left: 2rem; }
+
+/* Links
+     ========================================================================== */
+/**
+   * Remove the gray background color from active links in IE 10.
+   */
+a {
+  background-color: transparent; }
+
+/**
+   * Improve readability when focused and also mouse hovered in all browsers.
+   */
+a:active, a:hover {
+  outline: 0; }
+
+/* Text-level semantics
+     ========================================================================== */
+/**
+   * Address styling not present in IE 8/9/10/11, Safari, and Chrome.
+   */
+abbr[title] {
+  border-bottom: 1px dotted; }
+
+/**
+   * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.
+   */
+b, strong {
+  font-weight: bold; }
+
+/**
+   * Address styling not present in Safari and Chrome.
+   */
+dfn {
+  font-style: italic; }
+
+/**
+   * Address variable `h1` font-size and margin within `section` and `article`
+   * contexts in Firefox 4+, Safari, and Chrome.
+   */
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0; }
+
+/**
+   * Address styling not present in IE 8/9.
+   */
+mark {
+  background: #ff0;
+  color: #000; }
+
+/**
+   * Address inconsistent and variable font size in all browsers.
+   */
+small {
+  font-size: 80%; }
+
+/**
+   * Prevent `sub` and `sup` affecting `line-height` in all browsers.
+   */
+sub, sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline; }
+
+sup {
+  top: -0.5em; }
+
+sub {
+  bottom: -0.25em; }
+
+/* Embedded content
+     ========================================================================== */
+/**
+   * Remove border when inside `a` element in IE 8/9/10.
+   */
+img {
+  border: 0; }
+
+/**
+   * Correct overflow not hidden in IE 9/10/11.
+   */
+svg:not(:root) {
+  overflow: hidden; }
+
+/* Grouping content
+     ========================================================================== */
+/**
+   * Address margin not present in IE 8/9 and Safari.
+   */
+figure {
+  margin: 1em 40px; }
+
+/**
+   * Address differences between Firefox and other browsers.
+   */
+hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0; }
+
+/**
+   * Contain overflow in all browsers.
+   */
+pre {
+  overflow: auto; }
+
+/**
+   * Address odd `em`-unit font size rendering in all browsers.
+   */
+code, kbd, pre, samp {
+  font-family: monospace, monospace;
+  font-size: 1em; }
+
+/* Forms
+     ========================================================================== */
+/**
+   * Known limitation: by default, Chrome and Safari on OS X allow very limited
+   * styling of `select`, unless a `border` property is set.
+   */
+/**
+   * 1. Correct color not being inherited.
+   *    Known issue: affects color of disabled elements.
+   * 2. Correct font properties not being inherited.
+   * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
+   */
+button, input, optgroup, select, textarea {
+  color: inherit;
+  /* 1 */
+  font: inherit;
+  /* 2 */
+  margin: 0;
+  /* 3 */ }
+
+/**
+   * Address `overflow` set to `hidden` in IE 8/9/10/11.
+   */
+button {
+  overflow: visible; }
+
+/**
+   * Address inconsistent `text-transform` inheritance for `button` and `select`.
+   * All other form control elements do not inherit `text-transform` values.
+   * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
+   * Correct `select` style inheritance in Firefox.
+   */
+button, select {
+  text-transform: none; }
+
+/**
+   * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+   *    and `video` controls.
+   * 2. Correct inability to style clickable `input` types in iOS.
+   * 3. Improve usability and consistency of cursor style between image-type
+   *    `input` and others.
+   */
+button, html input[type="button"], input[type="reset"], input[type="submit"] {
+  -webkit-appearance: button;
+  /* 2 */
+  cursor: pointer;
+  /* 3 */ }
+
+:host input[type="button"] {
+  -webkit-appearance: button;
+  /* 2 */
+  cursor: pointer;
+  /* 3 */ }
+
+/**
+   * Re-set default cursor for disabled elements.
+   */
+button[disabled], html input[disabled] {
+  cursor: default; }
+
+:host input[disabled] {
+  cursor: default; }
+
+/**
+   * Address Firefox 4+ setting `line-height` on `input` using `!important` in
+   * the UA stylesheet.
+   */
+input {
+  line-height: normal; }
+
+/**
+   * It's recommended that you don't attempt to style these elements.
+   * Firefox's implementation doesn't respect box-sizing, padding, or width.
+   *
+   * 1. Address box sizing set to `content-box` in IE 8/9/10.
+   * 2. Remove excess padding in IE 8/9/10.
+   */
+input[type="checkbox"], input[type="radio"] {
+  box-sizing: border-box;
+  /* 1 */
+  padding: 0;
+  /* 2 */ }
+
+/**
+   * Fix the cursor style for Chrome's increment/decrement buttons. For certain
+   * `font-size` values of the `input`, it causes the cursor style of the
+   * decrement button to change from `default` to `text`.
+   */
+/*
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    height: auto;
+  }
+*/
+/**
+   * 1. Address `appearance` set to `searchfield` in Safari and Chrome.
+   * 2. Address `box-sizing` set to `border-box` in Safari and Chrome
+   *    (include `-moz` to future-proof).
+   */
+input[type="search"] {
+  -webkit-appearance: textfield;
+  /* 1 */
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  /* 2 */
+  box-sizing: content-box; }
+
+/**
+   * Remove inner padding and search cancel button in Safari and Chrome on OS X.
+   * Safari (but not Chrome) clips the cancel button when the search input has
+   * padding (and `textfield` appearance).
+   */
+/*
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+  }
+*/
+/**
+   * Define consistent border, margin, and padding.
+   */
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em; }
+
+/**
+   * 1. Correct `color` not being inherited in IE 8/9/10/11.
+   * 2. Remove padding so people aren't caught out if they zero out fieldsets.
+   */
+legend {
+  border: 0;
+  /* 1 */
+  padding: 0;
+  /* 2 */ }
+
+/**
+   * Remove default vertical scrollbar in IE 8/9/10/11.
+   */
+textarea {
+  overflow: auto; }
+
+/**
+   * Don't inherit the `font-weight` (applied by a rule above).
+   * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
+   */
+optgroup {
+  font-weight: bold; }
+
+/* Tables
+     ========================================================================== */
+/**
+   * Remove most spacing between table cells.
+   */
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+td, th {
+  padding: 0; }
+
+/*------------------------------------*\
+    #PX-BOX-SIZING-DESIGN
+\*------------------------------------*/
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/**
+   * Set the global `box-sizing` state to `border-box`.
+   *
+   * css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice
+   * paulirish.com/2012/box-sizing-border-box-ftw
+   */
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+:host {
+  /*! Comment to prevent cssmin munging this rule with html above and borking Safari */
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit; }
+
+/*------------------------------------*\
+    #PX-HELPERS-DESIGN
+\*------------------------------------*/
+/**
+ * A series of helper classes to use arbitrarily. Only use a helper class if an
+ * element/component doesn’t already have a class to which you could apply this
+ * styling, e.g. if you need to float `.main-nav` left then add `float:left;` to
+ * that ruleset as opposed to adding the `.float--left` class to the markup.
+ *
+ * A lot of these classes carry `!important` as you will always want them to win
+ * out over other selectors.
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/**
+   * Add/remove floats
+   */
+.float--right {
+  float: right !important; }
+
+.float--left {
+  float: left !important; }
+
+.float--none {
+  float: none !important; }
+
+/**
+   * Text alignment
+   */
+.text--left {
+  text-align: left !important; }
+
+.text--center {
+  text-align: center !important; }
+
+.text--right {
+  text-align: right !important; }
+
+/**
+   * Full height element
+   */
+.full-height {
+  height: 100% !important; }
+
+/**
+   * Add a help cursor to any element that gives the user extra information on
+   * `:hover`.
+   */
+.informative {
+  cursor: help !important; }
+
+/**
+   * Mute an object by reducing its opacity.
+   */
+.muted {
+  opacity: 0.5 !important;
+  filter: alpha(opacity=50) !important; }
+
+/**
+   * Align items to the right where they imply progression/movement forward, e.g.:
+   *
+     <p class=proceed><a href=#>Read more...</a></p>
+   *
+   */
+.proceed {
+  text-align: right !important; }
+
+/**
+   * Apply capital case to an element (usually a `strong`).
+   */
+.caps {
+  text-transform: uppercase !important; }
+
+/**
+   * Hide visually and from screen readers:
+   * http://juicystudio.com/article/screen-readers-display-none.php
+   */
+.hidden {
+  display: none !important;
+  visibility: hidden; }
+
+/**
+   * Hide content off-screen without resorting to `display:none;`
+   */
+.a11y, .visuallyhidden {
+  position: absolute !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  border: 0 !important;
+  padding: 0 !important;
+  clip: rect(0 0 0 0) !important; }
+
+.a11y.focusable:active, .a11y.focusable:focus, .visuallyhidden.focusable:active, .visuallyhidden.focusable:focus {
+  position: static;
+  overflow: visible;
+  width: auto;
+  height: auto;
+  margin: 0;
+  clip: auto; }
+
+@media screen and (max-width: 44.9375em) {
+  .a11y-palm, .visuallyhidden-palm {
+    position: absolute !important;
+    overflow: hidden !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    border: 0 !important;
+    padding: 0 !important;
+    clip: rect(0 0 0 0) !important; } }
+
+@media screen and (min-width: 45em) and (max-width: 63.9375em) {
+  .a11y-lap, .visuallyhidden-lap {
+    position: absolute !important;
+    overflow: hidden !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    border: 0 !important;
+    padding: 0 !important;
+    clip: rect(0 0 0 0) !important; } }
+
+@media screen and (min-width: 45em) {
+  .a11y-lap-and-up, .visuallyhidden-lap-and-up {
+    position: absolute !important;
+    overflow: hidden !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    border: 0 !important;
+    padding: 0 !important;
+    clip: rect(0 0 0 0) !important; } }
+
+@media screen and (max-width: 63.9375em) {
+  .a11y-portable, .visuallyhidden-portable {
+    position: absolute !important;
+    overflow: hidden !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    border: 0 !important;
+    padding: 0 !important;
+    clip: rect(0 0 0 0) !important; } }
+
+@media screen and (min-width: 64em) {
+  .a11y-desk, .visuallyhidden-desk {
+    position: absolute !important;
+    overflow: hidden !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    border: 0 !important;
+    padding: 0 !important;
+    clip: rect(0 0 0 0) !important; } }
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx) {
+  .a11y-retina, .visuallyhidden-retina {
+    position: absolute !important;
+    overflow: hidden !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    border: 0 !important;
+    padding: 0 !important;
+    clip: rect(0 0 0 0) !important; } }
+
+/**
+   * Hide visually and from screen readers, but maintain layout
+   */
+.invisible {
+  visibility: hidden; }
+
+/*------------------------------------*\
+    #PX-FLEXBOX-DESIGN
+\*------------------------------------*/
+/**
+* Flexbox for Predix Experience
+*/
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+.flex {
+  display: flex; }
+
+.flex--reverse {
+  flex-direction: row-reverse; }
+
+.flex--column {
+  flex-direction: column; }
+
+.flex--column--reverse {
+  flex-direction: column-reverse; }
+
+.flex--wrap {
+  flex-wrap: wrap; }
+
+.flex--center {
+  justify-content: center; }
+
+.flex--right {
+  justify-content: flex-end; }
+
+.flex--justify {
+  justify-content: space-between; }
+
+.flex--spaced {
+  justify-content: space-around; }
+
+.flex--top {
+  align-items: flex-start; }
+
+.flex--middle {
+  align-items: center; }
+
+.flex--bottom {
+  align-items: flex-end; }
+
+.flex--baseline {
+  align-items: baseline; }
+
+.flex__item {
+  flex: 1; }
+
+.flex__item--top {
+  align-self: flex-start; }
+
+.flex__item--middle {
+  align-self: center; }
+
+.flex__item--bottom {
+  align-self: flex-end; }
+
+.flex__item--baseline {
+  align-self: baseline; }
+
+/*------------------------------------*\
+    #PX-VIEWPORT-DESIGN
+\*------------------------------------*/
+/**
+* Define a default max viewport
+*/
+/*!
+ * inuitcss, by @csswizardry
+ *
+ * github.com/inuitcss | inuitcss.com
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+.viewport {
+  width: 98%;
+  max-width: 80rem;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 1%;
+  padding-left: 1%; }
+  @media screen and (min-width: 80rem) {
+    .viewport {
+      width: 100%;
+      padding-right: 0;
+      padding-left: 0; } }
+
+.viewport--full-height {
+  min-height: 100vh; }
+
+/*------------------------------------*\
+    $PX-TYPOGRAPHY-DESIGN
+\*------------------------------------*/
+/**
+ * Base typographic styles for Predix Experience
+ */
+/*!
+ * inuitcss, by @csswizardry
+ *
+ * github.com/inuitcss | inuitcss.com
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/*------------------------------------*\
+    #PX-MIXINS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass mixins for Predix Experience
+ */
+/*!
+ * inuitcss, by @csswizardry
+ *
+ * github.com/inuitcss | inuitcss.com
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+@font-face {
+  font-family: 'GE Inspira';
+  font-weight: normal;
+  font-style: normal;
+  src: url('../type/GEInspMd.eot');
+  src: url('../type/GEInspMd.eot?#iefix') format('embedded-opentype'), url('../type/GEInspMd.woff') format('woff'), url('../type/GEInspMd.ttf') format('truetype'), url('../type/GEInspMd.svg#GE Inspira') format('svg'); }
+
+@font-face {
+  font-family: 'GE Inspira';
+  font-weight: normal;
+  font-style: italic;
+  src: url('../type/GEInspMdIt.eot');
+  src: url('../type/GEInspMdIt.eot?#iefix') format('embedded-opentype'), url('../type/GEInspMdIt.woff') format('woff'), url('../type/GEInspMdIt.ttf') format('truetype'), url('../type/GEInspMdIt.svg#GE Inspira') format('svg'); }
+
+@font-face {
+  font-family: 'GE Inspira';
+  font-weight: bold;
+  font-style: normal;
+  src: url('../type/GEInspBd.eot');
+  src: url('../type/GEInspBd.eot?#iefix') format('embedded-opentype'), url('../type/GEInspBd.woff') format('woff'), url('../type/GEInspBd.ttf') format('truetype'), url('../type/GEInspBd.svg#GE Inspira') format('svg'); }
+
+@font-face {
+  font-family: 'GE Inspira';
+  font-weight: bold;
+  font-style: italic;
+  src: url('../type/GEInspBI.eot');
+  src: url('../type/GEInspBI.eot?#iefix') format('embedded-opentype'), url('../type/GEInspBI.woff') format('woff'), url('../type/GEInspBI.ttf') format('truetype'), url('../type/GEInspBI.svg#GE Inspira') format('svg'); }
+
+@font-face {
+  font-family: 'GE Inspira Sans';
+  font-weight: normal;
+  font-style: normal;
+  src: url('../type/GEInspiraSans-Regular-v01.eot');
+  src: url('../type/GEInspiraSans-Regular-v01.eot?#iefix') format('embedded-opentype'), url('../type/GEInspiraSans-Regular-v01.woff') format('woff'), url('../type/GEInspiraSans-Regular-v01.ttf') format('truetype'), url('../type/GEInspiraSans-Regular-v01.svg#GE Inspira Sans') format('svg'); }
+
+@font-face {
+  font-family: 'GE Inspira Sans';
+  font-weight: normal;
+  font-style: italic;
+  src: url('../type/GEInspiraSans-Italic-v01.eot');
+  src: url('../type/GEInspiraSans-Italic-v01.eot?#iefix') format('embedded-opentype'), url('../type/GEInspiraSans-Italic-v01.woff') format('woff'), url('../type/GEInspiraSans-Italic-v01.ttf') format('truetype'), url('../type/GEInspiraSans-Italic-v01.svg#GE Inspira Sans') format('svg'); }
+
+@font-face {
+  font-family: 'GE Inspira Sans';
+  font-weight: bold;
+  font-style: normal;
+  src: url('../type/GEInspiraSans-Bold-v01.eot');
+  src: url('../type/GEInspiraSans-Bold-v01.eot?#iefix') format('embedded-opentype'), url('../type/GEInspiraSans-Bold-v01.woff') format('woff'), url('../type/GEInspiraSans-Bold-v01.ttf') format('truetype'), url('../type/GEInspiraSans-Bold-v01.svg#GE Inspira Sans') format('svg'); }
+
+@font-face {
+  font-family: 'GE Inspira Sans';
+  font-weight: bold;
+  font-style: italic;
+  src: url('../type/GEInspiraSans-BoldItalic-v01.eot');
+  src: url('../type/GEInspiraSans-BoldItalic-v01.eot?#iefix') format('embedded-opentype'), url('../type/GEInspiraSans-BoldItalic-v01.woff') format('woff'), url('../type/GEInspiraSans-BoldItalic-v01.ttf') format('truetype'), url('../type/GEInspiraSans-BoldItalic-v01.svg#GE Inspira Sans') format('svg'); }
+
+@font-face {
+  font-family: 'GE Inspira Serif';
+  font-weight: normal;
+  font-style: normal;
+  src: url('../type/GEInspiraSerif-Regular-v01.eot');
+  src: url('../type/GEInspiraSerif-Regular-v01.eot?#iefix') format('embedded-opentype'), url('../type/GEInspiraSerif-Regular-v01.woff') format('woff'), url('../type/GEInspiraSerif-Regular-v01.ttf') format('truetype'), url('../type/GEInspiraSerif-Regular-v01.svg#GE Inspira Serif') format('svg'); }
+
+@font-face {
+  font-family: 'GE Inspira Serif';
+  font-weight: normal;
+  font-style: italic;
+  src: url('../type/GEInspiraSerif-Italic-v01.eot');
+  src: url('../type/GEInspiraSerif-Italic-v01.eot?#iefix') format('embedded-opentype'), url('../type/GEInspiraSerif-Italic-v01.woff') format('woff'), url('../type/GEInspiraSerif-Italic-v01.ttf') format('truetype'), url('../type/GEInspiraSerif-Italic-v01.svg#GE Inspira Serif') format('svg'); }
+
+@font-face {
+  font-family: 'GE Inspira Serif';
+  font-weight: bold;
+  font-style: normal;
+  src: url('../type/GEInspiraSerif-Bold-v01.eot');
+  src: url('../type/GEInspiraSerif-Bold-v01.eot?#iefix') format('embedded-opentype'), url('../type/GEInspiraSerif-Bold-v01.woff') format('woff'), url('../type/GEInspiraSerif-Bold-v01.ttf') format('truetype'), url('../type/GEInspiraSerif-Bold-v01.svg#GE Inspira Serif') format('svg'); }
+
+@font-face {
+  font-family: 'GE Inspira Serif';
+  font-weight: bold;
+  font-style: italic;
+  src: url('../type/GEInspiraSerif-BoldItalic-v01.eot');
+  src: url('../type/GEInspiraSerif-BoldItalic-v01.eot?#iefix') format('embedded-opentype'), url('../type/GEInspiraSerif-BoldItalic-v01.woff') format('woff'), url('../type/GEInspiraSerif-BoldItalic-v01.ttf') format('truetype'), url('../type/GEInspiraSerif-BoldItalic-v01.svg#GE Inspira Serif') format('svg'); }
+
+html {
+  font-family: "GE Inspira Sans", sans-serif; }
+
+:host {
+  font-family: "GE Inspira Sans", sans-serif; }
+
+/**
+   * Font weights
+   */
+.weight--light {
+  font-weight: 300 !important; }
+
+.weight--normal {
+  font-weight: 400 !important; }
+
+.weight--semibold {
+  font-weight: 600 !important; }
+
+small {
+  font-size: 0.8rem;
+  line-height: 1.6666666667; }
+
+/*------------------------------------*\
+    #PX-FORMS-DESIGN
+\*------------------------------------*/
+/**
+ * Base form styles for Predix Experience
+ */
+/*!
+ * inuitcss, by @csswizardry
+ *
+ * github.com/inuitcss | inuitcss.com
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/*------------------------------------*\
+    #PX-COLORS-DESIGN
+\*------------------------------------*/
+/**
+ * GE Color Palette
+ */
+/**
+ * Primary
+ */
+/**
+ * Light
+ */
+/**
+ * Dark
+ */
+/**
+ * Circle
+ */
+/**
+ * Monochrome
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+form {
+  position: relative; }
+
+label {
+  display: block; }
+
+.label-inline {
+  display: inline-block;
+  line-height: 2em;
+  color: #bcbcbc; }
+
+input:invalid, button:invalid, a.button:invalid, select:invalid, textarea:invalid {
+  box-shadow: none; }
+input:focus, button:focus, a.button:focus, select:focus, textarea:focus {
+  box-shadow: #06f 0 0 5px 0; }
+
+input[type=file]:focus, input[type=file]:active, input[type=radio]:focus, input[type=radio]:active, input[type=checkbox]:focus, input[type=checkbox]:active {
+  box-shadow: none; }
+
+.input--tiny {
+  width: 3.3333333333rem; }
+
+.input--small {
+  width: 6.6666666667rem; }
+
+.input--regular {
+  width: 10rem; }
+
+.input--large {
+  width: 13.3333333333rem; }
+
+.input--huge {
+  width: 16.6666666667rem; }
+
+.text-input, textarea, select {
+  -webkit-appearance: none;
+  height: 2em;
+  border: 1px solid rgba(134, 134, 134, 0.55);
+  padding: 0 .5em;
+  outline: 0;
+  text-align: left;
+  line-height: 1;
+  vertical-align: top;
+  background-color: white;
+  background-clip: padding-box;
+  color: #575757;
+  border-radius: 3px; }
+  .text-input[disabled], textarea[disabled], select[disabled] {
+    background-color: #e9e9e9; }
+
+button[disabled], input[disabled], select[disabled], select[disabled] option, select[disabled] optgroup, textarea[disabled] {
+  box-shadow: none;
+  user-select: none;
+  color: #868686;
+  cursor: default; }
+
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+  font-style: italic;
+  color: #868686; }
+
+input:-moz-placeholder, textarea:-moz-placeholder {
+  font-style: italic;
+  color: #868686; }
+
+select {
+  border-color: #bcbcbc;
+  border-radius: 2px; }
+
+textarea, select[size], select[multiple] {
+  height: auto; }
+
+select[size="0"], select[size="1"] {
+  height: 2em; }
+
+@media (-webkit-min-device-pixel-ratio: 0) {
+  select[size], select[multiple], select[multiple][size] {
+    background-image: none;
+    padding-right: 0.2rem; }
+  select, select[size="0"], select[size="1"] {
+    padding-right: 1.3333333333rem;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAICAMAAADUf89RAAAAIVBMVEX///9XV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dvorLKAAAACnRSTlMANDU5QGSAkJHv2+SltgAAADxJREFUCNdtyTkCwCAMxEBxBPD+/8HE0CQYlSNolvCyNb4VaZ1sUvmdsY77gHCe1ztnXV70fW7u5+5Qg0y71gGIV/2q9QAAAABJRU5ErkJggg==) no-repeat right center, linear-gradient(0deg, #e9e9e9 0%, #f5f5f5 100%); } }
+
+select[multiple] {
+  padding: 0.3333333333rem; }
+
+textarea {
+  overflow: auto;
+  width: 100%;
+  min-height: 2.6666666667rem;
+  resize: vertical; }
+
+optgroup {
+  font-style: normal;
+  font-weight: normal;
+  color: black; }
+  optgroup::-moz-focus-inner {
+    border: 0;
+    padding: 0; }
+
+.input-bare {
+  border: 0 !important; }
+  .input-bare[type=number] {
+    position: relative;
+    padding: 0 .25em 0 0;
+    text-align: right; }
+
+.input-btn {
+  height: 2.3em;
+  border: solid rgba(134, 134, 134, 0.55);
+  border-width: 1px 0 1px 1px;
+  border-radius: 0;
+  box-shadow: inset 0 4px 6px 1px rgba(0, 0, 0, 0.13); }
+
+.layout__item .text-input, .layout__item select {
+  width: 100%; }
+
+/*!
+ * inuitcss, by @csswizardry
+ *
+ * github.com/inuitcss | inuitcss.com
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/*------------------------------------*\
+    #PX-MIXINS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass mixins for Predix Experience
+ */
+/*!
+ * inuitcss, by @csswizardry
+ *
+ * github.com/inuitcss | inuitcss.com
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/**
+  * 1. Allow us to style box model properties.
+  * 2. Line different sized buttons up a little nicer.
+  * 3. Make buttons inherit font styles (often necessary when styling `input`s as
+  *    buttons).
+  * 4. Reset/normalize some styles.
+  * 5. Force all button-styled elements to appear clickable.
+  * 6. Fixes odd inner spacing in IE7.
+  * 7. Subtract the border size from the padding value so that buttons do not
+  *    grow larger as we add borders.
+  */
+.btn {
+  display: inline-block;
+  /* [1] */
+  vertical-align: middle;
+  /* [2] */
+  font: inherit;
+  /* [3] */
+  text-align: center;
+  /* [4] */
+  margin: 0;
+  /* [4] */
+  padding-right: 1em;
+  padding-left: 1em;
+  cursor: pointer;
+  /* [5] */
+  overflow: visible;
+  /* [6] */
+  background: #3171e3;
+  -webkit-font-smoothing: antialiased;
+  border: 0;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  line-height: calc(2em - 2px);
+  border-radius: 3px; }
+  .btn, .btn:hover, .btn:active, .btn:focus {
+    text-decoration: none;
+    /* [4] */
+    color: white; }
+  .btn:hover, .btn:focus {
+    background: linear-gradient(180deg, #34b2fc 0%, #3171e3 100%); }
+  .btn:active {
+    background: linear-gradient(0deg, #34b2fc 0%, #3171e3 100%); }
+
+/**
+  * Establish default space between adjacent buttons
+  */
+.btn + .btn {
+  margin-left: 0.6666666667rem; }
+
+/*------------------------------------*\
+    #PX-CLEARFIX-DESIGN
+\*------------------------------------*/
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/**
+   * Micro clearfix, as per: css-101.org/articles/clearfix/latest-new-clearfix-so-far.php
+   * Extend the clearfix class with Sass to avoid the `.clearfix` class appearing
+   * over and over in your markup.
+   */
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both; }
+
+/*------------------------------------*\
+    #PX-SPACING-RESPONSIVE-DESIGN
+\*------------------------------------*/
+/**
+ * Margin and padding helper classes. Use these to tweak layout on a micro
+ * level.
+ *
+ * `.(m|p)(t|r|b|l|h|v)(-|+|0) {}` = margin/padding top/right/bottom/left/horizontal/vertical less/more/none
+ */
+/*!
+ * inuitcss, by @csswizardry
+ *
+ * github.com/inuitcss | inuitcss.com
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/*------------------------------------*\
+    #PX-SPACING-DESIGN
+\*------------------------------------*/
+/**
+ * Margin and padding helper classes. Use these to tweak layout on a micro
+ * level.
+ *
+ * `.(m|p)(t|r|b|l|h|v)(-|+|0) {}` = margin/padding top/right/bottom/left/horizontal/vertical less/more/none
+ */
+/*!
+ * inuitcss, by @csswizardry
+ *
+ * github.com/inuitcss | inuitcss.com
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/**
+       * Remove margins.
+       */
+.m0 {
+  margin: 0 !important; }
+
+.mt0 {
+  margin-top: 0 !important; }
+
+.mr0 {
+  margin-right: 0 !important; }
+
+.mb0 {
+  margin-bottom: 0 !important; }
+
+.ml0 {
+  margin-left: 0 !important; }
+
+.mh0 {
+  margin-right: 0 !important;
+  margin-left: 0 !important; }
+
+.mv0 {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important; }
+
+/*------------------------------------*\
+    #PX-WIDTHS-RESPONSIVE-DESIGN
+\*------------------------------------*/
+/**
+ * Responsive width classes based on your responsive settings.
+ */
+/*!
+ * inuitcss, by @csswizardry
+ *
+ * github.com/inuitcss | inuitcss.com
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/*!
+ * inuitcss, by @csswizardry
+ *
+ * github.com/inuitcss | inuitcss.com
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/*------------------------------------*\
+    #WIDTHS
+\*------------------------------------*/
+/**
+ * A series of width helper classes that you can use to size things like grid
+ * systems. Classes can take a fraction-like format (e.g. `.u-2/3`) or a spoken-
+ * word format (e.g. `.u-2-of-3`). Use these in your markup:
+ *
+ * <div class="u-7/12">
+ */
+/*!
+ * inuitcss, by @csswizardry
+ *
+ * github.com/inuitcss | inuitcss.com
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+/*!
+ * inuitcss, by @csswizardry
+ *
+ * github.com/inuitcss | inuitcss.com
+ */
+/*------------------------------------*\
+    #PX-FUNCTIONS-DESIGN
+\*------------------------------------*/
+/**
+ * Sass functions for Predix Experience
+ */
+.u-1\/1 {
+  width: 100% !important; }
+
+.u-1\/2 {
+  width: 50% !important;
+  flex: none !important; }
+
+.u-1\/3 {
+  width: 33.3333333333% !important;
+  flex: none !important; }
+
+.u-2\/3 {
+  width: 66.6666666667% !important;
+  flex: none !important; }
+
+.u-1\/4 {
+  width: 25% !important;
+  flex: none !important; }
+
+.u-2\/4 {
+  width: 50% !important;
+  flex: none !important; }
+
+.u-3\/4 {
+  width: 75% !important;
+  flex: none !important; }
+
+.u-1\/5 {
+  width: 20% !important;
+  flex: none !important; }
+
+.u-2\/5 {
+  width: 40% !important;
+  flex: none !important; }
+
+.u-3\/5 {
+  width: 60% !important;
+  flex: none !important; }
+
+.u-4\/5 {
+  width: 80% !important;
+  flex: none !important; }
+
+@media screen and (max-width: 47.9375rem) {
+  .u-1\/1-palm {
+    width: 100% !important; }
+  .u-1\/2-palm {
+    width: 50% !important;
+    flex: none !important; }
+  .u-1\/3-palm {
+    width: 33.3333333333% !important;
+    flex: none !important; }
+  .u-2\/3-palm {
+    width: 66.6666666667% !important;
+    flex: none !important; }
+  .u-1\/4-palm {
+    width: 25% !important;
+    flex: none !important; }
+  .u-2\/4-palm {
+    width: 50% !important;
+    flex: none !important; }
+  .u-3\/4-palm {
+    width: 75% !important;
+    flex: none !important; }
+  .u-1\/5-palm {
+    width: 20% !important;
+    flex: none !important; }
+  .u-2\/5-palm {
+    width: 40% !important;
+    flex: none !important; }
+  .u-3\/5-palm {
+    width: 60% !important;
+    flex: none !important; }
+  .u-4\/5-palm {
+    width: 80% !important;
+    flex: none !important; } }
+
+@media screen and (min-width: 48rem) and (max-width: 68.204166667rem) {
+  .u-1\/1-lap {
+    width: 100% !important; }
+  .u-1\/2-lap {
+    width: 50% !important;
+    flex: none !important; }
+  .u-1\/3-lap {
+    width: 33.3333333333% !important;
+    flex: none !important; }
+  .u-2\/3-lap {
+    width: 66.6666666667% !important;
+    flex: none !important; }
+  .u-1\/4-lap {
+    width: 25% !important;
+    flex: none !important; }
+  .u-2\/4-lap {
+    width: 50% !important;
+    flex: none !important; }
+  .u-3\/4-lap {
+    width: 75% !important;
+    flex: none !important; }
+  .u-1\/5-lap {
+    width: 20% !important;
+    flex: none !important; }
+  .u-2\/5-lap {
+    width: 40% !important;
+    flex: none !important; }
+  .u-3\/5-lap {
+    width: 60% !important;
+    flex: none !important; }
+  .u-4\/5-lap {
+    width: 80% !important;
+    flex: none !important; } }
+
+@media screen and (min-width: 48rem) {
+  .u-1\/1-lap-and-up {
+    width: 100% !important; }
+  .u-1\/2-lap-and-up {
+    width: 50% !important;
+    flex: none !important; }
+  .u-1\/3-lap-and-up {
+    width: 33.3333333333% !important;
+    flex: none !important; }
+  .u-2\/3-lap-and-up {
+    width: 66.6666666667% !important;
+    flex: none !important; }
+  .u-1\/4-lap-and-up {
+    width: 25% !important;
+    flex: none !important; }
+  .u-2\/4-lap-and-up {
+    width: 50% !important;
+    flex: none !important; }
+  .u-3\/4-lap-and-up {
+    width: 75% !important;
+    flex: none !important; }
+  .u-1\/5-lap-and-up {
+    width: 20% !important;
+    flex: none !important; }
+  .u-2\/5-lap-and-up {
+    width: 40% !important;
+    flex: none !important; }
+  .u-3\/5-lap-and-up {
+    width: 60% !important;
+    flex: none !important; }
+  .u-4\/5-lap-and-up {
+    width: 80% !important;
+    flex: none !important; } }
+
+@media screen and (max-width: 68.204166667rem) {
+  .u-1\/1-portable {
+    width: 100% !important; }
+  .u-1\/2-portable {
+    width: 50% !important;
+    flex: none !important; }
+  .u-1\/3-portable {
+    width: 33.3333333333% !important;
+    flex: none !important; }
+  .u-2\/3-portable {
+    width: 66.6666666667% !important;
+    flex: none !important; }
+  .u-1\/4-portable {
+    width: 25% !important;
+    flex: none !important; }
+  .u-2\/4-portable {
+    width: 50% !important;
+    flex: none !important; }
+  .u-3\/4-portable {
+    width: 75% !important;
+    flex: none !important; }
+  .u-1\/5-portable {
+    width: 20% !important;
+    flex: none !important; }
+  .u-2\/5-portable {
+    width: 40% !important;
+    flex: none !important; }
+  .u-3\/5-portable {
+    width: 60% !important;
+    flex: none !important; }
+  .u-4\/5-portable {
+    width: 80% !important;
+    flex: none !important; } }
+
+@media screen and (min-width: 68.266666667rem) {
+  .u-1\/1-desk {
+    width: 100% !important; }
+  .u-1\/2-desk {
+    width: 50% !important;
+    flex: none !important; }
+  .u-1\/3-desk {
+    width: 33.3333333333% !important;
+    flex: none !important; }
+  .u-2\/3-desk {
+    width: 66.6666666667% !important;
+    flex: none !important; }
+  .u-1\/4-desk {
+    width: 25% !important;
+    flex: none !important; }
+  .u-2\/4-desk {
+    width: 50% !important;
+    flex: none !important; }
+  .u-3\/4-desk {
+    width: 75% !important;
+    flex: none !important; }
+  .u-1\/5-desk {
+    width: 20% !important;
+    flex: none !important; }
+  .u-2\/5-desk {
+    width: 40% !important;
+    flex: none !important; }
+  .u-3\/5-desk {
+    width: 60% !important;
+    flex: none !important; }
+  .u-4\/5-desk {
+    width: 80% !important;
+    flex: none !important; } }
+
+@media screen and (min-width: 80rem) {
+  .u-1\/1-desk-wide {
+    width: 100% !important; }
+  .u-1\/2-desk-wide {
+    width: 50% !important;
+    flex: none !important; }
+  .u-1\/3-desk-wide {
+    width: 33.3333333333% !important;
+    flex: none !important; }
+  .u-2\/3-desk-wide {
+    width: 66.6666666667% !important;
+    flex: none !important; }
+  .u-1\/4-desk-wide {
+    width: 25% !important;
+    flex: none !important; }
+  .u-2\/4-desk-wide {
+    width: 50% !important;
+    flex: none !important; }
+  .u-3\/4-desk-wide {
+    width: 75% !important;
+    flex: none !important; }
+  .u-1\/5-desk-wide {
+    width: 20% !important;
+    flex: none !important; }
+  .u-2\/5-desk-wide {
+    width: 40% !important;
+    flex: none !important; }
+  .u-3\/5-desk-wide {
+    width: 60% !important;
+    flex: none !important; }
+  .u-4\/5-desk-wide {
+    width: 80% !important;
+    flex: none !important; } }
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx) {
+  .u-1\/1-retina {
+    width: 100% !important; }
+  .u-1\/2-retina {
+    width: 50% !important;
+    flex: none !important; }
+  .u-1\/3-retina {
+    width: 33.3333333333% !important;
+    flex: none !important; }
+  .u-2\/3-retina {
+    width: 66.6666666667% !important;
+    flex: none !important; }
+  .u-1\/4-retina {
+    width: 25% !important;
+    flex: none !important; }
+  .u-2\/4-retina {
+    width: 50% !important;
+    flex: none !important; }
+  .u-3\/4-retina {
+    width: 75% !important;
+    flex: none !important; }
+  .u-1\/5-retina {
+    width: 20% !important;
+    flex: none !important; }
+  .u-2\/5-retina {
+    width: 40% !important;
+    flex: none !important; }
+  .u-3\/5-retina {
+    width: 60% !important;
+    flex: none !important; }
+  .u-4\/5-retina {
+    width: 80% !important;
+    flex: none !important; } }
