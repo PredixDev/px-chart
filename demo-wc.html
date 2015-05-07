@@ -1,0 +1,55 @@
+<!doctype html>
+
+<html ng-app="demo">
+<head>
+  <title>px-time-series-chart Demo</title>
+
+  <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
+  <script src="../webcomponentsjs/webcomponents.js"></script>
+
+  <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
+  <link rel="import" href="../px-theme/px-theme.html"/>
+  <link rel="import" href="../iron-ajax/iron-ajax.html"/>
+  <link rel="import" href="px-time-series.html"/>
+  <link rel="import" href="px-time-series-chart.html"/>
+  <link rel="import" href="px-chart-series.html"/>
+
+  <style is="x-style">
+    html {
+      height: 100%;
+      font-size:0.9375em;
+    }
+    body {
+      height: 100%;
+      margin: 0;
+    }
+    .demo {
+      padding: 1rem;
+    }
+  </style>
+
+</head>
+
+<body>
+  <px-time-series-chart showyaxisunits
+                  x-axis-label="time"
+                  y-axis-label="values">
+    <px-chart-series name="core-vibe-rear-cruise">
+      <iron-ajax
+          url="../demo-data/aviation/core-vibe-rear-cruise.json"
+          handleas="json"
+          on-response="{{parent.setSeriesObj}}"></iron-ajax>
+    </px-chart-series>
+    <px-chart-series name="fan-vibe-fwd-cruise">
+      <iron-ajax
+          url="../demo-data/aviation/fan-vibration-cruise.json"
+          handleas="json"
+          on-response="{{setSeriesObj}}"></iron-ajax>
+    </px-chart-series>
+  </px-time-series-chart>
+
+<script>
+
+</script>
+</body>
+</html>
