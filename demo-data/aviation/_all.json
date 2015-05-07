@@ -1,5 +1,5 @@
 {
-  MachCruise: {
+  "MachCruise": {
     "series": [
       [1397102460000, 0.828],
       [1397139660000, 0.827],
@@ -700,7 +700,7 @@
     "min": 0.606,
     "mean": 0.8142752161383265
   },
-  AltitudeCruise: {
+  "AltitudeCruise": {
     "series": [
       [1397102460000, 34000],
       [1397139660000, 35998],
@@ -1401,7 +1401,7 @@
     "min": 22997,
     "mean": 34152.32276657061
   },
-  EgtHotDayMarginTakeoff: {
+  "EgtHotDayMarginTakeoff": {
     "series": [
       [1397130960000, 53.0814],
       [1397151720000, 42.8132],
@@ -2126,7 +2126,7 @@
     "min": 31.5328,
     "mean": 44.404866434540395
   },
-  DeltaFuelFlowCruise: {
+  "DeltaFuelFlowCruise": {
     "series": [
       [1397102460000, -0.3811],
       [1397139660000, -0.0574],
@@ -2753,7 +2753,7 @@
     "min": -1.1445,
     "mean": -0.019076774193548394
   },
-  DeltaCoreSpeedCruise: {
+  "DeltaCoreSpeedCruise": {
     "series": [
       [1397102460000, 0.3693],
       [1397139660000, 0.3749],
@@ -3406,7 +3406,7 @@
     "min": -0.2943,
     "mean": 0.3618441176470584
   },
-  DeltaEgtCruise: {
+  "DeltaEgtCruise": {
     "series": [
       [1397102460000, 11.4403],
       [1397139660000, 13.1913],
@@ -4059,7 +4059,7 @@
     "min": 7.6531,
     "mean": 15.330657585139331
   },
-  CoreVibeRearTakeoff: {
+  "CoreVibeRearTakeoff": {
     "series": [
       [1397130960000, 0.18],
       [1397151720000, 0.24],
@@ -4822,7 +4822,7 @@
     "min": 0.02,
     "mean": 0.2939021164021163
   },
-  CoreVibeRearCruise: {
+  "CoreVibeRearCruise": {
     "series": [
       [1397102460000, 0.99],
       [1397139660000, 0.92],
@@ -5513,7 +5513,7 @@
     "min": 0.17,
     "mean": 0.826652046783625
   },
-  FanVibeFwdTakeoff: {
+  "FanVibeFwdTakeoff": {
     "series": [
       [1397130960000, 0.77],
       [1397151720000, 0.84],
@@ -6276,7 +6276,7 @@
     "min": 0.06,
     "mean": 0.9355158730158725
   },
-  CoreVibeRearClimb: {
+  "CoreVibeRearClimb": {
     "series": [
       [1397131560000, 0.27],
       [1397152260000, 0.21],
@@ -7072,7 +7072,7 @@
     "min": 0.02,
     "mean": 0.3784157160963244
   },
-  FanVibeFwdClimb: {
+  "FanVibeFwdClimb": {
     "series": [
       [1397131560000, 0.82],
       [1397152260000, 0.75],
@@ -7868,7 +7868,7 @@
     "min": 0.06,
     "mean": 0.9427629911280103
   },
-  FanVibeFwdCruise: {
+  "FanVibeFwdCruise": {
     "series": [
       [1397102460000, 0.56],
       [1397139660000, 0.4],
@@ -8559,7 +8559,7 @@
     "min": 0.11,
     "mean": 0.45714912280701736
   },
-  FuelFilterDeltaPressureTakeoff: {
+  "FuelFilterDeltaPressureTakeoff": {
     "series": [
       [1397130960000, 6.3],
       [1397151720000, 6.5],
@@ -9330,7 +9330,7 @@
     "min": 5.5,
     "mean": 6.7390052356021055
   },
-  FuelFilterDeltaPressureClimb: {
+  "FuelFilterDeltaPressureClimb": {
     "series": [
       [1397131560000, 5.3],
       [1397152260000, 6.4],
@@ -10134,7 +10134,7 @@
     "min": 4.7,
     "mean": 6.476537013801767
   },
-  FuelFilterDeltaPressureCruise: {
+  "FuelFilterDeltaPressureCruise": {
     "series": [
       [1397102460000, 5],
       [1397139660000, 5],
@@ -10835,7 +10835,7 @@
     "min": 4,
     "mean": 5.181556195965418
   },
-  HptaccPositionCruise: {
+  "HptaccPositionCruise": {
     "series": [
       [1397102460000, 96.5],
       [1397139660000, 96.5],
@@ -11536,7 +11536,7 @@
     "min": 10,
     "mean": 91.5203170028819
   },
-  OilFilterDeltaPressureTakeoff: {
+  "OilFilterDeltaPressureTakeoff": {
     "series": [
       [1397130960000, 4],
       [1397151720000, 4],
@@ -12307,7 +12307,7 @@
     "min": 4,
     "mean": 4.682591623036649
   },
-  OilFilterDeltaPressureCruise: {
+  "OilFilterDeltaPressureCruise": {
     "series": [
       [1397102460000, 3],
       [1397139660000, 3],
@@ -13008,7 +13008,7 @@
     "min": 2,
     "mean": 3.126801152737752
   },
-  ThrustDerateTakeoff: {
+  "ThrustDerateTakeoff": {
     "series": [
       [1397130960000, 21.6108],
       [1397151720000, 9.9846],
@@ -13733,7 +13733,7 @@
     "min": -0.9676,
     "mean": 20.791791782729824
   },
-  T12SelectedCruise: {
+  "T12SelectedCruise": {
     "series": [
       [1397102460000, -8.4],
       [1397139660000, -18.3],
@@ -14434,7 +14434,7 @@
     "min": -37.3,
     "mean": -13.896974063400581
   },
-  TotalAirTempCruise: {
+  "TotalAirTempCruise": {
     "series": [
       [1397102460000, -8.8],
       [1397139660000, -19],

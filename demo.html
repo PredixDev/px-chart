@@ -9,6 +9,7 @@
 
   <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
   <link rel="import" href="../px-theme/px-theme.html"/>
+  <link rel="import" href="../iron-ajax/iron-ajax.html"/>
   <link rel="import" href="px-time-series.html"/>
   
   <style is="x-style">
@@ -45,7 +46,7 @@
     </p>
   </article>
 
-  <px-time-series queries="{{queries}}" showyaxisunits
+  <px-time-series showyaxisunits
                   x-axis-label="time"
                   y-axis-label="values">
   </px-time-series>
@@ -62,6 +63,36 @@
       <button onclick="removeSeries('Series D')">Remove Series D</button>
     </p>
   </div>
+
+
+  <px-time-series showyaxisunits
+                  x-axis-label="time"
+                  y-axis-label="values">
+  </px-time-series>
+
+  <!--<px-time-series-chart some-config="..." another-config="...">-->
+     <!--<px-chart-series series-config="..." another-series-config="..." data="...">-->
+
+     <!--</px-chart-series>-->
+
+     <!--<px-chart-series series-config="..." another-series-config="..." data="...">-->
+          <!--&lt;!&ndash; I fetch my data myself &ndash;&gt;-->
+       <!--<iron-ajax-->
+           <!--auto-->
+           <!--url="..."-->
+           <!--handleas="json"-->
+           <!--on-response="{{handleResponse}}"></iron-ajax>-->
+     <!--</px-chart-series>-->
+
+     <!--<px-chart-series series-config="..." another-series-config="...">-->
+
+     <!--</px-chart-series>-->
+  <!--</px-time-series-chart>-->
+
+  <iron-ajax
+    auto="false"
+    url="../demo-data/aviation/_all.json"
+    handleas="json"></iron-ajax>
 
 <script>
 
@@ -285,7 +316,7 @@
       }
       isDisplayed[seriesString] = true;
       queries[0].results.push(series);
-      updateTimeSeries();
+      updateSampleTimeSeries();
     }
 
     function removeSeries (seriesString) {
@@ -303,21 +334,42 @@
       if(isDisplayed["Series D"]) {
         queries[0].results.push(seriesD);
       }
-      updateTimeSeries();
+      updateSampleTimeSeries();
     }
 
 
-function updateTimeSeries() {
-  var timeSeriesComp = document.querySelector("px-time-series");
+    function updateSampleTimeSeries() {
+      var timeSeriesComp = document.querySelectorAll("px-time-series")[0];
 
-  //cheating...make sure Polymer sees a new "queries" object each time so the observer fires.
-  queries = [].concat(queries);
+      //cheating...make sure Polymer sees a new "queries" object each time so the observer fires.
+      queries = [].concat(queries);
 
-  timeSeriesComp.queries = queries;
-}
+      timeSeriesComp.queries = queries;
+    }
+
+    function updateAviationTimeSeries(aviationData) {
+      var timeSeriesComp = document.querySelectorAll("px-time-series")[1];
+
+      //convert the aviation data into kairosdb format.  TODO: assume an abstraction layer so we don't pin ourselves to kairosdb format
+      var aviationQueries = [{
+        results: []
+      }];
+
+      aviationQueries[0].results.push({name: "Core Vibe Rear Cruise", values: aviationData.CoreVibeRearCruise.series});
+
+      aviationQueries[0].results.push({name: "Delta EGT Cruise", values: aviationData.DeltaEgtCruise.series});
+
+      timeSeriesComp.queries = aviationQueries;
+    }
 
 window.addEventListener('WebComponentsReady', function() {
-  updateTimeSeries();
+  updateSampleTimeSeries();
+
+  var ironAjaxEl = document.querySelector("iron-ajax");
+  ironAjaxEl.addEventListener("response", function(evt) {
+    updateAviationTimeSeries(evt.detail);
+  });
+  ironAjaxEl.generateRequest();
 });
 
 
