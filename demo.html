@@ -76,14 +76,12 @@
                   y-axis-label="values">
     <px-chart-series name="core-vibe-rear-cruise">
       <iron-ajax
-          auto="true"
           url="../demo-data/aviation/core-vibe-rear-cruise.json"
           handleas="json"
           on-response="{{parent.setSeriesObj}}"></iron-ajax>
     </px-chart-series>
     <px-chart-series name="fan-vibe-fwd-cruise">
       <iron-ajax
-          auto="true"
           url="../demo-data/aviation/fan-vibration-cruise.json"
           handleas="json"
           on-response="{{setSeriesObj}}"></iron-ajax>

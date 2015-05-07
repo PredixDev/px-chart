@@ -32,12 +32,13 @@ Polymer({
     var chartConfig = this.buildConfig();
     this.chart = new Highcharts.StockChart(chartConfig);
 
+    //find series elements in light dom ("Polymer.dom(this)" vs. "Polymer.dom(this.root)", which would be shadow dom)
+    var seriesEls = Polymer.dom(this).querySelectorAll("px-chart-series");
 
-    var seriesEls = Polymer.dom(this.root).querySelectorAll("px-chart-series");
     var _this = this;
     seriesEls.forEach(function (seriesEl) {
       seriesEl.addEventListener("data-changed", function(evt) {
-        _this.updateChartSeries(seriesEl.name, evt.detail);
+        _this.updateChartSeries([{name: seriesEl.name, data: evt.detail.value}]);
       });
     })
 
@@ -261,7 +262,7 @@ Polymer({
     return config;
   },
 
-  updateChartSeries: function(name, data) {
+  updateChartSeries: function(seriesToShow) {
     var newIds = _.pluck(seriesToShow, 'name');
     var currentIds = _.pluck(this.chart.series, 'name');
     newIds.push('Navigator'); // HACK: Need 'Navigator' series to exist in the newIds so we do not remove it.
@@ -276,8 +277,8 @@ Polymer({
     // Update series that already exist
     _.each(idsToUpdate, function(idToUpdate) {
       _.each(seriesToShow, function(series) {
-        if (name === idToUpdate) {
-          self.chart.get(idToUpdate).setData(data);
+        if (series.name === idToUpdate) {
+          self.chart.get(idToUpdate).setData(series.data);
         }
       });
     });
@@ -290,13 +291,24 @@ Polymer({
     // Add new series
     _.each(idsToAdd, function(idToAdd) {
       _.each(seriesToShow, function(series) {
-        if (name === idToAdd) {
-          self.addSeries(idToAdd, data);
+        if (series.name === idToAdd) {
+          self.addSeries(idToAdd, series.data);
         }
       });
     });
 
     this.chart.reflow();
+  },
+
+  addSeries: function(seriesId, data) {
+
+    var newseries = {
+      id: seriesId,
+      name: seriesId,
+      data: data
+    };
+
+    this.chart.addSeries(newseries);
   },
 
   hasExtremeChanged: function (rangeStart, rangeEnd) {

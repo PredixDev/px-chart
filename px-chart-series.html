@@ -5,13 +5,22 @@
     See https://github.sw.ge.com/jreichenberg/grunt-dep-serve#why-do-we-need-this
 -->
 <link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../iron-ajax/iron-ajax.html"/>
 
 <!--
 Element providing solution to no problem in particular. As a simple, increments a counter when clicked.
 
 ##### Usage
 
-    <px-time-series queries="queries">Hi</px-time-series>
+    <px-chart-series data="..." name="...">Hi</px-chart-series>
+
+    <px-chart-series name="...">
+      <iron-ajax
+          url="../demo-data/aviation/fan-vibration-cruise.json"
+          handleas="json"></iron-ajax>
+    </px-chart-series>
+
+    <px-chart-series series-obj="...">Hi</px-chart-series>
 
 @element px-time-series
 @blurb Element providing solution to no problem in particular.
@@ -33,8 +42,7 @@ Polymer({
   properties: {
     data: {
       type: Array,
-      notify: true,
-      observer: 'dataObserver'
+      notify: true
     },
     name: {
       type: String
@@ -45,28 +53,33 @@ Polymer({
     },
     seriesObjDataKey: {
       type: String,
-      observer: 'series'
+      value: 'series'
     },
     seriesObjNameKey: {
       type: String,
-      observer: 'name'
+      value: 'name'
     }
   },
 
   ready: function() {
-    var seriesConfig = this.buildConfig();
+    var seriesConfig = this.buildSeriesConfig();
+    var _this = this;
+    //Fire ajax requests, if configured...TODO: make this more declarative, but don't know how to get 'on-response' event declaration of handler to call a function on this parent comp.
+    window.addEventListener('WebComponentsReady', function() {
+      //look for ajax elements after web components ready...TODO: can we use a different callback in this component to figure out when iron-ajax is ready?
+      var ironAjaxEl = Polymer.dom(_this.root).querySelector("iron-ajax");
+      if (ironAjaxEl) {
+        ironAjaxEl.addEventListener("response", function(evt) {
+          _this.seriesObj = evt.detail;
+        });
+
+        ironAjaxEl.generateRequest();
+      }
+    });
   },
 
-  buildConfig: function() {
+  buildSeriesConfig: function() {
 
-  },
-
-  dataObserver: function(newData, oldData) {
-    this.fire('data-changed', newData);
-  },
-
-  setSeriesObj: function(seriesObj) {
-    this.seriesObj = seriesObj;
   },
 
   seriesObjObserver: function(newObj, oldObj) {
