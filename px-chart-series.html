@@ -1,0 +1,87 @@
+<!--
+    Relative paths assume component is being run from inside an app or another component, where dependencies are flat
+    siblings. When this component is run from its own repo (e.g. ui tests, examples), we assume the server is started with
+    'grunt depserve' (or similar server setup) to enable correct finding of bower dependencies for local runs
+    See https://github.sw.ge.com/jreichenberg/grunt-dep-serve#why-do-we-need-this
+-->
+<link rel="import" href="../polymer/polymer.html"/>
+
+<!--
+Element providing solution to no problem in particular. As a simple, increments a counter when clicked.
+
+##### Usage
+
+    <px-time-series queries="queries">Hi</px-time-series>
+
+@element px-time-series
+@blurb Element providing solution to no problem in particular.
+@homepage index.html
+-->
+
+
+<script>
+Polymer({
+
+  is: 'px-chart-series',
+
+  /**
+   * Properties block, expose attribute values to the DOM via 'reflect'
+   *
+   * @property properties
+   * @type Object
+   */
+  properties: {
+    data: {
+      type: Array,
+      notify: true,
+      observer: 'dataObserver'
+    },
+    name: {
+      type: String
+    },
+    seriesObj: {
+      type: Object,
+      observer: 'seriesObjObserver'
+    },
+    seriesObjDataKey: {
+      type: String,
+      observer: 'series'
+    },
+    seriesObjNameKey: {
+      type: String,
+      observer: 'name'
+    }
+  },
+
+  ready: function() {
+    var seriesConfig = this.buildConfig();
+  },
+
+  buildConfig: function() {
+
+  },
+
+  dataObserver: function(newData, oldData) {
+    this.fire('data-changed', newData);
+  },
+
+  setSeriesObj: function(seriesObj) {
+    this.seriesObj = seriesObj;
+  },
+
+  seriesObjObserver: function(newObj, oldObj) {
+    if (!newObj) {
+      this.data = null;
+    }
+    else {
+      if (newObj[this.seriesObjNameKey]) {
+        this.name = newObj[this.seriesObjNameKey];
+      }
+      this.data = newObj[this.seriesObjDataKey];
+    }
+  }
+
+});
+
+
+</script>

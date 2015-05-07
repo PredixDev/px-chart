@@ -2,7 +2,7 @@
 
 <html ng-app="demo">
 <head>
-  <title>px-time-series Demo</title>
+  <title>px-time-series-chart Demo</title>
 
   <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
   <script src="../webcomponentsjs/webcomponents.js"></script>
@@ -11,6 +11,8 @@
   <link rel="import" href="../px-theme/px-theme.html"/>
   <link rel="import" href="../iron-ajax/iron-ajax.html"/>
   <link rel="import" href="px-time-series.html"/>
+  <link rel="import" href="px-time-series-chart.html"/>
+  <link rel="import" href="px-chart-series.html"/>
   
   <style is="x-style">
     html {
@@ -46,300 +48,95 @@
     </p>
   </article>
 
+  ALL-IN-ONE COMPONENT:
   <px-time-series showyaxisunits
                   x-axis-label="time"
                   y-axis-label="values">
   </px-time-series>
+
+
+  <iron-ajax
+      class="for-all-in-one"
+      auto="false"
+      url="../demo-data/aviation/_all.json"
+      handleas="json"></iron-ajax>
   
   <div class="demo">
     <p>
-      <button onclick="addSeries('Series A')">Add Series A</button>
-      <button onclick="removeSeries('Series A')">Remove Series A</button>
-      <button onclick="addSeries('Series B')">Add Series B</button>
-      <button onclick="removeSeries('Series B')">Remove Series B</button>
-      <button onclick="addSeries('Series C')">Add Series C</button>
-      <button onclick="removeSeries('Series C')">Remove Series C</button>
-      <button onclick="addSeries('Series D')">Add Series D</button>
-      <button onclick="removeSeries('Series D')">Remove Series D</button>
+      <button onclick="addSeries('Core Vibe Rear Cruise')">Add Series A</button>
+      <button onclick="removeSeries('Core Vibe Rear Cruise')">Remove Series A</button>
+      <button onclick="addSeries('Fan Vibration Cruise')">Add Series B</button>
+      <button onclick="removeSeries('Fan Vibration Cruise')">Remove Series B</button>
     </p>
   </div>
 
-
-  <px-time-series showyaxisunits
+  SEPARATE CHART AND SERIES COMPONENTS:
+  <px-time-series-chart showyaxisunits
                   x-axis-label="time"
                   y-axis-label="values">
-  </px-time-series>
-
-  <!--<px-time-series-chart some-config="..." another-config="...">-->
-     <!--<px-chart-series series-config="..." another-series-config="..." data="...">-->
-
-     <!--</px-chart-series>-->
-
-     <!--<px-chart-series series-config="..." another-series-config="..." data="...">-->
-          <!--&lt;!&ndash; I fetch my data myself &ndash;&gt;-->
-       <!--<iron-ajax-->
-           <!--auto-->
-           <!--url="..."-->
-           <!--handleas="json"-->
-           <!--on-response="{{handleResponse}}"></iron-ajax>-->
-     <!--</px-chart-series>-->
-
-     <!--<px-chart-series series-config="..." another-series-config="...">-->
-
-     <!--</px-chart-series>-->
-  <!--</px-time-series-chart>-->
-
-  <iron-ajax
-    auto="false"
-    url="../demo-data/aviation/_all.json"
-    handleas="json"></iron-ajax>
+    <px-chart-series name="core-vibe-rear-cruise">
+      <iron-ajax
+          auto="true"
+          url="../demo-data/aviation/core-vibe-rear-cruise.json"
+          handleas="json"
+          on-response="{{parent.setSeriesObj}}"></iron-ajax>
+    </px-chart-series>
+    <px-chart-series name="fan-vibe-fwd-cruise">
+      <iron-ajax
+          auto="true"
+          url="../demo-data/aviation/fan-vibration-cruise.json"
+          handleas="json"
+          on-response="{{setSeriesObj}}"></iron-ajax>
+    </px-chart-series>
+  </px-time-series-chart>
 
 <script>
 
-    var seriesA =
-    {
-        "name": "Series A",
-        "group_by": [
-            {
-                "name": "type",
-                "type": "number"
-            },
-            {
-                "name": "tag",
-                "tags": [
-                    "host"
-                ],
-                "group": {
-                    "host": "server1"
-                }
-            }
-        ],
-        "tags": {
-            "host": [
-                "server1"
-            ],
-            "customer": [
-                "bar"
-            ]
-        },
-        "values": [
-            /* May 2008 */
-            [1209600000000, 25.71],
-            [1209686400000, 25.85],
-            [1209945600000, 26.39],
-            [1210032000000, 26.67],
-            [1210118400000, 26.08],
-            [1210204800000, 26.44],
-            [1210291200000, 26.21],
-            [1210550400000, 26.88],
-            [1210636800000, 27.14],
-            [1210723200000, 26.61],
-            [1210809600000, 27.10],
-            [1210896000000, 26.80],
-            [1211155200000, 26.23],
-            [1211241600000, 26.56],
-            [1211328000000, 25.46],
-            [1211414400000, 25.29],
-            [1211500800000, 25.88],
-            [1211846400000, 26.63],
-            [1211932800000, 26.72],
-            [1212019200000, 26.67],
-            [1212105600000, 26.96],
-            /* Jun 2008 */
-            [1212364800000, 26.59],
-            [1212451200000, 26.48],
-            [1212537600000, 26.46],
-            [1212624000000, 27.06],
-            [1212710400000, 26.52],
-            [1212969600000, 25.94],
-            [1213056000000, 26.52],
-            [1213142400000, 25.83],
-            [1213228800000, 24.75],
-            [1213315200000, 24.62],
-            [1213574400000, 25.26],
-            [1213660800000, 25.92],
-            [1213747200000, 25.54],
-            [1213833600000, 25.84],
-            [1213920000000, 25.04],
-            [1214179200000, 24.74],
-            [1214265600000, 24.75],
-            [1214352000000, 25.34],
-            [1214438400000, 24.04],
-            [1214524800000, 24.30],
-            [1214784000000, 23.92]
-        ]
-    };
-    var seriesB =
-    {
-        "name": "Series B",
-        "group_by": [
-            {
-                "name": "type",
-                "type": "number"
-            },
-            {
-                "name": "tag",
-                "tags": [
-                    "host"
-                ],
-                "group": {
-                    "host": "server1"
-                }
-            }
-        ],
-        "tags": {
-            "host": [
-                "server1"
-            ],
-            "customer": [
-                "bar"
-            ]
-        },
-        "values": [
-            /* May 2008 */
-            [1209600000000, 29.40],
-            [1209686400000, 29.24],
-            [1209945600000, 29.08],
-            [1210032000000, 29.70],
-            [1210118400000, 29.21],
-            [1210204800000, 29.27],
-            [1210291200000, 29.39],
-            [1210550400000, 29.99],
-            [1210636800000, 29.78],
-            [1210723200000, 29.93],
-            [1210809600000, 30.45],
-            [1210896000000, 29.99],
-            [1211155200000, 29.46],
-            [1211241600000, 28.76],
-            [1211328000000, 28.25],
-            [1211414400000, 28.47],
-            [1211500800000, 28.05],
-            [1211846400000, 28.44],
-            [1211932800000, 28.18],
-            [1212019200000, 28.31],
-            [1212105600000, 28.32],
-            /* Jun 2008 */
-            [1212364800000, 27.80],
-            [1212451200000, 27.31],
-            [1212537600000, 27.54],
-            [1212624000000, 28.30],
-            [1212710400000, 27.49],
-            [1212969600000, 27.71],
-            [1213056000000, 27.89],
-            [1213142400000, 27.12],
-            [1213228800000, 28.24],
-            [1213315200000, 29.07],
-            [1213574400000, 28.93],
-            [1213660800000, 28.80],
-            [1213747200000, 28.46],
-            [1213833600000, 28.93],
-            [1213920000000, 28.23],
-            [1214179200000, 27.97],
-            [1214265600000, 27.73],
-            [1214352000000, 28.35],
-            [1214438400000, 27.75],
-            [1214524800000, 27.63],
-            [1214784000000, 27.51]
-        ]
-    };
-    var seriesC =
-    {
-        "name": "Series C",
-        "values": [
-            /* May 2008 */
-            [1209600000000, 50.71],
-            [1209686400000, 51.85],
-            [1209945600000, 52.39],
-            [1210032000000, 53.67],
-            [1210118400000, 54.08],
-            [1210204800000, 52.44],
-            [1210291200000, 52.21],
-            [1210550400000, 52.88],
-            /* Jun 2008 */
-            [1212364800000, 29.59],
-            [1212451200000, 29.48],
-            [1212537600000, 39.46]
-        ]
-    };
-    var seriesD =
-    {
-        "name": "Series D",
-        "values": [
-            /* May 2008 */
-            [1209600000000, 43.71],
-            [1209686400000, 44.85],
-            [1209945600000, 43.39],
-            [1210032000000, 43.67],
-            [1210118400000, 42.08],
-            [1210204800000, 41.44],
-            [1210291200000, 38.21],
-            [1210550400000, 26.88],
-            /* Jun 2008 */
-            [1212364800000, 54.59],
-            [1212451200000, 35.48],
-            [1212537600000, 34.46]
-        ]
-    };
 
-
+    var cachedSeriesA, cachedSeriesB;
 
     var isDisplayed = {
-      "Series A": true,
-      "Series B": true,
-      "Series C": true,
-      "Series D": true
+      "Core Vibe Rear Cruise": true,
+      "Fan Vibration Cruise": true
     };
 
     var queries = [
       {
         "sample_size": 14368,
-        "results": [
-          seriesA,
-          seriesB,
-          seriesC,
-          seriesD
-        ]
+        "results": []
       }
     ];
 
 
     function addSeries(seriesString) {
-      var series = seriesD;
-      if(seriesString === 'Series C') {
-        series = seriesC;
+      if (!isDisplayed[seriesString]) {
+        var series;
+        if (seriesString === "Core Vibe Rear Cruise") {
+          series = cachedSeriesA;
+        }
+        else if (seriesString === 'Fan Vibration Cruise') {
+          series = cachedSeriesB;
+        }
+        isDisplayed[seriesString] = true;
+        queries[0].results.push(series);
+        updateAllInOneTimeSeries();
       }
-      if(seriesString === 'Series B') {
-        series = seriesB;
-      }
-      if(seriesString === 'Series A') {
-        series = seriesA;
-      }
-      isDisplayed[seriesString] = true;
-      queries[0].results.push(series);
-      updateSampleTimeSeries();
     }
 
     function removeSeries (seriesString) {
       isDisplayed[seriesString] = false;
       queries[0].results = [];
-      if(isDisplayed["Series A"]) {
-        queries[0].results.push(seriesA);
+      if(isDisplayed["Core Vibe Rear Cruise"]) {
+        queries[0].results.push(cachedSeriesA);
       }
-      if(isDisplayed["Series B"]) {
-        queries[0].results.push(seriesB);
+      if(isDisplayed["Fan Vibration Cruise"]) {
+        queries[0].results.push(cachedSeriesB);
       }
-      if(isDisplayed["Series C"]) {
-        queries[0].results.push(seriesC);
-      }
-      if(isDisplayed["Series D"]) {
-        queries[0].results.push(seriesD);
-      }
-      updateSampleTimeSeries();
+      updateAllInOneTimeSeries();
     }
 
-
-    function updateSampleTimeSeries() {
-      var timeSeriesComp = document.querySelectorAll("px-time-series")[0];
+    function updateAllInOneTimeSeries() {
+      var timeSeriesComp = document.querySelector("px-time-series");
 
       //cheating...make sure Polymer sees a new "queries" object each time so the observer fires.
       queries = [].concat(queries);
@@ -347,27 +144,20 @@
       timeSeriesComp.queries = queries;
     }
 
-    function updateAviationTimeSeries(aviationData) {
-      var timeSeriesComp = document.querySelectorAll("px-time-series")[1];
 
+    function handleAviationDataLoadForAllInOneChart(aviationData) {
       //convert the aviation data into kairosdb format.  TODO: assume an abstraction layer so we don't pin ourselves to kairosdb format
-      var aviationQueries = [{
-        results: []
-      }];
-
-      aviationQueries[0].results.push({name: "Core Vibe Rear Cruise", values: aviationData.CoreVibeRearCruise.series});
-
-      aviationQueries[0].results.push({name: "Fan Vibration Cruise", values: aviationData.FanVibeFwdCruise.series});
-
-      timeSeriesComp.queries = aviationQueries;
+      cachedSeriesA = {name: "Core Vibe Rear Cruise", values: aviationData.CoreVibeRearCruise.series};
+      cachedSeriesB = {name: "Fan Vibration Cruise", values: aviationData.FanVibeFwdCruise.series};
+      queries[0].results.push(cachedSeriesA);
+      queries[0].results.push(cachedSeriesB);
+      updateAllInOneTimeSeries();
     }
 
 window.addEventListener('WebComponentsReady', function() {
-  updateSampleTimeSeries();
-
-  var ironAjaxEl = document.querySelector("iron-ajax");
+  var ironAjaxEl = document.querySelector("iron-ajax.for-all-in-one");
   ironAjaxEl.addEventListener("response", function(evt) {
-    updateAviationTimeSeries(evt.detail);
+    handleAviationDataLoadForAllInOneChart(evt.detail);
   });
   ironAjaxEl.generateRequest();
 });

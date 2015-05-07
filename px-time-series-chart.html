@@ -1,0 +1,60 @@
+<!--
+    Relative paths assume component is being run from inside an app or another component, where dependencies are flat
+    siblings. When this component is run from its own repo (e.g. ui tests, examples), we assume the server is started with
+    'grunt depserve' (or similar server setup) to enable correct finding of bower dependencies for local runs
+    See https://github.sw.ge.com/jreichenberg/grunt-dep-serve#why-do-we-need-this
+-->
+<link rel="import" href="../polymer/polymer.html"/>
+
+<!--
+Element providing solution to no problem in particular. As a simple, increments a counter when clicked.
+
+##### Usage
+
+    <px-time-series-chart>
+      <header>Hello</header>
+      <px-chart-series name="..." data="..."></px-chart-series>
+      <px-chart-series name="..." data="..."></px-chart-series>
+    </px-time-series>
+
+@element px-time-series
+@blurb Element providing solution to no problem in particular.
+@homepage index.html
+-->
+<!--<script src="../../bower_components/highstock-release/adapters/standalone-framework.js"></script>-->
+<!--<script src="../../bower_components/highstock-release/highstock.js"></script>-->
+<script src="../../bower_components/underscore/underscore-min.js"></script>
+
+<dom-module id="px-time-series-chart">
+  <link rel="import" type="css" href="css/px-time-series.css"/>
+  <template>
+    <content select="px-chart-series"></content>
+    <section role="region">
+      <header class="text--right">
+        <p>
+          <label class="label-inline">
+            From
+            <input value="{{rangeStartStr::change}}" class$="[[getRangeClasses(rangeStartStr)]]" placeholder="HH:MM MM/DD/YYYY"/>
+          </label>
+          <label class="label-inline">
+            to
+            <input value="{{rangeEndStr::change}}" class$="[[getRangeClasses(rangeEndStr)]]" placeholder="HH:MM MM/DD/YYYY"/>
+          </label>
+          <button on-click="submitHandler" class="btn">Submit</button>
+        </p>
+        <p>
+          Zoom
+          <button on-click="setMonthsOfRange" data-month="1" class="btn">1m</button>
+          <button on-click="setMonthsOfRange" data-month="3" class="btn">3m</button>
+          <button on-click="setMonthsOfRange" data-month="6" class="btn">6m</button>
+          <button on-click="setMonthsOfRange" data-month="12" class="btn">1y</button>
+          <button on-click="setRangeToYTD" class="btn">YTD</button>
+        </p>
+        <content select="header"></content>
+      </header>
+      <figure class="m0" id="container"></figure>
+    </section>
+  </template>
+</dom-module>
+
+<script type="text/javascript" src="px-time-series-chart.js"></script>
