@@ -25,6 +25,9 @@ Polymer({
     },
     yAxisLabel: {
       type: String
+    },
+    navigatorEnabled:{
+      type: Boolean
     }
   },
 
@@ -216,6 +219,7 @@ Polymer({
         enabled: true
       },
       navigator: {
+        enabled: this.navigatorEnabled,
         adaptToUpdatedData: false
       },
       plotOptions: {
