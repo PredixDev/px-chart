@@ -10,7 +10,6 @@
   <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
   <link rel="import" href="../px-theme/px-theme.html"/>
   <link rel="import" href="../iron-ajax/iron-ajax.html"/>
-  <link rel="import" href="px-time-series.html"/>
   <link rel="import" href="px-time-series-chart.html"/>
   <link rel="import" href="px-chart-series.html"/>
 
@@ -32,6 +31,7 @@
 
 <body>
   <px-time-series-chart showyaxisunits
+                  navigator-enabled
                   x-axis-label="time"
                   y-axis-label="values">
     <px-chart-series name="core-vibe-rear-cruise">

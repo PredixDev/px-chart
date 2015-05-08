@@ -13,7 +13,7 @@
   <link rel="import" href="px-time-series.html"/>
   <link rel="import" href="px-time-series-chart.html"/>
   <link rel="import" href="px-chart-series.html"/>
-  
+
   <style is="x-style">
     html {
       height: 100%;
@@ -31,7 +31,7 @@
 </head>
 
 <body ng-controller="DemoController">
-  
+
   <article class="demo" role="article">
     <h3>Demo</h3>
     <p>Although related, examples are /not/ the same as the test fixtures. Tests are tests, examples are examples.</p>
@@ -60,7 +60,7 @@
       auto="false"
       url="../demo-data/aviation/_all.json"
       handleas="json"></iron-ajax>
-  
+
   <div class="demo">
     <p>
       <button onclick="addSeries('Core Vibe Rear Cruise')">Add Series A</button>
@@ -72,6 +72,7 @@
 
   SEPARATE CHART AND SERIES COMPONENTS:
   <px-time-series-chart showyaxisunits
+                  navigator-enabled
                   x-axis-label="time"
                   y-axis-label="values">
 
