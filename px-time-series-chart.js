@@ -9,28 +9,44 @@ Polymer({
    * @type Object
    */
   properties: {
+
+    /**
+     * Start time of zoom-ed area shown in the navigator
+     *
+     * @type {String}
+     * @default undefined
+     */
     rangeStart: {
       type: String,
-      observer: 'rangeStartUpdated'
+      observer: 'rangeStartObserver'
     },
+
+    /**
+     * End time of zoom-ed area shown in the navigator
+     *
+     * @type {String}
+     * @default undefined
+     */
     rangeEnd: {
       type: String,
-      observer: 'rangeEndUpdated'
+      observer: 'rangeEndObserver'
     },
-    showyaxisunits: {
-      type: Boolean
-    },
-    xAxisLabel: {
-      type: String
-    },
-    yAxisLabel: {
-      type: String
-    },
+
+    /**
+     * Whether to show the zoom-able / scroll-able area at the bottom of the chart
+     *
+     * @type {Boolean}
+     * @default true
+     */
     navigatorEnabled:{
-      type: Boolean
+      type: Boolean,
+      value: true
     }
   },
 
+  /**
+   * Lifecycle callback to create the Highchart 'chart' object and consume the config / series elements
+   */
   ready: function() {
     var chartConfig = this.buildConfig();
     this.chart = new Highcharts.StockChart(chartConfig);
@@ -41,20 +57,199 @@ Polymer({
     var _this = this;
     seriesEls.forEach(function (seriesEl) {
       seriesEl.addEventListener("data-changed", function(evt) {
-        _this.updateChartSeries([{name: seriesEl.name, data: evt.detail.value}]);
+        if (!_this.hasSeries(seriesEl.name)) {
+          _this.addSeries(seriesEl.name, evt.detail.value);
+          _this.chart.reflow();
+        }
+        else {
+          var allSeries = _this.chart.series.map(function(series) {
+            if (series.id === seriesEl.name) {
+              series.data = evt.detail.value;
+            }
+            else {
+              return series;
+            }
+          });
+          _this.refreshSeriesDisplay(allSeries);
+        }
       });
     })
 
   },
 
-  rangeStartUpdated: function () {
-    this.rangeStartStr = this.getDateStr(this.rangeStart);
+  /**
+   * Sets display string for start range when internal value changes
+   */
+  rangeStartObserver: function () {
+    var m = moment(this.rangeStart);
+    this.rangeStartDisplayStr = m.isValid() ? m.format('L') + " " + m.format("hh:ss") : null;
   },
 
-  rangeEndUpdated: function () {
-    this.rangeEndStr = this.getDateStr(this.rangeEnd);
+  /**
+   * Sets display string for end range when internal value changes
+   */
+  rangeEndObserver: function () {
+    var m = moment(this.rangeEnd);
+    this.rangeEndDisplayStr = m.isValid() ? m.format('L') + " " + m.format("hh:ss"): null;
   },
 
+  /**
+   * Updates all series on the chart
+   *
+   * @param {Array} seriesToShow
+   */
+  refreshSeriesDisplay: function(seriesToShow) {
+    var newIds = seriesToShow.map(function(series) {
+      return series.name;
+    });
+
+    var currentIds = this.chart.series.map(function(series) {
+      return series.name;
+    });
+
+    newIds.push('Navigator'); // HACK: Need 'Navigator' series to exist in the newIds so we do not remove it.
+
+    // Get ids of series that we will be touching
+    var idsToUpdate = currentIds.filter(function(item) {
+      return newIds.indexOf(item) > -1;
+    });
+
+    var idsToRemove = currentIds.filter(function(item) {
+      return newIds.indexOf(item) === -1;
+    });
+
+    var idsToAdd = newIds.filter(function(item) {
+      return currentIds.indexOf(item) === -1;
+    });
+
+    var self = this;
+
+    // Update series that already exist
+    _.each(idsToUpdate, function(idToUpdate) {
+      _.each(seriesToShow, function(series) {
+        if (series.name === idToUpdate) {
+          self.chart.get(idToUpdate).setData(series.data);
+        }
+      });
+    });
+
+    // Remove old ones
+    _.each(idsToRemove, function(idToRemove) {
+      self.chart.get(idToRemove).remove();
+    });
+
+    // Add new series
+    _.each(idsToAdd, function(idToAdd) {
+      _.each(seriesToShow, function(series) {
+        if (series.name === idToAdd) {
+          self.addSeries(idToAdd, series.data);
+        }
+      });
+    });
+
+    this.chart.reflow();
+  },
+
+  /**
+   * Adds a series to the chart
+   *
+   * @param {String} seriesId
+   * @param {Array} data
+   */
+  addSeries: function(seriesId, data) {
+    var newseries = {
+      id: seriesId,
+      name: seriesId,
+      data: data
+    };
+
+    this.chart.addSeries(newseries);
+  },
+
+  /**
+   * Returns true if the chart has a series with the given id
+   *
+   * @param {String} seriesId
+   * @return {Boolean}
+   */
+  hasSeries: function(seriesId) {
+    var hasSeries = false;
+    this.chart.series.forEach(function(series) {
+      if (series.id === seriesId) {
+        hasSeries = true
+      }
+    });
+    return hasSeries;
+  },
+
+  /**
+   * Returns true of rangeStart / end has changed
+   *
+   * @param {Number} start Range start time in milliseconds since the epoch
+   * @param {Number} end Range end time in milliseconds since the epoch
+   * @return {Boolean}
+   */
+  hasExtremeChanged: function (start, end) {
+    var extremes = this.chart.xAxis[0].getExtremes();
+    return extremes.min !== start || extremes.max !== end;
+  },
+
+  /**
+   * Sets the range start / end given number of months back from present
+   *
+   * @param {Object} evtOrNumMonths Event with a target that has a data-num-months attr or Number of months back from present
+   */
+  setRangeNumMonthsFromPresent: function (evtOrNumMonths) {
+    var numMonths = evtOrNumMonths.target ? evtOrNumMonths.target.getAttribute("data-num-months") : evtOrNumMonths;
+    var m = moment(this.rangeEnd);
+    m.subtract(numMonths, 'months');
+    this.rangeStart = m.valueOf();
+    this.setExtremesIfChanged(this.rangeStart, this.rangeEnd);
+  },
+
+  /**
+   * Sets range to current year to date
+   */
+  setRangeToYTD: function () {
+    var m = moment();
+    this.rangeEnd = m.valueOf();
+    this.rangeStart = m.startOf('year').valueOf();
+    this.setExtremesIfChanged(this.rangeStart, this.rangeEnd);
+  },
+
+  /**
+   * Parses rangeStartDisplayStr and rangeEndDisplayStr and sets actual range based on them
+   */
+  rangeSetHandler: function () {
+    var mStart = moment(this.rangeStartDisplayStr);
+    var mEnd = moment(this.rangeEndDisplayStr);
+    if (mStart.isValid() && mEnd.isValid()) {
+      this.setExtremesIfChanged(mStart.valueOf(), mEnd.valueOf());
+    }
+  },
+
+  /**
+   * Sets chart extremes to given start and end times
+   *
+   * @param {Number} startTime Range start time in milliseconds since the epoch
+   * @param {Number} endTime Range end time in milliseconds since the epoch
+   */
+  setExtremesIfChanged: function (startTime, endTime) {
+    if (this.hasExtremeChanged(startTime, endTime)) {
+      this.rangeStart = startTime;
+      this.rangeEnd = endTime;
+      this.chart.xAxis[0].setExtremes(this.rangeStart, this.rangeEnd);
+    }
+    else {
+      // always set the visible strings back to a good value
+      this.rangeStartObserver();
+      this.rangeEndObserver();
+    }
+  },
+
+  /**
+   * Builds up highcharts config object
+   */
   buildConfig: function() {
     var self = this;
 
@@ -239,7 +434,7 @@ Polymer({
       },
       xAxis: {
         title: {
-          text: this.xAxisLabel
+          text: "time"
         },
         events: {
           afterSetExtremes: function(event) {
@@ -251,151 +446,14 @@ Polymer({
         labels: {
         },
         title: {
-          text: this.yAxisLabel
+          text: ""
         }
       }
     };
 
-    if (this.showyaxisunits) {
-      config.yAxis.labels.enabled = true;
-    }
-    else {
-      config.yAxis.labels.enabled = false;
-    }
+    config.yAxis.labels.enabled = true;
 
     return config;
-  },
-
-  updateChartSeries: function(seriesToShow) {
-    var newIds = _.pluck(seriesToShow, 'name');
-    var currentIds = _.pluck(this.chart.series, 'name');
-    newIds.push('Navigator'); // HACK: Need 'Navigator' series to exist in the newIds so we do not remove it.
-
-    // Get ids of series that we will be touching
-    var idsToUpdate = _.intersection(currentIds, newIds);
-    var idsToRemove = _.difference(currentIds, newIds);
-    var idsToAdd = _.difference(newIds, currentIds);
-
-    var self = this;
-
-    // Update series that already exist
-    _.each(idsToUpdate, function(idToUpdate) {
-      _.each(seriesToShow, function(series) {
-        if (series.name === idToUpdate) {
-          self.chart.get(idToUpdate).setData(series.data);
-        }
-      });
-    });
-
-    // Remove old ones
-    _.each(idsToRemove, function(idToRemove) {
-      self.chart.get(idToRemove).remove();
-    });
-
-    // Add new series
-    _.each(idsToAdd, function(idToAdd) {
-      _.each(seriesToShow, function(series) {
-        if (series.name === idToAdd) {
-          self.addSeries(idToAdd, series.data);
-        }
-      });
-    });
-
-    this.chart.reflow();
-  },
-
-  addSeries: function(seriesId, data) {
-
-    var newseries = {
-      id: seriesId,
-      name: seriesId,
-      data: data
-    };
-
-    this.chart.addSeries(newseries);
-  },
-
-  hasExtremeChanged: function (rangeStart, rangeEnd) {
-    var extremes = this.chart.xAxis[0].getExtremes();
-    return extremes.min !== rangeStart || extremes.max !== rangeEnd;
-  },
-
-  getDateStr: function (d) {
-    function ensureTwoDigits(s) {
-      s = '' + s;
-      while (s.length < 2) {
-        s = '0' + s;
-      }
-      return s;
-    }
-
-    var date = new Date(d);
-
-    if (!date || !date.getHours || isNaN(date.getTime())) {
-      return '';
-    }
-    return (ensureTwoDigits(date.getHours())) + ':' + ensureTwoDigits(date.getMinutes()) +
-      ' ' + (date.getMonth() + 1) + '/' + (date.getDate()) + '/' + (date.getFullYear());
-  },
-
-  setMonthsOfRange: function (event, detail, sender) {
-    var months = parseInt(event.target.getAttribute('data-month'));
-
-    this.rangeEnd = this.rangeEnd || Date.now();
-
-    var temp = new Date(this.rangeEnd);
-    var month = temp.getMonth() - months;
-    temp.setMonth(month);
-
-    this.rangeStart = temp.getTime();
-
-    this.setExtremesIfChanged(this.rangeStart, this.rangeEnd);
-  },
-
-  setRangeToYTD: function () {
-    this.rangeEnd = Date.now();
-
-    var tempStartDate = new Date();
-    tempStartDate.setMonth(0);
-    tempStartDate.setDate(1);
-    tempStartDate.setHours(0);
-    tempStartDate.setMinutes(0);
-    tempStartDate.setSeconds(0);
-
-    this.rangeStart = tempStartDate.getTime();
-    this.setExtremesIfChanged(this.rangeStart, this.rangeEnd);
-  },
-
-  submitHandler: function () {
-    if (this.isValidDate(this.rangeStartStr, true) && this.isValidDate(this.rangeEndStr, true)) {
-      var startTime = new Date(this.rangeStartStr).getTime();
-      var endTime = new Date(this.rangeEndStr).getTime();
-      this.setExtremesIfChanged(startTime, endTime);
-    }
-  },
-
-  setExtremesIfChanged: function (startTime, endTime) {
-    if (this.hasExtremeChanged(startTime, endTime)) {
-      this.rangeStart = startTime;
-      this.rangeEnd = endTime;
-      this.chart.xAxis[0].setExtremes(this.rangeStart, this.rangeEnd);
-    }
-
-    // always set the visible strings back to a good value
-    this.rangeStartStr = this.getDateStr(this.rangeStart);
-    this.rangeEndStr = this.getDateStr(this.rangeEnd);
-  },
-
-  getRangeClasses: function (s) {
-    var isValid = this.isValidDate(s);
-    return isValid ? 'text-input' : 'invalid-date text-input';
-  },
-
-  isValidDate: function (s, checkForNull) {
-    if (!checkForNull && !s) {
-      return true;
-    }
-    var re = /^[012]?\d:[012345]\d\s+(0?[1-9]|1[012])\/(0?[1-9]|[1-2]\d|3[01])\/[12][90]\d\d$/;
-    return re.test(s);
   }
+
 });

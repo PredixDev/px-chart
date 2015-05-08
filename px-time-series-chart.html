@@ -24,7 +24,7 @@ Element providing solution to no problem in particular. As a simple, increments 
 <script src="../highstock-release/adapters/standalone-framework.js"></script>
 <script src="../highstock-release/highstock.js"></script>
 <script src="../annotations/js/annotations.js"></script>
-<script src="../underscore/underscore-min.js"></script>
+<script src="../moment/min/moment.min.js"></script>
 
 <dom-module id="px-time-series-chart">
   <link rel="import" type="css" href="css/px-time-series.css"/>
@@ -34,20 +34,20 @@ Element providing solution to no problem in particular. As a simple, increments 
         <p>
           <label class="label-inline">
             From
-            <input value="{{rangeStartStr::change}}" class$="[[getRangeClasses(rangeStartStr)]]" placeholder="HH:MM MM/DD/YYYY"/>
+            <input value="{{rangeStartDisplayStr::change}}" class="text-input" placeholder="HH:MM MM/DD/YYYY"/>
           </label>
           <label class="label-inline">
             to
-            <input value="{{rangeEndStr::change}}" class$="[[getRangeClasses(rangeEndStr)]]" placeholder="HH:MM MM/DD/YYYY"/>
+            <input value="{{rangeEndDisplayStr::change}}" class="text-input" placeholder="HH:MM MM/DD/YYYY"/>
           </label>
-          <button on-click="submitHandler" class="btn">Submit</button>
+          <button on-click="rangeSetHandler" class="btn">Submit</button>
         </p>
         <p>
           Zoom
-          <button on-click="setMonthsOfRange" data-month="1" class="btn">1m</button>
-          <button on-click="setMonthsOfRange" data-month="3" class="btn">3m</button>
-          <button on-click="setMonthsOfRange" data-month="6" class="btn">6m</button>
-          <button on-click="setMonthsOfRange" data-month="12" class="btn">1y</button>
+          <button on-click="setRangeNumMonthsFromPresent" data-num-months="1" class="btn">1m</button>
+          <button on-click="setRangeNumMonthsFromPresent" data-num-months="3" class="btn">3m</button>
+          <button on-click="setRangeNumMonthsFromPresent" data-num-months="6" class="btn">6m</button>
+          <button on-click="setRangeNumMonthsFromPresent" data-num-months="12" class="btn">1y</button>
           <button on-click="setRangeToYTD" class="btn">YTD</button>
         </p>
         <content select="header"></content>

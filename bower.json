@@ -18,7 +18,8 @@
     "highstock-release": "~2.1.5",
     "underscore": "~1.8.3",
     "px-theme": "git://github.sw.ge.com/PXc/px-theme.git#master",
-    "annotations": "https://github.com/blacklabel/annotations.git#~1.2.6"
+    "annotations": "https://github.com/blacklabel/annotations.git#~1.2.6",
+    "moment": "~2.9.0"
   },
   "devDependencies": {
     "iron-doc-viewer": "PolymerElements/iron-doc-viewer#~v0.8.3",
