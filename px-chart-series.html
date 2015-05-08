@@ -27,7 +27,6 @@ Element providing solution to no problem in particular. As a simple, increments 
 @homepage index.html
 -->
 
-
 <script>
 Polymer({
 
@@ -49,7 +48,8 @@ Polymer({
     },
     seriesObj: {
       type: Object,
-      observer: 'seriesObjObserver'
+      observer: 'seriesObjObserver',
+      value: {hello: "you"}
     },
     seriesObjDataKey: {
       type: String,

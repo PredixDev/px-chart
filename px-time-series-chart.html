@@ -21,13 +21,16 @@ Element providing solution to no problem in particular. As a simple, increments 
 @blurb Element providing solution to no problem in particular.
 @homepage index.html
 -->
-<!--<script src="../../bower_components/highstock-release/adapters/standalone-framework.js"></script>-->
-<!--<script src="../../bower_components/highstock-release/highstock.js"></script>-->
+
+<!-- The script els below load highstock...TODO: If these libs are loaded more than once you get http://www.highcharts.com/errors/16...maybe make a <px-highcharts-loader> el?? -->
+<script src="../highstock-release/adapters/standalone-framework.js"></script>
+<script src="../highstock-release/highstock.js"></script>
 <script src="../underscore/underscore-min.js"></script>
 
 <dom-module id="px-time-series-chart">
   <link rel="import" type="css" href="css/px-time-series.css"/>
   <template>
+    <content select="px-chart-series"></content>
     <section role="region">
       <header class="text--right">
         <p>
