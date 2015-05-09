@@ -1,6 +1,6 @@
 <!doctype html>
 
-<html ng-app="demo">
+<html>
 <head>
   <title>px-time-series-chart Demo</title>
 
@@ -12,6 +12,8 @@
   <link rel="import" href="../iron-ajax/iron-ajax.html"/>
   <link rel="import" href="px-time-series-chart.html"/>
   <link rel="import" href="px-chart-series.html"/>
+  <link rel="import" href="px-ts-chart-controls.html"/>
+  <link rel="import" href="px-chart-yaxis.html"/>
 
   <style is="x-style">
     html {
@@ -22,34 +24,28 @@
       height: 100%;
       margin: 0;
     }
-    .demo {
-      padding: 1rem;
-    }
   </style>
 
 </head>
 
 <body>
-  <px-time-series-chart showyaxisunits
-                  navigator-enabled
-                  x-axis-label="time"
-                  y-axis-label="values">
-    <px-chart-series name="core-vibe-rear-cruise">
-      <iron-ajax
-          url="../demo-data/aviation/core-vibe-rear-cruise.json"
-          handleas="json"
-          on-response="{{parent.setSeriesObj}}"></iron-ajax>
-    </px-chart-series>
-    <px-chart-series name="fan-vibe-fwd-cruise">
+
+  <px-time-series-chart>
+    <px-ts-chart-controls data-controls></px-ts-chart-controls>
+    <px-chart-yaxis type="y" offset="0"></px-chart-yaxis>
+    <px-chart-yaxis type="y" opposite="true" offset="-2.5"></px-chart-yaxis>
+    <px-chart-series name="fan-vibration-cruise" axis-index="1">
       <iron-ajax
           url="../demo-data/aviation/fan-vibration-cruise.json"
-          handleas="json"
-          on-response="{{setSeriesObj}}"></iron-ajax>
+          handleas="json"></iron-ajax>
+    </px-chart-series>
+    <px-chart-series name="hpt-acc-position-cruise" axis-index="2">
+      <iron-ajax
+          url="../demo-data/aviation/hpt-acc-position-cruise.json"
+          handleas="json"></iron-ajax>
     </px-chart-series>
   </px-time-series-chart>
 
-<script>
 
-</script>
 </body>
 </html>

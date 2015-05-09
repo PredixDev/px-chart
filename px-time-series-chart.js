@@ -53,22 +53,16 @@ Polymer({
 
     this.chart = new Highcharts.StockChart(chartConfig);
 
-    this.chart.xAxis.forEach(function(axis) {
-      axis.remove();
-    });
-
     this.chart.yAxis.forEach(function(axis) {
       axis.remove();
     });
 
-    var axisEls = Polymer.dom(this).querySelectorAll("px-chart-axis");
+    var axisEls = Polymer.dom(this).querySelectorAll("px-chart-yaxis");
     var axisElsProcessed = 0;
-    var colorIndex = 0;
     axisEls.forEach(function(axisEl) {
       axisEl.addEventListener("axis-ready", function(evt) {
-        var isX = evt.target.type === "x";
-        var axisConfig = isX ? evt.target.buildAxisConfig() : evt.target.buildAxisConfig(colorIndex++, Highcharts.getOptions().colors);
-        _this.chart.addAxis(axisConfig, isX, /*redraw*/false);
+        var axisConfig = evt.target.buildAxisConfig(axisElsProcessed, Highcharts.getOptions().colors);
+        _this.chart.addAxis(axisConfig, /*isX*/false, /*redraw*/false);
         axisElsProcessed++;
         if (axisElsProcessed === axisEls.length) {
           _this.configReady();
@@ -151,8 +145,8 @@ Polymer({
     var self = this;
 
     // Update series that already exist
-    _.each(idsToUpdate, function(idToUpdate) {
-      _.each(seriesToShow, function(series) {
+    idsToUpdate.forEach(function(idToUpdate) {
+      seriesToShow.forEach(function(series) {
         if (series.name === idToUpdate) {
           self.chart.get(idToUpdate).setData(series.data);
         }
@@ -160,13 +154,13 @@ Polymer({
     });
 
     // Remove old ones
-    _.each(idsToRemove, function(idToRemove) {
+    idsToRemove.forEach(function(idToRemove) {
       self.chart.get(idToRemove).remove();
     });
 
     // Add new series
-    _.each(idsToAdd, function(idToAdd) {
-      _.each(seriesToShow, function(series) {
+    idsToAdd.forEach(function(idToAdd) {
+      seriesToShow.forEach(function(series) {
         if (series.name === idToAdd) {
           self.addSeries(idToAdd, series.data);
         }
@@ -325,144 +319,135 @@ Polymer({
       return valArray;
     };
 
-    var defaultChartConfig = {
-        chart: {
-            backgroundColor: "transparent",
-            margin: [90,30,30,30],
-            plotBorderWidth: 1,
-            spacing: [0,0,1,0],
-            style: {
-                fontFamily: 'inherit',
-                fontSize: 'inherit'
-            }
+    var config = {
+      annotationsOptions: {
+        enabledButtons: false
+      },
+      chart: {
+        backgroundColor: "transparent",
+        events: {
+          redraw: function() {
+            var extremes = this.xAxis[0].getExtremes();
+            self.rangeStart = extremes.min;
+            self.rangeEnd = extremes.max;
+          }
         },
-        colors: convertMapToValueArray(PXd.accentPalette),
-        credits: {
-            enabled: false
+        height: 400,
+        margin: [90,30,30,30],
+        plotBorderWidth: 2,
+        renderTo: this.getRenderEl(),
+        spacing: [0,0,25,0],
+        style: {
+          fontFamily: 'inherit',
+          fontSize: 'inherit'
         },
-        legend: {
-            align: 'left',
-            floating: true,
-            itemMarginBottom: 10,
-            itemStyle: {
-              "fontSize": "inherit",
-              "fontWeight": "normal"
-            },
-            margin: 0,
-            padding: 0,
-            symbolPadding: 5,
-            symbolWidth: 10,
-            verticalAlign: 'top'
+        zoomType: 'x'
+      },
+      colors: convertMapToValueArray(PXd.accentPalette),
+      credits: {
+        enabled: false
+      },
+      legend: {
+        align: 'left',
+        enabled: true,
+        floating: true,
+        itemMarginBottom: 10,
+        itemStyle: {
+          "fontSize": "inherit",
+          "fontWeight": "normal"
         },
-        navigation: {
-            buttonOptions: {
-              enabled: false
-            }
-        },
-        navigator: {
-            handles: {
-                backgroundColor: PXd.monochromePalette.white,
-                borderColor: PXd.monochromePalette.grayDarker
-            },
-            outlineColor: PXd.monochromePalette.grayDarker,
-            maskFill: 'rgba(255, 255, 255, 0.8)',
-            series: {
-                color: 'transparent',
-                lineColor: PXd.accentPalette.blue,
-                lineWidth: 2
-            },
-            xAxis: {
-                opposite: true,
-                tickWidth: 0,
-                gridLineWidth: 0,
-                labels: {
-                    y: 15,
-                    align: 'center'
-                }
-            },
-            yAxis: {
-                opposite: true,
-                tickWidth: 0,
-                gridLineWidth: 0,
-                labels: {
-                    x: 15
-                }
-            }
-        },
-        plotOptions: {
-            line: {
-                lineWidth: 1,
-                states: {
-                    hover: {
-                        lineWidth: 1
-                    }
-                }
-            },
-            scatter: {
-                marker: {
-                    enabled: true
-                }
-            }
-        },
-        tooltip: {
-            backgroundColor: PXd.monochromePalette.white,
-            borderColor: PXd.monochromePalette.grayLighter,
-            shadow: false,
-            style: {
-                fontFamily: 'inherit',
-                fontSize: 'inherit'
-            },
-            headerFormat: '<span>{point.key}</span><br/>',
-            pointFormat: '<span style="color:{series.color}">{series.name}: {point.y}</span><br/>'
+        margin: 0,
+        padding: 0,
+        symbolPadding: 5,
+        symbolWidth: 10,
+        verticalAlign: 'top'
+      },
+      navigation: {
+        buttonOptions: {
+          enabled: false
+        }
+      },
+      navigator: {
+        adaptToUpdatedData: false,
+        height: 50,
+        margin: 15,
+        outlineColor: PXd.monochromePalette.gray,
+        maskInside: true,
+        series: {
+          color: 'transparent',
+          lineColor: PXd.accentPalette.blue,
+          lineWidth: 2
         },
         xAxis: {
-            events: {
-                afterSetExtremes: function(event) {
-                    self.fire('after-set-extremes', event);
-                }
+          labels: {
+            style: {
+              fontSize: "0.8rem"
             },
-            title: {
-                text: null
-            }
-        }
-    };
-
-    Highcharts.setOptions(defaultChartConfig);
-
-    var config = {
-        chart: {
-            events: {
-                redraw: function() {
-                    var extremes = this.xAxis[0].getExtremes();
-                    self.rangeStart = extremes.min;
-                    self.rangeEnd = extremes.max;
-                }
-            },
-            height: 400,
-            renderTo: this.getRenderEl(),
-            zoomType: 'x'
+            y: 15
+          }
         },
-        legend: {
+        xAxis: {
+          gridLineWidth: 0
+        }
+      },
+      plotOptions: {
+        line: {
+          lineWidth: 1,
+          states: {
+            hover: {
+              lineWidth: 1
+            }
+          }
+        },
+        scatter: {
+          marker: {
             enabled: true
+          }
         },
-        navigator: {
-            adaptToUpdatedData: false
-        },
-        plotOptions: {
-            series: {
-                marker: {}
-            }
-        },
-        rangeSelector: {
-            enabled: false
-        },
-        series: [],
-        scrollbar: {
-            enabled: false
-        },
-        title: {
-            text: null
+        series: {
+          marker: {}
         }
+      },
+      rangeSelector: {
+        enabled: false
+      },
+      series: [],
+      scrollbar: {
+        enabled: false
+      },
+      title: {
+        text: null
+      },
+      tooltip: {
+        backgroundColor: PXd.monochromePalette.white,
+        borderColor: PXd.monochromePalette.grayLighter,
+        shadow: false,
+        style: {
+          fontFamily: 'inherit',
+          fontSize: 'inherit'
+        },
+        headerFormat: '<span>{point.key}</span><br/>',
+        pointFormat: '<span style="color:{series.color}">{series.name}: {point.y}</span><br/>'
+      },
+      xAxis: {
+        events: {
+          afterSetExtremes: function(event) {
+            self.fire('after-set-extremes', event);
+          }
+        },
+        labels: {
+          align: "left",
+          style: {
+            fontSize: '0.8rem'
+          },
+          x: 3,
+          y: 12
+        },
+        startOnTick: true,
+        title: {
+          text: null
+        }
+      }
     };
 
     return config;

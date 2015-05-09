@@ -7,50 +7,29 @@
 <link rel="import" href="../polymer/polymer.html"/>
 
 <!--
-Maps to highcharts axis config, see docs at http://api.highcharts.com/highcharts#yAxis and http://api.highcharts.com/highcharts#xAxis
+Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highcharts#yAxis
 
 ##### Usage
 
-    <px-chart-axis>Hi</px-chart-axis>
+    <px-chart-yaxis>Hi</px-chart-yaxis>
 
-    <px-chart-axis name="...">
-      <iron-ajax
-          url="../demo-data/aviation/fan-vibration-cruise.json"
-          handleas="json"></iron-ajax>
-    </px-chart-axis>
-
-    <px-chart-axis series-obj="...">Hi</px-chart-axis>
-
-@element px-time-series
-@blurb Element providing solution to no problem in particular.
+@element px-chart-yaxis
+@blurb Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highcharts#yAxis
 @homepage index.html
 -->
 
 <script>
   Polymer({
 
-    is: 'px-chart-axis',
+    is: 'px-chart-yaxis',
 
     /**
      * Properties block, expose attribute values to the DOM via 'reflect'
      *
      * @property properties
      * @type Object
-     *
      */
     properties: {
-
-
-      /**
-       * Either "x" or "y"
-       *
-       * @type {String}
-       * @default "y"
-       */
-      direction: {
-        type: String,
-        default: "y"
-      },
 
       /**
        * http://api.highcharts.com/highcharts#yAxis.lineColor
@@ -97,6 +76,14 @@ Maps to highcharts axis config, see docs at http://api.highcharts.com/highcharts
       },
 
       /**
+       * http://api.highcharts.com/highcharts#yAxis.startOnTick
+       */
+      startOnTick: {
+        type: Boolean,
+        value: true
+      },
+
+      /**
        * http://api.highcharts.com/highcharts#yAxis.tickColor
        */
       tickColor: {
@@ -107,7 +94,8 @@ Maps to highcharts axis config, see docs at http://api.highcharts.com/highcharts
        * http://api.highcharts.com/highcharts#yAxis.tickWidth
        */
       tickWidth: {
-        type: Number
+        type: Number,
+        value: 2
       },
 
       /**
@@ -123,14 +111,23 @@ Maps to highcharts axis config, see docs at http://api.highcharts.com/highcharts
        * http://api.highcharts.com/highcharts#yAxis.title
        */
       title: {
-        type: Object
+        type: Object,
+        value: {
+          text: null
+        }
       },
 
       /**
        * http://api.highcharts.com/highcharts#yAxis.labels
        */
       labels: {
-        type: Object
+        type: Object,
+        value: {
+          style: {
+            fontSize: '0.8rem'
+          },
+          y: 5
+        }
       },
 
       /**

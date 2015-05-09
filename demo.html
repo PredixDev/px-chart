@@ -14,7 +14,7 @@
   <link rel="import" href="px-time-series-chart.html"/>
   <link rel="import" href="px-chart-series.html"/>
   <link rel="import" href="px-ts-chart-controls.html"/>
-  <link rel="import" href="px-chart-axis.html"/>
+  <link rel="import" href="px-chart-yaxis.html"/>
 
   <style is="x-style">
     html {
@@ -67,17 +67,16 @@
   SEPARATE CHART AND SERIES COMPONENTS:
   <px-time-series-chart>
     <px-ts-chart-controls data-controls></px-ts-chart-controls>
-    <px-chart-axis type="x"></px-chart-axis>
-    <px-chart-axis type="y" opposite="true" offset="10"></px-chart-axis>
-    <px-chart-axis type="y" offset="-15"></px-chart-axis>
-    <px-chart-series name="core-vibe-rear-cruise" axis-index="1">
+    <px-chart-yaxis type="y" offset="0"></px-chart-yaxis>
+    <px-chart-yaxis type="y" opposite="true" offset="-2.5"></px-chart-yaxis>
+    <px-chart-series name="fan-vibration-cruise" axis-index="1">
       <iron-ajax
-          url="../demo-data/aviation/core-vibe-rear-cruise.json"
+          url="../demo-data/aviation/fan-vibration-cruise.json"
           handleas="json"></iron-ajax>
     </px-chart-series>
-    <px-chart-series name="fan-vibe-fwd-cruise" axis-index="2">
+    <px-chart-series name="hpt-acc-position-cruise" axis-index="2">
       <iron-ajax
-          url="../demo-data/aviation/fuel-filter-delta-pressure-cruise.json"
+          url="../demo-data/aviation/hpt-acc-position-cruise.json"
           handleas="json"></iron-ajax>
     </px-chart-series>
   </px-time-series-chart>

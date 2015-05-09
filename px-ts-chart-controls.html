@@ -22,8 +22,9 @@ Template element for default time controls on a time series chart
 <dom-module id="px-ts-chart-controls">
   <link rel="import" type="css" href="css/px-time-series.css"/>
   <template>
-    <p hidden$="[[!showDateRange]]">
+    <p class="m0" hidden$="[[!showDateRange]]">
       <label class="label-inline">
+        From
         <input value="{{rangeStartDisplayStr::change}}" class="text-input" placeholder="HH:MM MM/DD/YYYY"/>
       </label>
       <label class="label-inline">
@@ -32,7 +33,7 @@ Template element for default time controls on a time series chart
       </label>
       <button on-click="rangeSetHandler" class="btn">Submit</button>
     </p>
-    <p>
+    <p class="mb+">
       Zoom
       <span hidden$="[[!showMonthRangeZoom]]">
         <button on-click="setRangeNumMonthsFromPresent" data-num-months="1" class="btn">1m</button>
