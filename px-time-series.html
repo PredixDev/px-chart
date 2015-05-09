@@ -25,8 +25,8 @@ Element providing solution to no problem in particular. As a simple, increments 
     <link rel="import" type="css" href="css/px-time-series.css"/>
     <template>
       <section role="region">
-        <header class="text--right">
-          <p>
+        <header class="text--right float--right">
+          <p class="m0">
             <label class="label-inline">
               From
               <input value="{{rangeStartStr::change}}" class$="[[getRangeClasses(rangeStartStr)]]" placeholder="HH:MM MM/DD/YYYY"/>
@@ -37,7 +37,7 @@ Element providing solution to no problem in particular. As a simple, increments 
             </label>
             <button on-click="submitHandler" class="btn">Submit</button>
           </p>
-          <p>
+          <p class="mb+">
             Zoom
             <button on-click="setMonthsOfRange" data-month="1" class="btn">1m</button>
             <button on-click="setMonthsOfRange" data-month="3" class="btn">3m</button>
