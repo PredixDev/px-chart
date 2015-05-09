@@ -310,7 +310,7 @@ Polymer({
       'blueDark': '#00366e'
     };
 
-    var brandkit = {
+    var PXd = {
       'accentPalette': accentPalette,
       'monochromePalette': monochromePalette
     };
@@ -326,128 +326,143 @@ Polymer({
     };
 
     var defaultChartConfig = {
-      chart: {
-        margin: [70,20,20,20],
-        spacing: [50,20,20,20],
-        style: {
-          fontFamily: 'inherit',
-          fontSize: 'inherit'
-        }
-      },
-      colors: convertMapToValueArray(brandkit.accentPalette),
-      credits: {
-        enabled: false
-      },
-      legend: {
-        align: 'left',
-        itemMarginBottom: 10,
-        margin: 0,
-        padding: 0,
-        symbolPadding: 5,
-        symbolWidth: 10,
-        verticalAlign: 'top',
-        y: -30
-      },
-      navigation: {
-        buttonOptions: {
-          enabled: false
-        }
-      },
-      navigator: {
-        handles: {
-          backgroundColor: brandkit.monochromePalette.white,
-          borderColor: brandkit.monochromePalette.grayDarker
+        chart: {
+            backgroundColor: "transparent",
+            margin: [90,30,30,30],
+            plotBorderWidth: 1,
+            spacing: [0,0,1,0],
+            style: {
+                fontFamily: 'inherit',
+                fontSize: 'inherit'
+            }
         },
-        outlineColor: brandkit.monochromePalette.grayDarker,
-        maskFill: 'rgba(255, 255, 255, 0.8)',
-        series: {
-          color: 'transparent',
-          lineColor: brandkit.accentPalette.blue,
-          lineWidth: 2
+        colors: convertMapToValueArray(PXd.accentPalette),
+        credits: {
+            enabled: false
+        },
+        legend: {
+            align: 'left',
+            floating: true,
+            itemMarginBottom: 10,
+            itemStyle: {
+              "fontSize": "inherit",
+              "fontWeight": "normal"
+            },
+            margin: 0,
+            padding: 0,
+            symbolPadding: 5,
+            symbolWidth: 10,
+            verticalAlign: 'top'
+        },
+        navigation: {
+            buttonOptions: {
+              enabled: false
+            }
+        },
+        navigator: {
+            handles: {
+                backgroundColor: PXd.monochromePalette.white,
+                borderColor: PXd.monochromePalette.grayDarker
+            },
+            outlineColor: PXd.monochromePalette.grayDarker,
+            maskFill: 'rgba(255, 255, 255, 0.8)',
+            series: {
+                color: 'transparent',
+                lineColor: PXd.accentPalette.blue,
+                lineWidth: 2
+            },
+            xAxis: {
+                opposite: true,
+                tickWidth: 0,
+                gridLineWidth: 0,
+                labels: {
+                    y: 15,
+                    align: 'center'
+                }
+            },
+            yAxis: {
+                opposite: true,
+                tickWidth: 0,
+                gridLineWidth: 0,
+                labels: {
+                    x: 15
+                }
+            }
+        },
+        plotOptions: {
+            line: {
+                lineWidth: 1,
+                states: {
+                    hover: {
+                        lineWidth: 1
+                    }
+                }
+            },
+            scatter: {
+                marker: {
+                    enabled: true
+                }
+            }
+        },
+        tooltip: {
+            backgroundColor: PXd.monochromePalette.white,
+            borderColor: PXd.monochromePalette.grayLighter,
+            shadow: false,
+            style: {
+                fontFamily: 'inherit',
+                fontSize: 'inherit'
+            },
+            headerFormat: '<span>{point.key}</span><br/>',
+            pointFormat: '<span style="color:{series.color}">{series.name}: {point.y}</span><br/>'
         },
         xAxis: {
-          opposite: true,
-          tickWidth: 0,
-          gridLineWidth: 0,
-          labels: {
-            y: 15,
-            align: 'center'
-          }
-        },
-        yAxis: {
-          opposite: true,
-          tickWidth: 0,
-          gridLineWidth: 0,
-          labels: {
-            x: 15
-          }
-        }
-      },
-      plotOptions: {
-        line: {
-          lineWidth: 1,
-          states: {
-            hover: {
-              lineWidth: 1
+            events: {
+                afterSetExtremes: function(event) {
+                    self.fire('after-set-extremes', event);
+                }
+            },
+            title: {
+                text: null
             }
-          }
-        },
-        scatter: {
-          marker: {
-            enabled: true
-          }
         }
-      },
-      tooltip: {
-        backgroundColor: brandkit.monochromePalette.white,
-        borderColor: brandkit.monochromePalette.grayLighter,
-        shadow: false,
-        style: {
-          fontFamily: 'inherit',
-          fontSize: 'inherit'
-        },
-        headerFormat: '<span>{point.key}</span><br/>',
-        pointFormat: '<span style="color:{series.color}">{series.name}: {point.y}</span><br/>'
-      }
     };
 
     Highcharts.setOptions(defaultChartConfig);
 
     var config = {
-      chart: {
-        events: {
-          redraw: function() {
-            var extremes = this.xAxis[0].getExtremes();
-            self.rangeStart = extremes.min;
-            self.rangeEnd = extremes.max;
-          }
+        chart: {
+            events: {
+                redraw: function() {
+                    var extremes = this.xAxis[0].getExtremes();
+                    self.rangeStart = extremes.min;
+                    self.rangeEnd = extremes.max;
+                }
+            },
+            height: 400,
+            renderTo: this.getRenderEl(),
+            zoomType: 'x'
         },
-        height: 400,
-        renderTo: this.getRenderEl(),
-        zoomType: 'x'
-      },
-      legend: {
-        enabled: true
-      },
-      navigator: {
-        enabled: this.navigatorEnabled,
-        adaptToUpdatedData: false
-      },
-      plotOptions: {
-        series: {
-          marker: {}
+        legend: {
+            enabled: true
+        },
+        navigator: {
+            adaptToUpdatedData: false
+        },
+        plotOptions: {
+            series: {
+                marker: {}
+            }
+        },
+        rangeSelector: {
+            enabled: false
+        },
+        series: [],
+        scrollbar: {
+            enabled: false
+        },
+        title: {
+            text: null
         }
-      },
-      rangeSelector: {
-        enabled: false
-      },
-      series: [],
-      scrollbar: {
-        enabled: false
-      },
-      title: {
-        text: null
-      }
     };
 
     return config;
