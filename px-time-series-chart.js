@@ -18,7 +18,7 @@ Polymer({
      */
     rangeStart: {
       type: String,
-      observer: 'rangeStartObserver'
+      observer: 'rangeObserver'
     },
 
     /**
@@ -29,7 +29,7 @@ Polymer({
      */
     rangeEnd: {
       type: String,
-      observer: 'rangeEndObserver'
+      observer: 'rangeObserver'
     },
 
     /**
@@ -49,16 +49,46 @@ Polymer({
    */
   ready: function() {
     var chartConfig = this.buildConfig();
+    var _this = this;
+
     this.chart = new Highcharts.StockChart(chartConfig);
 
+    this.chart.xAxis.forEach(function(axis) {
+      axis.remove();
+    });
+
+    this.chart.yAxis.forEach(function(axis) {
+      axis.remove();
+    });
+
+    var axisEls = Polymer.dom(this).querySelectorAll("px-chart-axis");
+    var axisElsProcessed = 0;
+    var colorIndex = 0;
+    axisEls.forEach(function(axisEl) {
+      axisEl.addEventListener("axis-ready", function(evt) {
+        var isX = evt.target.type === "x";
+        var axisConfig = isX ? evt.target.buildAxisConfig() : evt.target.buildAxisConfig(colorIndex++, Highcharts.getOptions().colors);
+        _this.chart.addAxis(axisConfig, isX, /*redraw*/false);
+        axisElsProcessed++;
+        if (axisElsProcessed === axisEls.length) {
+          _this.configReady();
+        }
+      });
+    });
+  },
+
+  /**
+   * Internal callback for Highcharts config ready
+   */
+  configReady: function() {
     //find series elements in light dom ("Polymer.dom(this)" vs. "Polymer.dom(this.root)", which would be shadow dom)
     var seriesEls = Polymer.dom(this).querySelectorAll("px-chart-series");
-
     var _this = this;
+
     seriesEls.forEach(function (seriesEl) {
       seriesEl.addEventListener("data-changed", function(evt) {
         if (!_this.hasSeries(seriesEl.name)) {
-          _this.addSeries(seriesEl.name, evt.detail.value);
+          _this.addSeries(seriesEl.name, evt.detail.value, seriesEl.axisIndex);
           _this.chart.reflow();
         }
         else {
@@ -74,23 +104,19 @@ Polymer({
         }
       });
     })
-
   },
 
   /**
-   * Sets display string for start range when internal value changes
+   * Sets display string for start/end range when internal value changes
    */
-  rangeStartObserver: function () {
-    var m = moment(this.rangeStart);
-    this.rangeStartDisplayStr = m.isValid() ? m.format('L') + " " + m.format("hh:ss") : null;
-  },
-
-  /**
-   * Sets display string for end range when internal value changes
-   */
-  rangeEndObserver: function () {
-    var m = moment(this.rangeEnd);
-    this.rangeEndDisplayStr = m.isValid() ? m.format('L') + " " + m.format("hh:ss"): null;
+  rangeObserver: function () {
+    var controlsEl = Polymer.dom(this).querySelector("[data-controls]");
+    if (controlsEl && controlsEl.setPathValue) {
+      var mStart = moment(this.rangeStart);
+      var mEnd = moment(this.rangeEnd);
+      controlsEl.setPathValue("rangeStartDisplayStr", mStart.isValid() ? mStart.format('L') + " " + mStart.format("hh:ss") : null);
+      controlsEl.setPathValue("rangeEndDisplayStr", mEnd.isValid() ? mEnd.format('L') + " " + mEnd.format("hh:ss") : null);
+    }
   },
 
   /**
@@ -155,12 +181,14 @@ Polymer({
    *
    * @param {String} seriesId
    * @param {Array} data
+   * @param {Number} [yAxisIndex]
    */
-  addSeries: function(seriesId, data) {
+  addSeries: function(seriesId, data, yAxisIndex) {
     var newseries = {
       id: seriesId,
       name: seriesId,
-      data: data
+      data: data,
+      yAxis: yAxisIndex
     };
 
     this.chart.addSeries(newseries);
@@ -197,10 +225,9 @@ Polymer({
   /**
    * Sets the range start / end given number of months back from present
    *
-   * @param {Object} evtOrNumMonths Event with a target that has a data-num-months attr or Number of months back from present
+   * @param {Number} numMonths Number of months back from present
    */
-  setRangeNumMonthsFromPresent: function (evtOrNumMonths) {
-    var numMonths = evtOrNumMonths.target ? evtOrNumMonths.target.getAttribute("data-num-months") : evtOrNumMonths;
+  setRangeNumMonthsFromPresent: function (numMonths) {
     var m = moment(this.rangeEnd);
     m.subtract(numMonths, 'months');
     this.rangeStart = m.valueOf();
@@ -215,17 +242,6 @@ Polymer({
     this.rangeEnd = m.valueOf();
     this.rangeStart = m.startOf('year').valueOf();
     this.setExtremesIfChanged(this.rangeStart, this.rangeEnd);
-  },
-
-  /**
-   * Parses rangeStartDisplayStr and rangeEndDisplayStr and sets actual range based on them
-   */
-  rangeSetHandler: function () {
-    var mStart = moment(this.rangeStartDisplayStr);
-    var mEnd = moment(this.rangeEndDisplayStr);
-    if (mStart.isValid() && mEnd.isValid()) {
-      this.setExtremesIfChanged(mStart.valueOf(), mEnd.valueOf());
-    }
   },
 
   /**
@@ -431,29 +447,9 @@ Polymer({
       },
       title: {
         text: null
-      },
-      xAxis: {
-        title: {
-          text: "time"
-        },
-        events: {
-          afterSetExtremes: function(event) {
-            self.fire('after-set-extremes', event);
-          }
-        }
-      },
-      yAxis: {
-        labels: {
-        },
-        title: {
-          text: ""
-        }
       }
     };
 
-    config.yAxis.labels.enabled = true;
-
     return config;
   }
-
 });

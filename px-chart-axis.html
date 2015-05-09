@@ -1,0 +1,185 @@
+<!--
+    Relative paths assume component is being run from inside an app or another component, where dependencies are flat
+    siblings. When this component is run from its own repo (e.g. ui tests, examples), we assume the server is started with
+    'grunt depserve' (or similar server setup) to enable correct finding of bower dependencies for local runs
+    See https://github.sw.ge.com/jreichenberg/grunt-dep-serve#why-do-we-need-this
+-->
+<link rel="import" href="../polymer/polymer.html"/>
+
+<!--
+Maps to highcharts axis config, see docs at http://api.highcharts.com/highcharts#yAxis and http://api.highcharts.com/highcharts#xAxis
+
+##### Usage
+
+    <px-chart-axis>Hi</px-chart-axis>
+
+    <px-chart-axis name="...">
+      <iron-ajax
+          url="../demo-data/aviation/fan-vibration-cruise.json"
+          handleas="json"></iron-ajax>
+    </px-chart-axis>
+
+    <px-chart-axis series-obj="...">Hi</px-chart-axis>
+
+@element px-time-series
+@blurb Element providing solution to no problem in particular.
+@homepage index.html
+-->
+
+<script>
+  Polymer({
+
+    is: 'px-chart-axis',
+
+    /**
+     * Properties block, expose attribute values to the DOM via 'reflect'
+     *
+     * @property properties
+     * @type Object
+     *
+     */
+    properties: {
+
+
+      /**
+       * Either "x" or "y"
+       *
+       * @type {String}
+       * @default "y"
+       */
+      direction: {
+        type: String,
+        default: "y"
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.lineColor
+       */
+      lineColor: {
+        type: String
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.lineWidth
+       */
+      lineWidth: {
+        type: Number,
+        value: 2
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.gridLineWidth
+       */
+      gridLineWidth: {
+        type: Number
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.tickInterval
+       */
+      tickInterval: {
+        type: Number
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.dateTimeLabelFormats
+       */
+      dateTimeLabelFormats: {
+        type: Object
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.offset
+       */
+      offset: {
+        type: Number,
+        value: 5
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.tickColor
+       */
+      tickColor: {
+        type: String
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.tickWidth
+       */
+      tickWidth: {
+        type: Number
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.type
+       *
+       * @type {String}
+       */
+      type: {
+        type: String
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.title
+       */
+      title: {
+        type: Object
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.labels
+       */
+      labels: {
+        type: Object
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.opposite
+       */
+      opposite: {
+        type: Boolean
+      },
+
+      defaultColorProps: {
+        type: Array,
+        value: ["tickColor", "lineColor"]
+      }
+    },
+
+    ready: function() {
+      this.fire("axis-ready");
+    },
+
+    /**
+     * Builds a returns an object to be passed into highcharts for this axis
+     *
+     * @param {Number} axisIndex Which axis are we processing in order to be added to the chart
+     * @param {Array} colorsArray An array of colors to choose from by index
+     */
+    buildAxisConfig: function(axisIndex, colorsArray) {
+      var config = {};
+      var props = this.properties;
+      var _this = this;
+      Object.keys(props).forEach(function(key) {
+        if (props.hasOwnProperty(key) && key !== "type" && typeof _this[key] !== "undefined") {
+          config[key] = _this[key];
+        }
+      });
+
+      if (colorsArray) {
+        this.addDefaultColorsByIndex(config, colorsArray[axisIndex]);
+      }
+      return config;
+    },
+
+    addDefaultColorsByIndex: function(config, color) {
+      this.defaultColorProps.forEach(function(propName) {
+        if (!config[propName]) {
+          config[propName] = color;
+        }
+      });
+    }
+  });
+
+
+</script>

@@ -31,26 +31,7 @@ Element providing solution to no problem in particular. As a simple, increments 
   <template>
     <section role="region">
       <header class="text--right">
-        <p>
-          <label class="label-inline">
-            From
-            <input value="{{rangeStartDisplayStr::change}}" class="text-input" placeholder="HH:MM MM/DD/YYYY"/>
-          </label>
-          <label class="label-inline">
-            to
-            <input value="{{rangeEndDisplayStr::change}}" class="text-input" placeholder="HH:MM MM/DD/YYYY"/>
-          </label>
-          <button on-click="rangeSetHandler" class="btn">Submit</button>
-        </p>
-        <p>
-          Zoom
-          <button on-click="setRangeNumMonthsFromPresent" data-num-months="1" class="btn">1m</button>
-          <button on-click="setRangeNumMonthsFromPresent" data-num-months="3" class="btn">3m</button>
-          <button on-click="setRangeNumMonthsFromPresent" data-num-months="6" class="btn">6m</button>
-          <button on-click="setRangeNumMonthsFromPresent" data-num-months="12" class="btn">1y</button>
-          <button on-click="setRangeToYTD" class="btn">YTD</button>
-        </p>
-        <content select="header"></content>
+        <content select="[data-controls]"></content>
       </header>
       <figure class="m0" id="container"></figure>
     </section>

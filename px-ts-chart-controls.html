@@ -1,0 +1,132 @@
+<!--
+    Relative paths assume component is being run from inside an app or another component, where dependencies are flat
+    siblings. When this component is run from its own repo (e.g. ui tests, examples), we assume the server is started with
+    'grunt depserve' (or similar server setup) to enable correct finding of bower dependencies for local runs
+    See https://github.sw.ge.com/jreichenberg/grunt-dep-serve#why-do-we-need-this
+-->
+<link rel="import" href="../polymer/polymer.html"/>
+
+<!--
+Template element for default time controls on a time series chart
+
+##### Usage
+
+    <px-ts-chart-controls>
+      <button class="btn">My Sepcial button</button>
+    </px-ts-chart-controls>
+
+@element px-ts-chart-controls
+@blurb Template element for default time controls on a time series chart
+@homepage index.html
+-->
+<dom-module id="px-ts-chart-controls">
+  <link rel="import" type="css" href="css/px-time-series.css"/>
+  <template>
+    <p hidden$="[[!showDateRange]]">
+      <label class="label-inline">
+        <input value="{{rangeStartDisplayStr::change}}" class="text-input" placeholder="HH:MM MM/DD/YYYY"/>
+      </label>
+      <label class="label-inline">
+        to
+        <input value="{{rangeEndDisplayStr::change}}" class="text-input" placeholder="HH:MM MM/DD/YYYY"/>
+      </label>
+      <button on-click="rangeSetHandler" class="btn">Submit</button>
+    </p>
+    <p>
+      Zoom
+      <span hidden$="[[!showMonthRangeZoom]]">
+        <button on-click="setRangeNumMonthsFromPresent" data-num-months="1" class="btn">1m</button>
+        <button on-click="setRangeNumMonthsFromPresent" data-num-months="3" class="btn">3m</button>
+        <button on-click="setRangeNumMonthsFromPresent" data-num-months="6" class="btn">6m</button>
+        <button on-click="setRangeNumMonthsFromPresent" data-num-months="12" class="btn">1y</button>
+      </span>
+      <button on-click="setRangeToYTD" class="btn" hidden$="[[!showYTD]]">YTD</button>
+    </p>
+    <content></content>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+
+    is: 'px-ts-chart-controls',
+
+    /**
+     * Properties block, expose attribute values to the DOM via 'reflect'
+     *
+     * @property properties
+     * @type Object
+     */
+    properties: {
+
+      /**
+       * Whether to show date range control
+       *
+       * @type {String}
+       * @default undefined
+       */
+      showDateRange: {
+        type: Boolean,
+        default: true
+      },
+
+      /**
+       * Whether to show YTD control
+       *
+       * @type {String}
+       * @default undefined
+       */
+      showYTD: {
+        type: Boolean,
+        default: true
+      },
+
+      /**
+       * Whether to show month range zoom buttons
+       *
+       * @type {Boolean}
+       * @default true
+       */
+      showMonthRangeZoom: {
+        type: Boolean,
+        value: true
+      },
+
+      rangeStartDisplayStr: {
+        type: String
+      },
+
+      rangeEndDisplayStr: {
+        type: String
+      }
+    },
+
+    /**
+     * Sets the range start / end given number of months back from present
+     *
+     * @param {Object} evtOrNumMonths Event with a target that has a data-num-months attr or Number of months back from present
+     */
+    setRangeNumMonthsFromPresent: function (evt) {
+      var numMonths = evt.target.getAttribute("data-num-months");
+      Polymer.dom(this).parentNode.setRangeNumMonthsFromPresent(numMonths);
+    },
+
+    /**
+     * Sets range to current year to date
+     */
+    setRangeToYTD: function () {
+      Polymer.dom(this).parentNode.setRangeToYTD();
+    },
+
+    /**
+     * Parses rangeStartDisplayStr and rangeEndDisplayStr and sets actual range based on them
+     */
+    rangeSetHandler: function () {
+      var mStart = moment(this.rangeStartDisplayStr);
+      var mEnd = moment(this.rangeEndDisplayStr);
+      if (mStart.isValid() && mEnd.isValid()) {
+        Polymer.dom(this).parentNode.setExtremesIfChanged(mStart.valueOf(), mEnd.valueOf());
+      }
+    },
+  });
+</script>

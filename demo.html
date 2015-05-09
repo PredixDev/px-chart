@@ -13,6 +13,8 @@
   <link rel="import" href="px-time-series.html"/>
   <link rel="import" href="px-time-series-chart.html"/>
   <link rel="import" href="px-chart-series.html"/>
+  <link rel="import" href="px-ts-chart-controls.html"/>
+  <link rel="import" href="px-chart-axis.html"/>
 
   <style is="x-style">
     html {
@@ -30,7 +32,7 @@
 
 </head>
 
-<body ng-controller="DemoController">
+<body>
 
   <article class="demo" role="article">
     <h3>Demo</h3>
@@ -72,16 +74,18 @@
 
   SEPARATE CHART AND SERIES COMPONENTS:
   <px-time-series-chart>
-
-      <px-chart-series name="core-vibe-rear-cruise">
-        <iron-ajax
-            url="../demo-data/aviation/core-vibe-rear-cruise.json"
-            handleas="json"></iron-ajax>
-      </px-chart-series>
-      </template>
-    <px-chart-series name="fan-vibe-fwd-cruise">
+    <px-ts-chart-controls data-controls></px-ts-chart-controls>
+    <px-chart-axis type="x"></px-chart-axis>
+    <px-chart-axis type="y" opposite="true" offset="10"></px-chart-axis>
+    <px-chart-axis type="y" offset="-15"></px-chart-axis>
+    <px-chart-series name="core-vibe-rear-cruise" axis-index="1">
       <iron-ajax
-          url="../demo-data/aviation/fan-vibration-cruise.json"
+          url="../demo-data/aviation/core-vibe-rear-cruise.json"
+          handleas="json"></iron-ajax>
+    </px-chart-series>
+    <px-chart-series name="fan-vibe-fwd-cruise" axis-index="2">
+      <iron-ajax
+          url="../demo-data/aviation/fuel-filter-delta-pressure-cruise.json"
           handleas="json"></iron-ajax>
     </px-chart-series>
   </px-time-series-chart>

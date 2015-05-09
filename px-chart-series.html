@@ -8,7 +8,7 @@
 <link rel="import" href="../iron-ajax/iron-ajax.html"/>
 
 <!--
-Element providing solution to no problem in particular. As a simple, increments a counter when clicked.
+Element defining a chart series
 
 ##### Usage
 
@@ -23,7 +23,7 @@ Element providing solution to no problem in particular. As a simple, increments 
     <px-chart-series series-obj="...">Hi</px-chart-series>
 
 @element px-time-series
-@blurb Element providing solution to no problem in particular.
+@blurb Element defining a chart series
 @homepage index.html
 -->
 
@@ -39,25 +39,68 @@ Polymer({
    * @type Object
    */
   properties: {
+
+    /**
+     * The date associated with the series, an Array of Arrays with the first value of each inner Array being a unix
+     * timestamp and the second value being the value
+     *
+     * @type {Array}
+     */
     data: {
       type: Array,
       notify: true
     },
+
+    /**
+     * Unique name/id of this series. Used for the default label.
+     *
+     * @type {String}
+     */
     name: {
       type: String
     },
+
+    /**
+     * Optional object that contains members that map to #name and #data via the seriesObjDataKey and seriesObjNameKey,
+     * e.g. seriesObj[seriesObjDataKey] and seriesObj[seriesObjNameKey]
+     *
+     * @type {Object}
+     */
     seriesObj: {
       type: Object,
-      observer: 'seriesObjObserver',
-      value: {hello: "you"}
+      observer: 'seriesObjObserver'
     },
+
+    /**
+     * Key in the optional seriesObj to be used for #data
+     *
+     * @type {String}
+     * @default "series"
+     */
     seriesObjDataKey: {
       type: String,
       value: 'series'
     },
+
+    /**
+     * Key in the optional seriesObj to be used for #name
+     *
+     * @type {String}
+     * @default "name"
+     */
     seriesObjNameKey: {
       type: String,
       value: 'name'
+    },
+
+    /**
+     * Optional declaration of which y axis this series should be plotted against, if more than one, defined as zero-based
+     * index
+     *
+     * @type {Number}
+     */
+    axisIndex: {
+      type: Number
     }
   },
 
