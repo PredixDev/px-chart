@@ -506,6 +506,12 @@ html {
   text-align: right !important; }
 
 /**
+   * Full height element
+   */
+.full-height {
+  height: 100% !important; }
+
+/**
    * Add a help cursor to any element that gives the user extra information on
    * `:hover`.
    */
@@ -1130,6 +1136,9 @@ optgroup {
 .btn + .btn {
   margin-left: 0.6666666667rem; }
 
+header {
+  margin-bottom: -6rem; }
+
 /*------------------------------------*\
     #PX-CLEARFIX-DESIGN
 \*------------------------------------*/
@@ -1201,6 +1210,32 @@ optgroup {
 /**
  * Sass functions for Predix Experience
  */
+/**
+       * Add large margins.
+       */
+.m\00002b {
+  margin: 1.3333333333rem !important; }
+
+.mt\00002b {
+  margin-top: 1.3333333333rem !important; }
+
+.mr\00002b {
+  margin-right: 1.3333333333rem !important; }
+
+.mb\00002b {
+  margin-bottom: 1.3333333333rem !important; }
+
+.ml\00002b {
+  margin-left: 1.3333333333rem !important; }
+
+.mh\00002b {
+  margin-right: 1.3333333333rem !important;
+  margin-left: 1.3333333333rem !important; }
+
+.mv\00002b {
+  margin-top: 1.3333333333rem !important;
+  margin-bottom: 1.3333333333rem !important; }
+
 /**
        * Remove margins.
        */
