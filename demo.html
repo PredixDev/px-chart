@@ -1,6 +1,6 @@
 <!doctype html>
 
-<html ng-app="demo">
+<html>
 <head>
   <title>px-time-series-chart Demo</title>
 
@@ -10,7 +10,6 @@
   <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
   <link rel="import" href="../px-theme/px-theme.html"/>
   <link rel="import" href="../iron-ajax/iron-ajax.html"/>
-  <link rel="import" href="px-time-series.html"/>
   <link rel="import" href="px-time-series-chart.html"/>
 
   <style is="x-style">
@@ -20,48 +19,14 @@
     }
     body {
       height: 100%;
-      margin: 1em;
+      margin: 0;
     }
   </style>
 
 </head>
 
 <body>
-  
-  <article role="article">
-    <h3>Demo</h3>
-    <p>Although related, examples are /not/ the same as the test fixtures. Tests are tests, examples are examples.</p>
-    <p>
-      Also see the
-      <a href="index.html">documentation</a>
-      and the
-      <a href="test/fixture.html">UI test fixture</a>.
-    </p>
-  </article>
-
-  ALL-IN-ONE COMPONENT:
-  <px-time-series showyaxisunits
-                  x-axis-label="time"
-                  y-axis-label="values">
-  </px-time-series>
-
-
-  <iron-ajax
-      class="for-all-in-one"
-      auto="false"
-      url="../demo-data/aviation/_all.json"
-      handleas="json"></iron-ajax>
-
-  <div class="demo">
-    <p>
-      <button onclick="addSeries('Core Vibe Rear Cruise')">Add Series A</button>
-      <button onclick="removeSeries('Core Vibe Rear Cruise')">Remove Series A</button>
-      <button onclick="addSeries('Fan Vibration Cruise')">Add Series B</button>
-      <button onclick="removeSeries('Fan Vibration Cruise')">Remove Series B</button>
-    </p>
-  </div>
-
-  SEPARATE CHART AND SERIES COMPONENTS:
+  <button onclick="refresh()">Refresh</button>
   <px-time-series-chart>
     <px-ts-chart-controls data-controls></px-ts-chart-controls>
     <px-chart-yaxis offset="0"></px-chart-yaxis>
@@ -79,78 +44,9 @@
   </px-time-series-chart>
 
 <script>
-
-
-    var cachedSeriesA, cachedSeriesB;
-
-    var isDisplayed = {
-      "Core Vibe Rear Cruise": true,
-      "Fan Vibration Cruise": true
-    };
-
-    var queries = [
-      {
-        "sample_size": 14368,
-        "results": []
-      }
-    ];
-
-
-    function addSeries(seriesString) {
-      if (!isDisplayed[seriesString]) {
-        var series;
-        if (seriesString === "Core Vibe Rear Cruise") {
-          series = cachedSeriesA;
-        }
-        else if (seriesString === 'Fan Vibration Cruise') {
-          series = cachedSeriesB;
-        }
-        isDisplayed[seriesString] = true;
-        queries[0].results.push(series);
-        updateAllInOneTimeSeries();
-      }
-    }
-
-    function removeSeries (seriesString) {
-      isDisplayed[seriesString] = false;
-      queries[0].results = [];
-      if(isDisplayed["Core Vibe Rear Cruise"]) {
-        queries[0].results.push(cachedSeriesA);
-      }
-      if(isDisplayed["Fan Vibration Cruise"]) {
-        queries[0].results.push(cachedSeriesB);
-      }
-      updateAllInOneTimeSeries();
-    }
-
-    function updateAllInOneTimeSeries() {
-      var timeSeriesComp = document.querySelector("px-time-series");
-
-      //cheating...make sure Polymer sees a new "queries" object each time so the observer fires.
-      queries = [].concat(queries);
-
-      timeSeriesComp.queries = queries;
-    }
-
-
-    function handleAviationDataLoadForAllInOneChart(aviationData) {
-      //convert the aviation data into kairosdb format.  TODO: assume an abstraction layer so we don't pin ourselves to kairosdb format
-      cachedSeriesA = {name: "Core Vibe Rear Cruise", values: aviationData.CoreVibeRearCruise.series};
-      cachedSeriesB = {name: "Fan Vibration Cruise", values: aviationData.FanVibeFwdCruise.series};
-      queries[0].results.push(cachedSeriesA);
-      queries[0].results.push(cachedSeriesB);
-      updateAllInOneTimeSeries();
-    }
-
-window.addEventListener('WebComponentsReady', function() {
-  var ironAjaxEl = document.querySelector("iron-ajax.for-all-in-one");
-  ironAjaxEl.addEventListener("response", function(evt) {
-    handleAviationDataLoadForAllInOneChart(evt.detail);
-  });
-  ironAjaxEl.generateRequest();
-});
-
-
+  function refresh(evt){
+    console.log('here');
+  }
 </script>
 </body>
 </html>
