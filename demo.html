@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>px-time-series-chart Demo</title>
+  <title>px-ts-chart Demo</title>
 
   <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
   <script src="../webcomponentsjs/webcomponents.js"></script>
@@ -10,7 +10,7 @@
   <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
   <link rel="import" href="../px-theme/px-theme.html"/>
   <link rel="import" href="../iron-ajax/iron-ajax.html"/>
-  <link rel="import" href="px-time-series-chart.html"/>
+  <link rel="import" href="px-ts-chart.html"/>
 
   <style is="x-style">
     html {
@@ -26,10 +26,13 @@
 </head>
 
 <body>
+
+<section class="full-config-example">
+  <h1>Full Config</h1>
   <button onclick="refresh()">Refresh</button>
   <button onclick="addSeries('core-vibe-rear-cruise', '../demo-data/aviation/core-vibe-rear-cruise.json')">Add Core Vibration Series</button>
   <button onclick="removeSeries('core-vibe-rear-cruise')">Remove Core Vibration Series</button>
-  <px-time-series-chart>
+  <px-ts-chart>
     <px-ts-chart-controls data-controls></px-ts-chart-controls>
     <px-chart-yaxis offset="0"></px-chart-yaxis>
     <px-chart-yaxis opposite="true" offset="-2.5"></px-chart-yaxis>
@@ -43,14 +46,35 @@
           url="../demo-data/aviation/hpt-acc-position-cruise.json"
           handleas="json"></iron-ajax>
     </px-chart-series>
-  </px-time-series-chart>
+  </px-ts-chart>
+
+</section>
+
+<section class="minimal-config-example">
+  <h1>Minimal Config</h1>
+  <px-ts-chart>
+    <px-chart-series name="fan-vibration-cruise"></px-chart-series>
+  </px-ts-chart>
+</section>
 
 <script>
+  //For minimal config demo only...grab some data to shove into minimal config from the outside...
+  var ironAjaxEl = document.createElement("iron-ajax");
+  ironAjaxEl.url = "../demo-data/aviation/fan-vibration-cruise.json";
+  ironAjaxEl.handleas = "json";
+  ironAjaxEl.addEventListener("response", function(evt) {
+    var minimalConfigChartSeries = document.querySelector('.minimal-config-example px-chart-series');
+    minimalConfigChartSeries.data = evt.detail.series;
+  });
+
+  ironAjaxEl.generateRequest();
+
+
   function refresh(evt){
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange=function() {
       if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-        var tsChart = Polymer.dom(document).querySelector('px-time-series-chart');
+        var tsChart = Polymer.dom(document).querySelector('.full-config-example px-chart-series');
         tsChart.addOrUpdateSeries('fan-vibration-cruise', JSON.parse(xmlhttp.responseText), 0, false);
       }
     }
@@ -60,7 +84,7 @@
 
 
   function addSeries(seriesId, seriesObjUrl) {
-    var timeSeriesComp = document.querySelector("px-time-series-chart");
+    var timeSeriesComp = document.querySelector(".full-config-example px-ts-chart");
     if (timeSeriesComp.chart.get(seriesId)) {
       console.log("series " + seriesId + " already exists on chart.");
     }
@@ -77,7 +101,7 @@
   }
 
   function removeSeries (seriesId) {
-    var timeSeriesComp = document.querySelector("px-time-series-chart");
+    var timeSeriesComp = document.querySelector(".full-config-example px-ts-chart");
     if (timeSeriesComp.chart.get(seriesId)) {
       timeSeriesComp.removeSeries(seriesId);
     }

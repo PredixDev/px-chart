@@ -1,5 +1,5 @@
 {
-  "name": "px-time-series",
+  "name": "px-ts-chart",
   "version": "0.1.0",
   "main": [
     "px-time-series.html"

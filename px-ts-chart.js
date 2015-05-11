@@ -1,6 +1,6 @@
 Polymer({
 
-  is: 'px-time-series-chart',
+  is: 'px-ts-chart',
 
   /**
    * Properties block, expose attribute values to the DOM via 'reflect'
@@ -208,7 +208,7 @@ Polymer({
         id: seriesId,
         name: seriesId,
         data: data,
-        yAxis: yAxisIndex
+        yAxis: yAxisIndex || 1
       }, !noRedraw);
     }
     else {
