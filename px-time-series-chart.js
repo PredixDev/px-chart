@@ -41,6 +41,82 @@ Polymer({
     navigatorEnabled:{
       type: Boolean,
       value: true
+    },
+
+    /**
+     * See http://api.highcharts.com/highcharts#chart.backgroundColor
+     *
+     * @default "transparent"
+     */
+    backgroundColor: {
+      type: String,
+      value: "transparent"
+    },
+
+    /**
+     * See http://api.highcharts.com/highcharts#chart.events
+     *
+     * @default redraw function()
+     */
+    events: {
+      type: Object,
+      value: {
+        redraw: function() {
+          var extremes = this.xAxis[0].getExtremes();
+          self.rangeStart = extremes.min;
+          self.rangeEnd = extremes.max;
+        }
+      }
+    },
+
+    /**
+     * See http://api.highcharts.com/highcharts#chart.height
+     *
+     * @default 400
+     */
+    height: {
+      type: Number,
+      value: 400
+    },
+
+    /**
+     * See http://api.highcharts.com/highcharts#chart.margin
+     *
+     * @default [90,30,30,30]
+     */
+    margin: {
+      type: Array,
+      value: [90,30,30,30]
+    },
+
+    /**
+     * See http://api.highcharts.com/highcharts#chart.plotBorderWidth
+     *
+     * @default 2
+     */
+    plotBorderWidth: {
+      type: Number,
+      value: 2
+    },
+
+    /**
+     * See http://api.highcharts.com/highcharts#chart.plotBorderWidth
+     *
+     * @default [0,0,25,0]
+     */
+    spacing: {
+      type: Array,
+      value: [0,0,25,0]
+    },
+
+    /**
+     * See http://api.highcharts.com/highcharts#chart.zoomType
+     *
+     * @default "x"
+     */
+    zoomType: {
+      type: String,
+      value: 'x'
     }
   },
 
@@ -54,7 +130,7 @@ Polymer({
     this.chart = new Highcharts.StockChart(chartConfig);
 
     this.chart.yAxis.forEach(function(axis) {
-      axis.remove();
+      axis.remove();//since we created the chart without any y-axes, Highcharts created one for us...remove it as our axis config comes next.
     });
 
     var axisEls = Polymer.dom(this).querySelectorAll("px-chart-yaxis");
@@ -225,10 +301,6 @@ Polymer({
   buildConfig: function() {
     var self = this;
 
-    this.getRenderEl = this.getRenderEl || function() {
-      return this.$.container
-    };
-
     var monochromePalette = {
       'black': '#141414',
       'grayDarkest': '#2b2b2b',
@@ -286,24 +358,18 @@ Polymer({
         enabledButtons: false
       },
       chart: {
-        backgroundColor: "transparent",
-        events: {
-          redraw: function() {
-            var extremes = this.xAxis[0].getExtremes();
-            self.rangeStart = extremes.min;
-            self.rangeEnd = extremes.max;
-          }
-        },
-        height: 400,
-        margin: [90,30,30,30],
-        plotBorderWidth: 2,
-        renderTo: this.getRenderEl(),
-        spacing: [0,0,25,0],
+        backgroundColor: this.backgroundColor,
+        events: this.events,
+        height: this.height,
+        margin: this.margin,
+        plotBorderWidth: this.plotBorderWidth,
+        renderTo: this.$.container,
+        spacing: this.spacing,
         style: {
           fontFamily: 'inherit',
           fontSize: 'inherit'
         },
-        zoomType: 'x'
+        zoomType: this.zoomType
       },
       colors: convertMapToValueArray(PXd.accentPalette),
       credits: {
