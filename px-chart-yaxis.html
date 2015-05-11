@@ -1,0 +1,200 @@
+<!--
+    Relative paths assume component is being run from inside an app or another component, where dependencies are flat
+    siblings. When this component is run from its own repo (e.g. ui tests, examples), we assume the server is started with
+    'grunt depserve' (or similar server setup) to enable correct finding of bower dependencies for local runs
+    See https://github.sw.ge.com/jreichenberg/grunt-dep-serve#why-do-we-need-this
+-->
+<link rel="import" href="../polymer/polymer.html"/>
+
+<!--
+Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highcharts#yAxis
+
+##### Usage
+
+    <px-chart-yaxis attr-1="..." attr-2="..."></px-chart-yaxis>
+
+@element px-chart-yaxis
+@blurb Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highcharts#yAxis
+@homepage index.html
+-->
+
+<script>
+  Polymer({
+
+    is: 'px-chart-yaxis',
+
+    /**
+     * Properties block, expose attribute values to the DOM via 'reflect'
+     *
+     * @property properties
+     * @type Object
+     */
+    properties: {
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.lineColor
+       */
+      lineColor: {
+        type: String
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.lineWidth
+       */
+      lineWidth: {
+        type: Number,
+        value: 2
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.gridLineWidth
+       */
+      gridLineWidth: {
+        type: Number
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.tickInterval
+       */
+      tickInterval: {
+        type: Number
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.dateTimeLabelFormats
+       */
+      dateTimeLabelFormats: {
+        type: Object
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.offset
+       */
+      offset: {
+        type: Number,
+        value: 5
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.startOnTick
+       */
+      startOnTick: {
+        type: Boolean,
+        value: true
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.tickColor
+       */
+      tickColor: {
+        type: String
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.tickWidth
+       */
+      tickWidth: {
+        type: Number,
+        value: 2
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.type
+       *
+       * @type {String}
+       */
+      type: {
+        type: String
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.title
+       */
+      title: {
+        type: Object,
+        value: {
+          text: null
+        }
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.labels
+       */
+      labels: {
+        type: Object,
+        value: {
+          style: {
+            fontSize: '0.8rem'
+          },
+          y: 5
+        }
+      },
+
+      /**
+       * http://api.highcharts.com/highcharts#yAxis.opposite
+       */
+      opposite: {
+        type: Boolean
+      },
+
+      /**
+       * List of property names in the axis config that should be given a default color (based on the index of this axis as
+       * passed from the containing chart).
+       *
+       * @type {Array}
+       * @default ["tickColor", "lineColor"]
+       */
+      defaultColorProps: {
+        type: Array,
+        value: ["tickColor", "lineColor"]
+      }
+    },
+
+    /**
+     * Ready callback fires a "y-axis-ready" event that the containing chart object can be used to configure itself.
+     */
+    ready: function() {
+      this.fire("y-axis-ready");
+    },
+
+    /**
+     * Builds a returns an object to be passed into highcharts for this axis
+     *
+     * @param {Number} axisIndex Which axis are we processing in order to be added to the chart
+     * @param {Array} colorsArray An array of colors to choose from by index
+     */
+    buildAxisConfig: function(axisIndex, colorsArray) {
+      var config = {};
+      var props = this.properties;
+      var _this = this;
+      Object.keys(props).forEach(function(key) {
+        if (props.hasOwnProperty(key) && key !== "type" && typeof _this[key] !== "undefined") {
+          config[key] = _this[key];
+        }
+      });
+
+      if (colorsArray) {
+        this.addDefaultColorsByIndex(config, colorsArray[axisIndex]);
+      }
+      return config;
+    },
+
+    /**
+     * In Highcharts, there is an Array that maps series indices to colors so that series lines and axes labels/ticks/etc
+     * can be the same color. This function does the mapping based on passed values from the chart itself, since the axis
+     * element doesn't know what index it is in the configuration.
+     *
+     * @param {Object} config Axis config object being built
+     * @param {String} color Hex color to be filled in for each undefined property in the config that appears in this.defaultColorProps
+     */
+    addDefaultColorsByIndex: function(config, color) {
+      this.defaultColorProps.forEach(function(propName) {
+        if (!config[propName]) {
+          config[propName] = color;
+        }
+      });
+    }
+  });
+
+
+</script>

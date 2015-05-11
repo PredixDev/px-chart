@@ -7,20 +7,42 @@
 <link rel="import" href="../polymer/polymer.html"/>
 
 <!--
-Element providing solution to no problem in particular. As a simple, increments a counter when clicked.
+Element that defines a time series chart, using sub-elements for axis, series and controls configuration.
 
 ##### Usage
 
     <px-time-series-chart>
-      <header>Hello</header>
-      <px-chart-series name="..." data="..."></px-chart-series>
+      <px-ts-chart-controls data-controls></px-ts-chart-controls>
+      <px-chart-yaxis></px-chart-yaxis>
       <px-chart-series name="..." data="..."></px-chart-series>
     </px-time-series>
 
+
+    <px-time-series-chart>
+      <px-ts-chart-controls data-controls></px-ts-chart-controls>
+      <px-chart-yaxis offset="0"></px-chart-yaxis>
+      <px-chart-yaxis opposite="true" offset="-2.5"></px-chart-yaxis>
+      <px-chart-series name="fan-vibration-cruise" axis-index="1">
+        <iron-ajax
+            url="../demo-data/aviation/fan-vibration-cruise.json"
+            handleas="json"></iron-ajax>
+      </px-chart-series>
+      <px-chart-series name="hpt-acc-position-cruise" axis-index="2">
+        <iron-ajax
+            url="../demo-data/aviation/hpt-acc-position-cruise.json"
+            handleas="json"></iron-ajax>
+      </px-chart-series>
+    </px-time-series-chart>
+
 @element px-time-series
-@blurb Element providing solution to no problem in particular.
+@blurb Element that defines a time series chart, using sub-elements for axis, series and controls configuration.
 @homepage index.html
 -->
+
+<link rel="import" href="px-chart-series.html"/>
+<link rel="import" href="px-ts-chart-controls.html"/>
+<link rel="import" href="px-chart-yaxis.html"/>
+
 <script src="../highstock-release/adapters/standalone-framework.js"></script>
 <script src="../highstock-release/highstock.js"></script>
 <script src="../annotations/js/annotations.js"></script>
@@ -30,27 +52,8 @@ Element providing solution to no problem in particular. As a simple, increments 
   <link rel="import" type="css" href="css/px-time-series.css"/>
   <template>
     <section role="region">
-      <header class="text--right">
-        <p>
-          <label class="label-inline">
-            From
-            <input value="{{rangeStartDisplayStr::change}}" class="text-input" placeholder="HH:MM MM/DD/YYYY"/>
-          </label>
-          <label class="label-inline">
-            to
-            <input value="{{rangeEndDisplayStr::change}}" class="text-input" placeholder="HH:MM MM/DD/YYYY"/>
-          </label>
-          <button on-click="rangeSetHandler" class="btn">Submit</button>
-        </p>
-        <p>
-          Zoom
-          <button on-click="setRangeNumMonthsFromPresent" data-num-months="1" class="btn">1m</button>
-          <button on-click="setRangeNumMonthsFromPresent" data-num-months="3" class="btn">3m</button>
-          <button on-click="setRangeNumMonthsFromPresent" data-num-months="6" class="btn">6m</button>
-          <button on-click="setRangeNumMonthsFromPresent" data-num-months="12" class="btn">1y</button>
-          <button on-click="setRangeToYTD" class="btn">YTD</button>
-        </p>
-        <content select="header"></content>
+      <header class="text--right float--right">
+        <content select="[data-controls]"></content>
       </header>
       <figure class="m0" id="container"></figure>
     </section>

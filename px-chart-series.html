@@ -5,14 +5,13 @@
     See https://github.sw.ge.com/jreichenberg/grunt-dep-serve#why-do-we-need-this
 -->
 <link rel="import" href="../polymer/polymer.html"/>
-<link rel="import" href="../iron-ajax/iron-ajax.html"/>
 
 <!--
-Element providing solution to no problem in particular. As a simple, increments a counter when clicked.
+Element defining a chart series
 
 ##### Usage
 
-    <px-chart-series data="..." name="...">Hi</px-chart-series>
+    <px-chart-series data="..." name="..."></px-chart-series>
 
     <px-chart-series name="...">
       <iron-ajax
@@ -20,10 +19,12 @@ Element providing solution to no problem in particular. As a simple, increments 
           handleas="json"></iron-ajax>
     </px-chart-series>
 
-    <px-chart-series series-obj="...">Hi</px-chart-series>
+    <px-chart-series series-obj="..."
+      series-obj-name-key="theName"
+      series-obj-data-key="theData"></px-chart-series>
 
-@element px-time-series
-@blurb Element providing solution to no problem in particular.
+@element px-chart-series
+@blurb Element defining a chart series
 @homepage index.html
 -->
 
@@ -39,30 +40,80 @@ Polymer({
    * @type Object
    */
   properties: {
+
+    /**
+     * The date associated with the series, an Array of Arrays with the first value of each inner Array being a unix
+     * timestamp and the second value being the value.
+     *
+     * Fires a "data-changed" event via the "notify" flag when the data changes, the assumption is that the chart will
+     * listen for this event.
+     *
+     * @type {Array}
+     */
     data: {
       type: Array,
       notify: true
     },
+
+    /**
+     * Unique name/id of this series. Used for the default label.
+     *
+     * @type {String}
+     */
     name: {
       type: String
     },
+
+    /**
+     * Optional object that contains members that map to #name and #data via the seriesObjDataKey and seriesObjNameKey,
+     * e.g. seriesObj[seriesObjDataKey] and seriesObj[seriesObjNameKey]
+     *
+     * @type {Object}
+     */
     seriesObj: {
       type: Object,
-      observer: 'seriesObjObserver',
-      value: {hello: "you"}
+      observer: 'seriesObjObserver'
     },
+
+    /**
+     * Key in the optional seriesObj to be used for #data
+     *
+     * @type {String}
+     * @default "series"
+     */
     seriesObjDataKey: {
       type: String,
       value: 'series'
     },
+
+    /**
+     * Key in the optional seriesObj to be used for #name
+     *
+     * @type {String}
+     * @default "name"
+     */
     seriesObjNameKey: {
       type: String,
       value: 'name'
+    },
+
+    /**
+     * Optional declaration of which y axis this series should be plotted against, if more than one, defined as zero-based
+     * index
+     *
+     * @type {Number}
+     */
+    axisIndex: {
+      type: Number
     }
   },
 
+  /**
+   * Lifecycle callback to look for and register iron-ajax elements configured inside the series.  Note that doing so is
+   * only one way to populate the series with data.  You can always set the 'data' or 'series-obj' attributes/properties
+   * directly from outside this component.
+   */
   ready: function() {
-    var seriesConfig = this.buildSeriesConfig();
     var _this = this;
     //Fire ajax requests, if configured...TODO: make this more declarative, but don't know how to get 'on-response' event declaration of handler to call a function on this parent comp.
     window.addEventListener('WebComponentsReady', function() {
@@ -78,10 +129,13 @@ Polymer({
     });
   },
 
-  buildSeriesConfig: function() {
-
-  },
-
+  /**
+   * Observer on the 'seriesObj' property. When called will look at new seriesObj and set the 'data' and 'name'
+   * values via the configured 'seriesObjDataKey' and 'seriesObjNameKey'
+   *
+   * @param newObj
+   * @param oldObj
+   */
   seriesObjObserver: function(newObj, oldObj) {
     if (!newObj) {
       this.data = null;
@@ -95,6 +149,5 @@ Polymer({
   }
 
 });
-
 
 </script>

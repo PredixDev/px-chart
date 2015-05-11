@@ -48,10 +48,16 @@ in import paths
 // Objects
 @import "../px-buttons-design/objects.buttons";
 
+// Component
+header {
+  margin-bottom: -#{calculateRem($inuit-base-font-size * 6)};
+}
+
 // Trumps
 @import "../px-clearfix-design/trumps.clearfix";
 
-$inuit-enable-margins--none : true;
+$inuit-enable-margins--none           : true;
+$inuit-enable-margins--large          : true;
 
 @import "../px-spacing-responsive-design/trumps.spacing-responsive";
 @import "../px-widths-responsive-design/trumps.widths-responsive";

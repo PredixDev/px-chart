@@ -12,7 +12,6 @@
   <link rel="import" href="../iron-ajax/iron-ajax.html"/>
   <link rel="import" href="px-time-series.html"/>
   <link rel="import" href="px-time-series-chart.html"/>
-  <link rel="import" href="px-chart-series.html"/>
 
   <style is="x-style">
     html {
@@ -21,18 +20,15 @@
     }
     body {
       height: 100%;
-      margin: 0;
-    }
-    .demo {
-      padding: 1rem;
+      margin: 1em;
     }
   </style>
 
 </head>
 
-<body ng-controller="DemoController">
-
-  <article class="demo" role="article">
+<body>
+  
+  <article role="article">
     <h3>Demo</h3>
     <p>Although related, examples are /not/ the same as the test fixtures. Tests are tests, examples are examples.</p>
     <p>
@@ -40,11 +36,6 @@
       <a href="index.html">documentation</a>
       and the
       <a href="test/fixture.html">UI test fixture</a>.
-    </p>
-    <p>
-      Checkout the Graph below, You will
-      <span style="color:red">&hearts;</span>
-      it.
     </p>
   </article>
 
@@ -72,16 +63,17 @@
 
   SEPARATE CHART AND SERIES COMPONENTS:
   <px-time-series-chart>
-
-      <px-chart-series name="core-vibe-rear-cruise">
-        <iron-ajax
-            url="../demo-data/aviation/core-vibe-rear-cruise.json"
-            handleas="json"></iron-ajax>
-      </px-chart-series>
-      </template>
-    <px-chart-series name="fan-vibe-fwd-cruise">
+    <px-ts-chart-controls data-controls></px-ts-chart-controls>
+    <px-chart-yaxis offset="0"></px-chart-yaxis>
+    <px-chart-yaxis opposite="true" offset="-2.5"></px-chart-yaxis>
+    <px-chart-series name="fan-vibration-cruise" axis-index="1">
       <iron-ajax
           url="../demo-data/aviation/fan-vibration-cruise.json"
+          handleas="json"></iron-ajax>
+    </px-chart-series>
+    <px-chart-series name="hpt-acc-position-cruise" axis-index="2">
+      <iron-ajax
+          url="../demo-data/aviation/hpt-acc-position-cruise.json"
           handleas="json"></iron-ajax>
     </px-chart-series>
   </px-time-series-chart>

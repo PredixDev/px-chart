@@ -93,7 +93,7 @@ Polymer({
             'blueDark': '#00366e'
         };
 
-        var brandkit = {
+        var PXd = {
             'accentPalette': accentPalette,
             'monochromePalette': monochromePalette
         };
@@ -108,28 +108,48 @@ Polymer({
             return valArray;
         };
 
-        var defaultChartConfig = {
+        var config = {
+            annotationsOptions: {
+              enabledButtons: false
+            },
             chart: {
-                margin: [70,20,20,20],
-                spacing: [50,20,20,20],
+                backgroundColor: "transparent",
+                events: {
+                    redraw: function() {
+                        var extremes = this.xAxis[0].getExtremes();
+                        self.rangeStart = extremes.min;
+                        self.rangeEnd = extremes.max;
+                    }
+                },
+                height: 400,
+                margin: [90,30,30,30],
+                plotBorderWidth: 2,
+                renderTo: this.getRenderEl(),
+                spacing: [0,0,25,0],
                 style: {
                     fontFamily: 'inherit',
                     fontSize: 'inherit'
-                }
+                },
+                zoomType: 'x'
             },
-            colors: convertMapToValueArray(brandkit.accentPalette),
+            colors: convertMapToValueArray(PXd.accentPalette),
             credits: {
                 enabled: false
             },
             legend: {
                 align: 'left',
+                enabled: true,
+                floating: true,
                 itemMarginBottom: 10,
+                itemStyle: {
+                  "fontSize": "inherit",
+                  "fontWeight": "normal"
+                },
                 margin: 0,
                 padding: 0,
                 symbolPadding: 5,
                 symbolWidth: 10,
-                verticalAlign: 'top',
-                y: -30
+                verticalAlign: 'top'
             },
             navigation: {
                 buttonOptions: {
@@ -137,33 +157,26 @@ Polymer({
                 }
             },
             navigator: {
-                handles: {
-                    backgroundColor: brandkit.monochromePalette.white,
-                    borderColor: brandkit.monochromePalette.grayDarker
-                },
-                outlineColor: brandkit.monochromePalette.grayDarker,
-                maskFill: 'rgba(255, 255, 255, 0.8)',
+                adaptToUpdatedData: false,
+                height: 50,
+                margin: 15,
+                outlineColor: PXd.monochromePalette.gray,
+                maskInside: true,
                 series: {
                     color: 'transparent',
-                    lineColor: brandkit.accentPalette.blue,
+                    lineColor: PXd.accentPalette.blue,
                     lineWidth: 2
                 },
                 xAxis: {
-                    opposite: true,
-                    tickWidth: 0,
-                    gridLineWidth: 0,
-                    labels: {
-                        y: 15,
-                        align: 'center'
-                    }
+                  labels: {
+                    style: {
+                      fontSize: "0.8rem"
+                    },
+                    y: 15
+                  }
                 },
-                yAxis: {
-                    opposite: true,
-                    tickWidth: 0,
-                    gridLineWidth: 0,
-                    labels: {
-                        x: 15
-                    }
+                xAxis: {
+                  gridLineWidth: 0
                 }
             },
             plotOptions: {
@@ -179,43 +192,7 @@ Polymer({
                     marker: {
                         enabled: true
                     }
-                }
-            },
-            tooltip: {
-                backgroundColor: brandkit.monochromePalette.white,
-                borderColor: brandkit.monochromePalette.grayLighter,
-                shadow: false,
-                style: {
-                    fontFamily: 'inherit',
-                    fontSize: 'inherit'
                 },
-                headerFormat: '<span>{point.key}</span><br/>',
-                pointFormat: '<span style="color:{series.color}">{series.name}: {point.y}</span><br/>'
-            }
-        };
-
-        Highcharts.setOptions(defaultChartConfig);
-
-        var config = {
-            chart: {
-                events: {
-                    redraw: function() {
-                        var extremes = this.xAxis[0].getExtremes();
-                        self.rangeStart = extremes.min;
-                        self.rangeEnd = extremes.max;
-                    }
-                },
-                height: 400,
-                renderTo: this.getRenderEl(),
-                zoomType: 'x'
-            },
-            legend: {
-                enabled: true
-            },
-            navigator: {
-                adaptToUpdatedData: false
-            },
-            plotOptions: {
                 series: {
                     marker: {}
                 }
@@ -230,31 +207,51 @@ Polymer({
             title: {
                 text: null
             },
-            xAxis: {
-                title: {
-                    text: this.xAxisLabel
+            tooltip: {
+                backgroundColor: PXd.monochromePalette.white,
+                borderColor: PXd.monochromePalette.grayLighter,
+                shadow: false,
+                style: {
+                    fontFamily: 'inherit',
+                    fontSize: 'inherit'
                 },
+                headerFormat: '<span>{point.key}</span><br/>',
+                pointFormat: '<span style="color:{series.color}">{series.name}: {point.y}</span><br/>'
+            },
+            xAxis: {
                 events: {
                     afterSetExtremes: function(event) {
                         self.fire('after-set-extremes', event);
                     }
+                },
+                labels: {
+                  align: "left",
+                  style: {
+                    fontSize: '0.8rem'
+                  },
+                  x: 3,
+                  y: 12
+                },
+                startOnTick: true,
+                title: {
+                    text: null
                 }
             },
             yAxis: {
                 labels: {
+                  style: {
+                    fontSize: '0.8rem'
+                  },
+                  y: 5
                 },
+                opposite: false,
+                startOnTick: true,
+                tickWidth: 2,
                 title: {
-                    text: this.yAxisLabel,
+                    text: null
                 }
             }
         };
-
-        if (this.showyaxisunits) {
-          config.yAxis.labels.enabled = true;
-        }
-        else {
-          config.yAxis.labels.enabled = false;
-        }
 
         return config;
     },
