@@ -290,8 +290,7 @@ Polymer({
     }
     else {
       // always set the visible strings back to a good value
-      this.rangeStartObserver();
-      this.rangeEndObserver();
+      this.rangeObserver();
     }
   },
 
