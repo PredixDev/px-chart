@@ -53,7 +53,7 @@ Polymer({
         var self = this;
 
         this.getRenderEl = this.getRenderEl || function() {
-            return this.$.container
+            return this.$.container;
         };
 
         var monochromePalette = {
