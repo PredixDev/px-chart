@@ -29,7 +29,7 @@
 
 <section class="full-config-example">
   <h1>Full Config</h1>
-  <button onclick="refresh()">Refresh</button>
+  <button onclick="refreshSeries()">Refresh Series</button>
   <button onclick="addSeries('core-vibe-rear-cruise', '../demo-data/aviation/core-vibe-rear-cruise.json')">Add Core Vibration Series</button>
   <button onclick="removeSeries('core-vibe-rear-cruise')">Remove Core Vibration Series</button>
   <px-ts-chart>
@@ -70,16 +70,16 @@
   ironAjaxEl.generateRequest();
 
 
-  function refresh(evt){
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function() {
-      if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-        var tsChart = Polymer.dom(document).querySelector('.full-config-example px-chart-series');
-        tsChart.addOrUpdateSeries('fan-vibration-cruise', JSON.parse(xmlhttp.responseText), 0, false);
-      }
-    }
-    xmlhttp.open("GET","../demo-data/aviation/fan-vibration-cruise2.json",true);
-    xmlhttp.send();
+  function refreshSeries(evt){
+    var ironAjaxEl = document.createElement('iron-ajax');
+    ironAjaxEl.url = '../demo-data/aviation/fan-vibration-cruise2.json';
+    ironAjaxEl.handleas = "json";
+    ironAjaxEl.addEventListener('response', function(evt) {
+      var tsChart = Polymer.dom(document).querySelector('.full-config-example px-ts-chart');
+      tsChart.addOrUpdateSeries('fan-vibration-cruise', evt.detail.series, 2, false);
+    });
+
+    ironAjaxEl.generateRequest();
   }
 
 

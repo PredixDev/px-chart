@@ -233,13 +233,7 @@ Polymer({
    * @return {Boolean}
    */
   hasSeries: function(seriesId) {
-    var hasSeries = false;
-    this.chart.series.forEach(function(series) {
-      if (series.id === seriesId) {
-        hasSeries = true
-      }
-    });
-    return hasSeries;
+    return (this.chart.get(seriesId) != null);
   },
 
   /**
