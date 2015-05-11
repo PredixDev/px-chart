@@ -2,7 +2,7 @@
   "name": "px-time-series",
   "version": "0.1.0",
   "main": [
-    "px-time-series.html"
+    "px-time-series-chart.html"
   ],
   "ignore": [
     ".*",

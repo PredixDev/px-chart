@@ -51,7 +51,7 @@
     xmlhttp.onreadystatechange=function() {
       if (xmlhttp.readyState==4 && xmlhttp.status==200) {
         var tsChart = Polymer.dom(document).querySelector('px-time-series-chart');
-        tsChart.addOrUpdateSeries('fan-vibration-cruise', JSON.parse(xmlhttp.responseText), 0, false);
+        tsChart.addOrUpdateSeries('fan-vibration-cruise', JSON.parse(xmlhttp.responseText).series, 2, false);
       }
     }
     xmlhttp.open("GET","../demo-data/aviation/fan-vibration-cruise2.json",true);
