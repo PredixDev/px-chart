@@ -74,7 +74,7 @@
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange=function() {
       if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-        var tsChart = Polymer.dom(document).querySelector('.full-config-example px-chart-series');
+        var tsChart = Polymer.dom(document).querySelector('.full-config-example px-ts-chart');
         tsChart.addOrUpdateSeries('fan-vibration-cruise', JSON.parse(xmlhttp.responseText).series, 2, false);
       }
     }
