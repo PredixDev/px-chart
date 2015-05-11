@@ -12,15 +12,37 @@ Element providing solution to no problem in particular. As a simple, increments 
 ##### Usage
 
     <px-time-series-chart>
-      <header>Hello</header>
-      <px-chart-series name="..." data="..."></px-chart-series>
+      <px-ts-chart-controls data-controls></px-ts-chart-controls>
+      <px-chart-yaxis></px-chart-yaxis>
       <px-chart-series name="..." data="..."></px-chart-series>
     </px-time-series>
+
+
+    <px-time-series-chart>
+      <px-ts-chart-controls data-controls></px-ts-chart-controls>
+      <px-chart-yaxis offset="0"></px-chart-yaxis>
+      <px-chart-yaxis opposite="true" offset="-2.5"></px-chart-yaxis>
+      <px-chart-series name="fan-vibration-cruise" axis-index="1">
+        <iron-ajax
+            url="../demo-data/aviation/fan-vibration-cruise.json"
+            handleas="json"></iron-ajax>
+      </px-chart-series>
+      <px-chart-series name="hpt-acc-position-cruise" axis-index="2">
+        <iron-ajax
+            url="../demo-data/aviation/hpt-acc-position-cruise.json"
+            handleas="json"></iron-ajax>
+      </px-chart-series>
+    </px-time-series-chart>
 
 @element px-time-series
 @blurb Element providing solution to no problem in particular.
 @homepage index.html
 -->
+
+<link rel="import" href="px-chart-series.html"/>
+<link rel="import" href="px-ts-chart-controls.html"/>
+<link rel="import" href="px-chart-yaxis.html"/>
+
 <script src="../highstock-release/adapters/standalone-framework.js"></script>
 <script src="../highstock-release/highstock.js"></script>
 <script src="../annotations/js/annotations.js"></script>

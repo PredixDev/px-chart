@@ -11,7 +11,7 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
 
 ##### Usage
 
-    <px-chart-yaxis>Hi</px-chart-yaxis>
+    <px-chart-yaxis attr-1="..." attr-2="..."></px-chart-yaxis>
 
 @element px-chart-yaxis
 @blurb Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highcharts#yAxis
@@ -137,14 +137,24 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
         type: Boolean
       },
 
+      /**
+       * List of property names in the axis config that should be given a default color (based on the index of this axis as
+       * passed from the containing chart).
+       *
+       * @type {Array}
+       * @default ["tickColor", "lineColor"]
+       */
       defaultColorProps: {
         type: Array,
         value: ["tickColor", "lineColor"]
       }
     },
 
+    /**
+     * Ready callback fires a "y-axis-ready" event that the containing chart object can be used to configure itself.
+     */
     ready: function() {
-      this.fire("axis-ready");
+      this.fire("y-axis-ready");
     },
 
     /**
@@ -169,6 +179,14 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
       return config;
     },
 
+    /**
+     * In Highcharts, there is an Array that maps series indices to colors so that series lines and axes labels/ticks/etc
+     * can be the same color. This function does the mapping based on passed values from the chart itself, since the axis
+     * element doesn't know what index it is in the configuration.
+     *
+     * @param {Object} config Axis config object being built
+     * @param {String} color Hex color to be filled in for each undefined property in the config that appears in this.defaultColorProps
+     */
     addDefaultColorsByIndex: function(config, color) {
       this.defaultColorProps.forEach(function(propName) {
         if (!config[propName]) {

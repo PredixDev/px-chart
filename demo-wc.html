@@ -11,9 +11,6 @@
   <link rel="import" href="../px-theme/px-theme.html"/>
   <link rel="import" href="../iron-ajax/iron-ajax.html"/>
   <link rel="import" href="px-time-series-chart.html"/>
-  <link rel="import" href="px-chart-series.html"/>
-  <link rel="import" href="px-ts-chart-controls.html"/>
-  <link rel="import" href="px-chart-yaxis.html"/>
 
   <style is="x-style">
     html {
@@ -32,8 +29,8 @@
 
   <px-time-series-chart>
     <px-ts-chart-controls data-controls></px-ts-chart-controls>
-    <px-chart-yaxis type="y" offset="0"></px-chart-yaxis>
-    <px-chart-yaxis type="y" opposite="true" offset="-2.5"></px-chart-yaxis>
+    <px-chart-yaxis offset="0"></px-chart-yaxis>
+    <px-chart-yaxis opposite="true" offset="-2.5"></px-chart-yaxis>
     <px-chart-series name="fan-vibration-cruise" axis-index="1">
       <iron-ajax
           url="../demo-data/aviation/fan-vibration-cruise.json"

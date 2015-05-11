@@ -60,12 +60,12 @@ Polymer({
     var axisEls = Polymer.dom(this).querySelectorAll("px-chart-yaxis");
     var axisElsProcessed = 0;
     axisEls.forEach(function(axisEl) {
-      axisEl.addEventListener("axis-ready", function(evt) {
+      axisEl.addEventListener("y-axis-ready", function(evt) {
         var axisConfig = evt.target.buildAxisConfig(axisElsProcessed, Highcharts.getOptions().colors);
         _this.chart.addAxis(axisConfig, /*isX*/false, /*redraw*/false);
         axisElsProcessed++;
         if (axisElsProcessed === axisEls.length) {
-          _this.configReady();
+          _this.addInitialSeries();
         }
       });
     });
@@ -74,30 +74,40 @@ Polymer({
   /**
    * Internal callback for Highcharts config ready
    */
-  configReady: function() {
+  addInitialSeries: function() {
     //find series elements in light dom ("Polymer.dom(this)" vs. "Polymer.dom(this.root)", which would be shadow dom)
     var seriesEls = Polymer.dom(this).querySelectorAll("px-chart-series");
     var _this = this;
 
     seriesEls.forEach(function (seriesEl) {
+      if (seriesEl.data) {
+        _this.addOrUpdateSeries(seriesEl.name, seriesEl.data, seriesEl.axisIndex, /*noReflow*/true);
+      }
       seriesEl.addEventListener("data-changed", function(evt) {
-        if (!_this.hasSeries(seriesEl.name)) {
-          _this.addSeries(seriesEl.name, evt.detail.value, seriesEl.axisIndex);
-          _this.chart.reflow();
-        }
-        else {
-          var allSeries = _this.chart.series.map(function(series) {
-            if (series.id === seriesEl.name) {
-              series.data = evt.detail.value;
-            }
-            else {
-              return series;
-            }
-          });
-          _this.refreshSeriesDisplay(allSeries);
-        }
+        _this.addOrUpdateSeries(seriesEl.name, evt.detail.value, seriesEl.axisIndex);
       });
-    })
+    });
+    this.chart.reflow();
+  },
+
+  /**
+   * Adds or updates a series on the chart
+   *
+   * @param {String} seriesId
+   * @param {Array} data
+   * @param {Number} axisIndex Optional. The axis index to which the series should be bound
+   * @param {Boolean} noReflow Optional. If true, does not force a chart reflow() after adding or updating the series
+   */
+  addOrUpdateSeries: function(seriesId, data, axisIndex, noReflow) {
+    if (!this.hasSeries(seriesId)) {
+      this.addSeries(seriesId, data, axisIndex);
+    }
+    else {
+      this.chart.get(seriesId).setData(data);
+    }
+    if (!noReflow) {
+      this.chart.reflow();
+    }
   },
 
   /**
@@ -114,68 +124,11 @@ Polymer({
   },
 
   /**
-   * Updates all series on the chart
-   *
-   * @param {Array} seriesToShow
-   */
-  refreshSeriesDisplay: function(seriesToShow) {
-    var newIds = seriesToShow.map(function(series) {
-      return series.name;
-    });
-
-    var currentIds = this.chart.series.map(function(series) {
-      return series.name;
-    });
-
-    newIds.push('Navigator'); // HACK: Need 'Navigator' series to exist in the newIds so we do not remove it.
-
-    // Get ids of series that we will be touching
-    var idsToUpdate = currentIds.filter(function(item) {
-      return newIds.indexOf(item) > -1;
-    });
-
-    var idsToRemove = currentIds.filter(function(item) {
-      return newIds.indexOf(item) === -1;
-    });
-
-    var idsToAdd = newIds.filter(function(item) {
-      return currentIds.indexOf(item) === -1;
-    });
-
-    var self = this;
-
-    // Update series that already exist
-    idsToUpdate.forEach(function(idToUpdate) {
-      seriesToShow.forEach(function(series) {
-        if (series.name === idToUpdate) {
-          self.chart.get(idToUpdate).setData(series.data);
-        }
-      });
-    });
-
-    // Remove old ones
-    idsToRemove.forEach(function(idToRemove) {
-      self.chart.get(idToRemove).remove();
-    });
-
-    // Add new series
-    idsToAdd.forEach(function(idToAdd) {
-      seriesToShow.forEach(function(series) {
-        if (series.name === idToAdd) {
-          self.addSeries(idToAdd, series.data);
-        }
-      });
-    });
-
-    this.chart.reflow();
-  },
-
-  /**
    * Adds a series to the chart
    *
    * @param {String} seriesId
    * @param {Array} data
-   * @param {Number} [yAxisIndex]
+   * @param {Number} yAxisIndex Optional. Defaults to 0.
    */
   addSeries: function(seriesId, data, yAxisIndex) {
     var newseries = {
@@ -186,6 +139,15 @@ Polymer({
     };
 
     this.chart.addSeries(newseries);
+  },
+
+  /**
+   * Removes a series from the chart
+   *
+   * @param {String} seriesId
+   */
+  removeSeries: function(seriesId) {
+    this.chart.get(seriesId).remove();
   },
 
   /**
