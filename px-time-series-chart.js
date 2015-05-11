@@ -404,6 +404,9 @@ Polymer({
             var extremes = this.xAxis[0].getExtremes();
             self.rangeStart = extremes.min;
             self.rangeEnd = extremes.max;
+          },
+          click: function(evt){
+            console.log(evt);
           }
         },
         height: 400,
