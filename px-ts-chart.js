@@ -166,13 +166,13 @@ Polymer({
 
     seriesEls.forEach(function (seriesEl) {
       if (seriesEl.data) {
-        _this.addOrUpdateSeries(seriesEl.name, seriesEl.data, seriesEl.axisIndex, /*noReflow*/true);
+        _this.addOrUpdateSeries(seriesEl.name, seriesEl.data, seriesEl.axisIndex, /*noRedraw*/true);
       }
       seriesEl.addEventListener("data-changed", function(evt) {
-        _this.addOrUpdateSeries(seriesEl.name, evt.detail.value, seriesEl.axisIndex, /*noReDraw*/false);
-        _this.chart.reflow();
+        _this.addOrUpdateSeries(seriesEl.name, evt.detail.value, seriesEl.axisIndex, /*noRedraw*/false);
       });
     });
+    this.chart.redraw();
     this.chart.reflow();
   },
 
