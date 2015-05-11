@@ -115,18 +115,32 @@ Polymer({
    */
   ready: function() {
     var _this = this;
+    console.log("window.CustomElements " + window.CustomElements);
     //Fire ajax requests, if configured...TODO: make this more declarative, but don't know how to get 'on-response' event declaration of handler to call a function on this parent comp.
-    window.addEventListener('WebComponentsReady', function() {
-      //look for ajax elements after web components ready...TODO: can we use a different callback in this component to figure out when iron-ajax is ready?
-      var ironAjaxEl = Polymer.dom(_this.root).querySelector("iron-ajax");
-      if (ironAjaxEl) {
-        ironAjaxEl.addEventListener("response", function(evt) {
-          _this.seriesObj = evt.detail;
-        });
+    if (window.CustomElements && window.CustomElements.ready) {
+      this.fireConfiguredDataRequests();
+    }
+    else {
+      window.addEventListener('WebComponentsReady', function() {
+        _this.fireConfiguredDataRequests();
+      });
+    }
 
-        ironAjaxEl.generateRequest();
-      }
-    });
+  },
+
+  fireConfiguredDataRequests: function() {
+    //look for ajax elements after web components ready...TODO: can we use a different callback in this component to figure out when iron-ajax is ready?
+    var _this = this;
+    var ironAjaxEl = Polymer.dom(_this.root).querySelector("iron-ajax");
+    console.log("ironAjaxEl " + ironAjaxEl);
+    if (ironAjaxEl) {
+      ironAjaxEl.addEventListener("response", function(evt) {
+        console.log("response for " + ironAjaxEl.url);
+        _this.seriesObj = evt.detail;
+      });
+      console.log("request for " + ironAjaxEl.url);
+      ironAjaxEl.generateRequest();
+    }
   },
 
   /**

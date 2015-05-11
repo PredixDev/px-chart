@@ -9,14 +9,14 @@
 <!--
 Element that defines a time series chart, using sub-elements for axis, series and controls configuration.
 
-##### Usage
+##### Minimal Usage
 
     <px-time-series-chart>
-      <px-ts-chart-controls data-controls></px-ts-chart-controls>
-      <px-chart-yaxis></px-chart-yaxis>
       <px-chart-series name="..." data="..."></px-chart-series>
     </px-time-series>
 
+
+##### Full configuration
 
     <px-time-series-chart>
       <px-ts-chart-controls data-controls></px-ts-chart-controls>
@@ -53,7 +53,7 @@ Element that defines a time series chart, using sub-elements for axis, series an
   <template>
     <section role="region">
       <header class="text--right float--right">
-        <content select="[data-controls]"></content>
+        <content></content>
       </header>
       <figure class="m0" id="container"></figure>
     </section>
