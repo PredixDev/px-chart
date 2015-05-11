@@ -27,6 +27,8 @@
 
 <body>
   <button onclick="refresh()">Refresh</button>
+  <button onclick="addSeries('core-vibe-rear-cruise', '../demo-data/aviation/core-vibe-rear-cruise.json')">Add Core Vibration Series</button>
+  <button onclick="removeSeries('core-vibe-rear-cruise')">Remove Core Vibration Series</button>
   <px-time-series-chart>
     <px-ts-chart-controls data-controls></px-ts-chart-controls>
     <px-chart-yaxis offset="0"></px-chart-yaxis>
@@ -47,6 +49,35 @@
   function refresh(evt){
     console.log('here');
   }
+
+
+  function addSeries(seriesId, seriesObjUrl) {
+    var timeSeriesComp = document.querySelector("px-time-series-chart");
+    if (timeSeriesComp.chart.get(seriesId)) {
+      console.log("series " + seriesId + " already exists on chart.");
+    }
+    else {
+      var ironAjaxEl = document.createElement("iron-ajax");
+      ironAjaxEl.url = seriesObjUrl;
+      ironAjaxEl.handleas = "json";
+      ironAjaxEl.addEventListener("response", function(evt) {
+        timeSeriesComp.addOrUpdateSeries(seriesId, evt.detail.series, /*y-axis index*/3, /*noReflow*/false);
+      });
+
+      ironAjaxEl.generateRequest();
+    }
+  }
+
+  function removeSeries (seriesId) {
+    var timeSeriesComp = document.querySelector("px-time-series-chart");
+    if (timeSeriesComp.chart.get(seriesId)) {
+      timeSeriesComp.removeSeries(seriesId);
+    }
+    else {
+      console.log("series " + seriesId + " does not exist on chart.");
+    }
+  }
+
 </script>
 </body>
 </html>

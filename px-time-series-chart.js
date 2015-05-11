@@ -120,6 +120,8 @@ Polymer({
     }
   },
 
+  defaultYAxis: null,
+
   /**
    * Lifecycle callback to create the Highchart 'chart' object and consume the config / series elements
    */
@@ -135,16 +137,23 @@ Polymer({
 
     var axisEls = Polymer.dom(this).querySelectorAll("px-chart-yaxis");
     var axisElsProcessed = 0;
-    axisEls.forEach(function(axisEl) {
-      axisEl.addEventListener("y-axis-ready", function(evt) {
-        var axisConfig = evt.target.buildAxisConfig(axisElsProcessed, Highcharts.getOptions().colors);
-        _this.chart.addAxis(axisConfig, /*isX*/false, /*redraw*/false);
-        axisElsProcessed++;
-        if (axisElsProcessed === axisEls.length) {
-          _this.addInitialSeries();
-        }
-          });
+    if (!axisEls || axisEls.length === 0) {
+      this.defaultYAxis = document.createElement("px-chart-yaxis");
+      this.chart.addAxis(this.defaultYAxis.buildAxisConfig(0, Highcharts.getOptions().colors), /*isX*/false, /*redraw*/false);
+      this.addInitialSeries();
+    }
+    else {
+      axisEls.forEach(function(axisEl) {
+        axisEl.addEventListener("y-axis-ready", function(evt) {
+          var axisConfig = evt.target.buildAxisConfig(axisElsProcessed, Highcharts.getOptions().colors);
+          _this.chart.addAxis(axisConfig, /*isX*/false, /*redraw*/false);
+          axisElsProcessed++;
+          if (axisElsProcessed === axisEls.length) {
+            _this.addInitialSeries();
+          }
+        });
       });
+    }
   },
 
   /**
@@ -160,30 +169,11 @@ Polymer({
         _this.addOrUpdateSeries(seriesEl.name, seriesEl.data, seriesEl.axisIndex, /*noReflow*/true);
       }
       seriesEl.addEventListener("data-changed", function(evt) {
-        _this.addOrUpdateSeries(seriesEl.name, evt.detail.value, seriesEl.axisIndex);
+        _this.addOrUpdateSeries(seriesEl.name, evt.detail.value, seriesEl.axisIndex, /*noReDraw*/false);
+        _this.chart.reflow();
       });
     });
     this.chart.reflow();
-  },
-
-  /**
-   * Adds or updates a series on the chart
-   *
-   * @param {String} seriesId
-   * @param {Array} data
-   * @param {Number} axisIndex Optional. The axis index to which the series should be bound
-   * @param {Boolean} noReflow Optional. If true, does not force a chart reflow() after adding or updating the series
-   */
-  addOrUpdateSeries: function(seriesId, data, axisIndex, noReflow) {
-    if (!this.hasSeries(seriesId)) {
-      this.addSeries(seriesId, data, axisIndex);
-    }
-    else {
-      this.chart.get(seriesId).setData(data);
-    }
-    if (!noReflow) {
-      this.chart.reflow();
-    }
   },
 
   /**
@@ -196,25 +186,35 @@ Polymer({
       var mEnd = moment(this.rangeEnd);
       controlsEl.setPathValue("rangeStartDisplayStr", mStart.isValid() ? mStart.format('L') + " " + mStart.format("hh:ss") : null);
       controlsEl.setPathValue("rangeEndDisplayStr", mEnd.isValid() ? mEnd.format('L') + " " + mEnd.format("hh:ss") : null);
-        }
+    }
   },
 
   /**
-   * Adds a series to the chart
+   * Adds or updates a series on the chart
    *
    * @param {String} seriesId
    * @param {Array} data
-   * @param {Number} yAxisIndex Optional. Defaults to 0.
+   * @param {Number} yAxisIndex Optional. The axis index to which the series should be bound. Defaults to 0.
+   * @param {Boolean} noRedraw Optional. If true, does not force a chart redraw() after adding or updating the series
    */
-  addSeries: function(seriesId, data, yAxisIndex) {
-    var newseries = {
-      id: seriesId,
-      name: seriesId,
-      data: data,
-      yAxis: yAxisIndex
-    };
+  addOrUpdateSeries: function(seriesId, data, yAxisIndex, noRedraw) {
+    if (!this.hasSeries(seriesId)) {
+      if (yAxisIndex && this.chart.yAxis.length <= yAxisIndex) {//if we are adding to an axis that doesn't exist, add default axis
+        this.defaultYAxis = this.defaultYAxis || document.createElement("px-chart-yaxis");
+        yAxisIndex = this.chart.yAxis.length;//make sure we are adding the very next axis, no matter what the dev passed.
+        this.chart.addAxis(this.defaultYAxis.buildAxisConfig(yAxisIndex, Highcharts.getOptions().colors), /*isX*/false, /*redraw*/false);
+      }
+      this.chart.addSeries({
+        id: seriesId,
+        name: seriesId,
+        data: data,
+        yAxis: yAxisIndex
+      }, !noRedraw);
+    }
+    else {
+      this.chart.get(seriesId).setData(data, !noRedraw);
+    }
 
-    this.chart.addSeries(newseries);
   },
 
   /**
