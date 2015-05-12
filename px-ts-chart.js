@@ -166,14 +166,15 @@ Polymer({
 
     seriesEls.forEach(function (seriesEl) {
       if (seriesEl.data) {
-        _this.addOrUpdateSeries(seriesEl.name, seriesEl.data, seriesEl.axisIndex, /*noReflow*/true);
+        _this.addOrUpdateSeries(seriesEl.name, seriesEl.data, seriesEl.axisIndex, /*noRedraw*/true);
       }
       seriesEl.addEventListener("data-changed", function(evt) {
-        _this.addOrUpdateSeries(seriesEl.name, evt.detail.value, seriesEl.axisIndex, /*noReDraw*/false);
+        _this.addOrUpdateSeries(seriesEl.name, evt.detail.value, seriesEl.axisIndex, /*noRedraw*/false);
         _this.chart.reflow();
       });
     });
     this.chart.reflow();
+    this.chart.redraw();
   },
 
   /**
@@ -400,16 +401,14 @@ Polymer({
           lineWidth: 2
         },
         xAxis: {
+          gridLineWidth: 0,
           labels: {
             style: {
               fontSize: "0.8rem"
             },
             y: 15
           }
-        },
-        xAxis: {
-          gridLineWidth: 0
-          }
+        }
       },
       plotOptions: {
         line: {
