@@ -63,9 +63,13 @@ Polymer({
       value: {
         redraw: function() {
           var extremes = this.xAxis[0].getExtremes();
-          self.rangeStart = extremes.min;
-          self.rangeEnd = extremes.max;
-          self.chartState = this.xAxis;
+          var tsChart = Polymer.dom(this.renderTo).parentNode.parentNode;
+          tsChart.debounce(
+            'set-extremes', function() {
+              this.rangeStart = extremes.min;
+              this.rangeEnd = extremes.max;
+            }, 250);
+
         }
       }
     },
