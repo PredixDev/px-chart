@@ -401,16 +401,14 @@ Polymer({
           lineWidth: 2
         },
         xAxis: {
+          gridLineWidth: 0,
           labels: {
             style: {
               fontSize: "0.8rem"
             },
             y: 15
           }
-        },
-        xAxis: {
-          gridLineWidth: 0
-          }
+        }
       },
       plotOptions: {
         line: {
