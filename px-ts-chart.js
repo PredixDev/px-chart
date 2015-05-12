@@ -170,10 +170,11 @@ Polymer({
       }
       seriesEl.addEventListener("data-changed", function(evt) {
         _this.addOrUpdateSeries(seriesEl.name, evt.detail.value, seriesEl.axisIndex, /*noRedraw*/false);
+        _this.chart.reflow();
       });
     });
-    this.chart.redraw();
     this.chart.reflow();
+    this.chart.redraw();
   },
 
   /**
