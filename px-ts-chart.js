@@ -117,7 +117,16 @@ Polymer({
     zoomType: {
       type: String,
       value: 'x'
+    },
+
+    chartState: {
+      type: Object,
+      value: function(){
+        return {};
+      },
+      notify: true
     }
+
   },
 
   defaultYAxis: null,
