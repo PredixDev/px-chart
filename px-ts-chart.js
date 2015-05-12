@@ -65,6 +65,7 @@ Polymer({
           var extremes = this.xAxis[0].getExtremes();
           self.rangeStart = extremes.min;
           self.rangeEnd = extremes.max;
+          self.chartState = this.xAxis;
         }
       }
     },
@@ -124,12 +125,22 @@ Polymer({
       value: function(){
         return {};
       },
-      notify: true
+      notify: true,
+      observer: '_observeChanged'
     }
 
   },
 
   defaultYAxis: null,
+
+  // listeners: {
+  //   "chart-state-changed": "_observeChanged"
+  //  },
+
+   _observeChanged: function(evt){
+     console.log(evt);
+     console.log('change observed');
+   },
 
   /**
    * Lifecycle callback to create the Highchart 'chart' object and consume the config / series elements
