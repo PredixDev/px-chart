@@ -64,10 +64,17 @@ Polymer({
         redraw: function() {
           var extremes = this.xAxis[0].getExtremes();
           var tsChart = Polymer.dom(this.renderTo).parentNode.parentNode;
+
           tsChart.debounce(
             'set-extremes', function() {
               this.rangeStart = extremes.min;
               this.rangeEnd = extremes.max;
+            }, 250);
+
+            tsChart.debounce(
+              'set-chart-state', function() {
+                this.chartState = Date.now();
+                this.setPathValue('chartState', this.chartState);
             }, 250);
 
         }
@@ -136,10 +143,6 @@ Polymer({
   },
 
   defaultYAxis: null,
-
-  // listeners: {
-  //   "chart-state-changed": "_observeChanged"
-  //  },
 
    _observeChanged: function(evt){
      console.log(evt);
