@@ -73,8 +73,10 @@ Polymer({
 
             tsChart.debounce(
               'set-chart-state', function() {
-                this.setPathValue('chartState', extremes);
-            }, 1000);
+                // this.setPathValue('chartState', extremes);
+                console.log('firing...');
+                this.fire('iron-signal', {name: 'chart-state', data: {chartZoom: extremes, srcElement: this}});
+            }, 250);
 
         }
       }
@@ -134,20 +136,20 @@ Polymer({
       type: Object,
       value: function(){
         return {};
-      },
-      notify: true,
-      observer: '_observeChanged'
+      }//,
+      // notify: true,
+      // observer: '_observeChanged'
     }
 
   },
 
   defaultYAxis: null,
 
-   _observeChanged: function(evt){
-    //  console.log(evt);
-    //  if (this.chart){
-    //    this.chart.xAxis[0].setExtremes(evt);
-    //  }
+  chartStateUpdated: function(evt, detail){
+     console.log(this.id + '   ' + detail.srcElement.id);
+     if (this.chart && detail.srcElement !== this){
+       this.chart.xAxis[0].setExtremes(detail.chartZoom);
+     }
 
 
    },
