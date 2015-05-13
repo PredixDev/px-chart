@@ -20,6 +20,7 @@
     body {
       height: 100%;
       margin: 0;
+      padding: 1em;
     }
   </style>
 
@@ -28,10 +29,13 @@
 <body>
 
 <section class="full-config-example">
+
   <h1>Full Config</h1>
-  <button onclick="refreshSeries()">Refresh Series</button>
-  <button onclick="addSeries('core-vibe-rear-cruise', '../demo-data/aviation/core-vibe-rear-cruise.json')">Add Core Vibration Series</button>
-  <button onclick="removeSeries('core-vibe-rear-cruise')">Remove Core Vibration Series</button>
+  <p>
+    <button onclick="refreshSeries()">Refresh Series</button>
+    <button onclick="addSeries('core-vibe-rear-cruise', '../demo-data/aviation/core-vibe-rear-cruise.json')">Add Core Vibration Series</button>
+    <button onclick="removeSeries('core-vibe-rear-cruise')">Remove Core Vibration Series</button>
+  </p>
   <px-ts-chart>
     <px-ts-chart-controls data-controls></px-ts-chart-controls>
     <px-chart-yaxis offset="0"></px-chart-yaxis>

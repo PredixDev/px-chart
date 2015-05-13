@@ -50,7 +50,9 @@ in import paths
 
 // Component
 header {
-  margin-bottom: -#{calculateRem($inuit-base-font-size * 6)};
+  position: relative;
+  z-index: 1;
+  margin-bottom: -#{calculateRem(96px)};
 }
 
 // Trumps
