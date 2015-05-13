@@ -17,6 +17,9 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
 @blurb Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highcharts#yAxis
 @homepage index.html
 -->
+<dom-module id="px-chart-yaxis">
+
+</dom-module>
 
 <script>
   Polymer({
@@ -42,8 +45,7 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
        * http://api.highcharts.com/highcharts#yAxis.lineWidth
        */
       lineWidth: {
-        type: Number,
-        value: 2
+        type: Number
       },
 
       /**
@@ -79,8 +81,7 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
        * http://api.highcharts.com/highcharts#yAxis.startOnTick
        */
       startOnTick: {
-        type: Boolean,
-        value: true
+        type: Boolean
       },
 
       /**
@@ -95,7 +96,7 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
        */
       tickWidth: {
         type: Number,
-        value: 2
+        value: 1
       },
 
       /**
@@ -163,7 +164,7 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
      * @param {Number} axisIndex Which axis are we processing in order to be added to the chart
      * @param {Array} colorsArray An array of colors to choose from by index
      */
-    buildAxisConfig: function(axisIndex, colorsArray) {
+    buildAxisConfig: function(defaultColor) {
       var config = {};
       var props = this.properties;
       var _this = this;
@@ -173,8 +174,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
         }
       });
 
-      if (colorsArray) {
-        this.addDefaultColorsByIndex(config, colorsArray[axisIndex]);
+      if (defaultColor) {
+        this.addDefaultColorsByIndex(config, defaultColor);
       }
       return config;
     },

@@ -46,11 +46,11 @@ Polymer({
     /**
      * See http://api.highcharts.com/highcharts#chart.backgroundColor
      *
-     * @default "transparent"
+     * @default rgb(255,255,255)
      */
     backgroundColor: {
       type: String,
-      value: "transparent"
+      value: 'rgb(255,255,255)'
     },
 
     /**
@@ -99,17 +99,17 @@ Polymer({
      */
     margin: {
       type: Array,
-      value: [90,30,30,30]
+      value: [96,40,30,40]
     },
 
     /**
      * See http://api.highcharts.com/highcharts#chart.plotBorderWidth
      *
-     * @default 2
+     * @default 1
      */
     plotBorderWidth: {
       type: Number,
-      value: 2
+      value: 1
     },
 
     /**
@@ -171,13 +171,13 @@ Polymer({
     var axisElsProcessed = 0;
     if (!axisEls || axisEls.length === 0) {
       this.defaultYAxis = document.createElement("px-chart-yaxis");
-      this.chart.addAxis(this.defaultYAxis.buildAxisConfig(0, Highcharts.getOptions().colors), /*isX*/false, /*redraw*/false);
+      this.chart.addAxis(this.defaultYAxis.buildAxisConfig(this.PXd.gray), /*isX*/false, /*redraw*/false);
       this.addInitialSeries();
     }
     else {
       axisEls.forEach(function(axisEl) {
         axisEl.addEventListener("y-axis-ready", function(evt) {
-          var axisConfig = evt.target.buildAxisConfig(axisElsProcessed, Highcharts.getOptions().colors);
+          var axisConfig = evt.target.buildAxisConfig(_this.PXd.gray);
           _this.chart.addAxis(axisConfig, /*isX*/false, /*redraw*/false);
           axisElsProcessed++;
           if (axisElsProcessed === axisEls.length) {
@@ -234,6 +234,7 @@ Polymer({
     if (!this.hasSeries(seriesId)) {
       if (yAxisIndex && this.chart.yAxis.length <= yAxisIndex) {//if we are adding to an axis that doesn't exist, add default axis
         this.defaultYAxis = this.defaultYAxis || document.createElement("px-chart-yaxis");
+        this.defaultYAxis.offset = this.defaultYAxis.offset + 10;
         yAxisIndex = this.chart.yAxis.length;//make sure we are adding the very next axis, no matter what the dev passed.
         this.chart.addAxis(this.defaultYAxis.buildAxisConfig(yAxisIndex, Highcharts.getOptions().colors), /*isX*/false, /*redraw*/false);
       }
@@ -320,55 +321,51 @@ Polymer({
       this.rangeObserver();
     }
   },
+  
+  PXd: {
+      'red'             : 'rgb(227,37,51)',
+      'redLight'        : 'rgb(255,92,92)',
+      'redDark'         : 'rgb(132,18,37)',
+      'redCircle'       : 'rgb(245,204,207)',
+      'blue'            : 'rgb(0,92,185)',
+      'blueLight'       : 'rgb(54,147,248)',
+      'blueDark'        : 'rgb(0,54,110)',
+      'blueCircle'      : 'rgb(200,231,251)',
+      'green'           : 'rgb(70,173,0)',
+      'greenLight'      : 'rgb(117,216,53)',
+      'greenDark'       : 'rgb(29,95,17)',
+      'greenCircle'     : 'rgb(226,232,152)',
+      'purple'          : 'rgb(134,105,255)',
+      'purpleLight'     : 'rgb(156,151,255)',
+      'purpleDark'      : 'rgb(89,81,148)',
+      'purpleCircle'    : 'rgb(222,209,231)',
+      'orange'          : 'rgb(255,152,33)',
+      'orangeLight'     : 'rgb(255,187,102)',
+      'orangeDark'      : 'rgb(229,92,0)',
+      'orangeCircle'    : 'rgb(255,227,156)',
+      'yellow'          : 'rgb(255,237,69)',
+      'yellowLight'     : 'rgb(255,249,141)',
+      'yellowDark'      : 'rgb(255,207,69)',
+      'trueBlack'       : 'rgb(0,0,0)',
+      'black'           : 'rgb(20,20,20)',
+      'grayDarkest'     : 'rgb(43,43,43)',
+      'grayDarker'      : 'rgb(65,65,65)',
+      'grayDark'        : 'rgb(87,87,87)',
+      'gray'            : 'rgb(134,134,134)',
+      'grayLight'       : 'rgb(188,188,188)',
+      'grayLighter'     : 'rgb(212,212,212)',
+      'grayCircle'      : 'rgb(220,220,220)',
+      'grayLightest'    : 'rgb(233,233,233)',
+      'offWhite'        : 'rgb(245,245,245)',
+      'white'           : 'rgb(255,255,255)'
+    },
 
   /**
    * Builds up highcharts config object
    */
   buildConfig: function() {
     var self = this;
-
-    var monochromePalette = {
-      'black': '#141414',
-      'grayDarkest': '#2b2b2b',
-      'grayDarker': '#414141',
-      'grayDark': '#575757',
-      'gray': '#868686',
-      'grayLight': '#bcbcbc',
-      'grayLighter': '#d4d4d4',
-      'grayLightest': '#e9e9e9',
-      'offwhite': '#f5f5f5',
-      'white': '#fff'
-    };
-
-    var accentPalette = {
-      'cyan': '#005CB9',
-      'orange': '#ff9821',
-      'green': '#46ad00',
-      'purple': '#8669ff',
-      'red': '#de2533',
-      'yellow': '#ffed45',
-      'cyanLight': '#3693f8',
-      'orangeLight': '#ffbb66',
-      'greenLight': '#75d835',
-      'purpleLight': '#9c97ff',
-      'redLight': '#ff5c5c',
-      'yellowDark': '#ffcf45',
-      'cyanDark': '#00366e',
-      'orangeDark': '#e55c00',
-      'greenDark': '#1d5f11',
-      'purpleDark': '#595194',
-      'redDark': '#b61225',
-      'yellowLight': '#fff98d',
-      'blue': '#005bb8',
-      'blueLight': '#3693f8',
-      'blueDark': '#00366e'
-    };
-
-    var PXd = {
-      'accentPalette': accentPalette,
-      'monochromePalette': monochromePalette
-    };
-
+    
     var convertMapToValueArray = function(map){
       var valArray = [];
       for(var key in map) {
@@ -378,16 +375,22 @@ Polymer({
       }
       return valArray;
     };
+    
+    Highcharts.setOptions({
+       global: {
+          colors: convertMapToValueArray(this.PXd),
+       }
+    });
 
     var config = {
       annotationsOptions: {
         enabledButtons: false
       },
       chart: {
-        backgroundColor: this.backgroundColor,
         events: this.events,
         height: this.height,
         margin: this.margin,
+        plotBorderColor: this.PXd.gray,
         plotBorderWidth: this.plotBorderWidth,
         renderTo: this.$.container,
         spacing: this.spacing,
@@ -397,7 +400,6 @@ Polymer({
         },
         zoomType: this.zoomType
       },
-      colors: convertMapToValueArray(PXd.accentPalette),
       credits: {
         enabled: false
       },
@@ -407,8 +409,8 @@ Polymer({
         floating: true,
         itemMarginBottom: 10,
         itemStyle: {
-          "fontSize": "inherit",
-          "fontWeight": "normal"
+          fontSize: 'inherit',
+          fontWeight: 'normal'
         },
         margin: 0,
         padding: 0,
@@ -425,18 +427,18 @@ Polymer({
         adaptToUpdatedData: false,
         height: 50,
         margin: 15,
-        outlineColor: PXd.monochromePalette.gray,
-        maskInside: true,
+        outlineColor: this.PXd.gray,
+        maskFill: 'rgba(200,231,251,0.3)',
         series: {
           color: 'transparent',
-          lineColor: PXd.accentPalette.blue,
+          lineColor: this.PXd.blue,
           lineWidth: 2
         },
         xAxis: {
           gridLineWidth: 0,
           labels: {
             style: {
-              fontSize: "0.8rem"
+              fontSize: '0.8rem'
             },
             y: 15
           }
@@ -471,8 +473,8 @@ Polymer({
         text: null
       },
       tooltip: {
-        backgroundColor: PXd.monochromePalette.white,
-        borderColor: PXd.monochromePalette.grayLighter,
+        backgroundColor: this.PXd.white,
+        borderColor: this.PXd.grayLighter,
         shadow: false,
         style: {
           fontFamily: 'inherit',
@@ -486,15 +488,18 @@ Polymer({
           afterSetExtremes: function(event) {
             self.fire('after-set-extremes', event);
           }
-      },
+        },
         labels: {
           align: "left",
           style: {
             fontSize: '0.8rem'
-        },
+          },
           x: 3,
           y: 12
         },
+        lineColor: this.PXd.gray,
+        showFirstLabel: false,
+        showLastLabel: false,
         startOnTick: true,
         title: {
           text: null

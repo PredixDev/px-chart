@@ -12,7 +12,7 @@ Element that defines a time series chart, using sub-elements for axis, series an
 ##### Minimal Usage
 
     <px-ts-chart>
-      <px-chart-series name="..." data="..."></px-chart-series>
+      <px-chart-series name="hpt-acc-position-cruise" data="{{...}}"></px-chart-series>
     </px-ts-chart>
 
 
@@ -22,11 +22,7 @@ Element that defines a time series chart, using sub-elements for axis, series an
       <px-ts-chart-controls data-controls></px-ts-chart-controls>
       <px-chart-yaxis offset="0"></px-chart-yaxis>
       <px-chart-yaxis opposite="true" offset="-2.5"></px-chart-yaxis>
-      <px-chart-series name="fan-vibration-cruise" axis-index="1">
-        <iron-ajax
-            url="../demo-data/aviation/fan-vibration-cruise.json"
-            handleas="json"></iron-ajax>
-      </px-chart-series>
+      <px-chart-series name="fan-vibration-cruise" axis-index="1" data="{{...}}"></px-chart-series>
       <px-chart-series name="hpt-acc-position-cruise" axis-index="2">
         <iron-ajax
             url="../demo-data/aviation/hpt-acc-position-cruise.json"
@@ -62,5 +58,9 @@ Element that defines a time series chart, using sub-elements for axis, series an
     </section>
   </template>
 </dom-module>
+
+<link rel="import" href="px-chart-series.html"/>
+<link rel="import" href="px-ts-chart-controls.html"/>
+<link rel="import" href="px-chart-yaxis.html"/>
 
 <script type="text/javascript" src="px-ts-chart.js"></script>

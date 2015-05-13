@@ -1150,7 +1150,9 @@ optgroup {
   margin-left: 0.6666666667rem; }
 
 header {
-  margin-bottom: -6rem; }
+  position: relative;
+  z-index: 1;
+  margin-bottom: -6.4rem; }
 
 /*------------------------------------*\
     #PX-CLEARFIX-DESIGN
