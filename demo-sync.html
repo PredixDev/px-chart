@@ -28,7 +28,7 @@
 <body>
 
 <section>
-  <px-ts-chart chart-state="{{chartState}}">
+  <px-ts-chart chart-state="{{model}}">
     <px-ts-chart-controls data-controls></px-ts-chart-controls>
     <px-chart-yaxis offset="0"></px-chart-yaxis>
     <px-chart-yaxis opposite="true" offset="-2.5"></px-chart-yaxis>
@@ -43,10 +43,10 @@
           handleas="json"></iron-ajax>
     </px-chart-series>
   </px-ts-chart>
-</secton>
+</section>
 
 <section>
-  <px-ts-chart chart-state="{{chartState}}">
+  <px-ts-chart chart-state="{{model}}">
     <px-ts-chart-controls data-controls></px-ts-chart-controls>
     <px-chart-yaxis offset="0"></px-chart-yaxis>
     <px-chart-yaxis opposite="true" offset="-2.5"></px-chart-yaxis>
@@ -66,14 +66,20 @@
 
 <script>
 
-var chartState = {};
 
-function observer(recs) {
-  console.log("here!!!!");
-}
+var model = {};
 
+// Which we then observe
+Object.observe(model, function(changes){
+    console.log('model-changed');
+    // This asynchronous callback runs
+    changes.forEach(function(change) {
 
-Object.observe(chartState, observer);
+        // Letting us know what changed
+        console.log(change.type, change.name, change.oldValue);
+    });
+
+});
 
 </script>
 

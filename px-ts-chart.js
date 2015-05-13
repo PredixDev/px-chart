@@ -73,9 +73,8 @@ Polymer({
 
             tsChart.debounce(
               'set-chart-state', function() {
-                this.chartState = Date.now();
-                this.setPathValue('chartState', this.chartState);
-            }, 250);
+                this.setPathValue('chartState', extremes);
+            }, 1000);
 
         }
       }
@@ -145,8 +144,12 @@ Polymer({
   defaultYAxis: null,
 
    _observeChanged: function(evt){
-     console.log(evt);
-     console.log('change observed');
+    //  console.log(evt);
+    //  if (this.chart){
+    //    this.chart.xAxis[0].setExtremes(evt);
+    //  }
+
+
    },
 
   /**
