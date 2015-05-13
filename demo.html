@@ -97,7 +97,7 @@
       ironAjaxEl.url = seriesObjUrl;
       ironAjaxEl.handleas = "json";
       ironAjaxEl.addEventListener("response", function(evt) {
-        timeSeriesComp.addOrUpdateSeries(seriesId, evt.detail.series, /*y-axis index*/3, /*noReflow*/false);
+        timeSeriesComp.addOrUpdateSeries(seriesId, evt.detail.series, /*y-axis index*/1, /*noReflow*/false);
       });
 
       ironAjaxEl.generateRequest();

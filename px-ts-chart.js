@@ -232,6 +232,7 @@ Polymer({
     if (!this.hasSeries(seriesId)) {
       if (yAxisIndex && this.chart.yAxis.length <= yAxisIndex) {//if we are adding to an axis that doesn't exist, add default axis
         this.defaultYAxis = this.defaultYAxis || document.createElement("px-chart-yaxis");
+        this.defaultYAxis.offset = this.defaultYAxis.offset + 10;
         yAxisIndex = this.chart.yAxis.length;//make sure we are adding the very next axis, no matter what the dev passed.
         this.chart.addAxis(this.defaultYAxis.buildAxisConfig(yAxisIndex, Highcharts.getOptions().colors), /*isX*/false, /*redraw*/false);
       }
