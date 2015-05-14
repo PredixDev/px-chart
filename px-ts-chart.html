@@ -39,8 +39,6 @@ Element that defines a time series chart, using sub-elements for axis, series an
 <link rel="import" href="px-ts-chart-controls.html"/>
 <link rel="import" href="px-chart-yaxis.html"/>
 
-<link rel="import" href="../iron-signals/iron-signals.html"/>
-
 <script src="../highstock-release/adapters/standalone-framework.js"></script>
 <script src="../highstock-release/highstock.js"></script>
 <script src="../annotations/js/annotations.js"></script>
@@ -49,7 +47,6 @@ Element that defines a time series chart, using sub-elements for axis, series an
 <dom-module id="px-ts-chart">
   <link rel="import" type="css" href="css/px-time-series.css"/>
   <template>
-    <iron-signals on-iron-signal-chart-state="chartStateUpdated"></iron-signals>
     <section role="region">
       <header class="text--right float--right">
         <content></content>

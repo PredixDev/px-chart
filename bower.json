@@ -27,8 +27,7 @@
     "px-starter-kit-design": "git://github.sw.ge.com/PXd/px-starter-kit-design.git#~0.1.0",
     "px-buttons-design": "git://github.sw.ge.com/PXd/px-buttons-design.git#~0.1.0",
     "px-forms-design": "git://github.sw.ge.com/PXd/px-forms-design.git#~0.1.0",
-    "web-component-tester": "Polymer/web-component-tester#^2.2.3",
-    "iron-signals": "PolymerElements/iron-signals#v0.8.0"
+    "web-component-tester": "Polymer/web-component-tester#^2.2.3"
   },
   "resolutions": {
     "polymer": "~v0.8.0-rc.7"
