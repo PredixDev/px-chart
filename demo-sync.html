@@ -5,7 +5,9 @@
   <title>px-ts-chart Demo</title>
 
   <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
-  <script src="../webcomponentsjs/webcomponents.js"></script>
+  <script src="../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../polymer/polymer.html">
 
   <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
   <link rel="import" href="../px-theme/px-theme.html"/>
@@ -26,9 +28,9 @@
 </head>
 
 <body>
-
+<template is="x-autobind">
   <section>
-    <px-ts-chart>
+    <px-ts-chart id="one" chart-state={{sharedState}}>
       <px-ts-chart-controls data-controls></px-ts-chart-controls>
       <px-chart-yaxis offset="0"></px-chart-yaxis>
       <px-chart-yaxis opposite="true" offset="-2.5"></px-chart-yaxis>
@@ -46,7 +48,7 @@
   </section>
 
   <section>
-    <px-ts-chart>
+    <px-ts-chart id="two" chart-state={{sharedState}}>
       <px-ts-chart-controls data-controls></px-ts-chart-controls>
       <px-chart-yaxis offset="0"></px-chart-yaxis>
       <px-chart-yaxis opposite="true" offset="-2.5"></px-chart-yaxis>
@@ -63,25 +65,8 @@
     </px-ts-chart>
 
   </section>
+</template>
 
-<script>
-
-
-var model = {};
-
-// Which we then observe
-Object.observe(model, function(changes){
-    console.log('model-changed');
-    // This asynchronous callback runs
-    changes.forEach(function(change) {
-
-        // Letting us know what changed
-        console.log(change.type, change.name, change.oldValue);
-    });
-
-});
-
-</script>
 
 </body>
 </html>
