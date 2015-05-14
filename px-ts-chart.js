@@ -70,14 +70,6 @@ Polymer({
               this.rangeStart = extremes.min;
               this.rangeEnd = extremes.max;
             }, 250);
-
-            tsChart.debounce(
-              'set-chart-state', function() {
-                // this.setPathValue('chartState', extremes);
-                console.log('firing...');
-                this.fire('iron-signal', {name: 'chart-state', data: {chartZoom: extremes, srcElement: this}});
-            }, 250);
-
         }
       }
     },
@@ -136,22 +128,18 @@ Polymer({
       type: Object,
       value: function(){
         return {};
-      }//,
-      // notify: true,
-      // observer: '_observeChanged'
+      }
     }
-
   },
 
   defaultYAxis: null,
 
   chartStateUpdated: function(evt, detail){
-     console.log(this.id + '   ' + detail.srcElement.id);
-     if (this.chart && detail.srcElement !== this){
-       this.chart.xAxis[0].setExtremes(detail.chartZoom);
+     if (this.chart.xAxis[0].getExtremes().max !== detail.chartZoom.max){
+       if (this.chart && detail.srcElement !== this){
+         this.chart.xAxis[0].setExtremes(detail.chartZoom.min, detail.chartZoom.max, true);
+       }
      }
-
-
    },
 
   /**
@@ -186,6 +174,20 @@ Polymer({
         });
       });
     }
+  },
+
+  listeners: {
+    'after-set-extremes': 'firechartStateUpdated'
+  },
+
+  firechartStateUpdated: function(evt){
+    var extremes = this.chart.xAxis[0].getExtremes();
+    var tsChart = Polymer.dom(this).node;
+      tsChart.debounce(
+        'set-chart-state', function() {
+          console.log('firing...');
+          this.fire('iron-signal', {name: 'chart-state', data: {chartZoom: extremes, srcElement: this}});
+      }, 250);
   },
 
   /**
@@ -321,7 +323,7 @@ Polymer({
       this.rangeObserver();
     }
   },
-  
+
   PXd: {
       'red'             : 'rgb(227,37,51)',
       'redLight'        : 'rgb(255,92,92)',
@@ -365,7 +367,7 @@ Polymer({
    */
   buildConfig: function() {
     var self = this;
-    
+
     var convertMapToValueArray = function(map){
       var valArray = [];
       for(var key in map) {
@@ -375,7 +377,7 @@ Polymer({
       }
       return valArray;
     };
-    
+
     Highcharts.setOptions({
        global: {
           colors: convertMapToValueArray(this.PXd),
