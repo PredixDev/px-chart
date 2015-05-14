@@ -128,19 +128,30 @@ Polymer({
       type: Object,
       value: function(){
         return {};
-      }
+      },
+      notify: true,
+      observer: 'chartStateUpdated'
     }
   },
 
   defaultYAxis: null,
 
-  chartStateUpdated: function(evt, detail){
-     if (this.chart.xAxis[0].getExtremes().max !== detail.chartZoom.max){
-       if (this.chart && detail.srcElement !== this){
-         this.chart.xAxis[0].setExtremes(detail.chartZoom.min, detail.chartZoom.max, true);
+  chartStateUpdated: function(evt){
+     if (this.chart && evt.srcElement){
+       console.log(evt.srcElement.id);
+       if (this.chart.xAxis[0].getExtremes().max !== evt.chartZoom.max){
+         if (evt.srcElement !== this){
+           this.chart.xAxis[0].setExtremes(evt.chartZoom.min, evt.chartZoom.max, true);
+         }
        }
      }
    },
+
+  //  'chartState-changed': function(evt){
+  //    if (this.chart){
+  //      console.log(evt.srcElement.id);
+  //    }
+  //  },
 
   /**
    * Lifecycle callback to create the Highchart 'chart' object and consume the config / series elements
@@ -186,7 +197,13 @@ Polymer({
       tsChart.debounce(
         'set-chart-state', function() {
           console.log('firing...');
-          this.fire('iron-signal', {name: 'chart-state', data: {chartZoom: extremes, srcElement: this}});
+          // this.chartState = {chartZoom: extremes, srcElement: this};
+          // this.notifyPath('chartState', this.chartState);
+
+          this.setPathValue('chartState', {chartZoom: extremes, srcElement: this});
+          // this.fire('chart-state-changed', {chartZoom: extremes, srcElement: this});
+
+          // this.fire('iron-signal', {name: 'chart-state', data: {chartZoom: extremes, srcElement: this}});
       }, 250);
   },
 
