@@ -147,12 +147,6 @@ Polymer({
      }
    },
 
-  //  'chartState-changed': function(evt){
-  //    if (this.chart){
-  //      console.log(evt.srcElement.id);
-  //    }
-  //  },
-
   /**
    * Lifecycle callback to create the Highchart 'chart' object and consume the config / series elements
    */
@@ -196,14 +190,7 @@ Polymer({
     var tsChart = Polymer.dom(this).node;
       tsChart.debounce(
         'set-chart-state', function() {
-          console.log('firing...');
-          // this.chartState = {chartZoom: extremes, srcElement: this};
-          // this.notifyPath('chartState', this.chartState);
-
           this.setPathValue('chartState', {chartZoom: extremes, srcElement: this});
-          // this.fire('chart-state-changed', {chartZoom: extremes, srcElement: this});
-
-          // this.fire('iron-signal', {name: 'chart-state', data: {chartZoom: extremes, srcElement: this}});
       }, 250);
   },
 
