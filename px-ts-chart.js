@@ -138,8 +138,8 @@ Polymer({
 
   chartStateUpdated: function(evt){
      if (this.chart && evt.srcElement){
-       console.log(evt.srcElement.id);
-       if (this.chart.xAxis[0].getExtremes().max !== evt.chartZoom.max){
+       var currentChartExtremes = this.chart.xAxis[0].getExtremes();
+       if (currentChartExtremes.max !== evt.chartZoom.max || currentChartExtremes.min !== evt.chartZoom.min){
          if (evt.srcElement !== this){
            this.chart.xAxis[0].setExtremes(evt.chartZoom.min, evt.chartZoom.max, true);
          }
