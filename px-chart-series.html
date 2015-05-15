@@ -124,7 +124,7 @@ Polymer({
       var ironAjaxEl = Polymer.dom(_this.root).querySelector("iron-ajax");
       if (ironAjaxEl) {
         ironAjaxEl.addEventListener("response", function(evt) {
-          _this.seriesObj = evt.detail;
+          _this.seriesObj = evt.detail.response;
         });
         ironAjaxEl.generateRequest();
       }

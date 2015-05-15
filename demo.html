@@ -43,12 +43,12 @@
     <px-chart-series name="fan-vibration-cruise" axis-index="1">
       <iron-ajax
           url="../demo-data/aviation/fan-vibration-cruise.json"
-          handleas="json"></iron-ajax>
+          handle-as="json"></iron-ajax>
     </px-chart-series>
     <px-chart-series name="hpt-acc-position-cruise" axis-index="2">
       <iron-ajax
           url="../demo-data/aviation/hpt-acc-position-cruise.json"
-          handleas="json"></iron-ajax>
+          handle-as="json"></iron-ajax>
     </px-chart-series>
   </px-ts-chart>
 
@@ -65,10 +65,10 @@
   //For minimal config demo only...grab some data to shove into minimal config from the outside...
   var ironAjaxEl = document.createElement("iron-ajax");
   ironAjaxEl.url = "../demo-data/aviation/fan-vibration-cruise.json";
-  ironAjaxEl.handleas = "json";
+  ironAjaxEl.handleAs = "json";
   ironAjaxEl.addEventListener("response", function(evt) {
     var minimalConfigChartSeries = document.querySelector('.minimal-config-example px-chart-series');
-    minimalConfigChartSeries.data = evt.detail.series;
+    minimalConfigChartSeries.data = evt.detail.response.series;
   });
 
   ironAjaxEl.generateRequest();
@@ -77,10 +77,10 @@
   function refreshSeries(evt){
     var ironAjaxEl = document.createElement('iron-ajax');
     ironAjaxEl.url = '../demo-data/aviation/fan-vibration-cruise2.json';
-    ironAjaxEl.handleas = "json";
+    ironAjaxEl.handleAs = "json";
     ironAjaxEl.addEventListener('response', function(evt) {
       var tsChart = Polymer.dom(document).querySelector('.full-config-example px-ts-chart');
-      tsChart.addOrUpdateSeries('fan-vibration-cruise', evt.detail.series, 2, false);
+      tsChart.addOrUpdateSeries('fan-vibration-cruise', evt.detail.response.series, 2, false);
     });
 
     ironAjaxEl.generateRequest();
@@ -95,9 +95,9 @@
     else {
       var ironAjaxEl = document.createElement("iron-ajax");
       ironAjaxEl.url = seriesObjUrl;
-      ironAjaxEl.handleas = "json";
+      ironAjaxEl.handleAs = "json";
       ironAjaxEl.addEventListener("response", function(evt) {
-        timeSeriesComp.addOrUpdateSeries(seriesId, evt.detail.series, /*y-axis index*/1, /*noReflow*/false);
+        timeSeriesComp.addOrUpdateSeries(seriesId, evt.detail.response.series, /*y-axis index*/1, /*noReflow*/false);
       });
 
       ironAjaxEl.generateRequest();
