@@ -75,6 +75,25 @@ Polymer({
     },
 
     /**
+     * See http://api.highcharts.com/highcharts#plotOptions.series.events
+     *
+     * @default show & hide series function()
+     */
+    seriesEvents: {
+      type: Object,
+      value: {
+        show: function() {
+          console.log('show');
+          console.log(this);
+        },
+        hide: function() {
+          console.log('hide');
+          console.log(this);
+        }
+      }
+    },
+
+    /**
      * See http://api.highcharts.com/highcharts#chart.height
      *
      * @default 400
@@ -475,10 +494,11 @@ Polymer({
         scatter: {
           marker: {
             enabled: true
-      }
-          },
+          }
+        },
         series: {
-          marker: {}
+          marker: {},
+          events: this.seriesEvents
         }
       },
       rangeSelector: {
