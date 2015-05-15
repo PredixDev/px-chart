@@ -83,12 +83,14 @@ Polymer({
       type: Object,
       value: {
         show: function() {
-          console.log('show');
-          console.log(this);
+          var tsChart = Polymer.dom(this.chart.renderTo).parentNode.parentNode;
+          // tsChart.chartState.seriesState = this.chart.series;
+          tsChart.setPathValue('chartState.seriesState', this.chart.series)
         },
         hide: function() {
-          console.log('hide');
-          console.log(this);
+          var tsChart = Polymer.dom(this.chart.renderTo).parentNode.parentNode;
+          // tsChart.chartState.seriesState = this.chart.series;
+          tsChart.setPathValue('chartState.seriesState', this.chart.series)
         }
       }
     },
@@ -153,27 +155,31 @@ Polymer({
       value: function(){
         return {};
       },
-      notify: true,
-      observer: 'chartStateUpdated'
+      notify: true//,
+      // observer: 'chartStateUpdated'
     }
   },
+
+  observers: [
+    'chartStateUpdated(chartState.*)'
+  ],
 
   defaultYAxis: null,
 
   chartStateUpdated: function(evt){
     var chartExtremesHaveChanged = function (self){
       var currentChartExtremes = self.chart.xAxis[0].getExtremes();
-      return (currentChartExtremes.max !== evt.chartZoom.max || currentChartExtremes.min !== evt.chartZoom.min);
+      return (currentChartExtremes.max !== evt.value.chartZoom.max || currentChartExtremes.min !== evt.value.chartZoom.min);
     };
 
     var chartAndEventAreValid= function(self){
-      return(self.chart && evt.srcElement);
+      return(self.chart && evt.value.srcElement);
     };
 
      if (chartAndEventAreValid(this)){
        if (chartExtremesHaveChanged(this)) {
-         if (evt.srcElement !== this){
-           this.chart.xAxis[0].setExtremes(evt.chartZoom.min, evt.chartZoom.max, true);
+         if (evt.value.srcElement !== this){
+           this.chart.xAxis[0].setExtremes(evt.value.chartZoom.min, evt.value.chartZoom.max, true);
          }
        }
      }
