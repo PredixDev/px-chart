@@ -124,6 +124,11 @@ Polymer({
       value: 'x'
     },
 
+    /**
+     * Holds chart state for binding between charts & serialising chart settings.
+     *
+     * @default {}
+     */
     chartState: {
       type: Object,
       value: function(){
@@ -137,9 +142,17 @@ Polymer({
   defaultYAxis: null,
 
   chartStateUpdated: function(evt){
-     if (this.chart && evt.srcElement){
-       var currentChartExtremes = this.chart.xAxis[0].getExtremes();
-       if (currentChartExtremes.max !== evt.chartZoom.max || currentChartExtremes.min !== evt.chartZoom.min){
+    var chartExtremesHaveChanged = function (self){
+      var currentChartExtremes = self.chart.xAxis[0].getExtremes();
+      return (currentChartExtremes.max !== evt.chartZoom.max || currentChartExtremes.min !== evt.chartZoom.min);
+    };
+
+    var chartAndEventAreValid= function(self){
+      return(self.chart && evt.srcElement);
+    };
+
+     if (chartAndEventAreValid(this)){
+       if (chartExtremesHaveChanged(this)) {
          if (evt.srcElement !== this){
            this.chart.xAxis[0].setExtremes(evt.chartZoom.min, evt.chartZoom.max, true);
          }
