@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "iron-doc-viewer": "PolymerElements/iron-doc-viewer#~v0.9.1",
-    "iron-ajax": "PolymerElements/iron-ajax#~v0.8.2",
+    "iron-ajax": "PolymerElements/iron-ajax#~v0.9.4",
     "px-starter-kit-design": "git://github.sw.ge.com/PXd/px-starter-kit-design.git#~0.1.0",
     "px-buttons-design": "git://github.sw.ge.com/PXd/px-buttons-design.git#~0.1.0",
     "px-forms-design": "git://github.sw.ge.com/PXd/px-forms-design.git#~0.1.0",
