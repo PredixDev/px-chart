@@ -85,12 +85,12 @@ Polymer({
         show: function() {
           var tsChart = Polymer.dom(this.chart.renderTo).parentNode.parentNode;
           // tsChart.chartState.seriesState = this.chart.series;
-          tsChart.setPathValue('chartState.seriesState', this.chart.series)
+          tsChart.set('chartState.seriesState', this.chart.series)
         },
         hide: function() {
           var tsChart = Polymer.dom(this.chart.renderTo).parentNode.parentNode;
           // tsChart.chartState.seriesState = this.chart.series;
-          tsChart.setPathValue('chartState.seriesState', this.chart.series)
+          tsChart.set('chartState.seriesState', this.chart.series)
         }
       }
     },
@@ -228,7 +228,7 @@ Polymer({
     var tsChart = Polymer.dom(this).node;
       tsChart.debounce(
         'set-chart-state', function() {
-          this.setPathValue('chartState', {chartZoom: extremes, srcElement: this});
+          this.set('chartState', {chartZoom: extremes, srcElement: this});
       }, 250);
   },
 
@@ -258,11 +258,11 @@ Polymer({
    */
   rangeObserver: function () {
     var controlsEl = Polymer.dom(this).querySelector("[data-controls]");
-    if (controlsEl && controlsEl.setPathValue) {
+    if (controlsEl && controlsEl.set) {
       var mStart = moment(this.rangeStart);
       var mEnd = moment(this.rangeEnd);
-      controlsEl.setPathValue("rangeStartDisplayStr", mStart.isValid() ? mStart.format('L') + " " + mStart.format("hh:ss") : null);
-      controlsEl.setPathValue("rangeEndDisplayStr", mEnd.isValid() ? mEnd.format('L') + " " + mEnd.format("hh:ss") : null);
+      controlsEl.set("rangeStartDisplayStr", mStart.isValid() ? mStart.format('L') + " " + mStart.format("hh:ss") : null);
+      controlsEl.set("rangeEndDisplayStr", mEnd.isValid() ? mEnd.format('L') + " " + mEnd.format("hh:ss") : null);
     }
   },
 
