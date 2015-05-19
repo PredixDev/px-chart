@@ -11,9 +11,9 @@ Element defining a chart series
 
 ##### Usage
 
-    <px-chart-series data="..." name="..."></px-chart-series>
+    <px-chart-series data="..." id="..."></px-chart-series>
 
-    <px-chart-series name="...">
+    <px-chart-series id="...">
       <iron-ajax
           url="../demo-data/aviation/fan-vibration-cruise.json"
           handleas="json"></iron-ajax>
@@ -60,12 +60,57 @@ Polymer({
     },
 
     /**
-     * Unique name/id of this series. Used for the default label.
+     * Unique id of this series
+     *
+     * @type {String}
+     */
+    id: {
+      type: String
+    },
+
+    /**
+     * Display name of the series, defaults to id
      *
      * @type {String}
      */
     name: {
       type: String
+    },
+
+    /**
+     * The width of the line for this series
+     *
+     * @type {Number}
+     * @default 1
+     */
+    lineWidth : {
+      type: Number,
+      value: 1
+    },
+
+    /**
+     * Config for each plotted point on the line
+     *
+     * @type {Object}
+     */
+    marker : {
+      type: Object,
+      value: {
+        enabled : false,
+        radius : 2
+      }
+    },
+
+    /**
+     * Config for the tooltip for each point
+     *
+     * @type {Object}
+     */
+    tooltip: {
+      type: Object,
+      value: {
+        valueDecimals: 2
+      }
     },
 
     /**
@@ -106,10 +151,23 @@ Polymer({
      * index
      *
      * @type {Number}
+     * @default 1
      */
     axisIndex: {
-      type: Number
+      type: Number,
+      value: 1
+    },
+
+    /**
+     * Whether to show this series in the navigator. Default behavior if this property is not set is that the first
+     * series of the chart is shown unless this flag is set to override.
+     *
+     * @type {Boolean}
+     TODO: implement...but confused by how series are added to the navigator...
+    showInNavigator: {
+      type: Boolean
     }
+     */
   },
 
   /**
@@ -119,6 +177,7 @@ Polymer({
    */
   ready: function() {
     var _this = this;
+    this.fire("series-ready");
     //Fire ajax requests, if configured...TODO: make this more declarative, but don't know how to get 'on-response' event declaration of handler to call a function on this parent comp.
     window.addEventListener('WebComponentsReady', function() {
       var ironAjaxEl = Polymer.dom(_this.root).querySelector("iron-ajax");
@@ -148,6 +207,31 @@ Polymer({
       }
       this.data = newObj[this.seriesObjDataKey];
     }
+  },
+
+  /**
+   * Builds a returns an object to be passed into highcharts for this series
+   *
+   * @return {Object}
+   */
+  buildConfig: function() {
+    var config = {};
+    var props = this.properties;
+    var _this = this;
+    Object.keys(props).forEach(function(key) {
+      if (props.hasOwnProperty(key) && key !== "type" && typeof _this[key] !== "undefined") {
+        config[key] = _this[key];
+      }
+    });
+
+    //backfill a few things highcharts expects
+    if (typeof config.name === "undefined") {
+      config.name = config.id;
+    }
+    if (typeof config.axisIndex !== "undefined") {
+      config.yAxis = config.axisIndex;
+    }
+    return config;
   }
 
 });

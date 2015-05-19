@@ -157,6 +157,87 @@ Polymer({
       },
       notify: true//,
       // observer: 'chartStateUpdated'
+    },
+
+    /**
+     * Mapping of color name to rgb value for use in datavis.
+     *
+     * @type {Object}
+     * @default Same is datavis colors in px-colors-design
+     */
+    dataVisColors: {
+      type: Object,
+      value: {
+        "dv-basic-gray": "rgb(77, 77, 77)",
+        "dv-basic-blue": "rgb(93, 165, 218)",
+        "dv-basic-orange": "rgb(250, 164, 58)",
+        "dv-basic-green": "rgb(96, 189, 104)",
+        "dv-basic-pink": "rgb(241, 124, 176)",
+        "dv-basic-brown": "rgb(178, 145, 47)",
+        "dv-basic-purple": "rgb(178, 118, 178)",
+        "dv-basic-yellow": "rgb(222, 207, 63)",
+        "dv-basic-red": "rgb(241, 88, 84)",
+
+        "dv-light-gray": "rgb(140, 140, 140)",
+        "dv-light-blue": "rgb(136, 189, 230)",
+        "dv-light-orange": "rgb(251, 178, 88)",
+        "dv-light-green": "rgb(144, 205, 151)",
+        "dv-light-pink": "rgb(246, 170, 201)",
+        "dv-light-brown": "rgb(191, 165, 84)",
+        "dv-light-purple": "rgb(188, 153, 199)",
+        "dv-light-yellow": "rgb(237, 221, 70)",
+        "dv-light-red": "rgb(240, 126, 110)",
+
+        "dv-dark-gray": "rgb(0, 0, 0)",
+        "dv-dark-blue": "rgb(38, 93, 171)",
+        "dv-dark-orange": "rgb(223, 92, 36)",
+        "dv-dark-green": "rgb(5, 151, 72)",
+        "dv-dark-pink": "rgb(229, 18, 111)",
+        "dv-dark-brown": "rgb(157, 114, 42)",
+        "dv-dark-purple": "rgb(123, 58, 150)",
+        "dv-dark-yellow": "rgb(199, 180, 46)",
+        "dv-dark-red": "rgb(203, 32, 39)"
+      }
+    },
+
+    /**
+     * Mapping of color names in the order they should be applied to chart series.
+     *
+     * @type {Array}
+     */
+    seriesColorOrder: {
+      type: Array,
+      value: [
+        "dv-basic-gray",
+        "dv-basic-blue",
+        "dv-basic-orange",
+        "dv-basic-green",
+        "dv-basic-pink",
+        "dv-basic-brown",
+        "dv-basic-purple",
+        "dv-basic-yellow",
+        "dv-basic-red",
+
+        "dv-light-gray",
+        "dv-light-blue",
+        "dv-light-orange",
+        "dv-light-green",
+        "dv-light-pink",
+        "dv-light-brown",
+        "dv-light-purple",
+        "dv-light-yellow",
+        "dv-light-red",
+
+        "dv-dark-gray",
+        "dv-dark-blue",
+        "dv-dark-orange",
+        "dv-dark-green",
+        "dv-dark-pink",
+        "dv-dark-brown",
+        "dv-dark-purple",
+        "dv-dark-yellow",
+        "dv-dark-red"
+      ]
     }
   },
 
@@ -164,7 +245,9 @@ Polymer({
     'chartStateUpdated(chartState.*)'
   ],
 
-  defaultYAxis: null,
+  defaultYAxisConfig: null,
+
+  defaultSeriesConfig: null,
 
   chartStateUpdated: function(evt){
     var chartExtremesHaveChanged = function (self){
@@ -201,15 +284,14 @@ Polymer({
     var axisEls = Polymer.dom(this).querySelectorAll("px-chart-yaxis");
     var axisElsProcessed = 0;
     if (!axisEls || axisEls.length === 0) {
-      this.defaultYAxis = document.createElement("px-chart-yaxis");
-      this.chart.addAxis(this.defaultYAxis.buildAxisConfig(this.PXd.gray), /*isX*/false, /*redraw*/false);
+      this.addYAxis(/*axisConfig*/null, /*noRedraw*/true);
       this.addInitialSeries();
     }
     else {
       axisEls.forEach(function(axisEl) {
         axisEl.addEventListener("y-axis-ready", function(evt) {
-          var axisConfig = evt.target.buildAxisConfig(_this.PXd.gray);
-          _this.chart.addAxis(axisConfig, /*isX*/false, /*redraw*/false);
+          var axisConfig = evt.target.buildConfig(_this.dataVisColors["dv-light-gray"]);
+          _this.addYAxis(axisConfig, /*noRedraw*/true);
           axisElsProcessed++;
           if (axisElsProcessed === axisEls.length) {
             _this.addInitialSeries();
@@ -239,18 +321,17 @@ Polymer({
     //find series elements in light dom ("Polymer.dom(this)" vs. "Polymer.dom(this.root)", which would be shadow dom)
     var seriesEls = Polymer.dom(this).querySelectorAll("px-chart-series");
     var _this = this;
-
     seriesEls.forEach(function (seriesEl) {
-      if (seriesEl.data) {
-        _this.addOrUpdateSeries(seriesEl.name, seriesEl.data, seriesEl.axisIndex, /*noRedraw*/true);
-      }
-      seriesEl.addEventListener("data-changed", function(evt) {
-        _this.addOrUpdateSeries(seriesEl.name, evt.detail.value, seriesEl.axisIndex, /*noRedraw*/false);
+      seriesEl.addEventListener("series-ready", function(evt) {
+        _this.addSeries(seriesEl.buildConfig(), /*noRedraw*/true);
+        seriesEl.addEventListener("data-changed", function(evt) {
+          _this.updateSeries(seriesEl.id, evt.detail.value, /*noRedraw*/false);
+          _this.chart.reflow();
+        });
         _this.chart.reflow();
+        _this.chart.redraw();
       });
     });
-    this.chart.reflow();
-    this.chart.redraw();
   },
 
   /**
@@ -266,33 +347,59 @@ Polymer({
     }
   },
 
+  addYAxis: function(axisConfig, defaultColor, noRedraw) {
+    if (!axisConfig) {
+      this.defaultYAxisConfig = this.defaultYAxisConfig || document.createElement("px-chart-yaxis");
+      this.defaultYAxisConfig.offset = this.defaultYAxisConfig.offset + 10;
+      axisConfig = this.defaultYAxisConfig.buildConfig(defaultColor || this.dataVisColors["dv-light-gray"]);
+    }
+    this.chart.addAxis(axisConfig, /*isX*/false, !noRedraw);
+  },
+
   /**
-   * Adds or updates a series on the chart
+   * Adds a series to the chart, adding a yAxis as needed
+   *
+   * @param {Object} seriesConfig
+   *    @config {String} id
+   *    @config {Array} data
+   *    @config {Number} yAxis Optional. The axis index to which the series should be bound. Defaults to 0.
+   *    @config {Number} lineWidth Optional.
+   *    @config {Object} marker. Optional. Highcharts marker config
+   *    @config {Object} tooltip. Optional. Highcharts tooltip config
+   * @param {Boolean} noRedraw Optional. If true, does not force a chart redraw() after adding or updating the series
+   */
+  addSeries: function(seriesConfig, noRedraw) {
+    if (seriesConfig && this.hasSeries(seriesConfig.id)) {
+      this.updateSeries(seriesConfig.id, seriesConfig.data, noRedraw);
+    }
+    else {
+      if (!seriesConfig) {
+        this.defaultSeriesConfig = this.defaultSeriesConfig || document.createElement("px-chart-series");
+        seriesConfig = this.defaultSeriesConfig.buildConfig();
+      }
+      if (!seriesConfig.id) {
+        seriesConfig.id = this.chart.series.length;
+      }
+      if (typeof seriesConfig.yAxis === "number" && this.chart.yAxis.length <= seriesConfig.yAxis) {//if we are adding to an axis that doesn't exist, add default axis
+        this.addYAxis(null, /*defaultColor*/null, /*noRedraw*/true);
+        seriesConfig.yAxis = this.chart.yAxis.length;//make sure we are adding the very next axis, no matter what the dev passed.
+      }
+      this.chart.addSeries(seriesConfig, !noRedraw);
+    }
+  },
+
+  /**
+   * Updates a series on the chart, adding a default series as needed.
    *
    * @param {String} seriesId
    * @param {Array} data
-   * @param {Number} yAxisIndex Optional. The axis index to which the series should be bound. Defaults to 0.
    * @param {Boolean} noRedraw Optional. If true, does not force a chart redraw() after adding or updating the series
    */
-  addOrUpdateSeries: function(seriesId, data, yAxisIndex, noRedraw) {
+  updateSeries: function(seriesId, data, noRedraw) {
     if (!this.hasSeries(seriesId)) {
-      if (yAxisIndex && this.chart.yAxis.length <= yAxisIndex) {//if we are adding to an axis that doesn't exist, add default axis
-        this.defaultYAxis = this.defaultYAxis || document.createElement("px-chart-yaxis");
-        this.defaultYAxis.offset = this.defaultYAxis.offset + 10;
-        yAxisIndex = this.chart.yAxis.length;//make sure we are adding the very next axis, no matter what the dev passed.
-        this.chart.addAxis(this.defaultYAxis.buildAxisConfig(yAxisIndex, Highcharts.getOptions().colors), /*isX*/false, /*redraw*/false);
-      }
-      this.chart.addSeries({
-        id: seriesId,
-        name: seriesId,
-        data: data,
-        yAxis: yAxisIndex || 1
-      }, !noRedraw);
+      this.addSeries(/*seriesConfig*/null, /*noRedraw*/true);
     }
-    else {
-      this.chart.get(seriesId).setData(data, !noRedraw);
-    }
-
+    this.chart.get(seriesId).setData(data, !noRedraw);
   },
 
   /**
@@ -312,6 +419,21 @@ Polymer({
    */
   hasSeries: function(seriesId) {
     return (this.chart.get(seriesId) != null);
+  },
+
+  /**
+   * Toggles display of points on the chart
+   *
+   * @param {Array} seriesIds Optional. seriesIds ids of the series to update, or null for all
+   */
+  togglePointMarkers: function(seriesIds) {
+    var _this = this;
+    var seriesToUpdate = seriesIds ? seriesIds.map(function(id) {return _this.chart.get(id)}) : this.chart.series;
+    seriesToUpdate.forEach(function(series) {
+      var existingMarkerOpts = series.options.marker;
+      series.update({marker: {enabled: (!existingMarkerOpts || !existingMarkerOpts.enabled)}}, /*redraw*/false);
+    });
+    this.chart.redraw();
   },
 
   /**
@@ -366,67 +488,23 @@ Polymer({
     }
   },
 
-  PXd: {
-      'red'             : 'rgb(227,37,51)',
-      'redLight'        : 'rgb(255,92,92)',
-      'redDark'         : 'rgb(132,18,37)',
-      'redCircle'       : 'rgb(245,204,207)',
-      'blue'            : 'rgb(0,92,185)',
-      'blueLight'       : 'rgb(54,147,248)',
-      'blueDark'        : 'rgb(0,54,110)',
-      'blueCircle'      : 'rgb(200,231,251)',
-      'green'           : 'rgb(70,173,0)',
-      'greenLight'      : 'rgb(117,216,53)',
-      'greenDark'       : 'rgb(29,95,17)',
-      'greenCircle'     : 'rgb(226,232,152)',
-      'purple'          : 'rgb(134,105,255)',
-      'purpleLight'     : 'rgb(156,151,255)',
-      'purpleDark'      : 'rgb(89,81,148)',
-      'purpleCircle'    : 'rgb(222,209,231)',
-      'orange'          : 'rgb(255,152,33)',
-      'orangeLight'     : 'rgb(255,187,102)',
-      'orangeDark'      : 'rgb(229,92,0)',
-      'orangeCircle'    : 'rgb(255,227,156)',
-      'yellow'          : 'rgb(255,237,69)',
-      'yellowLight'     : 'rgb(255,249,141)',
-      'yellowDark'      : 'rgb(255,207,69)',
-      'trueBlack'       : 'rgb(0,0,0)',
-      'black'           : 'rgb(20,20,20)',
-      'grayDarkest'     : 'rgb(43,43,43)',
-      'grayDarker'      : 'rgb(65,65,65)',
-      'grayDark'        : 'rgb(87,87,87)',
-      'gray'            : 'rgb(134,134,134)',
-      'grayLight'       : 'rgb(188,188,188)',
-      'grayLighter'     : 'rgb(212,212,212)',
-      'grayCircle'      : 'rgb(220,220,220)',
-      'grayLightest'    : 'rgb(233,233,233)',
-      'offWhite'        : 'rgb(245,245,245)',
-      'white'           : 'rgb(255,255,255)'
-    },
-
   /**
    * Builds up highcharts config object
    */
   buildConfig: function() {
     var self = this;
 
-    var convertMapToValueArray = function(map){
-      var valArray = [];
-      for(var key in map) {
-        if(map.hasOwnProperty(key)) {
-          valArray.push(map[key]);
+    var createSeriesColorsArray = function(colors, keysInOrder){
+      return keysInOrder.map(function(key) {
+        var color = colors[key];
+        if (color) {
+          return color;
         }
-      }
-      return valArray;
+      });
     };
 
-    Highcharts.setOptions({
-       global: {
-          colors: convertMapToValueArray(this.PXd),
-       }
-    });
-
-    var config = {
+    return {
+      colors: createSeriesColorsArray(this.dataVisColors, this.seriesColorOrder),
       annotationsOptions: {
         enabledButtons: false
       },
@@ -434,7 +512,7 @@ Polymer({
         events: this.events,
         height: this.height,
         margin: this.margin,
-        plotBorderColor: this.PXd.gray,
+        plotBorderColor: this.dataVisColors["dv-light-gray"],
         plotBorderWidth: this.plotBorderWidth,
         renderTo: this.$.container,
         spacing: this.spacing,
@@ -448,19 +526,17 @@ Polymer({
         enabled: false
       },
       legend: {
-        align: 'left',
         enabled: true,
+        verticalAlign: 'top',
+        align: 'left',
+        itemDistance: 150,
         floating: true,
         itemMarginBottom: 10,
+        itemMarginTop: 5,
         itemStyle: {
           fontSize: 'inherit',
           fontWeight: 'normal'
-        },
-        margin: 0,
-        padding: 0,
-        symbolPadding: 5,
-        symbolWidth: 10,
-        verticalAlign: 'top'
+        }
       },
       navigation: {
         buttonOptions: {
@@ -468,14 +544,14 @@ Polymer({
         }
       },
       navigator: {
-        adaptToUpdatedData: false,
+        adaptToUpdatedData: true,
         height: 50,
         margin: 15,
-        outlineColor: this.PXd.gray,
+        outlineColor: this.dataVisColors["dv-light-gray"],
         maskFill: 'rgba(200,231,251,0.3)',
         series: {
           color: 'transparent',
-          lineColor: this.PXd.blue,
+          lineColor: this.dataVisColors["dv-dark-blue"],
           lineWidth: 2
         },
         xAxis: {
@@ -518,8 +594,8 @@ Polymer({
         text: null
       },
       tooltip: {
-        backgroundColor: this.PXd.white,
-        borderColor: this.PXd.grayLighter,
+        backgroundColor: "white",
+        borderColor: this.dataVisColors["dv-light-gray"],
         shadow: false,
         style: {
           fontFamily: 'inherit',
@@ -542,7 +618,7 @@ Polymer({
           x: 3,
           y: 12
         },
-        lineColor: this.PXd.gray,
+        lineColor: this.dataVisColors["dv-light-gray"],
         showFirstLabel: false,
         showLastLabel: false,
         startOnTick: true,
@@ -551,7 +627,5 @@ Polymer({
         }
       }
     };
-
-    return config;
   }
 });
