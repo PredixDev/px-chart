@@ -541,7 +541,6 @@ Polymer({
         align: 'left',
         itemDistance: 150,
         floating: true,
-        itemMarginBottom: 10,
         itemMarginTop: 5,
         itemStyle: {
           fontSize: 'inherit',

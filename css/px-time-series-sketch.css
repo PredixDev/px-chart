@@ -807,9 +807,10 @@ label {
 
 .label--inline {
   display: inline-block;
-  margin: 0; }
-  .label--inline + .input--inline {
-    margin-left: 1.3333333333rem; }
+  margin: 0;
+  line-height: 2; }
+  .label--inline + .text-input {
+    margin-left: 0.6666666667rem; }
 
 .text-input:focus, textarea:focus {
   border-color: #3e87e8;
@@ -844,10 +845,13 @@ label {
   .text-input:invalid, textarea:invalid, select:invalid {
     box-shadow: none; }
 
-.input--inline {
-  display: inline-block; }
-  .input--inline + .input--inline {
-    margin-left: 1.3333333333rem; }
+.text-input + [type=checkbox], .text-input + [type=radio] {
+  margin-left: 1.3333333333rem; }
+.text-input + .label--inline {
+  margin-left: 0.6666666667rem; }
+
+input:not(.btn) + .btn, .label--inline + .btn {
+  margin-left: 1.3333333333rem; }
 
 .text-input {
   height: 2em;
@@ -1146,6 +1150,32 @@ header {
 /**
  * Sass functions for Predix Experience
  */
+/**
+       * Add small margins.
+       */
+.m- {
+  margin: 0.6666666667rem !important; }
+
+.mt- {
+  margin-top: 0.6666666667rem !important; }
+
+.mr- {
+  margin-right: 0.6666666667rem !important; }
+
+.mb- {
+  margin-bottom: 0.6666666667rem !important; }
+
+.ml- {
+  margin-left: 0.6666666667rem !important; }
+
+.mh- {
+  margin-right: 0.6666666667rem !important;
+  margin-left: 0.6666666667rem !important; }
+
+.mv- {
+  margin-top: 0.6666666667rem !important;
+  margin-bottom: 0.6666666667rem !important; }
+
 /**
        * Add large margins.
        */

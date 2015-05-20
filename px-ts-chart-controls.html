@@ -25,22 +25,23 @@ Template element for default time controls on a time series chart
     <p class="m0" hidden$="[[!showDateRange]]">
 
       <label class="label--inline">From</label>
-      <input value="{{rangeStartDisplayStr::change}}" class="text-input input--inline input--small" placeholder="HH:MM MM/DD/YYYY"/>
+      <input value="{{rangeStartDisplayStr::change}}" class="text-input input--small" placeholder="HH:MM MM/DD/YYYY"/>
 
       <label class="label--inline">to</label>
-      <input value="{{rangeEndDisplayStr::change}}" class="text-input input--inline input--small" placeholder="HH:MM MM/DD/YYYY"/>
+      <input value="{{rangeEndDisplayStr::change}}" class="text-input input--small" placeholder="HH:MM MM/DD/YYYY"/>
 
-      <button on-click="rangeSetHandler" class="btn input--inline">Submit</button>
+      <button on-click="rangeSetHandler" class="btn">Submit</button>
     </p>
     <p class="mb+">
-      Zoom
+      <span class="mr-">Zoom</span>
       <span hidden$="[[!showMonthRangeZoom]]">
         <button on-click="setRangeNumMonthsFromPresent" data-num-months="1" class="btn">1m</button>
         <button on-click="setRangeNumMonthsFromPresent" data-num-months="3" class="btn">3m</button>
         <button on-click="setRangeNumMonthsFromPresent" data-num-months="6" class="btn">6m</button>
         <button on-click="setRangeNumMonthsFromPresent" data-num-months="12" class="btn">1y</button>
+
+        <button on-click="setRangeToYTD" class="btn" hidden$="[[!showYTD]]">YTD</button>
       </span>
-      <button on-click="setRangeToYTD" class="btn" hidden$="[[!showYTD]]">YTD</button>
     </p>
     <content></content>
   </template>
