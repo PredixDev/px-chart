@@ -19,11 +19,11 @@
     "underscore": "~1.8.3",
     "px-theme": "git://github.build.ge.com/PXc/px-theme.git#v0.1.6",
     "annotations": "https://github.com/blacklabel/annotations.git#~1.2.6",
-    "moment": "~2.9.0"
+    "moment": "~2.9.0",
+    "iron-ajax": "PolymerElements/iron-ajax#~v0.9.4",
   },
   "devDependencies": {
     "iron-doc-viewer": "PolymerElements/iron-doc-viewer#~v0.9.1",
-    "iron-ajax": "PolymerElements/iron-ajax#~v0.9.4",
     "px-starter-kit-design": "git://github.build.ge.com/PXd/px-starter-kit-design.git#~0.1.0",
     "px-buttons-design": "git://github.build.ge.com/PXd/px-buttons-design.git#~0.2.3",
     "px-forms-design": "git://github.build.ge.com/PXd/px-forms-design.git#~0.1.2",
