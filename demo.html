@@ -28,15 +28,17 @@
 
 <body>
 
+<section class="minimal-config-example">
+  <h1>Minimal Config</h1>
+  <px-ts-chart>
+    <px-chart-series id="fan-vibration-cruise"></px-chart-series>
+  </px-ts-chart>
+</section>
+
 <section class="full-config-example">
 
   <h1>Full Config</h1>
-  <p>
-    <button onclick="refreshSeries()">Refresh Series</button>
-    <button onclick="togglePointMarkers()">Toggle Point Markers</button>
-    <button onclick="addSeries('core-vibe-rear-cruise', '../demo-data/aviation/core-vibe-rear-cruise.json')">Add Core Vibration Series</button>
-    <button onclick="removeSeries('core-vibe-rear-cruise')">Remove Core Vibration Series</button>
-  </p>
+
   <px-ts-chart>
     <px-ts-chart-controls data-controls></px-ts-chart-controls>
     <px-chart-yaxis offset="0"></px-chart-yaxis>
@@ -53,13 +55,14 @@
     </px-chart-series>
   </px-ts-chart>
 
-</section>
+  <p style="margin: 40px 0 20px 0">
+    Demo controls:
+    <button onclick="refreshSeries()">Refresh Series</button>
+    <button onclick="togglePointMarkers()">Toggle Point Markers</button>
+    <button onclick="addSeries('core-vibe-rear-cruise', '../demo-data/aviation/core-vibe-rear-cruise.json')">Add Core Vibration Series</button>
+    <button onclick="removeSeries('core-vibe-rear-cruise')">Remove Core Vibration Series</button>
+  </p>
 
-<section class="minimal-config-example">
-  <h1>Minimal Config</h1>
-  <px-ts-chart>
-    <px-chart-series id="fan-vibration-cruise"></px-chart-series>
-  </px-ts-chart>
 </section>
 
 <script>
