@@ -70,6 +70,15 @@ Polymer({
               this.rangeStart = extremes.min;
               this.rangeEnd = extremes.max;
             }, 250);
+        },
+        selection: function(evt) {
+          if (evt.originalEvent.shiftKey) {
+            return true;
+          }
+          else if (evt.xAxis) {
+            console.log('Selected time range from: '+ moment(evt.xAxis[0].min).format('LLLL') +', to: '+ moment(evt.xAxis[0].max).format('LLLL'));
+            return false;
+          }
         }
       }
     },
