@@ -43,6 +43,9 @@ in import paths
 @import "../px-flexbox-design/base.flexbox";
 @import "../px-viewport-design/base.viewport";
 @import "../px-typography-design/base.typography";
+
+$inuit-enable-input--small           : true;
+
 @import "../px-forms-design/base.forms";
 
 // Objects

@@ -529,7 +529,8 @@ Polymer({
           fontFamily: 'inherit',
           fontSize: 'inherit'
         },
-        zoomType: this.zoomType
+        zoomType: this.zoomType,
+        selectionMarkerFill: "rgba(200,231,251,0.5)"
       },
       credits: {
         enabled: false
