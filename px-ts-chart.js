@@ -78,7 +78,19 @@ Polymer({
             return true;
           }
           else if (evt.xAxis) {
-            console.log('Selected time range from: '+ moment(evt.xAxis[0].min).format('LLLL') +', to: '+ moment(evt.xAxis[0].max).format('LLLL'));
+            var axis = evt.xAxis[0];
+            this.xAxis[0].removePlotBand("selection");
+            this.xAxis[0].addPlotBand({ // mark the weekend
+              color: 'rgba(200,231,251,0.3)',
+              from: axis.min,
+              to: axis.max,
+              id: "selection",
+
+              label: {
+                useHTML: true,
+                text: "<i>" + moment(evt.xAxis[0].min).format('LLL') + "<br>to " + moment(evt.xAxis[0].max).format('LLL') + "</i>"
+              }
+            });
             return false;
           }
         }
