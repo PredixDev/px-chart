@@ -35,6 +35,15 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
     properties: {
 
       /**
+       * Unique id of this axis, primarily for associating series to it
+       *
+       * @type {String}
+       */
+      id: {
+        type: String
+      },
+
+      /**
        * http://api.highcharts.com/highcharts#yAxis.lineColor
        */
       lineColor: {
@@ -135,7 +144,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
        * http://api.highcharts.com/highcharts#yAxis.opposite
        */
       opposite: {
-        type: Boolean
+        type: Boolean,
+        value: false
       },
 
       /**

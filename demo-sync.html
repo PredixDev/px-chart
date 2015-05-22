@@ -32,14 +32,14 @@
   <section>
     <px-ts-chart chart-state={{sharedState}}>
       <px-ts-chart-controls data-controls></px-ts-chart-controls>
-      <px-chart-yaxis offset="0"></px-chart-yaxis>
-      <px-chart-yaxis opposite="true" offset="-2.5"></px-chart-yaxis>
-      <px-chart-series id="delta-egt-cruise" axis-index="1">
+      <px-chart-yaxis id="firstAxis" offset="0"></px-chart-yaxis>
+      <px-chart-yaxis id="anotherAxis" opposite="true" offset="-2.5"></px-chart-yaxis>
+      <px-chart-series id="delta-egt-cruise" axis-id="firstAxis">
         <iron-ajax
             url="../demo-data/aviation/delta-egt-cruise.json"
             handle-as="json"></iron-ajax>
       </px-chart-series>
-      <px-chart-series id="fan-vibration-cruise" axis-index="2">
+      <px-chart-series id="fan-vibration-cruise" axis-id="anotherAxis">
         <iron-ajax
             url="../demo-data/aviation/fan-vibration-cruise.json"
             handle-as="json"></iron-ajax>
@@ -50,14 +50,14 @@
   <section>
     <px-ts-chart chart-state={{sharedState}}>
       <px-ts-chart-controls data-controls></px-ts-chart-controls>
-      <px-chart-yaxis offset="0"></px-chart-yaxis>
-      <px-chart-yaxis opposite="true" offset="-2.5"></px-chart-yaxis>
-      <px-chart-series id="delta-egt-cruise" axis-index="1">
+      <px-chart-yaxis id="firstAxis" offset="0"></px-chart-yaxis>
+      <px-chart-yaxis id="anotherAxis" opposite="true" offset="-2.5"></px-chart-yaxis>
+      <px-chart-series id="delta-egt-cruise" axis-id="firstAxis">
         <iron-ajax
             url="../demo-data/aviation/delta-egt-cruise.json"
             handle-as="json"></iron-ajax>
       </px-chart-series>
-      <px-chart-series id="fan-vibration-cruise" axis-index="2">
+      <px-chart-series id="fan-vibration-cruise" axis-id="anotherAxis">
         <iron-ajax
             url="../demo-data/aviation/fan-vibration-cruise.json"
             handle-as="json"></iron-ajax>
@@ -69,14 +69,14 @@
     <section>
       <px-ts-chart chart-state={{sharedState}}>
         <px-ts-chart-controls data-controls></px-ts-chart-controls>
-        <px-chart-yaxis offset="0"></px-chart-yaxis>
-        <px-chart-yaxis opposite="true" offset="-2.5"></px-chart-yaxis>
-        <px-chart-series id="delta-egt-cruise" axis-index="1">
+        <px-chart-yaxis id="firstAxis" offset="0"></px-chart-yaxis>
+        <px-chart-yaxis id="anotherAxis" opposite="true" offset="-2.5"></px-chart-yaxis>
+        <px-chart-series id="delta-egt-cruise" axis-id="firstAxis">
           <iron-ajax
               url="../demo-data/aviation/delta-egt-cruise.json"
               handle-as="json"></iron-ajax>
         </px-chart-series>
-        <px-chart-series id="fan-vibration-cruise" axis-index="2">
+        <px-chart-series id="fan-vibration-cruise" axis-id="anotherAxis">
           <iron-ajax
               url="../demo-data/aviation/fan-vibration-cruise.json"
               handle-as="json"></iron-ajax>

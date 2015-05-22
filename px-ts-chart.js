@@ -65,11 +65,13 @@ Polymer({
           var extremes = this.xAxis[0].getExtremes();
           var tsChart = Polymer.dom(this.renderTo).parentNode.parentNode;
 
-          tsChart.debounce(
-            'set-extremes', function() {
-              this.rangeStart = extremes.min;
-              this.rangeEnd = extremes.max;
-            }, 250);
+          if (tsChart.debounce) {//in export case this function will be called outside the realm of a polymer components
+            tsChart.debounce(
+              'set-extremes', function () {
+                this.rangeStart = extremes.min;
+                this.rangeEnd = extremes.max;
+              }, 250);
+          }
         },
         selection: function(evt) {
           if (evt.originalEvent.shiftKey) {
@@ -152,6 +154,14 @@ Polymer({
     zoomType: {
       type: String,
       value: 'x'
+    },
+
+    /**
+     * URL for the chart export server (converts to image / pdf / etc). Default is null.  Can use "http://export.highcharts.com"
+     * for demo purposes only...no intellectual property should go through that server.
+     */
+    exportServerUrl: {
+      type: String
     },
 
     /**
@@ -286,14 +296,13 @@ Polymer({
 
     this.chart = new Highcharts.StockChart(chartConfig);
 
-    this.chart.yAxis.forEach(function(axis) {
-      axis.remove();//since we created the chart without any y-axes, Highcharts created one for us...remove it as our axis config comes next.
-    });
-
     var axisEls = Polymer.dom(this).querySelectorAll("px-chart-yaxis");
     var axisElsProcessed = 0;
     if (!axisEls || axisEls.length === 0) {
-      this.addYAxis(/*axisConfig*/null, /*noRedraw*/true);
+      //update the default yAxis with our own default options...
+      this.defaultYAxisConfig = this.defaultYAxisConfig || document.createElement("px-chart-yaxis");
+      this.chart.yAxis[0].update(this.defaultYAxisConfig.buildConfig(this.dataVisColors["dv-light-gray"]), /*redraw*/false);
+
       this.addInitialSeries();
     }
     else {
@@ -389,9 +398,19 @@ Polymer({
       if (!seriesConfig.id) {
         seriesConfig.id = this.chart.series.length;
       }
-      if (typeof seriesConfig.yAxis === "number" && this.chart.yAxis.length <= seriesConfig.yAxis) {//if we are adding to an axis that doesn't exist, add default axis
-        this.addYAxis(null, /*defaultColor*/null, /*noRedraw*/true);
-        seriesConfig.yAxis = this.chart.yAxis.length;//make sure we are adding the very next axis, no matter what the dev passed.
+      if (seriesConfig.axisId) {//associate with yAxis
+        for (var i = 0; i < this.chart.yAxis.length; i++) {
+          if (this.chart.yAxis[i].userOptions.id === seriesConfig.axisId) {
+            seriesConfig.yAxis = i;
+            break;
+          }
+        }
+        if (typeof seriesConfig.yAxis === "undefined") {
+          throw new Error("Tried to associate series " + seriesConfig.id + " to yAxis id " + seriesConfig.axisId + " but it doesn't exist.");
+        }
+      }
+      else if (typeof seriesConfig.yAxis === "undefined") {
+        seriesConfig.yAxis = 0;//apply to default yAxis...
       }
       this.chart.addSeries(seriesConfig, !noRedraw);
     }
@@ -532,6 +551,19 @@ Polymer({
         zoomType: this.zoomType,
         selectionMarkerFill: "rgba(200,231,251,0.5)"
       },
+
+      exporting: {
+        chartOptions: {
+          rangeSelector: {
+            enabled: false
+          }
+        },
+        buttons: {
+          enabled: true
+        },
+        url: this.exportServerUrl || "javascript:alert('No export-server-url attribute configrued on this chart')"
+      },
+
       credits: {
         enabled: false
       },
@@ -595,7 +627,6 @@ Polymer({
       rangeSelector: {
         enabled: false
       },
-      series: [],
       scrollbar: {
         enabled: false
       },

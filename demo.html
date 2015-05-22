@@ -30,9 +30,14 @@
 
 <section class="minimal-config-example">
   <h1>Minimal Config</h1>
-  <px-ts-chart>
+  <px-ts-chart export-server-url="http://export.highcharts.com"> <!-- WARNING, export.highcharts.com is a public server for demo only -->
     <px-chart-series id="fan-vibration-cruise"></px-chart-series>
   </px-ts-chart>
+
+  <p style="margin: 40px 0 20px 0">
+    Demo controls for top chart:
+    <button onclick="exportChart()">Export</button>
+  </p>
 </section>
 
 <section class="full-config-example">
@@ -41,14 +46,14 @@
 
   <px-ts-chart>
     <px-ts-chart-controls data-controls></px-ts-chart-controls>
-    <px-chart-yaxis offset="0"></px-chart-yaxis>
-    <px-chart-yaxis opposite="true" offset="-2.5"></px-chart-yaxis>
-    <px-chart-series id="delta-egt-cruise" axis-index="1">
+    <px-chart-yaxis id="firstAxis" offset="0"></px-chart-yaxis>
+    <px-chart-yaxis id="anotherAxis" opposite="true" offset="-2.5"></px-chart-yaxis>
+    <px-chart-series id="delta-egt-cruise" axis-id="firstAxis">
       <iron-ajax
           url="../demo-data/aviation/delta-egt-cruise.json"
           handle-as="json"></iron-ajax>
     </px-chart-series>
-    <px-chart-series id="fan-vibration-cruise" axis-index="2">
+    <px-chart-series id="fan-vibration-cruise" axis-id="anotherAxis">
       <iron-ajax
           url="../demo-data/aviation/fan-vibration-cruise.json"
           handle-as="json"></iron-ajax>
@@ -56,7 +61,7 @@
   </px-ts-chart>
 
   <p style="margin: 40px 0 20px 0">
-    Demo controls:
+    Demo controls for bottom chart:
     <button onclick="refreshSeries()">Refresh Series</button>
     <button onclick="togglePointMarkers()">Toggle Point Markers</button>
     <button onclick="addSeries('core-vibe-rear-cruise', '../demo-data/aviation/core-vibe-rear-cruise.json')">Add Core Vibration Series</button>
@@ -76,6 +81,11 @@
   });
 
   ironAjaxEl.generateRequest();
+
+  function exportChart() {
+    var tsChart = Polymer.dom(document).querySelector('.minimal-config-example px-ts-chart');
+    tsChart.chart.exportChart();
+  }
 
 
   function refreshSeries(evt){
@@ -108,9 +118,9 @@
       ironAjaxEl.addEventListener("response", function(evt) {
         timeSeriesComp.addSeries({
             id: seriesId,
-              name: seriesId,
+            name: seriesId,
             data: evt.detail.response.series,
-            yAxis: 2
+            yAxis: 3
           },
           /*noRedraw*/false
         );

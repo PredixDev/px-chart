@@ -147,16 +147,13 @@ Polymer({
     },
 
     /**
-     * Optional declaration of which y axis this series should be plotted against, if more than one, defined as zero-based
-     * index
+     * Optional declaration of which y axis id this series should be plotted against, if more than one.
      *
-     * @type {Number}
-     * @default 1
+     * @type {String}
      */
-    axisIndex: {
-      type: Number,
-      value: 1
-    },
+    axisId: {
+      type: String
+    }
 
     /**
      * Whether to show this series in the navigator. Default behavior if this property is not set is that the first
@@ -227,9 +224,6 @@ Polymer({
     //backfill a few things highcharts expects
     if (typeof config.name === "undefined") {
       config.name = config.id;
-    }
-    if (typeof config.axisIndex !== "undefined") {
-      config.yAxis = config.axisIndex;
     }
     return config;
   }
