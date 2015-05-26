@@ -49,6 +49,21 @@ module.exports = function (grunt) {
             }
         },
 
+      copy: {
+        icons: {
+          expand: true,
+          flatten: true,
+          src: '*/font-awesome/fonts/*',
+          dest: 'icons'
+        },
+        type: {
+          expand: true,
+          flatten: true,
+          src: '*/px-typography-design/type/*',
+          dest: 'type'
+        }
+      },
+
         watch: {
             sass: {
                 files: ['sass/**/*.scss'],
@@ -78,6 +93,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-shell');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-dep-serve');
@@ -85,7 +101,8 @@ module.exports = function (grunt) {
 
     // Default task.
     grunt.registerTask('default', 'Basic build', [
-        'sass'
+      'sass',
+      'copy'
     ]);
 
     // First run task.

@@ -17,6 +17,7 @@
         "grunt-shell": "~v1.1.1",
         "grunt-contrib-clean": "~v0.6.0",
         "grunt-contrib-jshint": "~v0.10.0",
+        "grunt-contrib-copy": "^0.7.0",
         "grunt-contrib-watch": "~v0.6.1",
         "grunt-dep-serve": "git+https://github.com/GeneralElectric/grunt-dep-serve.git#master",
         "webdriver-support": "git://github.build.ge.com/DT/webdriver-support.git#v2.2.0"

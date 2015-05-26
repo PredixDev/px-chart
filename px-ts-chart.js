@@ -87,8 +87,9 @@ Polymer({
               id: "selection",
 
               label: {
+                align: "right",
                 useHTML: true,
-                text: "<i>" + moment(evt.xAxis[0].min).format('LLL') + "<br>to " + moment(evt.xAxis[0].max).format('LLL') + "</i>"
+                text: "<i class='fa fa-lg fa-search-plus mr- style-scope px-ts-chart' onclick='var wc=this; while(!wc.chart) {wc = wc.parentNode} wc.chart.xAxis[0].setExtremes(" + evt.xAxis[0].min + ", " + evt.xAxis[0].max + ");wc.chart.xAxis[0].removePlotBand(\"selection\")' title='Zoom to " + moment(evt.xAxis[0].min).format('LLL') + " to " + moment(evt.xAxis[0].max).format('LLL') + "'></i> <i class='fa fa-lg mr- fa-pencil style-scope px-ts-chart' onclick='alert(this.innerHTML)' title='Annotate'></i> <i class='fa fa-lg mr- fa-times style-scope px-ts-chart' onclick='var wc=this; while(!wc.chart) {wc = wc.parentNode} wc.chart.xAxis[0].removePlotBand(\"selection\");' title='Close selection'></i>"
               }
             });
             return false;

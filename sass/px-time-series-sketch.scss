@@ -43,6 +43,7 @@ in import paths
 @import "../px-flexbox-design/base.flexbox";
 @import "../px-viewport-design/base.viewport";
 @import "../px-typography-design/base.typography";
+@import "../px-iconography-design/base.iconography";
 
 $inuit-enable-input--small           : true;
 
@@ -67,3 +68,7 @@ $inuit-enable-margins--large          : true;
 
 @import "../px-spacing-responsive-design/trumps.spacing-responsive";
 @import "../px-widths-responsive-design/trumps.widths-responsive";
+
+figure .fa {
+  cursor: pointer;
+}
