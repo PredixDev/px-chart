@@ -320,14 +320,16 @@ Polymer({
     }
     else {
       axisEls.forEach(function(axisEl) {
-        axisEl.addEventListener("y-axis-ready", function(evt) {
-          var axisConfig = evt.target.buildConfig(_this.dataVisColors["dv-light-gray"]);
+        var yAxisReadyHandler = function(yAxisOrEvt) {
+          var axis = yAxisOrEvt.target || yAxisOrEvt;
+          var axisConfig = axis.buildConfig(_this.dataVisColors["dv-light-gray"]);
           _this.addYAxis(axisConfig, /*noRedraw*/true);
           axisElsProcessed++;
           if (axisElsProcessed === axisEls.length) {
             _this.addInitialSeries();
           }
-        });
+        };
+        axisEl.ready ? yAxisReadyHandler(axisEl) : axisEl.addEventListener("y-axis-ready", yAxisReadyHandler);
       });
     }
   },
@@ -352,16 +354,18 @@ Polymer({
     //find series elements in light dom ("Polymer.dom(this)" vs. "Polymer.dom(this.root)", which would be shadow dom)
     var seriesEls = Polymer.dom(this).querySelectorAll("px-chart-series");
     var _this = this;
-    seriesEls.forEach(function (seriesEl) {
-      seriesEl.addEventListener("series-ready", function(evt) {
-        _this.addSeries(seriesEl.buildConfig(), /*noRedraw*/true);
-        seriesEl.addEventListener("data-changed", function(evt) {
-          _this.updateSeries(seriesEl.id, evt.detail.value, /*noRedraw*/false);
-          _this.chart.reflow();
-        });
+    var seriesElReadyHandler = function(seriesElOrEvt) {
+      var seriesEl = seriesElOrEvt.target || seriesElOrEvt;
+      _this.addSeries(seriesEl.buildConfig(), /*noRedraw*/true);
+      seriesEl.addEventListener("data-changed", function(evt) {
+        _this.updateSeries(seriesEl.id, evt.detail.value, /*noRedraw*/false);
         _this.chart.reflow();
-        _this.chart.redraw();
       });
+      _this.chart.reflow();
+      _this.chart.redraw();
+    };
+    seriesEls.forEach(function (seriesEl) {
+      seriesEl.ready ? seriesElReadyHandler(seriesEl) : seriesEl.addEventListener("series-ready", seriesElReadyHandler);
     });
   },
 
@@ -401,6 +405,8 @@ Polymer({
    */
   addSeries: function(seriesConfig, noRedraw) {
     if (seriesConfig && this.hasSeries(seriesConfig.id)) {
+      this.updateAxisThreshold(seriesConfig, seriesConfig.upperThreshold, "upperThreshold");
+      this.updateAxisThreshold(seriesConfig, seriesConfig.lowerThreshold, "lowerThreshold");
       this.updateSeries(seriesConfig.id, seriesConfig.data, noRedraw);
     }
     else {
@@ -425,7 +431,29 @@ Polymer({
       else if (typeof seriesConfig.yAxis === "undefined") {
         seriesConfig.yAxis = 0;//apply to default yAxis...
       }
+      this.updateAxisThreshold(seriesConfig, seriesConfig.upperThreshold, "upperThreshold");
+      this.updateAxisThreshold(seriesConfig, seriesConfig.lowerThreshold, "lowerThreshold");
       this.chart.addSeries(seriesConfig, !noRedraw);
+    }
+  },
+
+  /**
+   * Threshold lines are optionally bound to series. This function processes threshold values on a given series and
+   * applies them on the y-axis that is associated with the given series.
+   *
+   * @param seriesConfig
+   */
+  updateAxisThreshold: function(seriesConfig, thresholdValue, id) {
+    var yAxisIndex = seriesConfig.yAxis || 0;
+    var yAxis = this.chart.yAxis[yAxisIndex];
+    yAxis.removePlotBand(id);
+    if (typeof thresholdValue !== "undefined") {
+      var thresholdConfig = {
+        color: this.dataVisColors["dv-light-gray"],
+        id: id,
+        from: thresholdValue
+      };
+      yAxis.addPlotBand(thresholdConfig);
     }
   },
 
