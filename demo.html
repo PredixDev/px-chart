@@ -7,6 +7,9 @@
   <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
   <script src="../webcomponentsjs/webcomponents.js"></script>
 
+  <!-- just some page-level styling for the demo buttons below each chart...all other CSS inside the charts is cohesive with the component -->
+  <link rel="stylesheet" href="css/px-time-series-sketch.css"/>
+
   <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
   <link rel="import" href="../px-theme/px-theme.html"/>
   <link rel="import" href="../iron-ajax/iron-ajax.html"/>
@@ -28,22 +31,21 @@
 
 <body>
 
-<section class="minimal-config-example">
-  <h1>Minimal Config</h1>
+<section class="minimal-config-example mb+">
+  <h1>Minimal Configuration</h1>
   <px-ts-chart export-server-url="http://export.highcharts.com"> <!-- WARNING, export.highcharts.com is a public server for demo only -->
     <px-chart-series id="fan-vibration-cruise" upper-threshold="0.75" lower-threshold="0.25"></px-chart-series>
   </px-ts-chart>
 
-  <p style="margin: 40px 0 20px 0">
+  <p class="mt+">
     Demo controls for top chart:
-    <button onclick="exportChart()">Export</button>
+    <button class="btn" onclick="exportChart()">Export</button>
   </p>
 </section>
 
-<section class="full-config-example">
+<section class="full-config-example mt+">
 
-  <h1>Full Config</h1>
-  <i class="fa fa-warning" onclick="alert(this.innerHTML)" title="Zoom to June 15, 2014 11:26 AM to July 28, 2014 2:24 AM">hello</i>
+  <h1>Full Configuration</h1>
 
   <px-ts-chart>
     <px-ts-chart-controls data-controls></px-ts-chart-controls>
@@ -61,12 +63,18 @@
     </px-chart-series>
   </px-ts-chart>
 
-  <p style="margin: 40px 0 20px 0">
+  <p class="mt+">
     Demo controls for bottom chart:
-    <button onclick="refreshSeries()">Refresh Series</button>
-    <button onclick="togglePointMarkers()">Toggle Point Markers</button>
-    <button onclick="addSeries('core-vibe-rear-cruise', '../demo-data/aviation/core-vibe-rear-cruise.json')">Add Core Vibration Series</button>
-    <button onclick="removeSeries('core-vibe-rear-cruise')">Remove Core Vibration Series</button>
+    <button class="btn" onclick="refreshSeries()">
+      <i class="fa fa-refresh"></i>
+      Refresh Series
+    </button>
+    <!--Toggle Point Markers:-->
+    <!--<input id="demo-point-toggle" class="toggle__input" type="checkbox"/>-->
+    <!--<label for="demo-point-toggle" class="toggle__label">…</label>-->
+    <button class="btn" onclick="togglePointMarkers()">Toggle Point Markers</button>
+    <button class="btn" onclick="addSeries('core-vibe-rear-cruise', '../demo-data/aviation/core-vibe-rear-cruise.json')">Add Core Vibration Series</button>
+    <button class="btn" onclick="removeSeries('core-vibe-rear-cruise')">Remove Core Vibration Series</button>
   </p>
 
 </section>

@@ -291,14 +291,14 @@ Polymer({
       return(self.chart && evt.value.srcElement);
     };
 
-     if (chartAndEventAreValid(this)){
-       if (chartExtremesHaveChanged(this)) {
-         if (evt.value.srcElement !== this){
-           this.chart.xAxis[0].setExtremes(evt.value.chartZoom.min, evt.value.chartZoom.max, true);
-         }
-       }
-     }
-   },
+    if (chartAndEventAreValid(this)){
+      if (chartExtremesHaveChanged(this)) {
+        if (evt.value.srcElement !== this){
+          this.chart.xAxis[0].setExtremes(evt.value.chartZoom.min, evt.value.chartZoom.max, true);
+        }
+      }
+    }
+  },
 
   /**
    * Lifecycle callback to create the Highchart 'chart' object and consume the config / series elements
@@ -329,7 +329,7 @@ Polymer({
             _this.addInitialSeries();
           }
         };
-        axisEl.ready ? yAxisReadyHandler(axisEl) : axisEl.addEventListener("y-axis-ready", yAxisReadyHandler);
+        axisEl.axisReady ? yAxisReadyHandler(axisEl) : axisEl.addEventListener("y-axis-ready", yAxisReadyHandler);
       });
     }
   },
@@ -341,9 +341,9 @@ Polymer({
   firechartStateUpdated: function(evt){
     var extremes = this.chart.xAxis[0].getExtremes();
     var tsChart = Polymer.dom(this).node;
-      tsChart.debounce(
-        'set-chart-state', function() {
-          this.set('chartState', {chartZoom: extremes, srcElement: this});
+    tsChart.debounce(
+      'set-chart-state', function() {
+        this.set('chartState', {chartZoom: extremes, srcElement: this});
       }, 250);
   },
 
@@ -359,13 +359,15 @@ Polymer({
       _this.addSeries(seriesEl.buildConfig(), /*noRedraw*/true);
       seriesEl.addEventListener("data-changed", function(evt) {
         _this.updateSeries(seriesEl.id, evt.detail.value, /*noRedraw*/false);
-        _this.chart.reflow();
       });
-      _this.chart.reflow();
       _this.chart.redraw();
+      _this.debounce(
+        'chart-reflow', function () {
+          _this.chart.reflow();
+        }, 50);
     };
     seriesEls.forEach(function (seriesEl) {
-      seriesEl.ready ? seriesElReadyHandler(seriesEl) : seriesEl.addEventListener("series-ready", seriesElReadyHandler);
+      seriesEl.seriesReady ? seriesElReadyHandler(seriesEl) : seriesEl.addEventListener("series-ready", seriesElReadyHandler);
     });
   },
 
@@ -434,6 +436,9 @@ Polymer({
       this.updateAxisThreshold(seriesConfig, seriesConfig.upperThreshold, "upperThreshold");
       this.updateAxisThreshold(seriesConfig, seriesConfig.lowerThreshold, "lowerThreshold");
       this.chart.addSeries(seriesConfig, !noRedraw);
+      if (!noRedraw) {
+        this.chart.reflow();
+      }
     }
   },
 
@@ -446,14 +451,15 @@ Polymer({
   updateAxisThreshold: function(seriesConfig, thresholdValue, id) {
     var yAxisIndex = seriesConfig.yAxis || 0;
     var yAxis = this.chart.yAxis[yAxisIndex];
-    yAxis.removePlotBand(id);
+    yAxis.removePlotLine(id);
     if (typeof thresholdValue !== "undefined") {
       var thresholdConfig = {
         color: this.dataVisColors["dv-light-gray"],
         id: id,
-        from: thresholdValue
+        weight: 2,
+        value: thresholdValue
       };
-      yAxis.addPlotBand(thresholdConfig);
+      yAxis.addPlotLine(thresholdConfig);
     }
   },
 
@@ -469,6 +475,9 @@ Polymer({
       this.addSeries(/*seriesConfig*/null, /*noRedraw*/true);
     }
     this.chart.get(seriesId).setData(data, !noRedraw);
+    if (!noRedraw) {
+      this.chart.reflow();
+    }
   },
 
   /**
