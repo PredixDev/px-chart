@@ -2757,17 +2757,15 @@ textarea {
   text-transform: none;
   background-color: #e4e4ea;
   -webkit-appearance: button; }
-  .btn, .btn:visited {
+  .btn, .btn:visited, .btn:hover, .btn:focus, .btn:active {
     color: #3b3b3f; }
   .btn:hover, .btn:focus {
     border-color: #9999a3;
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
-    color: #3b3b3f;
     background-color: #b1b1bc; }
   .btn:active {
     border-color: #7c7c84;
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
-    color: #3b3b3f;
+    box-shadow: none;
     background-color: #9999a3; }
 
 /**
