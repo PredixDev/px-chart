@@ -23,7 +23,7 @@
     "iron-ajax": "PolymerElements/iron-ajax#~v1.0.0"
   },
   "devDependencies": {
-    "iron-doc-viewer": "PolymerElements/iron-doc-viewer#~v1.0.2",
+    "iron-doc-viewer": "PolymerElements/iron-doc-viewer#v0.9.1",
     "px-starter-kit-design": "git://github.build.ge.com/PXd/px-starter-kit-design.git#~0.1.0",
     "px-buttons-design": "git://github.build.ge.com/PXd/px-buttons-design.git#~0.2.3",
     "px-toggle-design": "git://github.build.ge.com/PXd/px-toggle-design.git#~0.1.0",

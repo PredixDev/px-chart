@@ -22,30 +22,48 @@ Template element for default time controls on a time series chart
 <dom-module id="px-ts-chart-controls">
   <link rel="import" type="css" href="css/px-time-series.css"/>
   <template>
-    <p class="m0" hidden$="[[!showDateRange]]">
+    <p class="m0">
+      <template is="dom-if" if="{{showDateRange}}">
+        <span>
+          <label class="label--inline">From</label>
+          <input value="{{rangeStartDisplayStr::change}}" class="text-input input--small" placeholder="HH:MM MM/DD/YYYY"/>
 
-      <label class="label--inline">From</label>
-      <input value="{{rangeStartDisplayStr::change}}" class="text-input input--small" placeholder="HH:MM MM/DD/YYYY"/>
+          <label class="label--inline">to</label>
+          <input value="{{rangeEndDisplayStr::change}}" class="text-input input--small" placeholder="HH:MM MM/DD/YYYY"/>
 
-      <label class="label--inline">to</label>
-      <input value="{{rangeEndDisplayStr::change}}" class="text-input input--small" placeholder="HH:MM MM/DD/YYYY"/>
+          <button on-click="rangeSetHandler" class="btn">Submit</button>
+        </span>
+      </template>
 
-      <button on-click="rangeSetHandler" class="btn">Submit</button>
-    </p>
-    <p class="mb+">
-      <span class="mr-">Zoom</span>
-      <span hidden$="[[!showMonthRangeZoom]]">
-        <button on-click="setRangeNumMonthsFromPresent" data-num-months="1" class="btn">1m</button>
-        <button on-click="setRangeNumMonthsFromPresent" data-num-months="3" class="btn">3m</button>
-        <button on-click="setRangeNumMonthsFromPresent" data-num-months="6" class="btn">6m</button>
-        <button on-click="setRangeNumMonthsFromPresent" data-num-months="12" class="btn">1y</button>
+      <span class="ml+">
+        <template is="dom-if" if="{{showRefresh}}">
+        <button class="btn btn--bare" on-click="refreshHandler" title="Refresh chart">
+          <i class="fa fa-refresh"></i>
+        </button>
+        </template>
 
-        <button on-click="setRangeToYTD" class="btn" hidden$="[[!showYTD]]">YTD</button>
+        <template is="dom-if" if="{{showExport}}">
+        <button class="btn btn--bare" on-click="exportHandler" title="Export chart">
+          <i class="fa fa-share-square-o"></i>
+        </button>
+        </template>
       </span>
     </p>
+    <template is="dom-if" if="{{hasZoomButtons}}">
+      <p class="mb+">
+        <span class="mr-">Zoom</span>
+        <span>
+          <template is="dom-repeat" items="[[zoomButtons]]">
+            <button on-click="setRangeFromPresent" data-time-value$="[[item.value]]" data-unit$="[[item.unit]]" class="btn">[[item.label]]</button>
+          </template>
+        </span>
+      </p>
+    </template>
     <content></content>
   </template>
 </dom-module>
+
+<script src="../moment/min/moment.min.js"></script>
 
 <script>
   Polymer({
@@ -63,35 +81,64 @@ Template element for default time controls on a time series chart
       /**
        * Whether to show date range control
        *
-       * @type {String}
-       * @default undefined
+       * @type {Boolean}
+       * @default false
        */
       showDateRange: {
         type: Boolean,
-        default: true
+        value: false
       },
 
       /**
-       * Whether to show YTD control
-       *
-       * @type {String}
-       * @default undefined
-       */
-      showYTD: {
-        type: Boolean,
-        default: true
-      },
-
-      /**
-       * Whether to show month range zoom buttons
+       * Whether to show refresh control
        *
        * @type {Boolean}
-       * @default true
+       * @default false
        */
-      showMonthRangeZoom: {
+      showRefresh: {
         type: Boolean,
-        value: true
+        value: false
       },
+
+      /**
+       * Whether to show export control
+       *
+       * @type {Boolean}
+       * @default false
+       */
+      showExport: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Array of object representing the time zoom buttons.  Each object in the Array has the following members:
+       *
+       * "label" {String} The text in the button, e.g. "3 m"
+       * "value" {Number} The time value, e.g. 3
+       * "unit" {String} A momentjs unit string, e.g. "months"
+       *
+       * @type {Array}
+       * @default [{label: "1 m", value: 1, unit: "months"},{label: "3 m", value: 3, unit: "months"},{label: "6 m", value: 6, unit: "months"},{label: "1 y", value: 1, unit: "year"},]
+       */
+      zoomButtons: {
+        type: Array,
+        value: [
+          {label: "1 m", value: 1, unit: "months"},
+          {label: "3 m", value: 3, unit: "months"},
+          {label: "6 m", value: 6, unit: "months"},
+          {label: "1 y", value: 1, unit: "year"},
+          {label: "YTD", value: Date.now() - moment().startOf("year").valueOf(), unit: "ms"}
+        ]
+      },
+
+      /**
+       * Whether the zoomButtons array is empty
+       */
+      hasZoomButtons: {
+        type: Boolean,
+        computed: '_zoomButtonsNotEmpty(zoomButtons)'
+      } ,
 
       rangeStartDisplayStr: {
         type: String
@@ -102,21 +149,23 @@ Template element for default time controls on a time series chart
       }
     },
 
-    /**
-     * Sets the range start / end given number of months back from present
-     *
-     * @param {Event} evt Event with a target that has a data-num-months attr or Number of months back from present
-     */
-    setRangeNumMonthsFromPresent: function (evt) {
-      var numMonths = evt.target.getAttribute("data-num-months");
-      Polymer.dom(this).parentNode.setRangeNumMonthsFromPresent(numMonths);
+    _showDateRangeHandler: function(newValue, oldValue) {
+      console.log(this.className + " show date range= " + newValue + " " + oldValue);
+    },
+
+    _zoomButtonsNotEmpty: function(zoomButtons) {
+      return zoomButtons && zoomButtons.length > 0;
     },
 
     /**
-     * Sets range to current year to date
+     * Sets the range start / end given number of months back from present
+     *
+     * @param {Event} evt Event with a target that has a data-time-value and data-unit attr or Number of months back from present
      */
-    setRangeToYTD: function () {
-      Polymer.dom(this).parentNode.setRangeToYTD();
+    setRangeFromPresent: function (evt) {
+      var value = evt.target.getAttribute("data-time-value");
+      var unit = evt.target.getAttribute("data-unit");
+      Polymer.dom(this).parentNode.setRangeFromPresent(value, unit);
     },
 
     /**
@@ -129,5 +178,23 @@ Template element for default time controls on a time series chart
         Polymer.dom(this).parentNode.setExtremesIfChanged(mStart.valueOf(), mEnd.valueOf());
       }
     },
+
+    /**
+     * Fires a refresh event on the chart
+     *
+     * @param {Event} evt
+     */
+    refreshHandler: function (evt) {
+      Polymer.dom(this).parentNode.refreshAllSeries();
+    },
+
+    /**
+     * Passes export call from the controls to the chart
+     *
+     * @param {Event} evt
+     */
+    exportHandler: function (evt) {
+      Polymer.dom(this).parentNode.chart.exportChart();
+    }
   });
 </script>

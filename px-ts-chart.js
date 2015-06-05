@@ -200,7 +200,6 @@ Polymer({
     dataVisColors: {
       type: Object,
       value: {
-        "dv-basic-gray": "rgb(77, 77, 77)",
         "dv-basic-blue": "rgb(93, 165, 218)",
         "dv-basic-orange": "rgb(250, 164, 58)",
         "dv-basic-green": "rgb(96, 189, 104)",
@@ -209,8 +208,8 @@ Polymer({
         "dv-basic-purple": "rgb(178, 118, 178)",
         "dv-basic-yellow": "rgb(222, 207, 63)",
         "dv-basic-red": "rgb(241, 88, 84)",
+        "dv-basic-gray": "rgb(77, 77, 77)",
 
-        "dv-light-gray": "rgb(140, 140, 140)",
         "dv-light-blue": "rgb(136, 189, 230)",
         "dv-light-orange": "rgb(251, 178, 88)",
         "dv-light-green": "rgb(144, 205, 151)",
@@ -219,8 +218,8 @@ Polymer({
         "dv-light-purple": "rgb(188, 153, 199)",
         "dv-light-yellow": "rgb(237, 221, 70)",
         "dv-light-red": "rgb(240, 126, 110)",
+        "dv-light-gray": "rgb(140, 140, 140)",
 
-        "dv-dark-gray": "rgb(0, 0, 0)",
         "dv-dark-blue": "rgb(38, 93, 171)",
         "dv-dark-orange": "rgb(223, 92, 36)",
         "dv-dark-green": "rgb(5, 151, 72)",
@@ -228,7 +227,8 @@ Polymer({
         "dv-dark-brown": "rgb(157, 114, 42)",
         "dv-dark-purple": "rgb(123, 58, 150)",
         "dv-dark-yellow": "rgb(199, 180, 46)",
-        "dv-dark-red": "rgb(203, 32, 39)"
+        "dv-dark-red": "rgb(203, 32, 39)",
+        "dv-dark-gray": "rgb(0, 0, 0)"
       }
     },
 
@@ -240,7 +240,6 @@ Polymer({
     seriesColorOrder: {
       type: Array,
       value: [
-        "dv-basic-gray",
         "dv-basic-blue",
         "dv-basic-orange",
         "dv-basic-green",
@@ -249,8 +248,8 @@ Polymer({
         "dv-basic-purple",
         "dv-basic-yellow",
         "dv-basic-red",
+        "dv-basic-gray",
 
-        "dv-light-gray",
         "dv-light-blue",
         "dv-light-orange",
         "dv-light-green",
@@ -259,8 +258,8 @@ Polymer({
         "dv-light-purple",
         "dv-light-yellow",
         "dv-light-red",
+        "dv-light-gray",
 
-        "dv-dark-gray",
         "dv-dark-blue",
         "dv-dark-orange",
         "dv-dark-green",
@@ -268,7 +267,8 @@ Polymer({
         "dv-dark-brown",
         "dv-dark-purple",
         "dv-dark-yellow",
-        "dv-dark-red"
+        "dv-dark-red",
+        "dv-dark-gray"
       ]
     }
   },
@@ -453,11 +453,29 @@ Polymer({
     var yAxis = this.chart.yAxis[yAxisIndex];
     yAxis.removePlotLine(id);
     if (typeof thresholdValue !== "undefined") {
+      var seriesColor = seriesConfig.color;
+      if (!seriesColor) {
+        if (this.hasSeries(seriesConfig.id)) {
+          seriesColor = this.chart.get(seriesConfig.id).options.color;
+        }
+        else {
+          seriesColor = this.chart.options.colors[this.chart.series.length];
+        }
+      }
       var thresholdConfig = {
-        color: this.dataVisColors["dv-light-gray"],
+        dashStyle: "ShortDash",
+        color: seriesColor,
+        value : thresholdValue,
         id: id,
-        weight: 2,
-        value: thresholdValue
+        width : 1,
+        label : {
+          align: yAxis.options.opposite ? "right" : "left",
+          style: {
+            fontSize: '0.8rem',
+            color: seriesColor
+          },
+          text : thresholdValue
+        }
       };
       yAxis.addPlotLine(thresholdConfig);
     }
@@ -529,23 +547,24 @@ Polymer({
   /**
    * Sets the range start / end given number of months back from present
    *
-   * @param {Number} numMonths Number of months back from present
+   * @param {Number} value Number of (unit, e.g. "months") back from present
+   * @param {String} unit momentjs time unit string, e.g. "months"
    */
-  setRangeNumMonthsFromPresent: function (numMonths) {
-    var m = moment(this.rangeEnd);
-    m.subtract(numMonths, 'months');
+  setRangeFromPresent: function (value, unit) {
+    var m = moment();
+    m.subtract(value, unit);
     this.rangeStart = m.valueOf();
     this.setExtremesIfChanged(this.rangeStart, this.rangeEnd);
   },
 
   /**
-   * Sets range to current year to date
+   * Fires one "refresh-series" event for each series on the chart, each event has the id of the series.
    */
-  setRangeToYTD: function () {
-    var m = moment();
-    this.rangeEnd = m.valueOf();
-    this.rangeStart = m.startOf('year').valueOf();
-    this.setExtremesIfChanged(this.rangeStart, this.rangeEnd);
+  refreshAllSeries: function () {
+    var _this = this;
+    this.chart.series.forEach(function(series) {
+      _this.fire("refresh-series", series.options.id);
+    });
   },
 
   /**

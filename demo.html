@@ -34,13 +34,9 @@
 <section class="minimal-config-example mb+">
   <h1>Minimal Configuration</h1>
   <px-ts-chart export-server-url="http://export.highcharts.com"> <!-- WARNING, export.highcharts.com is a public server for demo only -->
-    <px-chart-series id="fan-vibration-cruise" upper-threshold="0.75" lower-threshold="0.25"></px-chart-series>
+    <px-ts-chart-controls data-controls show-export="true" zoom-buttons="[]"></px-ts-chart-controls>
+    <px-chart-series id="fan-vibration-cruise"></px-chart-series>
   </px-ts-chart>
-
-  <p class="mt+">
-    Demo controls for top chart:
-    <button class="btn" onclick="exportChart()">Export</button>
-  </p>
 </section>
 
 <section class="full-config-example mt+">
@@ -48,10 +44,10 @@
   <h1>Full Configuration</h1>
 
   <px-ts-chart>
-    <px-ts-chart-controls data-controls></px-ts-chart-controls>
+    <px-ts-chart-controls data-controls show-refresh="true" show-date-range="true"></px-ts-chart-controls>
     <px-chart-yaxis id="firstAxis" offset="0"></px-chart-yaxis>
     <px-chart-yaxis id="anotherAxis" opposite="true" offset="-2.5"></px-chart-yaxis>
-    <px-chart-series id="delta-egt-cruise" axis-id="firstAxis">
+    <px-chart-series id="delta-egt-cruise" axis-id="firstAxis" upper-threshold="30.5" lower-threshold="6.25">
       <iron-ajax
           url="../demo-data/aviation/delta-egt-cruise.json"
           handle-as="json"></iron-ajax>
@@ -65,10 +61,6 @@
 
   <p class="mt+">
     Demo controls for bottom chart:
-    <button class="btn" onclick="refreshSeries()">
-      <i class="fa fa-refresh"></i>
-      Refresh Series
-    </button>
     <!--Toggle Point Markers:-->
     <!--<input id="demo-point-toggle" class="toggle__input" type="checkbox"/>-->
     <!--<label for="demo-point-toggle" class="toggle__label">…</label>-->
@@ -89,25 +81,23 @@
     minimalConfigChartSeries.data = evt.detail.response.series;
   });
 
+  //fetch date for minimal config chart
   ironAjaxEl.generateRequest();
 
-  function exportChart() {
-    var tsChart = Polymer.dom(document).querySelector('.minimal-config-example px-ts-chart');
-    tsChart.chart.exportChart();
-  }
+  //register series refresh listener for full config chart:
+  Polymer.dom(document).querySelector('.full-config-example px-ts-chart').addEventListener("refresh-series", function(evt) {
+    if (evt.detail === "fan-vibration-cruise") {
+      var ironAjaxEl = document.createElement('iron-ajax');
+      ironAjaxEl.url = '../demo-data/aviation/fan-vibration-cruise2.json';
+      ironAjaxEl.handleAs = "json";
+      ironAjaxEl.addEventListener('response', function(evt) {
+        var tsChart = Polymer.dom(document).querySelector('.full-config-example px-ts-chart');
+        tsChart.updateSeries('fan-vibration-cruise', evt.detail.response.series, /*noRedraw*/false);
+      });
 
-
-  function refreshSeries(evt){
-    var ironAjaxEl = document.createElement('iron-ajax');
-    ironAjaxEl.url = '../demo-data/aviation/fan-vibration-cruise2.json';
-    ironAjaxEl.handleAs = "json";
-    ironAjaxEl.addEventListener('response', function(evt) {
-      var tsChart = Polymer.dom(document).querySelector('.full-config-example px-ts-chart');
-      tsChart.updateSeries('fan-vibration-cruise', evt.detail.response.series, /*noRedraw*/false);
-    });
-
-    ironAjaxEl.generateRequest();
-  }
+      ironAjaxEl.generateRequest();
+    }
+  });
 
   function togglePointMarkers(evt){
     var tsChart = Polymer.dom(document).querySelector('.full-config-example px-ts-chart');
