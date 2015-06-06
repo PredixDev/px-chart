@@ -46,7 +46,7 @@ Polymer({
   properties: {
 
     /**
-     * The date associated with the series, an Array of Arrays with the first value of each inner Array being a unix
+     * The data associated with the series, an Array of Arrays with the first value of each inner Array being a unix
      * timestamp and the second value being the value.
      *
      * Fires a "data-changed" event via the "notify" flag when the data changes, the assumption is that the chart will
@@ -55,6 +55,23 @@ Polymer({
      * @type {Array}
      */
     data: {
+      type: Array,
+      notify: true
+    },
+
+    /**
+     * Events associated with the series, an Array of Objects with the keys:
+     *
+     * "time" {Number}, a unix timestamp of the event time
+     * "id" {String}, unique id of the event
+     * "label" {String}, the text label associated with the event
+     *
+     * Fires a "dataEvents-changed" event via the "notify" flag when the events changes, the assumption is that the chart will
+     * listen for this event.
+     *
+     * @type {Array}
+     */
+    dataEvents: {
       type: Array,
       notify: true
     },
@@ -147,6 +164,17 @@ Polymer({
     },
 
     /**
+     * Key in the optional seriesObj to be used for #events
+     *
+     * @type {String}
+     * @default "events"
+     */
+    seriesObjDataEventsKey: {
+      type: String,
+      value: 'events'
+    },
+
+    /**
      * Optional declaration of which y axis id this series should be plotted against, if more than one.
      *
      * @type {String}
@@ -222,6 +250,9 @@ Polymer({
         this.name = newObj[this.seriesObjNameKey];
       }
       this.data = newObj[this.seriesObjDataKey];
+      if (newObj[this.seriesObjDataEventsKey]) {
+        this.dataEvents = newObj[this.seriesObjDataEventsKey];
+      }
     }
   },
 
@@ -235,7 +266,7 @@ Polymer({
     var props = this.properties;
     var _this = this;
     Object.keys(props).forEach(function(key) {
-      if (props.hasOwnProperty(key) && key !== "type" && typeof _this[key] !== "undefined") {
+      if (props.hasOwnProperty(key) && key !== "data" && typeof _this[key] !== "undefined") {
         config[key] = _this[key];
       }
     });

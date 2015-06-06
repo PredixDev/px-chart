@@ -36,11 +36,11 @@ Polymer({
      * Whether to show the zoom-able / scroll-able area at the bottom of the chart
      *
      * @type {Boolean}
-     * @default true
+     * @default false
      */
-    navigatorEnabled:{
+    navigatorDisabled:{
       type: Boolean,
-      value: true
+      value: false
     },
 
     /**
@@ -80,16 +80,20 @@ Polymer({
           else if (evt.xAxis) {
             var axis = evt.xAxis[0];
             this.xAxis[0].removePlotBand("selection");
-            this.xAxis[0].addPlotBand({ // mark the weekend
-              color: 'rgba(200,231,251,0.3)',
+            this.xAxis[0].addPlotBand({
+              color: 'rgba(245,245,245,0.4)',
+              borderColor: 'rgb(38, 93, 171)',
+              borderWidth: 2,
               from: axis.min,
               to: axis.max,
               id: "selection",
+              zIndex: 5,
 
               label: {
                 align: "right",
                 useHTML: true,
-                text: "<i class='fa fa-lg fa-search-plus mr- style-scope px-ts-chart' onclick='var wc=this; while(!wc.chart) {wc = wc.parentNode} wc.chart.xAxis[0].setExtremes(" + evt.xAxis[0].min + ", " + evt.xAxis[0].max + ");wc.chart.xAxis[0].removePlotBand(\"selection\")' title='Zoom to " + moment(evt.xAxis[0].min).format('LLL') + " to " + moment(evt.xAxis[0].max).format('LLL') + "'></i> <i class='fa fa-lg mr- fa-pencil style-scope px-ts-chart' onclick='alert(this.innerHTML)' title='Annotate'></i> <i class='fa fa-lg mr- fa-times style-scope px-ts-chart' onclick='var wc=this; while(!wc.chart) {wc = wc.parentNode} wc.chart.xAxis[0].removePlotBand(\"selection\");' title='Close selection'></i>"
+                /* <i class='fa fa-lg mr- fa-pencil style-scope px-ts-chart' onclick='alert(this.innerHTML)' title='Annotate'></i> */
+                text: "<i class='fa fa-lg fa-search-plus mr- style-scope px-ts-chart' onclick='var wc=this; while(!wc.chart) {wc = wc.parentNode} wc.chart.xAxis[0].setExtremes(" + evt.xAxis[0].min + ", " + evt.xAxis[0].max + ");wc.chart.xAxis[0].removePlotBand(\"selection\")' title='Zoom to " + moment(evt.xAxis[0].min).format('LLL') + " to " + moment(evt.xAxis[0].max).format('LLL') + "'></i> <i class='fa fa-lg mr- fa-times style-scope px-ts-chart' onclick='var wc=this; while(!wc.chart) {wc = wc.parentNode} wc.chart.xAxis[0].removePlotBand(\"selection\");' title='Close selection'></i>"
               }
             });
             return false;
@@ -360,6 +364,9 @@ Polymer({
       seriesEl.addEventListener("data-changed", function(evt) {
         _this.updateSeries(seriesEl.id, evt.detail.value, /*noRedraw*/false);
       });
+      seriesEl.addEventListener("data-events-changed", function(evt) {
+        _this.updateSeriesEvents({id: seriesEl.id}, evt.detail.value, /*noRedraw*/false);
+      });
       _this.chart.redraw();
       _this.debounce(
         'chart-reflow', function () {
@@ -409,6 +416,7 @@ Polymer({
     if (seriesConfig && this.hasSeries(seriesConfig.id)) {
       this.updateAxisThreshold(seriesConfig, seriesConfig.upperThreshold, "upperThreshold");
       this.updateAxisThreshold(seriesConfig, seriesConfig.lowerThreshold, "lowerThreshold");
+      this.updateSeriesEvents(seriesConfig, seriesConfig.dataEvents, /*noRedraw*/true);
       this.updateSeries(seriesConfig.id, seriesConfig.data, noRedraw);
     }
     else {
@@ -435,6 +443,7 @@ Polymer({
       }
       this.updateAxisThreshold(seriesConfig, seriesConfig.upperThreshold, "upperThreshold");
       this.updateAxisThreshold(seriesConfig, seriesConfig.lowerThreshold, "lowerThreshold");
+      this.updateSeriesEvents(seriesConfig, seriesConfig.dataEvents, /*noRedraw*/true);
       this.chart.addSeries(seriesConfig, !noRedraw);
       if (!noRedraw) {
         this.chart.reflow();
@@ -447,6 +456,8 @@ Polymer({
    * applies them on the y-axis that is associated with the given series.
    *
    * @param seriesConfig
+   * @param thresholdValue
+   * @param id
    */
   updateAxisThreshold: function(seriesConfig, thresholdValue, id) {
     var yAxisIndex = seriesConfig.yAxis || 0;
@@ -495,6 +506,43 @@ Polymer({
     this.chart.get(seriesId).setData(data, !noRedraw);
     if (!noRedraw) {
       this.chart.reflow();
+    }
+  },
+
+  /**
+   * Updates series events on the chart
+   *
+   * @param {Object} seriesConfig
+   * @param {Array} events
+   * @param {Boolean} noRedraw Optional. If true, does not force a chart redraw() after adding or updating the events
+   */
+  updateSeriesEvents: function(seriesConfig, events, noRedraw) {
+    if (events) {
+      var _this = this;
+      events.forEach(function (event) {
+        var eventConfig = {
+          dashStyle: "ShortDash",
+          color: _this.dataVisColors["dv-light-gray"],
+          value : event.time,
+          id: event.id,
+          width : 1,
+          textAlign: "left",
+          label: {
+            align: "top",
+            useHTML: true,
+            rotation: 0,
+            style: {
+              fontSize: '0.8rem',
+              color: _this.dataVisColors["dv-basic-red"]
+            },
+            text: "<span class='style-scope px-ts-chart data-event-icon' title='" +  event.label + "' style='cursor:pointer; display:block; margin-top: -1.00rem; margin-left:-0.87rem'><i class='fa fa-lg fa-exclamation-triangle style-scope px-ts-chart'></i> </span>"
+          }
+        };
+        _this.chart.xAxis[0].addPlotLine(eventConfig);
+      });
+    }
+    if (!noRedraw) {
+      this.chart.redraw();
     }
   },
 
@@ -654,6 +702,7 @@ Polymer({
         }
       },
       navigator: {
+        enabled: !this.navigatorDisabled,
         adaptToUpdatedData: true,
         height: 50,
         margin: 15,
@@ -708,10 +757,10 @@ Polymer({
         shadow: false,
         style: {
           fontFamily: 'inherit',
-          fontSize: 'inherit'
+          fontSize: '0.8rem'
         },
-        headerFormat: '<span>{point.key}</span><br/>',
-        pointFormat: '<span style="color:{series.color}">{series.name}: {point.y}</span><br/>'
+        headerFormat: "",
+        pointFormat: '<span><span style="color:{point.color};">\u25CF</span> {series.name} </span> <span style="font-weight: bold;">{point.y}</span><br/>'
       },
       xAxis: {
         events: {

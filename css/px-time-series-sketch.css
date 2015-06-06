@@ -3390,3 +3390,6 @@ header {
 
 figure .fa {
   cursor: pointer; }
+
+.data-event-icon:hover {
+  font-size: 100px; }
