@@ -321,6 +321,9 @@ Polymer({
       this.chart.yAxis[0].update(this.defaultYAxisConfig.buildConfig(this.dataVisColors["dv-light-gray"]), /*redraw*/false);
 
       this.addInitialSeries();
+      setTimeout(function() {
+        _this.chart.reflow();
+      }, 500);
     }
     else {
       axisEls.forEach(function(axisEl) {
