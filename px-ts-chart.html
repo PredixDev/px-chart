@@ -5,7 +5,9 @@
     See https://github.sw.ge.com/jreichenberg/grunt-dep-serve#why-do-we-need-this
 -->
 <link rel="import" href="../polymer/polymer.html"/>
-
+<link rel="import" href="px-chart-series.html"/>
+<link rel="import" href="px-ts-chart-controls.html"/>
+<link rel="import" href="px-chart-yaxis.html"/>
 <!--
 Element that defines a time series chart, using sub-elements for axis, series and controls configuration.
 
@@ -31,13 +33,10 @@ Element that defines a time series chart, using sub-elements for axis, series an
     </px-ts-chart>
 
 @element px-time-series
+@demo demo.html
 @blurb Element that defines a time series chart, using sub-elements for axis, series and controls configuration.
 @homepage index.html
 -->
-
-<link rel="import" href="px-chart-series.html"/>
-<link rel="import" href="px-ts-chart-controls.html"/>
-<link rel="import" href="px-chart-yaxis.html"/>
 
 <script src="../highstock-release/adapters/standalone-framework.js"></script>
 <script src="../highstock-release/highstock.src.js"></script>
