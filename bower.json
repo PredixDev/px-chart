@@ -14,7 +14,7 @@
     "test"
   ],
   "dependencies": {
-    "polymer": "~v1.0.2",
+    "polymer": "~v1.0.3",
     "highstock-release": "~2.1.5",
     "underscore": "~1.8.3",
     "px-theme": "git://github.build.ge.com/PXc/px-theme.git#~v0.1.13",
