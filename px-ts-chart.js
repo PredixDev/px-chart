@@ -124,6 +124,29 @@ Polymer({
     },
 
     /**
+     * See http://api.highcharts.com/highcharts#legend
+     *
+     * @default {...}
+     */
+    legend: {
+      type: Object,
+      value: {
+        enabled: true,
+        useHTML: true,
+        verticalAlign: 'top',
+        align: 'left',
+        layout: 'vertical',
+        floating: true,
+        itemMarginTop: 5,
+        itemMarginBottom: 15,
+        itemStyle: {
+          fontSize: 'inherit',
+          fontWeight: 'normal'
+        }
+      }
+    },
+
+    /**
      * See http://api.highcharts.com/highcharts#chart.height
      *
      * @default 400
@@ -687,20 +710,7 @@ Polymer({
       credits: {
         enabled: false
       },
-      legend: {
-        enabled: true,
-        useHTML: true,
-        verticalAlign: 'top',
-        align: 'left',
-        layout: 'vertical',
-        floating: true,
-        itemMarginTop: 5,
-        itemMarginBottom: 15,
-        itemStyle: {
-          fontSize: 'inherit',
-          fontWeight: 'normal'
-        }
-      },
+      legend: this.legend,
       navigation: {
         buttonOptions: {
           enabled: false
