@@ -689,11 +689,13 @@ Polymer({
       },
       legend: {
         enabled: true,
+        useHTML: true,
         verticalAlign: 'top',
         align: 'left',
-        itemDistance: 150,
+        layout: 'vertical',
         floating: true,
         itemMarginTop: 5,
+        itemMarginBottom: 15,
         itemStyle: {
           fontSize: 'inherit',
           fontWeight: 'normal'
