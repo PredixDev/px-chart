@@ -36,9 +36,8 @@ Template element for default time controls on a time series chart
         </span>
       </template>
 
-      <span class="ml+">
         <template is="dom-if" if="{{showRefresh}}">
-        <button class="btn btn--bare" on-click="refreshHandler" title="Refresh chart">
+        <button class="btn btn--bare ml+" on-click="refreshHandler" title="Refresh chart">
           <i class="fa fa-refresh"></i>
         </button>
         </template>
@@ -48,7 +47,6 @@ Template element for default time controls on a time series chart
           <i class="fa fa-share-square-o"></i>
         </button>
         </template>
-      </span>
     </p>
     <template is="dom-if" if="{{hasZoomButtons}}">
       <p class="mb+">
