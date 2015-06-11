@@ -126,24 +126,24 @@ Polymer({
     /**
      * See http://api.highcharts.com/highcharts#legend
      *
-     * @default {...}
+     * Note that a default legend will be enabled but can set this as an override.
+     *
+     * @type Object
+     * @default variable dependning on the legendRight property
      */
     legend: {
-      type: Object,
-      value: {
-        enabled: true,
-        useHTML: true,
-        verticalAlign: 'top',
-        align: 'left',
-        layout: 'vertical',
-        floating: true,
-        itemMarginTop: 5,
-        itemMarginBottom: 15,
-        itemStyle: {
-          fontSize: 'inherit',
-          fontWeight: 'normal'
-        }
-      }
+      type: Object
+    },
+
+    /**
+     * Whether the legend appears to the right of the chart.
+     *
+     * @type Boolean
+     * @default false
+     */
+    legendRight: {
+      type: Boolean,
+      value: false
     },
 
     /**
@@ -159,10 +159,11 @@ Polymer({
     /**
      * See http://api.highcharts.com/highcharts#chart.margin
      *
-     * @default calculated based on controls
+     * @default [50,20,30,40] or [100,20,30,40] if zoom buttons exist
      */
     margin: {
-      type: Array
+      type: Array,
+      value: [50, 20, 30, 40]
     },
 
     /**
@@ -307,6 +308,38 @@ Polymer({
 
   defaultSeriesConfig: null,
 
+  defaultLegendTop: {
+    enabled: true,
+    useHTML: true,
+    verticalAlign: 'top',
+    align: 'left',
+    layout: 'vertical',
+    floating: true,
+    itemMarginTop: 5,
+    itemMarginBottom: 15,
+    itemStyle: {
+      fontSize: 'inherit',
+      fontWeight: 'normal'
+    }
+  },
+
+  defaultLegendRight: {
+    enabled: true,
+    useHTML: true,
+    verticalAlign: 'top',
+    align: 'right',
+    layout: 'vertical',
+    x: -125,
+    y: 50,
+    floating: false,
+    itemMarginTop: 5,
+    itemMarginBottom: 15,
+    itemStyle: {
+      fontSize: 'inherit',
+      fontWeight: 'normal'
+    }
+  },
+
   chartStateUpdated: function(evt){
     var chartExtremesHaveChanged = function (self){
       var currentChartExtremes = self.chart.xAxis[0].getExtremes();
@@ -329,15 +362,28 @@ Polymer({
   /**
    * Lifecycle callback to create the Highchart 'chart' object and consume the config / series elements
    */
-  attached: function() {
-    if (!this.margin) {
-      var calculatedMargin = [50,20,30,40];
-      //calculate margin based on header state
+  ready: function() {
+
+    if (!this.legend) {
+      this.legend = this.legendRight ? this.defaultLegendRight : this.defaultLegendTop;
+    }
+
+    var margin = this.margin;
+    if (margin && margin[0] === 50) {//adjust top margin if zoom controls not present
       var controls = Polymer.dom(this).querySelector('px-ts-chart-controls');
       if (controls && controls.getAttribute('zoom-buttons') !== 'null' && controls.getAttribute('zoom-buttons') !== '[]') {
-        calculatedMargin[0] = 100;
+        this.margin = [100, margin[1], margin[2], margin[3]];
+        if (this.legend && this.legend.align === 'right') {
+          this.legend.y = 100;
+        }
       }
-      this.margin = calculatedMargin;
+    }
+
+    margin = this.margin;
+    if (margin && margin[1] === 20) {///adjust right margin if legend right
+      if (this.legend && this.legend.align === 'right') {
+        this.margin = [margin[0], 200, margin[2], margin[3]];
+      }
     }
     var chartConfig = this.buildConfig();
     var _this = this;
