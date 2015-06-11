@@ -331,7 +331,7 @@ Polymer({
    */
   attached: function() {
     if (!this.margin) {
-      var calculatedMargin = [50,40,30,40];
+      var calculatedMargin = [50,20,30,40];
       //calculate margin based on header state
       var controls = Polymer.dom(this).querySelector('px-ts-chart-controls');
       if (controls && controls.getAttribute('zoom-buttons') !== 'null' && controls.getAttribute('zoom-buttons') !== '[]') {
