@@ -278,7 +278,7 @@ Polymer({
     var props = this.properties;
     var _this = this;
     Object.keys(props).forEach(function(key) {
-      if (props.hasOwnProperty(key) && key !== "data" && typeof _this[key] !== "undefined") {
+      if (props.hasOwnProperty(key) && key !== "seriesObj" && typeof _this[key] !== "undefined") {
         config[key] = _this[key];
       }
     });
