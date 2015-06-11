@@ -159,11 +159,10 @@ Polymer({
     /**
      * See http://api.highcharts.com/highcharts#chart.margin
      *
-     * @default [90,30,30,30]
+     * @default calculated based on controls
      */
     margin: {
-      type: Array,
-      value: [96,40,30,40]
+      type: Array
     },
 
     /**
@@ -330,9 +329,19 @@ Polymer({
   /**
    * Lifecycle callback to create the Highchart 'chart' object and consume the config / series elements
    */
-  ready: function() {
+  attached: function() {
+    if (!this.margin) {
+      var calculatedMargin = [50,40,30,40];
+      //calculate margin based on header state
+      var controls = Polymer.dom(this).querySelector('px-ts-chart-controls');
+      if (controls && controls.getAttribute('zoom-buttons') !== 'null' && controls.getAttribute('zoom-buttons') !== '[]') {
+        calculatedMargin[0] = 100;
+      }
+      this.margin = calculatedMargin;
+    }
     var chartConfig = this.buildConfig();
     var _this = this;
+
 
     this.chart = new Highcharts.StockChart(chartConfig);
 
@@ -547,11 +556,10 @@ Polymer({
       var _this = this;
       events.forEach(function (event) {
         var eventConfig = {
-          dashStyle: "ShortDash",
           color: _this.dataVisColors["dv-light-gray"],
           value : event.time,
           id: event.id,
-          width : 1,
+          width : 2,
           textAlign: "left",
           label: {
             align: "top",
@@ -561,7 +569,7 @@ Polymer({
               fontSize: '0.8rem',
               color: _this.dataVisColors["dv-basic-red"]
             },
-            text: "<span class='style-scope px-ts-chart data-event-icon' title='" +  event.label + "' style='cursor:pointer; display:block; margin-top: -1.00rem; margin-left:-0.87rem'><i class='fa fa-lg fa-exclamation-triangle style-scope px-ts-chart'></i> </span>"
+            text: "<span class='style-scope px-ts-chart data-event-icon' title='" +  event.label + "' style='cursor:pointer; display:block; margin-top: -1.10rem; margin-left:-0.87rem'><i class='fa fa-lg fa-exclamation-triangle style-scope px-ts-chart'></i> </span>"
           }
         };
         _this.chart.xAxis[0].addPlotLine(eventConfig);
@@ -730,12 +738,18 @@ Polymer({
         },
         xAxis: {
           gridLineWidth: 0,
+          lineColor: this.dataVisColors["dv-dark-blue"],
+          lineWidth: 1,
           labels: {
             style: {
               fontSize: '0.8rem'
             },
             y: 15
           }
+        },
+        yAxis: {
+          lineColor: this.dataVisColors["dv-dark-blue"],
+          lineWidth: 1
         }
       },
       plotOptions: {
