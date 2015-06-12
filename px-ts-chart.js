@@ -129,7 +129,7 @@ Polymer({
      * Note that a default legend will be enabled but can set this as an override.
      *
      * @type Object
-     * @default variable dependning on the legendRight property
+     * @default variable depending on the legendRight property
      */
     legend: {
       type: Object
@@ -177,7 +177,7 @@ Polymer({
     },
 
     /**
-     * See http://api.highcharts.com/highcharts#chart.plotBorderWidth
+     * See http://api.highcharts.com/highcharts#chart.spacing
      *
      * @default [0,0,25,0]
      */
@@ -323,22 +323,20 @@ Polymer({
     }
   },
 
-  defaultLegendRight: {
-    enabled: true,
-    useHTML: true,
-    verticalAlign: 'top',
-    align: 'right',
-    layout: 'vertical',
-    x: -125,
-    y: 50,
-    floating: false,
-    itemMarginTop: 5,
-    itemMarginBottom: 15,
-    itemStyle: {
-      fontSize: 'inherit',
-      fontWeight: 'normal'
-    }
-  },
+   defaultLegendRight: {
+     enabled: true,
+     verticalAlign: 'top',
+     align: 'right',
+     layout: 'vertical',
+     y: 50,
+     floating: false,
+     itemMarginTop: 5,
+     itemMarginBottom: 15,
+     itemStyle: {
+       fontSize: 'inherit',
+       fontWeight: 'normal'
+     }
+   },
 
   chartStateUpdated: function(evt){
     var chartExtremesHaveChanged = function (self){
@@ -380,9 +378,9 @@ Polymer({
     }
 
     margin = this.margin;
-    if (margin && margin[1] === 20) {///adjust right margin if legend right
+    if (margin && margin[1] === 20) {//null out the right margin if default right margin and legend-right so highcharts can use default spacing
       if (this.legend && this.legend.align === 'right') {
-        this.margin = [margin[0], 200, margin[2], margin[3]];
+        this.margin = [margin[0], null, margin[2], margin[3]];
       }
     }
     var chartConfig = this.buildConfig();
@@ -740,7 +738,7 @@ Polymer({
         plotBorderColor: this.dataVisColors["dv-light-gray"],
         plotBorderWidth: this.plotBorderWidth,
         renderTo: this.$.container,
-        spacing: this.spacing,
+        //spacingRight: 200,
         style: {
           fontFamily: 'inherit',
           fontSize: 'inherit'
