@@ -329,6 +329,7 @@ Polymer({
      align: 'right',
      layout: 'vertical',
      y: 50,
+     x: -125,
      floating: false,
      itemMarginTop: 5,
      itemMarginBottom: 15,
