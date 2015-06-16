@@ -23,7 +23,7 @@ Template element for default time controls on a time series chart
 <dom-module id="px-ts-chart-controls">
   <link rel="import" type="css" href="css/px-time-series.css"/>
   <template>
-    <p class="m0">
+    <p class="u-m0">
       <template is="dom-if" if="{{showDateRange}}">
         <span>
           <label class="label--inline">From</label>
@@ -37,7 +37,7 @@ Template element for default time controls on a time series chart
       </template>
 
         <template is="dom-if" if="{{showRefresh}}">
-        <button class="btn btn--bare ml+" on-click="refreshHandler" title="Refresh chart">
+        <button class="btn btn--bare u-ml+" on-click="refreshHandler" title="Refresh chart">
           <i class="fa fa-refresh"></i>
         </button>
         </template>
@@ -49,8 +49,8 @@ Template element for default time controls on a time series chart
         </template>
     </p>
     <template is="dom-if" if="{{hasZoomButtons}}">
-      <p class="mb+">
-        <span class="mr-">Zoom</span>
+      <p class="u-mb+">
+        <span class="u-mr-">Zoom</span>
         <span>
           <template is="dom-repeat" items="[[zoomButtons]]">
             <button on-click="setRangeFromPresent" data-time-value$="[[item.value]]" data-unit$="[[item.unit]]" class="btn">[[item.label]]</button>
