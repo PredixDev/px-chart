@@ -1,5 +1,7 @@
 'use strict';
 
+var importOnce = require('node-sass-import-once');
+
 module.exports = function (grunt) {
 
     // Project configuration.
@@ -14,19 +16,30 @@ module.exports = function (grunt) {
         sass: {
             options: {
                 sourceMap: false, //no source maps b/c web-components inline css anyway...
-
-                 /*
-                  See https://github.sw.ge.com/pxc/px-getting-started#a-note-about-relative-import-paths for an explanation
-                  of the contents of the includePaths option for Sass
-                 */
-                includePaths: ['bower_components/*']
+                importer: importOnce,
+                importOnce: {
+                  index: true,
+                  bower: true
+                }
             },
             dist: {
                 files: {
-                    'css/px-time-series-sketch.css': 'sass/px-time-series-sketch.scss',
-                    'css/px-time-series.css': 'sass/px-time-series-predix.scss'
+                    'css/noprefix/px-time-series-sketch.css': 'sass/px-time-series-sketch.scss',
+                    'css/noprefix/px-time-series.css': 'sass/px-time-series-predix.scss'
                 }
             }
+        },
+        
+        autoprefixer: {
+          options: {
+            browsers: ['last 2 version']
+          },
+          multiple_files: {
+            expand: true,
+            flatten: true,
+            src: 'css/noprefix/*.css',
+            dest: 'css'
+          }
         },
 
         shell: {
@@ -67,7 +80,7 @@ module.exports = function (grunt) {
         watch: {
             sass: {
                 files: ['sass/**/*.scss'],
-                tasks: ['sass'],
+                tasks: ['sass', 'autoprefixer'],
                 options: {
                     interrupt: true
                 }
@@ -96,12 +109,14 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-autoprefixer');
     grunt.loadNpmTasks('grunt-dep-serve');
     grunt.loadNpmTasks('webdriver-support');
 
     // Default task.
     grunt.registerTask('default', 'Basic build', [
       'sass',
+      'autoprefixer',
       'copy'
     ]);
 
