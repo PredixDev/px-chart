@@ -19,39 +19,32 @@ THIS FILE SHOULD CONTAIN ONLY ABSTRACT/'SKETCH' THEME RULES, NOT SPECIFIC TO PRE
 Predix branding rules go in px-time-series-predix.scss, not in this file.
 */
 
-$imported-once-files: ();
-
 /*
 See https://github.sw.ge.com/pxc/px-getting-started#a-note-about-relative-import-paths for an explanation of the `../`
 in import paths
 */
 
 // Settings
-@import "../px-defaults-design/settings.defaults";
-@import "../inuit-responsive-settings/settings.responsive";
-
-// Tools
-@import "../px-mixins-design/tools.mixins";
-@import "../inuit-responsive-tools/tools.responsive";
+@import "px-defaults-design/_settings.defaults.scss";
 
 // Generic
-@import "../px-normalize-design/generic.normalize";
-@import "../px-box-sizing-design/generic.box-sizing";
-@import "../px-helpers-design/generic.helpers";
+@import "px-normalize-design/_generic.normalize.scss";
+@import "px-box-sizing-design/_generic.box-sizing.scss";
+@import "px-helpers-design/_generic.helpers.scss";
 
 // Base
-@import "../px-flexbox-design/base.flexbox";
-@import "../px-viewport-design/base.viewport";
-@import "../px-typography-design/base.typography";
-@import "../px-iconography-design/base.iconography";
+@import "px-flexbox-design/_base.flexbox.scss";
+@import "px-viewport-design/_base.viewport.scss";
+@import "px-typography-design/_base.typography.scss";
+@import "px-iconography-design/_base.iconography.scss";
 
 $inuit-enable-input--small           : true;
 
-@import "../px-forms-design/base.forms";
+@import "px-forms-design/_base.forms.scss";
 
 // Objects
-@import "../px-buttons-design/objects.buttons";
-@import "../px-toggle-design/objects.toggle";
+@import "px-buttons-design/_objects.buttons.scss";
+@import "px-toggle-design/_objects.toggle.scss";
 
 // Component
 header {
@@ -60,16 +53,6 @@ header {
   margin-bottom: -#{calculateRem(96px)};
 }
 
-// Trumps
-@import "../px-clearfix-design/trumps.clearfix";
-
-$inuit-enable-margins--small           : true;
-$inuit-enable-margins--none           : true;
-$inuit-enable-margins--large          : true;
-
-@import "../px-spacing-responsive-design/trumps.spacing-responsive";
-@import "../px-widths-responsive-design/trumps.widths-responsive";
-
 figure .fa {
   cursor: pointer;
 }
@@ -77,3 +60,13 @@ figure .fa {
 .data-event-icon:hover {
   cursor: pointer;
 }
+
+// Trumps
+@import "px-clearfix-design/_trumps.clearfix.scss";
+
+$inuit-enable-margins--small          : true;
+$inuit-enable-margins--none           : true;
+$inuit-enable-margins--large          : true;
+
+@import "px-spacing-responsive-design/_trumps.spacing-responsive.scss";
+@import "px-widths-responsive-design/_trumps.widths-responsive.scss";
