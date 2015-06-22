@@ -23,7 +23,7 @@ Template element for default time controls on a time series chart
 <dom-module id="px-ts-chart-controls">
   <link rel="import" type="css" href="css/px-time-series.css"/>
   <template>
-    <p class="u-m0">
+    <div>
       <template is="dom-if" if="{{showDateRange}}">
         <span>
           <label class="label--inline">From</label>
@@ -32,22 +32,22 @@ Template element for default time controls on a time series chart
           <label class="label--inline">to</label>
           <input value="{{rangeEndDisplayStr::change}}" class="text-input input--small" placeholder="HH:MM MM/DD/YYYY"/>
 
-          <button on-click="rangeSetHandler" class="btn">Submit</button>
+          <button on-click="rangeSetHandler" class="btn u-ml-">Submit</button>
         </span>
       </template>
 
-        <template is="dom-if" if="{{showRefresh}}">
-        <button class="btn btn--bare u-ml+" on-click="refreshHandler" title="Refresh chart">
+      <template is="dom-if" if="{{showRefresh}}">
+        <button class="btn btn--icon u-ml-" on-click="refreshHandler" title="Refresh chart">
           <i class="fa fa-refresh"></i>
         </button>
-        </template>
+      </template>
 
-        <template is="dom-if" if="{{showExport}}">
-        <button class="btn btn--bare" on-click="exportHandler" title="Export chart">
+      <template is="dom-if" if="{{showExport}}">
+        <button class="btn btn--icon u-ml-" on-click="exportHandler" title="Export chart">
           <i class="fa fa-share-square-o"></i>
         </button>
-        </template>
-    </p>
+      </template>
+    </div>
     <template is="dom-if" if="{{hasZoomButtons}}">
       <p class="u-mb+">
         <span class="u-mr-">Zoom</span>

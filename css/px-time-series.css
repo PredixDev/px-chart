@@ -2720,6 +2720,15 @@ textarea {
 .input--small {
   max-width: 14.1333333333rem; }
 
+/**
+   * Styles for one line forms.
+   */
+.form-field--inline:last-child {
+  margin-bottom: 1.3333333333rem; }
+
+.form-field--inline .text-input {
+  margin-bottom: 1.3333333333rem; }
+
 .btn {
   display: inline-block;
   overflow: visible;
@@ -2758,6 +2767,17 @@ textarea {
 */
 .btn + .btn {
   margin-left: 0.6666666667rem; }
+
+/**
+   * Round-ended buttons.
+   *
+   * 1. Overly-large value to ensure the radius rounds the whole end of the
+   *    button.
+   */
+.btn--icon {
+  width: 2em;
+  border-radius: 6.6666666667em;
+  padding: 1px 0 0 1px; }
 
 .toggle__input {
   position: absolute !important;

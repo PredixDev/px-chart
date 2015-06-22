@@ -39,10 +39,13 @@ in import paths
 @import "px-iconography-design/_base.iconography.scss";
 
 $inuit-enable-input--small           : true;
+$inuit-enable-inline-fields          : true;
 
 @import "px-forms-design/_base.forms.scss";
 
 // Objects
+$inuit-enable-btn--icon              : true;
+
 @import "px-buttons-design/_objects.buttons.scss";
 @import "px-toggle-design/_objects.toggle.scss";
 
@@ -65,8 +68,8 @@ figure .fa {
 @import "px-clearfix-design/_trumps.clearfix.scss";
 
 $inuit-enable-margins--small          : true;
-$inuit-enable-margins--none           : true;
 $inuit-enable-margins--large          : true;
+$inuit-enable-margins--none           : true;
 
 @import "px-spacing-responsive-design/_trumps.spacing-responsive.scss";
 @import "px-widths-responsive-design/_trumps.widths-responsive.scss";
