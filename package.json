@@ -2,7 +2,7 @@
     "name": "px-ts-chart",
     "author": "General Electric",
     "description": "A Px component",
-    "version": "0.3.0",
+    "version": "0.3.2",
     "private": true,
     "fwk": "polymer08",
     "extName" : null,
