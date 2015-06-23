@@ -102,14 +102,6 @@ Polymer({
             return true;
           }
           else if (evt.xAxis) {
-
-            // show custom reset zoom button
-            var tsChart = Polymer.dom(this.renderTo).parentNode.parentNode;
-            var controls = Polymer.dom(tsChart).querySelector('px-ts-chart-controls');
-            console.log('andhere', controls.getAttribute('chart-zoomed'));
-
-            controls.setAttribute('chart-zoomed', true);
-
             var axis = evt.xAxis[0];
             this.xAxis[0].removePlotBand("selection");
             this.xAxis[0].addPlotBand({
@@ -125,7 +117,30 @@ Polymer({
                 align: "right",
                 useHTML: true,
                 /* <i class='fa fa-lg u-mr- fa-pencil style-scope px-ts-chart' onclick='alert(this.innerHTML)' title='Annotate'></i> */
-                text: "<i class='fa fa-lg fa-search-plus u-mr- style-scope px-ts-chart' onclick='var wc=this; while(!wc.chart) {wc = wc.parentNode} wc.chart.xAxis[0].setExtremes(" + evt.xAxis[0].min + ", " + evt.xAxis[0].max + ");wc.chart.xAxis[0].removePlotBand(\"selection\")' title='Zoom to " + moment(evt.xAxis[0].min).format('LLL') + " to " + moment(evt.xAxis[0].max).format('LLL') + "'></i> <i class='fa fa-lg u-mr- fa-times style-scope px-ts-chart' onclick='var wc=this; while(!wc.chart) {wc = wc.parentNode} wc.chart.xAxis[0].removePlotBand(\"selection\");' title='Close selection'></i>"
+                text: "<i class='fa fa-lg fa-search-plus u-mr- style-scope px-ts-chart'" +
+                  "onclick='" +
+                    "var wc=this;" +
+                    "while(!wc.chart) {" +
+                      "wc = wc.parentNode" +
+                    "}" +
+                    "wc.chart.xAxis[0].setExtremes(" + evt.xAxis[0].min + ", " + evt.xAxis[0].max + ");" +
+                    "wc.chart.xAxis[0].removePlotBand(\"selection\");" +
+                    "wc.querySelector(\"px-ts-chart-controls\").setAttribute(\"chart-zoomed\", true);" +
+                    "'" +
+                  "title='Zoom to " +
+                      moment(evt.xAxis[0].min).format('LLL') + " to " +
+                      moment(evt.xAxis[0].max).format('LLL') + ";'>" +
+                "</i>" +
+                "<i class='fa fa-lg u-mr- fa-times style-scope px-ts-chart'" +
+                  "onclick='" +
+                    "var wc=this;" +
+                    "while(!wc.chart) {" +
+                      "wc = wc.parentNode" +
+                    "}" +
+                    "wc.chart.xAxis[0].removePlotBand(\"selection\");" +
+                  "'" +
+                  "title='Close selection'>" +
+                "</i>"
               }
             });
             return false;
