@@ -48,14 +48,7 @@ Template element for default time controls on a time series chart
         </button>
       </template>
     </div>
-    <template is="dom-if" if="{{chartZoomed}}">
-      <template is="dom-if" if={{!hasZoomButtons}}>
-        <input type="button" class="btn"  style="position: absolute; top: 60px; right: 30px;" id="resetZoom" value="Reset zoom" on-click="resetZoom" />
-      </template>
-      <template is="dom-if" if={{hasZoomButtons}}>
-        <input type="button" class="btn"  style="position: absolute; top: 110px; right: 30px;" id="resetZoom" value="Reset zoom" on-click="resetZoom" />
-      </template>
-    </template>
+
     <template is="dom-if" if="{{hasZoomButtons}}">
       <p class="u-mb+">
         <span class="u-mr-">Zoom</span>
@@ -153,20 +146,8 @@ Template element for default time controls on a time series chart
 
       rangeEndDisplayStr: {
         type: String
-      },
-
-      chartZoomed: {
-        type: Boolean,
-        value: false,
-        reflectToAttribute: true
       }
-    },
 
-    resetZoom: function() {
-      console.log('reset', this.chartZoomed);
-      this.set('chartZoomed', false);
-      console.log('resetaft', this.chartZoomed);
-      Polymer.dom(this).parentNode.resetZoom();
     },
 
     _showDateRangeHandler: function(newValue, oldValue) {

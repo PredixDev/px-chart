@@ -62,19 +62,17 @@ Polymer({
       type: Object,
       value: {
         theme: {
-          fill: 'white',
-          stroke: 'silver',
-          r: 0,
-          states: {
-            hover: {
-              fill: '#41739D',
-              style: {
-                color: 'white'
-              }
-            }
-          }
+          display: 'none'
         }
       }
+    },
+
+    chartZoomed: {
+      type: Boolean,
+      value: false,
+      reflectToAttribute: true,
+      notify: true,
+      observer: 'chartZoomedObserver'
     },
 
     /**
@@ -125,7 +123,7 @@ Polymer({
                     "}" +
                     "wc.chart.xAxis[0].setExtremes(" + evt.xAxis[0].min + ", " + evt.xAxis[0].max + ");" +
                     "wc.chart.xAxis[0].removePlotBand(\"selection\");" +
-                    "wc.querySelector(\"px-ts-chart-controls\").setAttribute(\"chart-zoomed\", true);" +
+                    "wc.setZoom(true);" +
                     "'" +
                   "title='Zoom to " +
                       moment(evt.xAxis[0].min).format('LLL') + " to " +
@@ -741,13 +739,6 @@ Polymer({
     });
   },
 
-  /**
-   * Reset zoom
-   */
-  resetZoom: function () {
-    this.chart.zoomOut();
-  },
-
 
   /**
    * Sets chart extremes to given start and end times
@@ -765,6 +756,21 @@ Polymer({
       // always set the visible strings back to a good value
       this.rangeObserver();
     }
+  },
+
+  setZoom: function(value) {
+    this.set('chartZoomed', value);
+  },
+
+  setZoomFalse: function() {
+    this.setZoom(false);
+  },
+
+  chartZoomedObserver: function() {
+    var topMargin = this.margin ? this.margin[0] : 0;
+    this.$.resetZoom.style.top = (topMargin + 10) + 'px';
+    this.$.resetZoom.style.display = this.chartZoomed ? 'block' : 'none';
+    if(this.chart && this.chartZoomed === false) { this.chart.zoomOut(); };
   },
 
   /**
