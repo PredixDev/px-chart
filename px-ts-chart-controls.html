@@ -48,6 +48,7 @@ Template element for default time controls on a time series chart
         </button>
       </template>
     </div>
+
     <template is="dom-if" if="{{hasZoomButtons}}">
       <p class="u-mb+">
         <span class="u-mr-">Zoom</span>
@@ -146,6 +147,7 @@ Template element for default time controls on a time series chart
       rangeEndDisplayStr: {
         type: String
       }
+
     },
 
     _showDateRangeHandler: function(newValue, oldValue) {

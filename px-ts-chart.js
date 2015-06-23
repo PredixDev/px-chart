@@ -54,6 +54,28 @@ Polymer({
     },
 
     /**
+     * See http://api.highcharts.com/highcharts#chart.resetZoomButton
+     *
+     * @default
+     */
+    resetZoomButton: {
+      type: Object,
+      value: {
+        theme: {
+          display: 'none'
+        }
+      }
+    },
+
+    chartZoomed: {
+      type: Boolean,
+      value: false,
+      reflectToAttribute: true,
+      notify: true,
+      observer: 'chartZoomedObserver'
+    },
+
+    /**
      * See http://api.highcharts.com/highcharts#chart.events
      *
      * @default redraw function()
@@ -74,7 +96,7 @@ Polymer({
           }
         },
         selection: function(evt) {
-          if (evt.originalEvent.shiftKey) {
+          if (evt.originalEvent && evt.originalEvent.shiftKey) {
             return true;
           }
           else if (evt.xAxis) {
@@ -93,7 +115,30 @@ Polymer({
                 align: "right",
                 useHTML: true,
                 /* <i class='fa fa-lg u-mr- fa-pencil style-scope px-ts-chart' onclick='alert(this.innerHTML)' title='Annotate'></i> */
-                text: "<i class='fa fa-lg fa-search-plus u-mr- style-scope px-ts-chart' onclick='var wc=this; while(!wc.chart) {wc = wc.parentNode} wc.chart.xAxis[0].setExtremes(" + evt.xAxis[0].min + ", " + evt.xAxis[0].max + ");wc.chart.xAxis[0].removePlotBand(\"selection\")' title='Zoom to " + moment(evt.xAxis[0].min).format('LLL') + " to " + moment(evt.xAxis[0].max).format('LLL') + "'></i> <i class='fa fa-lg u-mr- fa-times style-scope px-ts-chart' onclick='var wc=this; while(!wc.chart) {wc = wc.parentNode} wc.chart.xAxis[0].removePlotBand(\"selection\");' title='Close selection'></i>"
+                text: "<i class='fa fa-lg fa-search-plus u-mr- style-scope px-ts-chart'" +
+                  "onclick='" +
+                    "var wc=this;" +
+                    "while(!wc.chart) {" +
+                      "wc = wc.parentNode" +
+                    "}" +
+                    "wc.chart.xAxis[0].setExtremes(" + evt.xAxis[0].min + ", " + evt.xAxis[0].max + ");" +
+                    "wc.chart.xAxis[0].removePlotBand(\"selection\");" +
+                    "wc.setZoom(true);" +
+                    "'" +
+                  "title='Zoom to " +
+                      moment(evt.xAxis[0].min).format('LLL') + " to " +
+                      moment(evt.xAxis[0].max).format('LLL') + ";'>" +
+                "</i>" +
+                "<i class='fa fa-lg u-mr- fa-times style-scope px-ts-chart'" +
+                  "onclick='" +
+                    "var wc=this;" +
+                    "while(!wc.chart) {" +
+                      "wc = wc.parentNode" +
+                    "}" +
+                    "wc.chart.xAxis[0].removePlotBand(\"selection\");" +
+                  "'" +
+                  "title='Close selection'>" +
+                "</i>"
               }
             });
             return false;
@@ -187,7 +232,7 @@ Polymer({
     },
 
     /**
-     * See http://api.highcharts.com/highcharts#chart.zoomType
+     * See http://api.highcharts.com/highcharts#chart.
      *
      * @default "x"
      */
@@ -694,6 +739,7 @@ Polymer({
     });
   },
 
+
   /**
    * Sets chart extremes to given start and end times
    *
@@ -712,6 +758,21 @@ Polymer({
     }
   },
 
+  setZoom: function(value) {
+    this.set('chartZoomed', value);
+  },
+
+  setZoomFalse: function() {
+    this.setZoom(false);
+  },
+
+  chartZoomedObserver: function() {
+    var topMargin = this.margin ? this.margin[0] : 0;
+    this.$.resetZoom.style.top = (topMargin + 10) + 'px';
+    this.$.resetZoom.style.display = this.chartZoomed ? 'block' : 'none';
+    if(this.chart && this.chartZoomed === false) { this.chart.zoomOut(); };
+  },
+
   /**
    * Builds up highcharts config object
    */
@@ -728,6 +789,7 @@ Polymer({
     };
 
     return {
+
       colors: createSeriesColorsArray(this.dataVisColors, this.seriesColorOrder),
       annotationsOptions: {
         enabledButtons: false
@@ -745,8 +807,11 @@ Polymer({
           fontSize: 'inherit'
         },
         zoomType: this.zoomType,
+        resetZoomButton: this.resetZoomButton,
         selectionMarkerFill: "rgba(200,231,251,0.5)"
       },
+
+
 
       exporting: {
         chartOptions: {
@@ -770,7 +835,10 @@ Polymer({
         }
       },
       navigator: {
+        /*
         enabled: !this.navigatorDisabled,
+        */
+        enabled: false,
         adaptToUpdatedData: true,
         height: 50,
         margin: 15,
@@ -819,6 +887,7 @@ Polymer({
       rangeSelector: {
         enabled: false
       },
+
       scrollbar: {
         enabled: false
       },

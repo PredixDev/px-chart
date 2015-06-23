@@ -48,8 +48,9 @@ Element that defines a time series chart, using sub-elements for axis, series an
   <link rel="import" type="css" href="css/px-time-series.css"/>
   <template>
     <section role="region">
-      <header class="text--right float--right u-2/3">
+      <header id="pxChartHeader" class="text--right float--right u-2/3">
         <content></content>
+        <input type="button" class="btn" style="display: none; position: absolute; top: 60px; right: 30px;" id="resetZoom" value="Reset zoom" on-click="setZoomFalse" />
       </header>
       <figure class="u-m0" id="container"></figure>
     </section>
