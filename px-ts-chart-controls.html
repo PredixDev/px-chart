@@ -49,7 +49,12 @@ Template element for default time controls on a time series chart
       </template>
     </div>
     <template is="dom-if" if="{{chartZoomed}}">
-      <input type="button" id="resetZoom" value="Reset zoom" on-click="resetZoom" />
+      <template is="dom-if" if={{!hasZoomButtons}}>
+        <input type="button" class="btn"  style="position: absolute; top: 60px; right: 30px;" id="resetZoom" value="Reset zoom" on-click="resetZoom" />
+      </template>
+      <template is="dom-if" if={{hasZoomButtons}}>
+        <input type="button" class="btn"  style="position: absolute; top: 110px; right: 30px;" id="resetZoom" value="Reset zoom" on-click="resetZoom" />
+      </template>
     </template>
     <template is="dom-if" if="{{hasZoomButtons}}">
       <p class="u-mb+">
