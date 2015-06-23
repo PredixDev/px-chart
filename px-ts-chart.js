@@ -54,6 +54,30 @@ Polymer({
     },
 
     /**
+     * See http://api.highcharts.com/highcharts#chart.resetZoomButton
+     *
+     * @default
+     */
+    resetZoomButton: {
+      type: Object,
+      value: {
+        theme: {
+          fill: 'white',
+          stroke: 'silver',
+          r: 0,
+          states: {
+            hover: {
+              fill: '#41739D',
+              style: {
+                color: 'white'
+              }
+            }
+          }
+        }
+      }
+    },
+
+    /**
      * See http://api.highcharts.com/highcharts#chart.events
      *
      * @default redraw function()
@@ -74,10 +98,18 @@ Polymer({
           }
         },
         selection: function(evt) {
-          if (evt.originalEvent.shiftKey) {
+          if (evt.originalEvent && evt.originalEvent.shiftKey) {
             return true;
           }
           else if (evt.xAxis) {
+
+            // show custom reset zoom button
+            var tsChart = Polymer.dom(this.renderTo).parentNode.parentNode;
+            var controls = Polymer.dom(tsChart).querySelector('px-ts-chart-controls');
+            console.log('andhere', controls.getAttribute('chart-zoomed'));
+
+            controls.setAttribute('chart-zoomed', true);
+
             var axis = evt.xAxis[0];
             this.xAxis[0].removePlotBand("selection");
             this.xAxis[0].addPlotBand({
@@ -187,7 +219,7 @@ Polymer({
     },
 
     /**
-     * See http://api.highcharts.com/highcharts#chart.zoomType
+     * See http://api.highcharts.com/highcharts#chart.
      *
      * @default "x"
      */
@@ -695,6 +727,14 @@ Polymer({
   },
 
   /**
+   * Reset zoom
+   */
+  resetZoom: function () {
+    this.chart.zoomOut();
+  },
+
+
+  /**
    * Sets chart extremes to given start and end times
    *
    * @param {Number} startTime Range start time in milliseconds since the epoch
@@ -728,6 +768,7 @@ Polymer({
     };
 
     return {
+
       colors: createSeriesColorsArray(this.dataVisColors, this.seriesColorOrder),
       annotationsOptions: {
         enabledButtons: false
@@ -745,8 +786,11 @@ Polymer({
           fontSize: 'inherit'
         },
         zoomType: this.zoomType,
+        resetZoomButton: this.resetZoomButton,
         selectionMarkerFill: "rgba(200,231,251,0.5)"
       },
+
+
 
       exporting: {
         chartOptions: {
@@ -770,7 +814,10 @@ Polymer({
         }
       },
       navigator: {
+        /*
         enabled: !this.navigatorDisabled,
+        */
+        enabled: false,
         adaptToUpdatedData: true,
         height: 50,
         margin: 15,
@@ -819,6 +866,7 @@ Polymer({
       rangeSelector: {
         enabled: false
       },
+
       scrollbar: {
         enabled: false
       },
