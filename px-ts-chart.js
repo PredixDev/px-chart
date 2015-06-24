@@ -677,6 +677,23 @@ Polymer({
    */
   removeSeries: function(seriesId) {
     this.chart.get(seriesId).remove();
+    this.resetNavSeries();
+  },
+
+  resetNavSeries: function() {
+    var nav = this.chart.get('nav');
+    var series = null;
+    nav.setData([]);
+    if(this.chart.series.length === 0) {
+      // no series
+    } else if(this.chart.series[0].name === "Navigator") {
+      series = this.chart.series[1];
+    } else {
+      series = this.chart.series[0];
+    }
+    if(series) {
+      nav.setData(series.options.data, true);
+    }
   },
 
   /**
@@ -835,16 +852,14 @@ Polymer({
         }
       },
       navigator: {
-        /*
         enabled: !this.navigatorDisabled,
-        */
-        enabled: false,
         adaptToUpdatedData: true,
         height: 50,
         margin: 15,
         outlineColor: this.dataVisColors["dv-light-gray"],
         maskFill: 'rgba(200,231,251,0.3)',
         series: {
+          id: 'nav',
           color: 'transparent',
           lineColor: this.dataVisColors["dv-dark-blue"],
           lineWidth: 2

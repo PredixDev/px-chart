@@ -51,7 +51,7 @@
     <px-ts-chart-controls data-controls show-refresh="true" show-date-range="true"></px-ts-chart-controls>
     <px-chart-yaxis id="firstAxis" offset="0"></px-chart-yaxis>
     <px-chart-yaxis id="anotherAxis" opposite="true" offset="-2.5"></px-chart-yaxis>
-    <px-chart-series id="delta-egt-cruise" axis-id="firstAxis" upper-threshold="30.5" lower-threshold="6.25">
+    <!-- <px-chart-series id="delta-egt-cruise" axis-id="firstAxis" upper-threshold="30.5" lower-threshold="6.25">
       <iron-ajax
           url="demo-data/aviation/delta-egt-cruise.json"
           handle-as="json"></iron-ajax>
@@ -60,7 +60,7 @@
       <iron-ajax
           url="demo-data/aviation/fan-vibration-cruise.json"
           handle-as="json"></iron-ajax>
-    </px-chart-series>
+    </px-chart-series> -->
   </px-ts-chart>
 
   <p class="u-mt+">
@@ -71,6 +71,8 @@
     <button class="btn" onclick="togglePointMarkers()">Toggle Point Markers</button>
     <button class="btn" onclick="addSeries('core-vibe-rear-cruise', '../demo-data/aviation/core-vibe-rear-cruise.json')">Add Core Vibration Series</button>
     <button class="btn" onclick="removeSeries('core-vibe-rear-cruise')">Remove Core Vibration Series</button>
+    <button class="btn" onclick="addSeries('fan-vibration-cruise', '../demo-data/aviation/fan-vibration-cruise.json')">Add Fan Vibration Series</button>
+        <button class="btn" onclick="removeSeries('fan-vibration-cruise')">Remove Fan Vibration Series</button>
   </p>
 
 </section>
