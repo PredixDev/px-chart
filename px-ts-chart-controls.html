@@ -36,11 +36,12 @@ Template element for default time controls on a time series chart
         </span>
       </template>
 
-      <template is="dom-if" if="{{showRefresh}}">
-        <button class="btn btn--icon u-ml-" on-click="refreshHandler" title="Refresh chart">
-          <i class="fa fa-refresh"></i>
-        </button>
-      </template>
+      <!-- Removing refresh button temporarily for MVP2 release -->
+      <!--<template is="dom-if" if="{{showRefresh}}">-->
+        <!--<button class="btn btn--icon u-ml-" on-click="refreshHandler" title="Refresh chart">-->
+          <!--<i class="fa fa-refresh"></i>-->
+        <!--</button>-->
+      <!--</template>-->
 
       <template is="dom-if" if="{{showExport}}">
         <button class="btn btn--icon u-ml-" on-click="exportHandler" title="Export chart">
@@ -95,10 +96,11 @@ Template element for default time controls on a time series chart
        * @type {Boolean}
        * @default false
        */
-      showRefresh: {
-        type: Boolean,
-        value: false
-      },
+//      Removing refresh button temporarily for MVP2 release
+//      showRefresh: {
+//        type: Boolean,
+//        value: false
+//      },
 
       /**
        * Whether to show export control
