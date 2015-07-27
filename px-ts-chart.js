@@ -247,7 +247,7 @@ Polymer({
     },
 
     /**
-     * See http://api.highcharts.com/highcharts#chart.
+     * See http://api.highcharts.com/highcharts#chart.zoomType
      *
      * Can only be statically configured (not data-bindable).
      *
@@ -429,6 +429,9 @@ Polymer({
      }
    },
 
+  /**
+   * @private
+   */
   chartStateUpdated: function(evt){
     var chartExtremesHaveChanged = function (self){
       var currentChartExtremes = self.chart.xAxis[0].getExtremes();
@@ -512,6 +515,9 @@ Polymer({
     'after-set-extremes': 'firechartStateUpdated'
   },
 
+  /**
+   * @private
+   */
   firechartStateUpdated: function(evt){
     var extremes = this.chart.xAxis[0].getExtremes();
     var tsChart = Polymer.dom(this).node;
@@ -523,6 +529,7 @@ Polymer({
 
   /**
    * Internal callback for Highcharts config ready
+   * @private
    */
   addInitialSeries: function() {
     //find series elements in light dom ("Polymer.dom(this)" vs. "Polymer.dom(this.root)", which would be shadow dom)
@@ -550,6 +557,8 @@ Polymer({
 
   /**
    * Sets display string for start/end range when internal value changes
+   *
+   * @private
    */
   rangeObserver: function () {
     var controlsEl = Polymer.dom(this).querySelector("[data-controls]");
@@ -574,12 +583,12 @@ Polymer({
    * Adds a series to the chart, adding a yAxis as needed
    *
    * @param {Object} seriesConfig
-   *    @config {String} id
-   *    @config {Array} data
-   *    @config {Number} yAxis Optional. The axis index to which the series should be bound. Defaults to 0.
-   *    @config {Number} lineWidth Optional.
-   *    @config {Object} marker. Optional. Highcharts marker config
-   *    @config {Object} tooltip. Optional. Highcharts tooltip config
+   * * {String} id
+   * * {Array} data
+   * * {Number} yAxis Optional. The axis index to which the series should be bound. Defaults to 0.
+   * * {Number} lineWidth Optional.
+   * * {Object} marker. Optional. Highcharts marker config
+   * * {Object} tooltip. Optional. Highcharts tooltip config
    * @param {Boolean} noRedraw Optional. If true, does not force a chart redraw() after adding or updating the series
    */
   addSeries: function(seriesConfig, noRedraw) {
@@ -685,6 +694,8 @@ Polymer({
    * @param {Object} seriesConfig
    * @param {Array} events
    * @param {Boolean} noRedraw Optional. If true, does not force a chart redraw() after adding or updating the events
+   *
+   * @private
    */
   updateSeriesEvents: function(seriesConfig, events, noRedraw) {
     if (events) {
@@ -725,6 +736,9 @@ Polymer({
     this.resetNavSeries();
   },
 
+  /**
+   * @private
+   */
   resetNavSeries: function() {
     var nav = this.chart.get('nav');
     var series = null;
@@ -772,23 +786,12 @@ Polymer({
    * @param {Number} start Range start time in milliseconds since the epoch
    * @param {Number} end Range end time in milliseconds since the epoch
    * @return {Boolean}
+   *
+   * @private
    */
   hasExtremeChanged: function (start, end) {
     var extremes = this.chart.xAxis[0].getExtremes();
     return extremes.min !== start || extremes.max !== end;
-  },
-
-  /**
-   * Sets the range start / end given number of months back from present
-   *
-   * @param {Number} value Number of (unit, e.g. "months") back from present
-   * @param {String} unit momentjs time unit string, e.g. "months"
-   */
-  setRangeFromPresent: function (value, unit) {
-    var m = moment();
-    m.subtract(value, unit);
-    this.rangeStart = m.valueOf();
-    this.setExtremesIfChanged(this.rangeStart, this.rangeEnd);
   },
 
   /**
@@ -807,6 +810,8 @@ Polymer({
    *
    * @param {Number} startTime Range start time in milliseconds since the epoch
    * @param {Number} endTime Range end time in milliseconds since the epoch
+   *
+   * @private
    */
   setExtremesIfChanged: function (startTime, endTime) {
     if (this.hasExtremeChanged(startTime, endTime)) {
@@ -820,14 +825,24 @@ Polymer({
     }
   },
 
+  /**
+   * @private
+   * @param value
+   */
   setZoom: function(value) {
     this.set('chartZoomed', value);
   },
 
+  /**
+   * @private
+   */
   setZoomFalse: function() {
     this.setZoom(false);
   },
 
+  /**
+   * @private
+   */
   chartZoomedObserver: function() {
     var topMargin = this.margin ? this.margin[0] : 0;
     this.$.resetZoom.style.top = (topMargin + 10) + 'px';
@@ -837,6 +852,7 @@ Polymer({
 
   /**
    * Builds up highcharts config object
+   * @private
    */
   buildConfig: function() {
     var self = this;
