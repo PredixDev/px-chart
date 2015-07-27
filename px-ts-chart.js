@@ -15,6 +15,7 @@ Polymer({
      *
      * @type {String}
      * @default undefined
+     * @private
      */
     rangeStart: {
       type: String,
@@ -26,6 +27,7 @@ Polymer({
      *
      * @type {String}
      * @default undefined
+     * @private
      */
     rangeEnd: {
       type: String,
@@ -33,7 +35,9 @@ Polymer({
     },
 
     /**
-     * Whether to show the zoom-able / scroll-able area at the bottom of the chart
+     * Whether to show the zoom-able / scroll-able area at the bottom of the chart.
+     *
+     * Can only be statically configured (not data-bindable).
      *
      * @type {Boolean}
      * @default false
@@ -44,19 +48,10 @@ Polymer({
     },
 
     /**
-     * See http://api.highcharts.com/highcharts#chart.backgroundColor
-     *
-     * @default rgb(255,255,255)
-     */
-    backgroundColor: {
-      type: String,
-      value: 'rgb(255,255,255)'
-    },
-
-    /**
      * See http://api.highcharts.com/highcharts#chart.resetZoomButton
      *
      * @default
+     * @private
      */
     resetZoomButton: {
       type: Object,
@@ -67,6 +62,9 @@ Polymer({
       }
     },
 
+    /**
+     * @private
+     */
     chartZoomed: {
       type: Boolean,
       value: false,
@@ -79,6 +77,7 @@ Polymer({
      * See http://api.highcharts.com/highcharts#chart.events
      *
      * @default redraw function()
+     * @private
      */
     events: {
       type: Object,
@@ -151,6 +150,7 @@ Polymer({
      * See http://api.highcharts.com/highcharts#plotOptions.series.events
      *
      * @default show & hide series function()
+     * @private
      */
     seriesEvents: {
       type: Object,
@@ -173,6 +173,23 @@ Polymer({
      *
      * Note that a default legend will be enabled but can set this as an override.
      *
+     * Can only be statically configured (not data-bindable).
+     *
+     * ```
+     *    <px-ts-chart legend='{
+     *      "enabled": true,
+     *      "useHTML": true,
+     *      "layout": "vertical",
+     *      "verticalAlign": "middle",
+     *      "y": 44,
+     *      "align": "left",
+     *      "floating": true,
+     *      "itemMarginTop": 5,
+     *      "itemMarginBottom": 5
+     *      }'
+     *      ...
+     *```
+     *
      * @type Object
      * @default variable depending on the legendRight property
      */
@@ -182,6 +199,8 @@ Polymer({
 
     /**
      * Whether the legend appears to the right of the chart.
+     *
+     * Can only be statically configured (not data-bindable).
      *
      * @type Boolean
      * @default false
@@ -194,6 +213,8 @@ Polymer({
     /**
      * See http://api.highcharts.com/highcharts#chart.height
      *
+     * Can only be statically configured (not data-bindable).
+     *
      * @default 400
      */
     height: {
@@ -203,6 +224,8 @@ Polymer({
 
     /**
      * See http://api.highcharts.com/highcharts#chart.margin
+     *
+     * Can only be statically configured (not data-bindable).
      *
      * @default [50,20,30,40] or [100,20,30,40] if zoom buttons exist
      */
@@ -214,6 +237,8 @@ Polymer({
     /**
      * See http://api.highcharts.com/highcharts#chart.plotBorderWidth
      *
+     * Can only be statically configured (not data-bindable).
+     *
      * @default 1
      */
     plotBorderWidth: {
@@ -222,17 +247,9 @@ Polymer({
     },
 
     /**
-     * See http://api.highcharts.com/highcharts#chart.spacing
-     *
-     * @default [0,0,25,0]
-     */
-    spacing: {
-      type: Array,
-      value: [0,0,25,0]
-    },
-
-    /**
      * See http://api.highcharts.com/highcharts#chart.
+     *
+     * Can only be statically configured (not data-bindable).
      *
      * @default "x"
      */
@@ -244,6 +261,7 @@ Polymer({
     /**
      * URL for the chart export server (converts to image / pdf / etc). Default is null.  Can use "http://export.highcharts.com"
      * for demo purposes only...no intellectual property should go through that server.
+     * @private
      */
     exportServerUrl: {
       type: String
@@ -252,6 +270,8 @@ Polymer({
     /**
      * Holds chart state for binding between charts & serialising chart settings.
      *
+     * See the synchronized charts demo (demo-sync.html) for an example.
+     *
      * @default {}
      */
     chartState: {
@@ -259,12 +279,13 @@ Polymer({
       value: function(){
         return {};
       },
-      notify: true//,
-      // observer: 'chartStateUpdated'
+      notify: true
     },
 
     /**
-     * Mapping of color name to rgb value for use in datavis.
+     * Mapping of color name to rgb value for use in datavis (axis, navigator, series, etc. colors)
+     *
+     * Can only be statically configured (not data-bindable).
      *
      * @type {Object}
      * @default Same is datavis colors in px-colors-design
@@ -305,7 +326,19 @@ Polymer({
     },
 
     /**
-     * Mapping of color names in the order they should be applied to chart series.
+     * Mapping of color names (from dataVisColors map) in the order they should be applied to chart series.
+     *
+     * Can only be statically configured (not data-bindable).
+     *
+     * ```
+     *   <px-ts-chart series-color-order='[
+     *       "dv-light-pink",
+     *       "dv-light-brown",
+     *       "dv-light-purple",
+     *       "dv-light-yellow"
+     *     ]',
+     *     ...
+     * ```
      *
      * @type {Array}
      */
@@ -349,10 +382,19 @@ Polymer({
     'chartStateUpdated(chartState.*)'
   ],
 
+  /**
+   * @private
+   */
   defaultYAxisConfig: null,
 
+  /**
+   * @private
+   */
   defaultSeriesConfig: null,
 
+  /**
+   * @private
+   */
   defaultLegendTop: {
     enabled: true,
     useHTML: true,
@@ -368,6 +410,9 @@ Polymer({
     }
   },
 
+  /**
+   * @private
+   */
    defaultLegendRight: {
      enabled: true,
      verticalAlign: 'top',
