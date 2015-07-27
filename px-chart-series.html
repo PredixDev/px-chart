@@ -9,9 +9,42 @@
 <!--
 Element defining a chart series
 
-##### Usage
+### Usage
 
-    <px-chart-series data="..." id="..."></px-chart-series>
+#### Data
+
+    <px-chart-series data="{{...}}" id="hpt-acc-position-cruise"></px-chart-series>
+
+    <px-chart-series name="The Display Name" line-width="5" lower-threshold="12" upper-threshold="16" id="hpt-acc-position-cruise" marker='{"enabled": false, "radius": 15}' data="{{...}}"></px-chart-series>
+
+```js
+  // Expected data format:
+   [
+      [1397102460000, 11.4403],
+      [1397139660000, 13.1913],
+      [1397177400000, 12.8485],
+      [1397228040000, 10.975]
+    ]
+```
+
+#### Series Object
+
+    <px-chart-series id="my-series"
+      series-obj-name-key="myName"
+      series-obj-data-key="myData"></px-chart-series>
+
+```js
+  document.querySelector('#my-series').seriesObj = {
+          myData: [
+              [1397102460000, 11.4403],
+              [1397139660000, 13.1913],
+              [1397177400000, 12.8485],
+              [1397228040000, 10.975]],
+          myName: 'foo'
+      };
+  ```
+
+#### Using iron-ajax
 
     <px-chart-series id="..." upper-threshold="0.75" lower-threshold="0.25">
       <iron-ajax
@@ -19,9 +52,6 @@ Element defining a chart series
           handleas="json"></iron-ajax>
     </px-chart-series>
 
-    <px-chart-series series-obj="..."
-      series-obj-name-key="theName"
-      series-obj-data-key="theData"></px-chart-series>
 
 @element px-chart-series
 @blurb Element defining a chart series
@@ -63,9 +93,9 @@ Polymer({
     /**
      * Events associated with the series, an Array of Objects with the keys:
      *
-     * "time" {Number}, a unix timestamp of the event time
-     * "id" {String}, unique id of the event
-     * "label" {String}, the text label associated with the event
+     * * "time" {Number}, a unix timestamp of the event time
+     * * "id" {String}, unique id of the event
+     * * "label" {String}, the text label associated with the event
      *
      * Fires a "dataEvents-changed" event via the "notify" flag when the events changes, the assumption is that the chart will
      * listen for this event.
@@ -80,6 +110,8 @@ Polymer({
     /**
      * Unique id of this series
      *
+     * Can only be statically configured (not data-bindable).
+     *
      * @type {String}
      */
     id: {
@@ -89,6 +121,8 @@ Polymer({
     /**
      * Display name of the series, defaults to id
      *
+     * Can only be statically configured (not data-bindable).
+     *
      * @type {String}
      */
     name: {
@@ -97,6 +131,8 @@ Polymer({
 
     /**
      * The width of the line for this series
+     *
+     * Can only be statically configured (not data-bindable).
      *
      * @type {Number}
      * @default 1
@@ -108,6 +144,10 @@ Polymer({
 
     /**
      * Config for each plotted point on the line
+     *
+     *    <px-chart-series marker='{"enabled": false, "radius": 15}'
+     *
+     * Can only be statically configured (not data-bindable).
      *
      * @type {Object}
      */
@@ -122,6 +162,10 @@ Polymer({
     /**
      * Config for the tooltip for each point
      *
+     *     <px-chart-series id="my-series" tooltip='{"valueDecimals": 3}' ...
+     *
+     * Can only be statically configured (not data-bindable).
+     *
      * @type {Object}
      */
     tooltip: {
@@ -133,6 +177,7 @@ Polymer({
 
     /**
      * Optional object that contains members that map to #name and #data via the seriesObjDataKey and seriesObjNameKey,
+     *
      * e.g. seriesObj[seriesObjDataKey] and seriesObj[seriesObjNameKey]
      *
      * @type {Object}
@@ -145,6 +190,8 @@ Polymer({
     /**
      * Key in the optional seriesObj to be used for #data
      *
+     * Can only be statically configured (not data-bindable).
+     *
      * @type {String}
      * @default "series"
      */
@@ -155,6 +202,8 @@ Polymer({
 
     /**
      * Key in the optional seriesObj to be used for #name
+     *
+     * Can only be statically configured (not data-bindable).
      *
      * @type {String}
      * @default "name"
@@ -167,6 +216,8 @@ Polymer({
     /**
      * Key in the optional seriesObj to be used for #events
      *
+     * Can only be statically configured (not data-bindable).
+     *
      * @type {String}
      * @default "events"
      */
@@ -178,6 +229,8 @@ Polymer({
     /**
      * Optional declaration of which y axis id this series should be plotted against, if more than one.
      *
+     * Can only be statically configured (not data-bindable).
+     *
      * @type {String}
      */
     axisId: {
@@ -187,6 +240,8 @@ Polymer({
     /**
      * Optional. Upper value beyond which the data should be shown as "above threshold".
      *
+     * Can only be statically configured (not data-bindable).
+     *
      * @type {Number}
      */
     upperThreshold: {
@@ -195,6 +250,8 @@ Polymer({
 
     /**
      * Optional. Lower value beyond which the data should be shown as "above threshold".
+     *
+     * Can only be statically configured (not data-bindable).
      *
      * @type {Number}
      */
@@ -230,6 +287,9 @@ Polymer({
     }
   },
 
+  /**
+   * @private
+   */
   fireAjax: function(ironAjaxEl) {
     var _this = this;
     var fireFn = function(ironAjaxEl) {
@@ -252,6 +312,8 @@ Polymer({
    *
    * @param newObj
    * @param oldObj
+   *
+   * @private
    */
   seriesObjObserver: function(newObj, oldObj) {
     if (!newObj) {
@@ -272,6 +334,8 @@ Polymer({
    * Builds a returns an object to be passed into highcharts for this series
    *
    * @return {Object}
+   *
+   * @private
    */
   buildConfig: function() {
     var config = {};

@@ -38,6 +38,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
       /**
        * Unique id of this axis, primarily for associating series to it
        *
+       * Can only be statically configured (not data-bindable).
+       *
        * @type {String}
        */
       id: {
@@ -46,6 +48,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
 
       /**
        * http://api.highcharts.com/highcharts#yAxis.lineColor
+       *
+       * Can only be statically configured (not data-bindable).
        */
       lineColor: {
         type: String
@@ -53,6 +57,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
 
       /**
        * http://api.highcharts.com/highcharts#yAxis.lineWidth
+       *
+       * Can only be statically configured (not data-bindable).
        */
       lineWidth: {
         type: Number
@@ -60,6 +66,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
 
       /**
        * Unique id of this axis, primarily for associating series to it
+       *
+       * Can only be statically configured (not data-bindable).
        *
        * @type {Number}
        */
@@ -70,6 +78,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
       /**
        * Unique id of this axis, primarily for associating series to it
        *
+       * Can only be statically configured (not data-bindable).
+       *
        * @type {Number}
        */
       max: {
@@ -78,6 +88,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
 
       /**
        * http://api.highcharts.com/highcharts#yAxis.gridLineWidth
+       *
+       * Can only be statically configured (not data-bindable).
        */
       gridLineWidth: {
         type: Number
@@ -85,6 +97,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
 
       /**
        * http://api.highcharts.com/highcharts#yAxis.tickInterval
+       *
+       * Can only be statically configured (not data-bindable).
        */
       tickInterval: {
         type: Number
@@ -92,6 +106,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
 
       /**
        * http://api.highcharts.com/highcharts#yAxis.dateTimeLabelFormats
+       *
+       * Can only be statically configured (not data-bindable).
        */
       dateTimeLabelFormats: {
         type: Object
@@ -99,6 +115,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
 
       /**
        * http://api.highcharts.com/highcharts#yAxis.offset
+       *
+       * Can only be statically configured (not data-bindable).
        */
       offset: {
         type: Number,
@@ -107,6 +125,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
 
       /**
        * http://api.highcharts.com/highcharts#yAxis.startOnTick
+       *
+       * Can only be statically configured (not data-bindable).
        */
       startOnTick: {
         type: Boolean
@@ -114,6 +134,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
 
       /**
        * http://api.highcharts.com/highcharts#yAxis.tickColor
+       *
+       * Can only be statically configured (not data-bindable).
        */
       tickColor: {
         type: String
@@ -121,6 +143,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
 
       /**
        * http://api.highcharts.com/highcharts#yAxis.tickWidth
+       *
+       * Can only be statically configured (not data-bindable).
        */
       tickWidth: {
         type: Number,
@@ -130,6 +154,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
       /**
        * http://api.highcharts.com/highcharts#yAxis.type
        *
+       * Can only be statically configured (not data-bindable).
+       *
        * @type {String}
        */
       type: {
@@ -138,6 +164,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
 
       /**
        * http://api.highcharts.com/highcharts#yAxis.title
+       *
+       * Can only be statically configured (not data-bindable).
        */
       title: {
         type: Object,
@@ -148,6 +176,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
 
       /**
        * http://api.highcharts.com/highcharts#yAxis.labels
+       *
+       * Can only be statically configured (not data-bindable).
        */
       labels: {
         type: Object,
@@ -161,6 +191,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
 
       /**
        * http://api.highcharts.com/highcharts#yAxis.opposite
+       *
+       * Can only be statically configured (not data-bindable).
        */
       opposite: {
         type: Boolean,
@@ -170,6 +202,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
       /**
        * List of property names in the axis config that should be given a default color (based on the index of this axis as
        * passed from the containing chart).
+       *
+       * Can only be statically configured (not data-bindable).
        *
        * @type {Array}
        * @default ["tickColor", "lineColor"]
@@ -193,6 +227,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
      *
      * @param {String} defaultColor. Optional. Color to which to default the axis defaultColorProps
      * @return {Object}
+     *
+     * @private
      */
     buildConfig: function(defaultColor) {
       var config = {};
@@ -217,6 +253,8 @@ Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highchart
      *
      * @param {Object} config Axis config object being built
      * @param {String} color Hex color to be filled in for each undefined property in the config that appears in this.defaultColorProps
+     *
+     * @private
      */
     addDefaultColorsByIndex: function(config, color) {
       this.defaultColorProps.forEach(function(propName) {
