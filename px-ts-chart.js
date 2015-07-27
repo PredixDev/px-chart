@@ -261,7 +261,8 @@ Polymer({
     /**
      * URL for the chart export server (converts to image / pdf / etc). Default is null.  Can use "http://export.highcharts.com"
      * for demo purposes only...no intellectual property should go through that server.
-     * @private
+     *
+     * Can only be statically configured (not data-bindable).
      */
     exportServerUrl: {
       type: String
