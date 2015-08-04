@@ -11,8 +11,21 @@ Template element for default time controls on a time series chart
 
 ##### Usage
 
-    <px-ts-chart-controls>
-      <button class="btn">My Sepcial button</button>
+    <px-ts-chart-controls data-controls>
+      <button class="btn">My Special button</button>
+    </px-ts-chart-controls>
+
+    <px-ts-chart-controls
+        data-controls
+        show-export="true"
+        show-date-range="true">
+    </px-ts-chart-controls>
+
+    <px-ts-chart-controls data-controls zoom-buttons='[]'>
+
+    <px-ts-chart-controls
+        data-controls
+        zoom-buttons='[{"label": "1 m", "value": 1, "unit": "months"},{"label": "3 m", "value": 3, "unit": "months"}]'>
     </px-ts-chart-controls>
 
 @element px-ts-chart-controls
@@ -82,6 +95,8 @@ Template element for default time controls on a time series chart
       /**
        * Whether to show date range control
        *
+       * Can only be statically configured (not data-bindable).
+       *
        * @type {Boolean}
        * @default false
        */
@@ -105,6 +120,8 @@ Template element for default time controls on a time series chart
       /**
        * Whether to show export control
        *
+       * Can only be statically configured (not data-bindable).
+       *
        * @type {Boolean}
        * @default false
        */
@@ -116,12 +133,14 @@ Template element for default time controls on a time series chart
       /**
        * Array of object representing the time zoom buttons.  Each object in the Array has the following members:
        *
-       * "label" {String} The text in the button, e.g. "3 m"
-       * "value" {Number} The time value, e.g. 3
-       * "unit" {String} A momentjs unit string, e.g. "months"
+       * * "label" {String} The text in the button, e.g. "3 m"
+       * * "value" {Number} The time value, e.g. 3
+       * * "unit" {String} A momentjs unit string, e.g. "months"
+       *
+       * Can only be statically configured (not data-bindable).
        *
        * @type {Array}
-       * @default [{label: "1 m", value: 1, unit: "months"},{label: "3 m", value: 3, unit: "months"},{label: "6 m", value: 6, unit: "months"},{label: "1 y", value: 1, unit: "year"},]
+       * @default [{label: "1 m", value: 1, unit: "months"},{label: "3 m", value: 3, unit: "months"},{label: "6 m", value: 6, unit: "months"},{label: "1 y", value: 1, unit: "year"}]
        */
       zoomButtons: {
         type: Array,
@@ -136,16 +155,23 @@ Template element for default time controls on a time series chart
 
       /**
        * Whether the zoomButtons array is empty
+       * @private
        */
       hasZoomButtons: {
         type: Boolean,
         computed: '_zoomButtonsNotEmpty(zoomButtons)'
       } ,
 
+      /**
+       * @private
+       */
       rangeStartDisplayStr: {
         type: String
       },
 
+      /**
+       * @private
+       */
       rangeEndDisplayStr: {
         type: String
       }
@@ -164,6 +190,7 @@ Template element for default time controls on a time series chart
      * Sets the range start / end given number of months back from present
      *
      * @param {Event} evt Event with a target that has a data-time-value and data-unit attr or Number of months back from present
+     * @private
      */
     setRangeFromPresent: function (evt) {
       var value = evt.target.getAttribute("data-time-value");
@@ -173,6 +200,7 @@ Template element for default time controls on a time series chart
 
     /**
      * Parses rangeStartDisplayStr and rangeEndDisplayStr and sets actual range based on them
+     * @private
      */
     rangeSetHandler: function () {
       var mStart = moment(this.rangeStartDisplayStr);
@@ -186,6 +214,7 @@ Template element for default time controls on a time series chart
      * Fires a refresh event on the chart
      *
      * @param {Event} evt
+     * @private
      */
     refreshHandler: function (evt) {
       Polymer.dom(this).parentNode.refreshAllSeries();
@@ -195,6 +224,7 @@ Template element for default time controls on a time series chart
      * Passes export call from the controls to the chart
      *
      * @param {Event} evt
+     * @private
      */
     exportHandler: function (evt) {
       Polymer.dom(this).parentNode.chart.exportChart();

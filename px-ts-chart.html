@@ -11,26 +11,78 @@
 <!--
 Element that defines a time series chart, using sub-elements for axis, series and controls configuration.
 
-##### Minimal Usage
+See the demo page (demo.html) for a working example.
+
+See px-chart-series, px-chart-yaxis, and px-ts-chart-controls for more API docs (selector in upper left corner).
+
+#### Minimal Usage - 1 series of data
 
     <px-ts-chart>
       <px-chart-series id="hpt-acc-position-cruise" data="{{...}}"></px-chart-series>
     </px-ts-chart>
 
+```js
+// Expected data format
+[
+  [1397102460000, 11.4403],
+  [1397139660000, 13.1913],
+  [1397177400000, 12.8485],
+  [1397228040000, 10.975],
+  [1397248260000, 12.9377],
+  [1397291280000, 13.3795],
+  [1397318100000, 13.0869],
+  [1397342100000, 17.3758]
+]
+// or
+[
+  {'x': 1397102460000, 'y': 11.4403},
+  {'x': 1397139660000, 'y': 13.1913},
+  {'x': 1397177400000, 'y': 12.8485},
+  {'x': 1397228040000, 'y': 10.975},
+  {'x': 1397248260000, 'y': 12.9377},
+  {'x': 1397291280000, 'y': 13.3795},
+  {'x': 1397318100000, 'y': 13.0869},
+  {'x': 1397342100000, 'y': 17.3758}
+]
+```
 
-##### Full configuration
+
+#### Full configuration - multiple series, axis, chart controls
 
     <px-ts-chart>
-      <px-ts-chart-controls data-controls></px-ts-chart-controls>
-      <px-chart-yaxis offset="0"></px-chart-yaxis>
-      <px-chart-yaxis opposite="true" offset="-2.5"></px-chart-yaxis>
-      <px-chart-series id="fan-vibration-cruise" axis-index="1" data="{{...}}"></px-chart-series>
-      <px-chart-series id="hpt-acc-position-cruise" axis-index="2">
-        <iron-ajax
-            url="../demo-data/aviation/hpt-acc-position-cruise.json"
-            handleas="json"></iron-ajax>
-      </px-chart-series>
+        <px-ts-chart-controls data-controls show-refresh="true" show-date-range="true"></px-ts-chart-controls>
+        <px-chart-yaxis offset="0" id="fan"></px-chart-yaxis>
+        <px-chart-yaxis opposite="true" offset="-10" id="vib"></px-chart-yaxis>
+        <px-chart-series id="fan-vibration-cruise" data="{{myData}}" axis-id="fan"></px-chart-series>
+        <px-chart-series id="hpt-acc-position-cruise" data="{{myData2}}" axis-id="vib"></px-chart-series>
     </px-ts-chart>
+
+
+#### Dynamically adding series
+
+      var myChart = document.querySelector("#my-chart");
+
+      fetchMyData().then(function(firstSeries) {
+        firstSeries.id = firstSeries.name; // you must have an id (you can just set it equal to the series name)
+        myChart.addSeries(firstSeries);
+      });
+
+```js
+// Sample response
+{
+  "name": "delta-egt-cruise",
+  "series: [
+    [1397102460000, 11.4403],
+    [1397139660000, 13.1913],
+    [1397177400000, 12.8485],
+    [1397228040000, 10.975],
+    [1397248260000, 12.9377],
+    [1397291280000, 13.3795],
+    [1397318100000, 13.0869],
+    [1397342100000, 17.3758]
+  ]
+}
+```
 
 @element px-time-series
 @demo demo.html
