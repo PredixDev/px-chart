@@ -976,7 +976,7 @@ Polymer({
         borderColor: this.dataVisColors["dv-light-gray"],
         shadow: false,
         style: {
-          fontFamily: 'GE Sans',
+          fontFamily: 'inherit',
           fontSize: '0.8rem'
         },
         headerFormat: "",
