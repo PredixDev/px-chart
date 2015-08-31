@@ -29,7 +29,7 @@
 
 </head>
 
-<body>
+<body unresolved>
 
 <section class="u-mb+">
   See also <a href="demo-sync.html">Demo of chart-chart communication</a>.
@@ -39,7 +39,11 @@
   <h1>Minimal Configuration</h1>
   <px-ts-chart export-server-url="http://export.highcharts.com"> <!-- WARNING, export.highcharts.com is a public server for demo only -->
     <px-ts-chart-controls data-controls show-export="true" zoom-buttons="[]"></px-ts-chart-controls>
-    <px-chart-series id="fan-vibration-cruise"></px-chart-series>
+    <px-chart-series id="fan-vibration-cruise">
+      <iron-ajax
+        url="/demo-data/aviation/fan-vibration-cruise.json"
+        handle-as="json"></iron-ajax>
+    </px-chart-series>
   </px-ts-chart>
 </section>
 
@@ -53,12 +57,12 @@
     <px-chart-yaxis id="anotherAxis" opposite="true" offset="-2.5"></px-chart-yaxis>
     <px-chart-series id="delta-egt-cruise" axis-id="firstAxis" upper-threshold="30.5" lower-threshold="6.25">
       <iron-ajax
-          url="demo-data/aviation/delta-egt-cruise.json"
+          url="/demo-data/aviation/delta-egt-cruise.json"
           handle-as="json"></iron-ajax>
     </px-chart-series>
     <px-chart-series id="fan-vibration-cruise" axis-id="anotherAxis">
       <iron-ajax
-          url="demo-data/aviation/fan-vibration-cruise.json"
+          url="/demo-data/aviation/fan-vibration-cruise.json"
           handle-as="json"></iron-ajax>
     </px-chart-series>
   </px-ts-chart>
@@ -78,23 +82,12 @@
 </section>
 
 <script>
-  //For minimal config demo only...grab some data to shove into minimal config from the outside...
-  var ironAjaxEl = document.createElement("iron-ajax");
-  ironAjaxEl.url = "demo-data/aviation/fan-vibration-cruise.json";
-  ironAjaxEl.handleAs = "json";
-  ironAjaxEl.addEventListener("response", function(evt) {
-    var minimalConfigChartSeries = document.querySelector('.minimal-config-example px-chart-series');
-    minimalConfigChartSeries.data = evt.detail.response.series;
-  });
-
-  //fetch date for minimal config chart
-  ironAjaxEl.generateRequest();
 
   //register series refresh listener for full config chart:
   Polymer.dom(document).querySelector('.full-config-example px-ts-chart').addEventListener("refresh-series", function(evt) {
     if (evt.detail === "fan-vibration-cruise") {
       var ironAjaxEl = document.createElement('iron-ajax');
-      ironAjaxEl.url = '../demo-data/aviation/fan-vibration-cruise2.json';
+      ironAjaxEl.url = '/demo-data/aviation/fan-vibration-cruise2.json';
       ironAjaxEl.handleAs = "json";
       ironAjaxEl.addEventListener('response', function(evt) {
         var tsChart = Polymer.dom(document).querySelector('.full-config-example px-ts-chart');

@@ -1,29 +1,38 @@
 {
-    "name": "px-ts-chart",
-    "author": "General Electric",
-    "description": "A Px component",
-    "version": "0.3.2",
-    "private": true,
-    "fwk": "polymer08",
-    "extName" : null,
-    "repository": {
-        "type": "git",
-        "url": "https://github.sw.ge.com/PredixWidgetCatalog/px-time-series.git"
-    },
-    "homepage": "http://predix.sw.ge.com/",
-    "dependencies": {
-        "node-sass-import-once": "^1.2.0"
-    },
-    "devDependencies": {
-        "grunt": "^0.4.5",
-        "grunt-autoprefixer": "^3.0.3",
-        "grunt-sass": "^1.0.0",
-        "grunt-shell": "~v1.1.1",
-        "grunt-contrib-clean": "~v0.6.0",
-        "grunt-contrib-jshint": "~v0.10.0",
-        "grunt-contrib-copy": "^0.8.0",
-        "grunt-contrib-watch": "~v0.6.1",
-        "grunt-dep-serve": "git+https://github.com/GeneralElectric/grunt-dep-serve.git#master",
-        "webdriver-support": "git://github.build.ge.com/DT/webdriver-support.git#v2.2.0"
-    }
+  "name": "px-ts-chart",
+  "author": "General Electric",
+  "description": "A Px component",
+  "version": "0.3.2",
+  "private": true,
+  "fwk": "polymer08",
+  "extName": null,
+  "repository": {
+    "type": "git",
+    "url": "https://github.sw.ge.com/PredixWidgetCatalog/px-time-series.git"
+  },
+  "homepage": "http://predix.sw.ge.com/",
+  "dependencies": {
+    "node-sass-import-once": "^1.2.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-autoprefixer": "^3.0.3",
+    "grunt-sass": "^1.0.0",
+    "grunt-shell": "~v1.1.1",
+    "grunt-contrib-clean": "~v0.6.0",
+    "grunt-contrib-jshint": "~v0.10.0",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-watch": "~v0.6.1",
+    "grunt-dep-serve": "git+https://github.com/GeneralElectric/grunt-dep-serve.git#master",
+    "grunt-karma": "~0.8.2",
+    "karma": "~0.12.0",
+    "karma-chrome-launcher": "~0.1",
+    "karma-coverage": "^0.2.1",
+    "karma-jasmine": "~0.2.0",
+    "karma-junit-reporter": "~0.2.1",
+    "karma-phantomjs-launcher": "~0.1",
+    "karma-script-launcher": "~0.1.0",
+    "karma-spec-reporter": "0.0.13",
+    "load-grunt-tasks": "~0.2.0"
+  }
 }

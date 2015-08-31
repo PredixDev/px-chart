@@ -42,7 +42,7 @@ Polymer({
      * @type {Boolean}
      * @default false
      */
-    navigatorDisabled:{
+    navigatorDisabled: {
       type: Boolean,
       value: false
     },
@@ -83,12 +83,13 @@ Polymer({
       type: Object,
       value: {
         redraw: function() {
+
           var extremes = this.xAxis[0].getExtremes();
           var tsChart = Polymer.dom(this.renderTo).parentNode.parentNode;
 
           if (tsChart.debounce) {//in export case this function will be called outside the realm of a polymer components
             tsChart.debounce(
-              'set-extremes', function () {
+              'set-extremes', function() {
                 this.rangeStart = extremes.min;
                 this.rangeEnd = extremes.max;
               }, 250);
@@ -115,28 +116,28 @@ Polymer({
                 useHTML: true,
                 /* <i class='fa fa-lg u-mr- fa-pencil style-scope px-ts-chart' onclick='alert(this.innerHTML)' title='Annotate'></i> */
                 text: "<i class='fa fa-lg fa-search-plus u-mr- style-scope px-ts-chart'" +
-                  "onclick='" +
-                    "var wc=this;" +
-                    "while(!wc.chart) {" +
-                      "wc = wc.parentNode" +
-                    "}" +
-                    "wc.chart.xAxis[0].setExtremes(" + evt.xAxis[0].min + ", " + evt.xAxis[0].max + ");" +
-                    "wc.chart.xAxis[0].removePlotBand(\"selection\");" +
-                    "wc.setZoom(true);" +
-                    "'" +
-                  "title='Zoom to " +
-                      moment(evt.xAxis[0].min).format('LLL') + " to " +
-                      moment(evt.xAxis[0].max).format('LLL') + ";'>" +
+                "onclick='" +
+                "var wc=this;" +
+                "while(!wc.chart) {" +
+                "wc = wc.parentNode" +
+                "}" +
+                "wc.chart.xAxis[0].setExtremes(" + evt.xAxis[0].min + ", " + evt.xAxis[0].max + ");" +
+                "wc.chart.xAxis[0].removePlotBand(\"selection\");" +
+                "wc.setZoom(true);" +
+                "'" +
+                "title='Zoom to " +
+                moment(evt.xAxis[0].min).format('LLL') + " to " +
+                moment(evt.xAxis[0].max).format('LLL') + ";'>" +
                 "</i>" +
                 "<i class='fa fa-lg u-mr- fa-times style-scope px-ts-chart'" +
-                  "onclick='" +
-                    "var wc=this;" +
-                    "while(!wc.chart) {" +
-                      "wc = wc.parentNode" +
-                    "}" +
-                    "wc.chart.xAxis[0].removePlotBand(\"selection\");" +
-                  "'" +
-                  "title='Close selection'>" +
+                "onclick='" +
+                "var wc=this;" +
+                "while(!wc.chart) {" +
+                "wc = wc.parentNode" +
+                "}" +
+                "wc.chart.xAxis[0].removePlotBand(\"selection\");" +
+                "'" +
+                "title='Close selection'>" +
                 "</i>"
               }
             });
@@ -277,7 +278,7 @@ Polymer({
      */
     chartState: {
       type: Object,
-      value: function(){
+      value: function() {
         return {};
       },
       notify: true
@@ -414,53 +415,45 @@ Polymer({
   /**
    * @private
    */
-   defaultLegendRight: {
-     enabled: true,
-     verticalAlign: 'top',
-     align: 'right',
-     layout: 'vertical',
-     y: 50,
-     x: -125,
-     floating: false,
-     itemMarginTop: 5,
-     itemMarginBottom: 15,
-     itemStyle: {
-       fontSize: 'inherit',
-       fontWeight: 'normal'
-     }
-   },
+  defaultLegendRight: {
+    enabled: true,
+    verticalAlign: 'top',
+    align: 'right',
+    layout: 'vertical',
+    y: 50,
+    x: -125,
+    floating: false,
+    itemMarginTop: 5,
+    itemMarginBottom: 15,
+    itemStyle: {
+      fontSize: 'inherit',
+      fontWeight: 'normal'
+    }
+  },
 
   /**
    * @private
    */
-  chartStateUpdated: function(evt){
-    var chartExtremesHaveChanged = function (self){
+  chartStateUpdated: function(evt) {
+    var chartExtremesHaveChanged = function(self) {
       var currentChartExtremes = self.chart.xAxis[0].getExtremes();
       return (currentChartExtremes.max !== evt.value.chartZoom.max || currentChartExtremes.min !== evt.value.chartZoom.min);
     };
 
-    var chartAndEventAreValid= function(self){
-      return(self.chart && evt.value.srcElement);
+    var chartAndEventAreValid = function(self) {
+      return (self.chart && evt.value.srcElement);
     };
 
-    if (chartAndEventAreValid(this)){
+    if (chartAndEventAreValid(this)) {
       if (chartExtremesHaveChanged(this)) {
-        if (evt.value.srcElement !== this){
+        if (evt.value.srcElement !== this) {
           this.chart.xAxis[0].setExtremes(evt.value.chartZoom.min, evt.value.chartZoom.max, true);
         }
       }
     }
   },
 
-  /**
-   * Lifecycle callback to create the Highchart 'chart' object and consume the config / series elements
-   */
-  ready: function() {
-
-    if (!this.legend) {
-      this.legend = this.legendRight ? this.defaultLegendRight : this.defaultLegendTop;
-    }
-
+  _initializeMargins: function() {
     var margin = this.margin;
     if (margin && margin[0] === 50) {//adjust top margin if zoom controls not present
       var controls = Polymer.dom(this).querySelector('px-ts-chart-controls');
@@ -478,11 +471,11 @@ Polymer({
         this.margin = [margin[0], null, margin[2], margin[3]];
       }
     }
-    var chartConfig = this.buildConfig();
+  },
+
+  _addAxisAndSeries: function() {
+
     var _this = this;
-
-
-    this.chart = new Highcharts.StockChart(chartConfig);
 
     var axisEls = Polymer.dom(this).querySelectorAll("px-chart-yaxis");
     var axisElsProcessed = 0;
@@ -492,9 +485,6 @@ Polymer({
       this.chart.yAxis[0].update(this.defaultYAxisConfig.buildConfig(this.dataVisColors["dv-light-gray"]), /*redraw*/false);
 
       this.addInitialSeries();
-      setTimeout(function() {
-        _this.chart.reflow();
-      }, 500);
     }
     else {
       axisEls.forEach(function(axisEl) {
@@ -510,6 +500,25 @@ Polymer({
         axisEl.axisReady ? yAxisReadyHandler(axisEl) : axisEl.addEventListener("y-axis-ready", yAxisReadyHandler);
       });
     }
+
+  },
+
+  /**
+   * Lifecycle callback to create the Highchart 'chart' object and consume the config / series elements
+   *
+   * This is in attached because the size of the parent container for the Highchart is set in attached
+   */
+  attached: function() {
+
+    if (!this.legend) {
+      this.legend = this.legendRight ? this.defaultLegendRight : this.defaultLegendTop;
+    }
+
+    this._initializeMargins();
+
+    this.chart = new Highcharts.StockChart(this.buildConfig());
+
+    this._addAxisAndSeries();
   },
 
   listeners: {
@@ -519,7 +528,7 @@ Polymer({
   /**
    * @private
    */
-  firechartStateUpdated: function(evt){
+  firechartStateUpdated: function(evt) {
     var extremes = this.chart.xAxis[0].getExtremes();
     var tsChart = Polymer.dom(this).node;
     tsChart.debounce(
@@ -538,20 +547,15 @@ Polymer({
     var _this = this;
     var seriesElReadyHandler = function(seriesElOrEvt) {
       var seriesEl = seriesElOrEvt.target || seriesElOrEvt;
-      _this.addSeries(seriesEl.buildConfig(), /*noRedraw*/true);
+      _this.addSeries(seriesEl.buildConfig(), /*noRedraw*/false);
       seriesEl.addEventListener("data-changed", function(evt) {
         _this.updateSeries(seriesEl.id, evt.detail.value, /*noRedraw*/false);
       });
       seriesEl.addEventListener("data-events-changed", function(evt) {
         _this.updateSeriesEvents({id: seriesEl.id}, evt.detail.value, /*noRedraw*/false);
       });
-      _this.chart.redraw();
-      _this.debounce(
-        'chart-reflow', function () {
-          _this.chart.reflow();
-        }, 50);
     };
-    seriesEls.forEach(function (seriesEl) {
+    seriesEls.forEach(function(seriesEl) {
       seriesEl.seriesReady ? seriesElReadyHandler(seriesEl) : seriesEl.addEventListener("series-ready", seriesElReadyHandler);
     });
   },
@@ -561,7 +565,7 @@ Polymer({
    *
    * @private
    */
-  rangeObserver: function () {
+  rangeObserver: function() {
     var controlsEl = Polymer.dom(this).querySelector("[data-controls]");
     if (controlsEl && controlsEl.set) {
       var mStart = moment(this.rangeStart);
@@ -626,7 +630,7 @@ Polymer({
       this.updateSeriesEvents(seriesConfig, seriesConfig.dataEvents, /*noRedraw*/true);
       this.chart.addSeries(seriesConfig, !noRedraw);
       if (!noRedraw) {
-        this.chart.reflow();
+        this.chart.redraw();
       }
     }
   },
@@ -656,16 +660,16 @@ Polymer({
       var thresholdConfig = {
         dashStyle: "ShortDash",
         color: seriesColor,
-        value : thresholdValue,
+        value: thresholdValue,
         id: id,
-        width : 1,
-        label : {
+        width: 1,
+        label: {
           align: yAxis.options.opposite ? "right" : "left",
           style: {
             fontSize: '0.8rem',
             color: seriesColor
           },
-          text : thresholdValue
+          text: thresholdValue
         }
       };
       yAxis.addPlotLine(thresholdConfig);
@@ -685,7 +689,7 @@ Polymer({
     }
     this.chart.get(seriesId).setData(data, !noRedraw);
     if (!noRedraw) {
-      this.chart.reflow();
+      this.chart.redraw();
     }
   },
 
@@ -701,12 +705,12 @@ Polymer({
   updateSeriesEvents: function(seriesConfig, events, noRedraw) {
     if (events) {
       var _this = this;
-      events.forEach(function (event) {
+      events.forEach(function(event) {
         var eventConfig = {
           color: _this.dataVisColors["dv-light-gray"],
-          value : event.time,
+          value: event.time,
           id: event.id,
-          width : 2,
+          width: 2,
           textAlign: "left",
           label: {
             align: "top",
@@ -716,7 +720,7 @@ Polymer({
               fontSize: '0.8rem',
               color: _this.dataVisColors["dv-basic-red"]
             },
-            text: "<span class='style-scope px-ts-chart data-event-icon' title='" +  event.label + "' style='cursor:pointer; display:block; margin-top: -1.10rem; margin-left:-0.87rem'><i class='fa fa-lg fa-exclamation-triangle style-scope px-ts-chart'></i> </span>"
+            text: "<span class='style-scope px-ts-chart data-event-icon' title='" + event.label + "' style='cursor:pointer; display:block; margin-top: -1.10rem; margin-left:-0.87rem'><i class='fa fa-lg fa-exclamation-triangle style-scope px-ts-chart'></i> </span>"
           }
         };
         _this.chart.xAxis[0].addPlotLine(eventConfig);
@@ -744,14 +748,14 @@ Polymer({
     var nav = this.chart.get('nav');
     var series = null;
     nav.setData([]);
-    if(this.chart.series.length === 0) {
+    if (this.chart.series.length === 0) {
       // no series
-    } else if(this.chart.series[0].name === "Navigator") {
+    } else if (this.chart.series[0].name === "Navigator") {
       series = this.chart.series[1];
     } else {
       series = this.chart.series[0];
     }
-    if(series) {
+    if (series) {
       nav.setData(series.options.data, true);
     }
   },
@@ -773,7 +777,9 @@ Polymer({
    */
   togglePointMarkers: function(seriesIds) {
     var _this = this;
-    var seriesToUpdate = seriesIds ? seriesIds.map(function(id) {return _this.chart.get(id)}) : this.chart.series;
+    var seriesToUpdate = seriesIds ? seriesIds.map(function(id) {
+      return _this.chart.get(id)
+    }) : this.chart.series;
     seriesToUpdate.forEach(function(series) {
       var existingMarkerOpts = series.options.marker;
       series.update({marker: {enabled: (!existingMarkerOpts || !existingMarkerOpts.enabled)}}, /*redraw*/false);
@@ -790,7 +796,7 @@ Polymer({
    *
    * @private
    */
-  hasExtremeChanged: function (start, end) {
+  hasExtremeChanged: function(start, end) {
     var extremes = this.chart.xAxis[0].getExtremes();
     return extremes.min !== start || extremes.max !== end;
   },
@@ -798,7 +804,7 @@ Polymer({
   /**
    * Fires one "refresh-series" event for each series on the chart, each event has the id of the series.
    */
-  refreshAllSeries: function () {
+  refreshAllSeries: function() {
     var _this = this;
     this.chart.series.forEach(function(series) {
       _this.fire("refresh-series", series.options.id);
@@ -814,7 +820,7 @@ Polymer({
    *
    * @private
    */
-  setExtremesIfChanged: function (startTime, endTime) {
+  setExtremesIfChanged: function(startTime, endTime) {
     if (this.hasExtremeChanged(startTime, endTime)) {
       this.rangeStart = startTime;
       this.rangeEnd = endTime;
@@ -848,7 +854,10 @@ Polymer({
     var topMargin = this.margin ? this.margin[0] : 0;
     this.$.resetZoom.style.top = (topMargin + 10) + 'px';
     this.$.resetZoom.style.display = this.chartZoomed ? 'block' : 'none';
-    if(this.chart && this.chartZoomed === false) { this.chart.zoomOut(); };
+    if (this.chart && this.chartZoomed === false) {
+      this.chart.zoomOut();
+    }
+    ;
   },
 
   /**
@@ -858,7 +867,7 @@ Polymer({
   buildConfig: function() {
     var self = this;
 
-    var createSeriesColorsArray = function(colors, keysInOrder){
+    var createSeriesColorsArray = function(colors, keysInOrder) {
       return keysInOrder.map(function(key) {
         var color = colors[key];
         if (color) {
@@ -889,7 +898,6 @@ Polymer({
         resetZoomButton: this.resetZoomButton,
         selectionMarkerFill: "rgba(200,231,251,0.5)"
       },
-
 
 
       exporting: {

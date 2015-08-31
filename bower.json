@@ -24,6 +24,8 @@
     "iron-ajax": "PolymerElements/iron-ajax#~v1.0.0"
   },
   "devDependencies": {
+    "jasmine-jquery": "~2.1.0",
+    "jquery": "~2.1.4",
     "iron-component-page": "PolymerElements/iron-component-page#~v1.0.4",
     "px-starter-kit-design": "https://github.build.ge.com/PXd/px-starter-kit-design.git#~0.3.0",
     "px-buttons-design": "https://github.build.ge.com/PXd/px-buttons-design.git#~0.4.0",
