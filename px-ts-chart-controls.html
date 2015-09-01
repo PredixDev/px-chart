@@ -33,8 +33,7 @@ Template element for default time controls on a time series chart
   <template>
     <div>
       <template is="dom-if" if="{{showDateRange}}">
-        <px-rangepicker from="{{rangeStartDisplay}}" to="{{rangeEndDisplay}}"
-                        hidden="{{!isRangeSet}}" class="float--right"></px-rangepicker>
+        <px-rangepicker from="{{rangeStartDisplay}}" to="{{rangeEndDisplay}}" class="float--right"></px-rangepicker>
       </template>
 
       <template is="dom-if" if="{{showExport}}">
@@ -51,9 +50,7 @@ Template element for default time controls on a time series chart
         <span class="u-mr-">Zoom</span>
         <span>
           <template is="dom-repeat" items="[[zoomButtons]]">
-            <button on-click="_setRangeFromPresent" data-time-value$="[[item.value]]" data-unit$="[[item.unit]]"
-                    class="btn">[[item.label]]
-            </button>
+            <button on-click="_setRangeFromPresent" data-time-value$="[[item.value]]" data-unit$="[[item.unit]]" class="btn">[[item.label]]</button>
           </template>
         </span>
       </p>
@@ -151,14 +148,6 @@ Template element for default time controls on a time series chart
       rangeEndMs: {
         type: Object,
         observer: '_updateRangeEndDisplay'
-      },
-
-      /**
-       * @private
-       */
-      isRangeSet: {
-        type: Boolean,
-        value: false
       }
 
     },
@@ -174,22 +163,11 @@ Template element for default time controls on a time series chart
     _updateRangeStartDisplay: function() {
       this.rangeStart = moment(this.rangeStartMs, 'x');
       this.set('rangeStartDisplay', this.rangeStart.format('MM/DD/YYYY hh:mm:ss A'));
-      this._updateRangeSet();
     },
 
     _updateRangeEndDisplay: function() {
       this.rangeEnd = moment(this.rangeEndMs, 'x');
       this.set('rangeEndDisplay', this.rangeEnd.format('MM/DD/YYYY hh:mm:ss A'));
-      this._updateRangeSet();
-    },
-
-    _updateRangeSet: function() {
-      if(this.rangeStart && this.rangeStart.isValid() && this.rangeEnd && this.rangeEnd.isValid()) {
-        this.set('isRangeSet', true);
-      }
-      else {
-        this.set('isRangeSet', false);
-      }
     },
 
     _submitRange: function() {
@@ -198,22 +176,17 @@ Template element for default time controls on a time series chart
       Polymer.dom(this).parentNode.setExtremesIfChanged(newStartMs, newEndMs);
     },
 
-//    /**
-//     * Sets the range start / end given number of months back from present
-//     *
-//     * @param {Event} evt Event with a target that has a data-time-value and data-unit attr or Number of months back from present
-//     */
-//    _setRangeFromPresent: function(evt) {
-//      var value = evt.target.getAttribute("data-time-value");
-//      var unit = evt.target.getAttribute("data-unit");
-//      Polymer.dom(this).parentNode._setRangeFromPresent(value, unit);
-//    },
+    _setRangeFromPresent: function(evt) {
+      var value = evt.target.getAttribute("data-time-value");
+      var unit = evt.target.getAttribute("data-unit");
 
-    /**
-     * Passes export call from the controls to the chart
-     *
-     * @param {Event} evt
-     */
+      var now = moment();
+      var fromTime = moment(now).subtract(value, unit);
+
+      this.set('rangeStartMs', now.format('x'));
+      this.set('rangeEndMs', fromTime.format('x'));
+    },
+
     _exportHandler: function(evt) {
       Polymer.dom(this).parentNode.chart.exportChart();
     }
