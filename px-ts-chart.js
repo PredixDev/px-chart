@@ -11,30 +11,6 @@ Polymer({
   properties: {
 
     /**
-     * Start time of zoom-ed area shown in the navigator
-     *
-     * @type {String}
-     * @default undefined
-     * @private
-     */
-    rangeStart: {
-      type: String,
-      observer: 'rangeObserver'
-    },
-
-    /**
-     * End time of zoom-ed area shown in the navigator
-     *
-     * @type {String}
-     * @default undefined
-     * @private
-     */
-    rangeEnd: {
-      type: String,
-      observer: 'rangeObserver'
-    },
-
-    /**
      * Whether to show the zoom-able / scroll-able area at the bottom of the chart.
      *
      * Can only be statically configured (not data-bindable).
@@ -89,9 +65,9 @@ Polymer({
 
           if (tsChart.debounce) {//in export case this function will be called outside the realm of a polymer components
             tsChart.debounce(
-              'set-extremes', function() {
-                this.rangeStart = extremes.min;
-                this.rangeEnd = extremes.max;
+              'set-extremes', function() { console.log('set rangeStartMs / rangeEndMs', extremes.min, extremes.max);
+                this.rangeStartMs = extremes.min;
+                this.rangeEndMs = extremes.max;
               }, 250);
           }
         },
@@ -381,7 +357,8 @@ Polymer({
   },
 
   observers: [
-    'chartStateUpdated(chartState.*)'
+    'chartStateUpdated(chartState.*)',
+    '_rangeObserver(rangeStartMs, rangeEndMs)'
   ],
 
   /**
@@ -450,6 +427,14 @@ Polymer({
           this.chart.xAxis[0].setExtremes(evt.value.chartZoom.min, evt.value.chartZoom.max, true);
         }
       }
+    }
+  },
+
+  _rangeObserver: function() { console.log('observer');
+    var controlsEl = Polymer.dom(this).querySelector("[data-controls]");
+    if (controlsEl && controlsEl.set) {
+      controlsEl.set("rangeStartMs", this.rangeStartMs);
+      controlsEl.set("rangeEndMs", this.rangeEndMs);
     }
   },
 
@@ -526,6 +511,7 @@ Polymer({
   },
 
   /**
+   * Notify end-user developers values of extremes
    * @private
    */
   firechartStateUpdated: function(evt) {
@@ -558,21 +544,6 @@ Polymer({
     seriesEls.forEach(function(seriesEl) {
       seriesEl.seriesReady ? seriesElReadyHandler(seriesEl) : seriesEl.addEventListener("series-ready", seriesElReadyHandler);
     });
-  },
-
-  /**
-   * Sets display string for start/end range when internal value changes
-   *
-   * @private
-   */
-  rangeObserver: function() {
-    var controlsEl = Polymer.dom(this).querySelector("[data-controls]");
-    if (controlsEl && controlsEl.set) {
-      var mStart = moment(this.rangeStart);
-      var mEnd = moment(this.rangeEnd);
-      controlsEl.set("rangeStartDisplayStr", mStart.isValid() ? mStart.format('L') + " " + mStart.format("hh:ss") : null);
-      controlsEl.set("rangeEndDisplayStr", mEnd.isValid() ? mEnd.format('L') + " " + mEnd.format("hh:ss") : null);
-    }
   },
 
   addYAxis: function(axisConfig, defaultColor, noRedraw) {
@@ -815,20 +786,16 @@ Polymer({
   /**
    * Sets chart extremes to given start and end times
    *
-   * @param {Number} startTime Range start time in milliseconds since the epoch
-   * @param {Number} endTime Range end time in milliseconds since the epoch
-   *
    * @private
    */
-  setExtremesIfChanged: function(startTime, endTime) {
+  setExtremesIfChanged: function(x, y) {
+    var startTime = parseInt(x);
+    var endTime = parseInt(y);
     if (this.hasExtremeChanged(startTime, endTime)) {
-      this.rangeStart = startTime;
-      this.rangeEnd = endTime;
-      this.chart.xAxis[0].setExtremes(this.rangeStart, this.rangeEnd);
-    }
-    else {
-      // always set the visible strings back to a good value
-      this.rangeObserver();
+      console.log('setting extremes! from',  this.rangeStartMs, this.rangeEndMs, ' to ', startTime, endTime);
+      this.rangeStartMs = startTime;
+      this.rangeEndMs = endTime;
+      this.chart.xAxis[0].setExtremes(this.rangeStartMs, this.rangeEndMs);
     }
   },
 

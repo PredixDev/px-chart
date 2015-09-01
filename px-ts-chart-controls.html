@@ -1,10 +1,5 @@
-<!--
-    Relative paths assume component is being run from inside an app or another component, where dependencies are flat
-    siblings. When this component is run from its own repo (e.g. ui tests, examples), we assume the server is started with
-    'grunt depserve' (or similar server setup) to enable correct finding of bower dependencies for local runs
-    See https://github.sw.ge.com/jreichenberg/grunt-dep-serve#why-do-we-need-this
--->
 <link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../px-rangepicker/px-rangepicker.html"/>
 
 <!--
 Template element for default time controls on a time series chart
@@ -38,37 +33,27 @@ Template element for default time controls on a time series chart
   <template>
     <div>
       <template is="dom-if" if="{{showDateRange}}">
-        <span>
-          <label class="label--inline">From</label>
-          <input value="{{rangeStartDisplayStr::change}}" class="text-input input--small" placeholder="HH:MM MM/DD/YYYY"/>
-
-          <label class="label--inline">To</label>
-          <input value="{{rangeEndDisplayStr::change}}" class="text-input input--small" placeholder="HH:MM MM/DD/YYYY"/>
-
-          <button on-click="rangeSetHandler" class="btn u-ml-">Submit</button>
-        </span>
+        <px-rangepicker from="{{rangeStartDisplay}}" to="{{rangeEndDisplay}}"
+                        hidden="{{!isRangeSet}}" class="float--right"></px-rangepicker>
       </template>
 
-      <!-- Removing refresh button temporarily for MVP2 release -->
-      <!--<template is="dom-if" if="{{showRefresh}}">-->
-        <!--<button class="btn btn--icon u-ml-" on-click="refreshHandler" title="Refresh chart">-->
-          <!--<i class="fa fa-refresh"></i>-->
-        <!--</button>-->
-      <!--</template>-->
-
       <template is="dom-if" if="{{showExport}}">
-        <button class="btn btn--icon u-ml-" on-click="exportHandler" title="Export chart">
+        <button class="btn btn--icon u-ml- float--right" on-click="_exportHandler" title="Export chart">
           <i class="fa fa-share-square-o"></i>
         </button>
       </template>
     </div>
 
+    <div class="clearfix"></div>
+
     <template is="dom-if" if="{{hasZoomButtons}}">
-      <p class="u-mb+">
+      <p class="u-mb+ float--right">
         <span class="u-mr-">Zoom</span>
         <span>
           <template is="dom-repeat" items="[[zoomButtons]]">
-            <button on-click="setRangeFromPresent" data-time-value$="[[item.value]]" data-unit$="[[item.unit]]" class="btn">[[item.label]]</button>
+            <button on-click="_setRangeFromPresent" data-time-value$="[[item.value]]" data-unit$="[[item.unit]]"
+                    class="btn">[[item.label]]
+            </button>
           </template>
         </span>
       </p>
@@ -104,18 +89,6 @@ Template element for default time controls on a time series chart
         type: Boolean,
         value: false
       },
-
-      /**
-       * Whether to show refresh control
-       *
-       * @type {Boolean}
-       * @default false
-       */
-//      Removing refresh button temporarily for MVP2 release
-//      showRefresh: {
-//        type: Boolean,
-//        value: false
-//      },
 
       /**
        * Whether to show export control
@@ -160,73 +133,88 @@ Template element for default time controls on a time series chart
       hasZoomButtons: {
         type: Boolean,
         computed: '_zoomButtonsNotEmpty(zoomButtons)'
-      } ,
+      },
 
       /**
+       * Start of range in milliseconds since epoch
        * @private
        */
-      rangeStartDisplayStr: {
-        type: String
+      rangeStartMs: {
+        type: Object,
+        observer: '_updateRangeStartDisplay'
+      },
+
+      /**
+       * End of range in milliseconds since epoch
+       * @private
+       */
+      rangeEndMs: {
+        type: Object,
+        observer: '_updateRangeEndDisplay'
       },
 
       /**
        * @private
        */
-      rangeEndDisplayStr: {
-        type: String
+      isRangeSet: {
+        type: Boolean,
+        value: false
       }
 
     },
 
-    _showDateRangeHandler: function(newValue, oldValue) {
-      console.log(this.className + " show date range= " + newValue + " " + oldValue);
-    },
+    observers: [
+      '_submitRange(rangeStartDisplay, rangeEndDisplay)'
+    ],
 
     _zoomButtonsNotEmpty: function(zoomButtons) {
       return zoomButtons && zoomButtons.length > 0;
     },
 
-    /**
-     * Sets the range start / end given number of months back from present
-     *
-     * @param {Event} evt Event with a target that has a data-time-value and data-unit attr or Number of months back from present
-     * @private
-     */
-    setRangeFromPresent: function (evt) {
-      var value = evt.target.getAttribute("data-time-value");
-      var unit = evt.target.getAttribute("data-unit");
-      Polymer.dom(this).parentNode.setRangeFromPresent(value, unit);
+    _updateRangeStartDisplay: function() {
+      this.rangeStart = moment(this.rangeStartMs, 'x');
+      this.set('rangeStartDisplay', this.rangeStart.format('MM/DD/YYYY hh:mm:ss A'));
+      this._updateRangeSet();
     },
 
-    /**
-     * Parses rangeStartDisplayStr and rangeEndDisplayStr and sets actual range based on them
-     * @private
-     */
-    rangeSetHandler: function () {
-      var mStart = moment(this.rangeStartDisplayStr);
-      var mEnd = moment(this.rangeEndDisplayStr);
-      if (mStart.isValid() && mEnd.isValid()) {
-        Polymer.dom(this).parentNode.setExtremesIfChanged(mStart.valueOf(), mEnd.valueOf());
+    _updateRangeEndDisplay: function() {
+      this.rangeEnd = moment(this.rangeEndMs, 'x');
+      this.set('rangeEndDisplay', this.rangeEnd.format('MM/DD/YYYY hh:mm:ss A'));
+      this._updateRangeSet();
+    },
+
+    _updateRangeSet: function() {
+      if(this.rangeStart && this.rangeStart.isValid() && this.rangeEnd && this.rangeEnd.isValid()) {
+        this.set('isRangeSet', true);
+      }
+      else {
+        this.set('isRangeSet', false);
       }
     },
 
-    /**
-     * Fires a refresh event on the chart
-     *
-     * @param {Event} evt
-     * @private
-     */
-    refreshHandler: function (evt) {
-      Polymer.dom(this).parentNode.refreshAllSeries();
+    _submitRange: function() {
+      var newStartMs = moment(this.rangeStartDisplay, 'MM/DD/YYYY hh:mm:ss A').format('x');
+      var newEndMs = moment(this.rangeEndDisplay, 'MM/DD/YYYY hh:mm:ss A').format('x');
+      Polymer.dom(this).parentNode.setExtremesIfChanged(newStartMs, newEndMs);
     },
+
+//    /**
+//     * Sets the range start / end given number of months back from present
+//     *
+//     * @param {Event} evt Event with a target that has a data-time-value and data-unit attr or Number of months back from present
+//     */
+//    _setRangeFromPresent: function(evt) {
+//      var value = evt.target.getAttribute("data-time-value");
+//      var unit = evt.target.getAttribute("data-unit");
+//      Polymer.dom(this).parentNode._setRangeFromPresent(value, unit);
+//    },
 
     /**
      * Passes export call from the controls to the chart
      *
      * @param {Event} evt
-     * @private
      */
-    exportHandler: function (evt) {
+    _exportHandler: function(evt) {
       Polymer.dom(this).parentNode.chart.exportChart();
     }
   });
