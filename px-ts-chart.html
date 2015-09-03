@@ -8,6 +8,8 @@
 <link rel="import" href="px-chart-series.html"/>
 <link rel="import" href="px-ts-chart-controls.html"/>
 <link rel="import" href="px-chart-yaxis.html"/>
+<link rel="import" href="../google-analytics/google-analytics.html">
+
 <!--
 Element that defines a time series chart, using sub-elements for axis, series and controls configuration.
 
@@ -99,6 +101,7 @@ See px-chart-series, px-chart-yaxis, and px-ts-chart-controls for more API docs 
 <dom-module id="px-ts-chart">
   <link rel="import" type="css" href="css/px-time-series.css"/>
   <template>
+    <google-analytics code="UA-35812695-2"></google-analytics>
     <section role="region">
       <header id="pxChartHeader" class="text--right float--right u-2/3">
         <content></content>

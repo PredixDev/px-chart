@@ -21,7 +21,8 @@
     "annotations": "https://github.com/blacklabel/annotations.git#~1.2.6",
     "moment": "~2.9.0",
     "px-iconography-design": "https://github.build.ge.com/PXd/px-iconography-design.git#~0.2.4",
-    "iron-ajax": "PolymerElements/iron-ajax#~v1.0.0"
+    "iron-ajax": "PolymerElements/iron-ajax#~v1.0.0",
+    "google-analytics": "~0.1.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#~v1.0.4",
