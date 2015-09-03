@@ -1,6 +1,6 @@
 {
   "name": "px-ts-chart",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "main": [
     "px-time-series-chart.html"
   ],
