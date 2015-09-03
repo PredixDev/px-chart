@@ -25,6 +25,7 @@
     "google-analytics": "~0.1.0"
   },
   "devDependencies": {
+    "px-demo-data": "https://github.build.ge.com/PXc/px-demo-data.git#~v0.0.1",
     "iron-component-page": "PolymerElements/iron-component-page#~v1.0.4",
     "px-starter-kit-design": "https://github.build.ge.com/PXd/px-starter-kit-design.git#~0.3.0",
     "px-buttons-design": "https://github.build.ge.com/PXd/px-buttons-design.git#~0.4.0",
