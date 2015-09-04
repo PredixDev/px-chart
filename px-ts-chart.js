@@ -12,6 +12,7 @@ Polymer({
 
     type: {
       type: String,
+      value: 'line'
     },
 
     /**
@@ -864,6 +865,33 @@ Polymer({
           });
         };
 
+        /**
+        * @private
+        */
+        var defaultNavSeries = {
+          type: this.type,
+          marker: {
+            enabled: false
+          },
+          id: 'nav',
+          color: 'transparent',
+          lineColor: this.dataVisColors["dv-dark-blue"],
+          lineWidth: 1
+        };
+
+        /**
+        * @private
+        */
+        var scatterNavSeries = {
+          type: this.type,
+          marker: {
+            enabled: true
+          },
+          id: 'nav',
+          lineColor: this.dataVisColors["dv-dark-blue"],
+          lineWidth: 0
+        };
+
         return {
 
           colors: createSeriesColorsArray(this.dataVisColors, this.seriesColorOrder),
@@ -917,12 +945,7 @@ Polymer({
             margin: 15,
             outlineColor: this.dataVisColors["dv-light-gray"],
             maskFill: 'rgba(200,231,251,0.3)',
-            series: {
-              id: 'nav',
-              color: 'transparent',
-              lineColor: this.dataVisColors["dv-dark-blue"],
-              lineWidth: 2
-            },
+            series: (this.type === 'scatter') ? scatterNavSeries : defaultNavSeries,
             xAxis: {
               gridLineWidth: 0,
               lineColor: this.dataVisColors["dv-dark-blue"],
