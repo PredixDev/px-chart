@@ -381,8 +381,6 @@ Polymer({
     align: 'left',
     layout: 'vertical',
     floating: true,
-    itemMarginTop: 5,
-    itemMarginBottom: 15,
     itemStyle: {
       fontSize: 'inherit',
       fontWeight: 'normal'
@@ -400,8 +398,6 @@ Polymer({
     y: 50,
     x: -125,
     floating: false,
-    itemMarginTop: 5,
-    itemMarginBottom: 15,
     itemStyle: {
       fontSize: 'inherit',
       fontWeight: 'normal'
