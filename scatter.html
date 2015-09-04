@@ -1,0 +1,142 @@
+<!doctype html>
+
+<html>
+<head>
+  <title>px-ts-chart Demo</title>
+
+  <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
+  <script src="../webcomponentsjs/webcomponents.js"></script>
+
+  <!-- just some page-level styling for the demo buttons below each chart...all other CSS inside the charts is cohesive with the component -->
+  <link rel="stylesheet" href="css/px-time-series-sketch.css"/>
+
+  <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
+  <link rel="import" href="../px-theme/px-theme.html"/>
+  <link rel="import" href="../iron-ajax/iron-ajax.html"/>
+  <link rel="import" href="px-ts-chart.html"/>
+
+  <style is="custom-style">
+    html {
+      height: 100%;
+      font-size:0.9375em;
+    }
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 1em;
+    }
+  </style>
+
+</head>
+
+<body unresolved>
+
+<section class="u-mb+">
+  See also <a href="demo-sync.html">Demo of chart-chart communication</a>.
+</section>
+
+<section class="minimal-config-example u-mb+">
+  <h1>Minimal Configuration</h1>
+  <px-ts-chart export-server-url="http://export.highcharts.com"> <!-- WARNING, export.highcharts.com is a public server for demo only -->
+    <px-ts-chart-controls data-controls show-export="true" zoom-buttons="[]"></px-ts-chart-controls>
+    <px-chart-series id="fan-vibration-cruise">
+      <iron-ajax
+        url="bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
+        handle-as="json"></iron-ajax>
+    </px-chart-series>
+  </px-ts-chart>
+</section>
+
+<section class="full-config-example u-mt+">
+
+  <h1>Full Configuration</h1>
+
+  <px-ts-chart>
+    <px-ts-chart-controls data-controls show-refresh="true" show-date-range="true"></px-ts-chart-controls>
+    <px-chart-yaxis id="firstAxis" offset="0"></px-chart-yaxis>
+    <px-chart-yaxis id="anotherAxis" opposite="true" offset="-2.5"></px-chart-yaxis>
+    <px-chart-series id="delta-egt-cruise" axis-id="firstAxis" upper-threshold="30.5" lower-threshold="6.25">
+      <iron-ajax
+          url="bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json"
+          handle-as="json"></iron-ajax>
+    </px-chart-series>
+    <px-chart-series id="fan-vibration-cruise" axis-id="anotherAxis">
+      <iron-ajax
+          url="bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
+          handle-as="json"></iron-ajax>
+    </px-chart-series>
+  </px-ts-chart>
+
+  <p class="u-mt+">
+    Demo controls for bottom chart:
+    <!--Toggle Point Markers:-->
+    <!--<input id="demo-point-toggle" class="toggle__input" type="checkbox"/>-->
+    <!--<label for="demo-point-toggle" class="toggle__label">…</label>-->
+    <button class="btn" onclick="togglePointMarkers()">Toggle Point Markers</button>
+    <button class="btn" onclick="addSeries('core-vibe-rear-cruise', '../bower_components/px-demo-data/demo-data/aviation/core-vibe-rear-cruise.json')">Add Core Vibration Series</button>
+    <button class="btn" onclick="removeSeries('core-vibe-rear-cruise')">Remove Core Vibration Series</button>
+    <button class="btn" onclick="addSeries('fan-vibration-cruise', '../bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json')">Add Fan Vibration Series</button>
+        <button class="btn" onclick="removeSeries('fan-vibration-cruise')">Remove Fan Vibration Series</button>
+  </p>
+
+</section>
+
+<script>
+
+  //register series refresh listener for full config chart:
+  Polymer.dom(document).querySelector('.full-config-example px-ts-chart').addEventListener("refresh-series", function(evt) {
+    if (evt.detail === "fan-vibration-cruise") {
+      var ironAjaxEl = document.createElement('iron-ajax');
+      ironAjaxEl.url = '../bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise2.json';
+      ironAjaxEl.handleAs = "json";
+      ironAjaxEl.addEventListener('response', function(evt) {
+        var tsChart = Polymer.dom(document).querySelector('.full-config-example px-ts-chart');
+        tsChart.updateSeries('fan-vibration-cruise', evt.detail.response.series, /*noRedraw*/false);
+      });
+
+      ironAjaxEl.generateRequest();
+    }
+  });
+
+  function togglePointMarkers(evt){
+    var tsChart = Polymer.dom(document).querySelector('.full-config-example px-ts-chart');
+    tsChart.togglePointMarkers(/*seriesIds*/null);
+  }
+
+
+  function addSeries(seriesId, seriesObjUrl) {
+    var timeSeriesComp = document.querySelector(".full-config-example px-ts-chart");
+    if (timeSeriesComp.chart.get(seriesId)) {
+      console.log("series " + seriesId + " already exists on chart.");
+    }
+    else {
+      var ironAjaxEl = document.createElement("iron-ajax");
+      ironAjaxEl.url = seriesObjUrl;
+      ironAjaxEl.handleAs = "json";
+      ironAjaxEl.addEventListener("response", function(evt) {
+        timeSeriesComp.addSeries({
+            id: seriesId,
+            name: seriesId,
+            data: evt.detail.response.series
+          },
+          /*noRedraw*/false
+        );
+      });
+
+      ironAjaxEl.generateRequest();
+    }
+  }
+
+  function removeSeries (seriesId) {
+    var timeSeriesComp = document.querySelector(".full-config-example px-ts-chart");
+    if (timeSeriesComp.chart.get(seriesId)) {
+      timeSeriesComp.removeSeries(seriesId);
+    }
+    else {
+      console.log("series " + seriesId + " does not exist on chart.");
+    }
+  }
+
+</script>
+</body>
+</html>
