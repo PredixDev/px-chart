@@ -33,7 +33,7 @@ Template element for default time controls on a time series chart
   <template>
     <div>
       <template is="dom-if" if="{{showDateRange}}">
-        <px-rangepicker from="{{rangeStartDisplay}}" to="{{rangeEndDisplay}}" class="float--right"></px-rangepicker>
+        <px-rangepicker range="{{rangeDisplay}}" class="float--right"></px-rangepicker>
       </template>
 
       <template is="dom-if" if="{{showExport}}">
@@ -133,46 +133,53 @@ Template element for default time controls on a time series chart
       },
 
       /**
-       * Start of range in milliseconds since epoch
+       * Range start and end in milliseconds since epoch
+       *
+       * ```
+       * {
+       *    from: {{startMilliseconds}},
+       *    to: {{endMilliseconds}}
+       * }
+       * ```
+       *
        * @private
        */
-      rangeStartMs: {
+      rangeMs: {
         type: Object,
-        observer: '_updateRangeStartDisplay'
-      },
-
-      /**
-       * End of range in milliseconds since epoch
-       * @private
-       */
-      rangeEndMs: {
-        type: Object,
-        observer: '_updateRangeEndDisplay'
+        observer: '_updateRange'
       }
 
     },
 
     observers: [
-      '_submitRange(rangeStartDisplay, rangeEndDisplay)'
+      '_submitRange(rangeDisplay)'
     ],
 
     _zoomButtonsNotEmpty: function(zoomButtons) {
       return zoomButtons && zoomButtons.length > 0;
     },
 
-    _updateRangeStartDisplay: function() {
-      this.rangeStart = moment(this.rangeStartMs, 'x');
-      this.set('rangeStartDisplay', this.rangeStart.format('MM/DD/YYYY hh:mm:ss A'));
-    },
+    _updateRange: function() {
+      var startMoment = moment(this.rangeMs.from, 'x');
+      var endMoment = moment(this.rangeMs.to, 'x');
 
-    _updateRangeEndDisplay: function() {
-      this.rangeEnd = moment(this.rangeEndMs, 'x');
-      this.set('rangeEndDisplay', this.rangeEnd.format('MM/DD/YYYY hh:mm:ss A'));
+      // if either of the range times have changed
+      if (!this.range || !this.range.from.isSame(startMoment, 'second') || !this.range.to.isSame(endMoment, 'second')) {
+        // update the rangepicker with the new range
+        this.range = {
+          from: startMoment,
+          to: endMoment
+        };
+        this.set('rangeDisplay', {
+          from: this.range.from.toISOString(),
+          to: this.range.to.toISOString()
+        });
+      }
     },
 
     _submitRange: function() {
-      var newStartMs = moment(this.rangeStartDisplay, 'MM/DD/YYYY hh:mm:ss A').format('x');
-      var newEndMs = moment(this.rangeEndDisplay, 'MM/DD/YYYY hh:mm:ss A').format('x');
+      var newStartMs = moment(this.rangeDisplay.from, moment.ISO_8601).format('x');
+      var newEndMs = moment(this.rangeDisplay.to, moment.ISO_8601).format('x');
       Polymer.dom(this).parentNode.setExtremesIfChanged(newStartMs, newEndMs);
     },
 
@@ -183,8 +190,10 @@ Template element for default time controls on a time series chart
       var now = moment();
       var fromTime = moment(now).subtract(value, unit);
 
-      this.set('rangeStartMs', now.format('x'));
-      this.set('rangeEndMs', fromTime.format('x'));
+      this.set('rangeMs', {
+        to: now.format('x'),
+        from: fromTime.format('x')
+      });
     },
 
     _exportHandler: function(evt) {

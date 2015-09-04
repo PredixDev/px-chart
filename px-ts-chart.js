@@ -65,7 +65,7 @@ Polymer({
 
           if (tsChart.debounce) {//in export case this function will be called outside the realm of a polymer components
             tsChart.debounce(
-              'set-extremes', function() { console.log('set rangeStartMs / rangeEndMs', extremes.min, extremes.max);
+              'set-extremes', function() {
                 this.rangeStartMs = extremes.min;
                 this.rangeEndMs = extremes.max;
               }, 250);
@@ -430,11 +430,13 @@ Polymer({
     }
   },
 
-  _rangeObserver: function() { console.log('observer');
+  _rangeObserver: function() {
     var controlsEl = Polymer.dom(this).querySelector("[data-controls]");
     if (controlsEl && controlsEl.set) {
-      controlsEl.set("rangeStartMs", this.rangeStartMs);
-      controlsEl.set("rangeEndMs", this.rangeEndMs);
+      controlsEl.set("rangeMs", {
+        from: this.rangeStartMs,
+        to: this.rangeEndMs
+      });
     }
   },
 
@@ -768,8 +770,11 @@ Polymer({
    * @private
    */
   hasExtremeChanged: function(start, end) {
-    var extremes = this.chart.xAxis[0].getExtremes();
-    return extremes.min !== start || extremes.max !== end;
+    if(this.chart && this.chart.xAxis && this.chart.xAxis.length > 0) {
+      var extremes = this.chart.xAxis[0].getExtremes();
+      return extremes.min !== start || extremes.max !== end;
+    }
+    return false;
   },
 
   /**
@@ -792,7 +797,6 @@ Polymer({
     var startTime = parseInt(x);
     var endTime = parseInt(y);
     if (this.hasExtremeChanged(startTime, endTime)) {
-      console.log('setting extremes! from',  this.rangeStartMs, this.rangeEndMs, ' to ', startTime, endTime);
       this.rangeStartMs = startTime;
       this.rangeEndMs = endTime;
       this.chart.xAxis[0].setExtremes(this.rangeStartMs, this.rangeEndMs);

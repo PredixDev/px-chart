@@ -20,7 +20,7 @@
     "annotations": "https://github.com/blacklabel/annotations.git#~1.2.6",
     "moment": "~2.9.0",
     "px-iconography-design": "https://github.build.ge.com/PXd/px-iconography-design.git#~0.2.4",
-    "px-rangepicker": "https://github.build.ge.com/PXc/px-rangepicker.git#~v0.0.3"
+    "px-rangepicker": "https://github.build.ge.com/PXc/px-rangepicker.git#~v0.0.6"
   },
   "devDependencies": {
     "jasmine-jquery": "~2.1.0",
