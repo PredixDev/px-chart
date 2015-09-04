@@ -432,7 +432,7 @@ Polymer({
 
   _rangeObserver: function() {
     var controlsEl = Polymer.dom(this).querySelector("[data-controls]");
-    if (controlsEl && controlsEl.set) {
+    if (controlsEl && controlsEl.set && this.rangeStartMs !== null && this.rangeEndMs !== null) {
       controlsEl.set("rangeMs", {
         from: this.rangeStartMs,
         to: this.rangeEndMs
