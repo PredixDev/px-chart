@@ -10,8 +10,7 @@ module.exports = function(grunt) {
     clean: {
       css: ['css'],
       bower: ['bower_components'],
-      reports: ['reports'],
-      test: ['bower_components/test']
+      reports: ['reports']
     },
 
     sass: {
@@ -75,19 +74,6 @@ module.exports = function(grunt) {
         flatten: true,
         src: '*/px-typography-design/type/*',
         dest: 'type'
-      },
-      test: {
-        files: [
-          {
-            cwd: '',
-            expand: true,
-            src: [
-              '*.html',
-              '*.js'
-            ],
-            dest: 'bower_components/test'
-          }
-        ]
       }
     },
 
@@ -105,15 +91,8 @@ module.exports = function(grunt) {
       options: {
         open: '<%= depserveOpenUrl %>'
       }
-    },
-
-    // Karma Unit configuration
-    karma: {
-      runner: {
-        configFile: 'karma.conf.js',
-        singleRun: true
-      }
     }
+
   });
 
   require('load-grunt-tasks')(grunt);
@@ -131,13 +110,6 @@ module.exports = function(grunt) {
     grunt.task.run('default');
     grunt.task.run('depserve');
   });
-
-  grunt.registerTask('test', 'Test', [
-    'jshint',
-    'clean:test',
-    'copy:test',
-    'karma'
-  ]);
 
   grunt.registerTask('release', 'Release', [
     'clean',

@@ -24,15 +24,6 @@
     "grunt-contrib-copy": "^0.8.0",
     "grunt-contrib-watch": "~v0.6.1",
     "grunt-dep-serve": "git+https://github.com/GeneralElectric/grunt-dep-serve.git#master",
-    "grunt-karma": "~0.8.2",
-    "karma": "~0.12.0",
-    "karma-chrome-launcher": "~0.1",
-    "karma-coverage": "^0.2.1",
-    "karma-jasmine": "~0.2.0",
-    "karma-junit-reporter": "~0.2.1",
-    "karma-phantomjs-launcher": "~0.1",
-    "karma-script-launcher": "~0.1.0",
-    "karma-spec-reporter": "0.0.13",
     "load-grunt-tasks": "~0.2.0"
   }
 }
