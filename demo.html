@@ -41,7 +41,7 @@
     <px-ts-chart-controls data-controls show-export="true" zoom-buttons="[]"></px-ts-chart-controls>
     <px-chart-series id="fan-vibration-cruise">
       <iron-ajax
-        url="/demo-data/aviation/fan-vibration-cruise.json"
+        url="bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
         handle-as="json"></iron-ajax>
     </px-chart-series>
   </px-ts-chart>
@@ -57,12 +57,12 @@
     <px-chart-yaxis id="anotherAxis" opposite="true" offset="-2.5"></px-chart-yaxis>
     <px-chart-series id="delta-egt-cruise" axis-id="firstAxis" upper-threshold="30.5" lower-threshold="6.25">
       <iron-ajax
-          url="/demo-data/aviation/delta-egt-cruise.json"
+          url="bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json"
           handle-as="json"></iron-ajax>
     </px-chart-series>
     <px-chart-series id="fan-vibration-cruise" axis-id="anotherAxis">
       <iron-ajax
-          url="/demo-data/aviation/fan-vibration-cruise.json"
+          url="bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
           handle-as="json"></iron-ajax>
     </px-chart-series>
   </px-ts-chart>
@@ -73,9 +73,9 @@
     <!--<input id="demo-point-toggle" class="toggle__input" type="checkbox"/>-->
     <!--<label for="demo-point-toggle" class="toggle__label">…</label>-->
     <button class="btn" onclick="togglePointMarkers()">Toggle Point Markers</button>
-    <button class="btn" onclick="addSeries('core-vibe-rear-cruise', '../demo-data/aviation/core-vibe-rear-cruise.json')">Add Core Vibration Series</button>
+    <button class="btn" onclick="addSeries('core-vibe-rear-cruise', '../bower_components/px-demo-data/demo-data/aviation/core-vibe-rear-cruise.json')">Add Core Vibration Series</button>
     <button class="btn" onclick="removeSeries('core-vibe-rear-cruise')">Remove Core Vibration Series</button>
-    <button class="btn" onclick="addSeries('fan-vibration-cruise', '../demo-data/aviation/fan-vibration-cruise.json')">Add Fan Vibration Series</button>
+    <button class="btn" onclick="addSeries('fan-vibration-cruise', '../bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json')">Add Fan Vibration Series</button>
         <button class="btn" onclick="removeSeries('fan-vibration-cruise')">Remove Fan Vibration Series</button>
   </p>
 
@@ -87,7 +87,7 @@
   Polymer.dom(document).querySelector('.full-config-example px-ts-chart').addEventListener("refresh-series", function(evt) {
     if (evt.detail === "fan-vibration-cruise") {
       var ironAjaxEl = document.createElement('iron-ajax');
-      ironAjaxEl.url = '/demo-data/aviation/fan-vibration-cruise2.json';
+      ironAjaxEl.url = '../bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise2.json';
       ironAjaxEl.handleAs = "json";
       ironAjaxEl.addEventListener('response', function(evt) {
         var tsChart = Polymer.dom(document).querySelector('.full-config-example px-ts-chart');
