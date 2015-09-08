@@ -19,7 +19,7 @@
     "highstock-release": "~2.1.5",
     "moment": "~2.9.0",
     "polymer": "~v1.0.3",
-    "px-chart-series-scatter": "git@github.build.ge.com:502531127/px-chart-series-scatter.git",
+    "px-chart-series-scatter": "https@github.build.ge.com:502531127/px-chart-series-scatter.git",
     "px-iconography-design": "https://github.build.ge.com/PXd/px-iconography-design.git#~0.2.4",
     "px-rangepicker": "https://github.build.ge.com/PXc/px-rangepicker.git#~v0.0.6",
     "px-theme": "https://github.build.ge.com/PXc/px-theme.git#~v0.2.0"
