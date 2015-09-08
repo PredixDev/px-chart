@@ -32,11 +32,11 @@
 
 <body unresolved>
 
-<section>
+<section id="static-series">
   <px-ts-chart type="bar">
-    <!--
-    <px-bar-series id="lynnstest" name="Lynn's BarChart" data="[1, 5, 22, 55, 11, 11, 11, 22]"></px-bar-series>
-    -->
+    <px-bar-series id="simple" name="Simple" data="[1, 5, 22, 55, 11, 11, 11, 22]"></px-bar-series>
+  </px-ts-chart>
+  <px-ts-chart type="bar">
     <px-bar-series id="fan-vibration-cruise">
       <iron-ajax url="bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json" handle-as="json">
       </iron-ajax>
