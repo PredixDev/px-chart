@@ -1,0 +1,56 @@
+<!doctype html>
+
+<html>
+<head>
+  <title>px-ts-chart Demo</title>
+
+  <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
+  <script src="../webcomponentsjs/webcomponents.js"></script>
+
+  <!-- just some page-level styling for the demo buttons below each chart...all other CSS inside the charts is cohesive with the component -->
+  <link rel="stylesheet" href="css/px-time-series-sketch.css"/>
+
+  <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
+  <link rel="import" href="../px-theme/px-theme.html"/>
+  <link rel="import" href="../iron-ajax/iron-ajax.html"/>
+  <link rel="import" href="px-ts-chart.html"/>
+  <link rel="import" href="px-bar-series.html"/>
+
+  <style is="custom-style">
+    html {
+      height: 100%;
+      font-size:0.9375em;
+    }
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 1em;
+    }
+  </style>
+
+</head>
+
+<body unresolved>
+
+<section>
+  <px-ts-chart type="bar">
+    <!--
+    <px-bar-series id="lynnstest" name="Lynn's BarChart" data="[1, 5, 22, 55, 11, 11, 11, 22]"></px-bar-series>
+    -->
+    <px-bar-series id="fan-vibration-cruise">
+      <iron-ajax url="bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json" handle-as="json">
+      </iron-ajax>
+    </px-bar-series>
+    <px-bar-series id="core-vibe-rear-cruise">
+      <iron-ajax url="bower_components/px-demo-data/demo-data/aviation/core-vibe-rear-cruise.json" handle-as="json">
+      </iron-ajax>
+    </px-bar-series>
+  </px-ts-chart>
+</section>
+
+
+<script>
+
+</script>
+</body>
+</html>

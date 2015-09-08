@@ -1,0 +1,56 @@
+<!doctype html>
+
+<html>
+<head>
+  <title>px-ts-chart Demo</title>
+
+  <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
+  <script src="../webcomponentsjs/webcomponents.js"></script>
+
+  <!-- just some page-level styling for the demo buttons below each chart...all other CSS inside the charts is cohesive with the component -->
+  <link rel="stylesheet" href="css/px-time-series-sketch.css"/>
+
+  <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
+  <link rel="import" href="../px-theme/px-theme.html"/>
+  <link rel="import" href="../iron-ajax/iron-ajax.html"/>
+  <link rel="import" href="px-ts-chart.html"/>
+  <link rel="import" href="px-histogram-series.html"/>
+
+  <style is="custom-style">
+    html {
+      height: 100%;
+      font-size:0.9375em;
+    }
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 1em;
+    }
+  </style>
+
+</head>
+
+<body unresolved>
+
+<section>
+  <px-ts-chart type="histogram">
+    <px-histogram-series id="simple" name="Lynn's Histogram" data="[1, 5, 22, 55, 11, 11, 11, 22]"></px-histogram-series>
+  </px-ts-chart>
+</section>
+
+<!-- can't consume this file format yet
+<section>
+  <px-ts-chart type="histogram">
+    </px-histogram-series>
+      <iron-ajax url="bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json" handle-as="json">
+      </iron-ajax>
+    </px-histogram-series>
+  </px-ts-chart>
+</section>
+-->
+
+<script>
+
+</script>
+</body>
+</html>

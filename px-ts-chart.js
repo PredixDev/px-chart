@@ -537,7 +537,7 @@ Polymer({
 
         var _this = this;
         var seriesEls = [];
-        ["px-chart-series", "px-histogram-series", "px-chart-series-scatter"].forEach(function(series) {
+        ["px-chart-series", "px-histogram-series", "px-bar-series", "px-chart-series-scatter"].forEach(function(series) {
           var nodelist = Polymer.dom(_this).querySelectorAll(series);
           if (nodelist) {
             nodelist.forEach(function(node) {
@@ -585,7 +585,7 @@ Polymer({
       * * {Object} tooltip. Optional. Highcharts tooltip config
       * @param {Boolean} noRedraw Optional. If true, does not force a chart redraw() after adding or updating the series
       */
-      addSeries: function(seriesConfig, noRedraw, type) {
+      addSeries: function(seriesConfig, noRedraw) {
         if (seriesConfig && this.hasSeries(seriesConfig.id)) {
           this.updateAxisThreshold(seriesConfig, seriesConfig.upperThreshold, "upperThreshold");
           this.updateAxisThreshold(seriesConfig, seriesConfig.lowerThreshold, "lowerThreshold");
@@ -869,7 +869,7 @@ Polymer({
         * @private
         */
         var defaultNavSeries = {
-          type: this.type,
+          type: 'line',
           marker: {
             enabled: false
           },
@@ -892,6 +892,64 @@ Polymer({
           lineWidth: 0
         };
 
+        var barNavSeries = {
+          type: 'column',
+          marker: {
+            enabled: true
+          },
+          id: 'nav',
+          lineColor: this.dataVisColors["dv-dark-blue"],
+          lineWidth: 0
+        };
+
+        var getNavSeries = function(tsChartType) {
+          switch (tsChartType) {
+            case 'scatter':
+              return scatterNavSeries;
+            case 'histogram':
+            case 'bar':
+              return barNavSeries;
+            default:
+              return defaultNavSeries;
+          }
+        };
+
+        var getHighchartsChartType = function(tsChartType) {
+          switch (tsChartType) {
+            case 'histogram':
+            case 'bar':
+              return 'column';
+            default:
+              return tsChartType;
+          }
+        };
+
+        var getXaxisLabelsOptions = function(tsChartType) {
+          switch(tsChartType) {
+            case 'histogram':
+              return {
+                align: "left",
+                style: {
+                  fontSize: '0.8rem'
+                },
+                x: 3,
+                y: 12,
+                formatter: function() {
+                  return this.value;
+                }
+              };
+            default:
+              return {
+                align: "left",
+                style: {
+                  fontSize: '0.8rem'
+                },
+                x: 3,
+                y: 12
+              };
+          }
+        };
+
         return {
 
           colors: createSeriesColorsArray(this.dataVisColors, this.seriesColorOrder),
@@ -899,7 +957,7 @@ Polymer({
             enabledButtons: false
           },
           chart: {
-            type: this.type,
+            type: getHighchartsChartType(this.type),
             events: this.events,
             height: this.height,
             margin: this.margin,
@@ -945,7 +1003,7 @@ Polymer({
             margin: 15,
             outlineColor: this.dataVisColors["dv-light-gray"],
             maskFill: 'rgba(200,231,251,0.3)',
-            series: (this.type === 'scatter') ? scatterNavSeries : defaultNavSeries,
+            series: getNavSeries(this.type),
             xAxis: {
               gridLineWidth: 0,
               lineColor: this.dataVisColors["dv-dark-blue"],
@@ -975,6 +1033,10 @@ Polymer({
               marker: {
                 enabled: true
               }
+            },
+            column: {
+              borderWidth: 0,
+              pointPadding: 0.2
             },
             series: {
               marker: {},
@@ -1008,14 +1070,7 @@ Polymer({
                 self.fire('after-set-extremes', event);
               }
             },
-            labels: {
-              align: "left",
-              style: {
-                fontSize: '0.8rem'
-              },
-              x: 3,
-              y: 12
-            },
+            labels: getXaxisLabelsOptions(this.type),
             lineColor: this.dataVisColors["dv-light-gray"],
             showFirstLabel: false,
             showLastLabel: false,
