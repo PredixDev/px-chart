@@ -585,7 +585,7 @@ Polymer({
       * * {Object} tooltip. Optional. Highcharts tooltip config
       * @param {Boolean} noRedraw Optional. If true, does not force a chart redraw() after adding or updating the series
       */
-      addSeries: function(seriesConfig, noRedraw) {
+      addSeries: function(seriesConfig, noRedraw, type) {
         if (seriesConfig && this.hasSeries(seriesConfig.id)) {
           this.updateAxisThreshold(seriesConfig, seriesConfig.upperThreshold, "upperThreshold");
           this.updateAxisThreshold(seriesConfig, seriesConfig.lowerThreshold, "lowerThreshold");
