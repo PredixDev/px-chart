@@ -74,8 +74,12 @@
     }
 
     function isSeriesNotDisplayed(series, num) {
-      var seriesCount = series[num].querySelector('path').attributes.d.value.length;
-      return seriesCount < 50; // a line IS drawn (had to look at svg path line... yuck.)
+      var paths = series[num].querySelector('path'); // serie (sing)
+      var count = 0; // if paths doesn't exist we call it zero.
+      if(paths) {
+        count = paths.attributes.d.value.length;
+      }
+      return count < 50; // a line IS drawn (had to look at svg path line... yuck.)
     }
 
     describe('1 series with hardcoded data', function() {
@@ -160,14 +164,14 @@
           tsChart = document.getElementById('ironAjax1Series');
 
           function twoSeriesAreDisplayed() {
-            var series = tsChart.querySelectorAll('.highcharts-series');
+            var series = tsChart.querySelectorAll('.highcharts-markers');
             return false;
             return isSeriesDisplayed(series, 0) && isSeriesDisplayed(series, 1);
           }
 
           waitFor(done, twoSeriesAreDisplayed);
 
-          series = tsChart.querySelectorAll('.highcharts-series');
+          series = tsChart.querySelectorAll('.highcharts-markers');
           legendItems = tsChart.querySelectorAll('div.highcharts-legend-item');
         });
 
@@ -193,14 +197,14 @@
           tsChart = document.getElementById('ironAjax2Series');
 
           function twoSeriesAreDisplayed() {
-            var series = tsChart.querySelectorAll('.highcharts-series');
+            var series = tsChart.querySelectorAll('.highcharts-markers');
             return false;
             return isSeriesDisplayed(series, 0) && isSeriesDisplayed(series, 1);
           }
 
           waitFor(done, twoSeriesAreDisplayed);
 
-          series = tsChart.querySelectorAll('.highcharts-series');
+          series = tsChart.querySelectorAll('.highcharts-markers');
           legendItems = tsChart.querySelectorAll('div.highcharts-legend-item');
         });
 
@@ -229,24 +233,22 @@
         tsChart = document.getElementById('seriesObject');
 
         function twoSeriesAreDisplayed() {
-          var series = tsChart.querySelectorAll('.highcharts-series');
+          var series = tsChart.querySelectorAll('.highcharts-markers');
           return false;
           return isSeriesDisplayed(series, 0) && isSeriesDisplayed(series, 1);
         }
 
         waitFor(done, twoSeriesAreDisplayed);
 
-        series = tsChart.querySelectorAll('.highcharts-series');
+        series = tsChart.querySelectorAll('.highcharts-markers');
         pxSeries = tsChart.querySelector('#my-series');
         legendItems = tsChart.querySelectorAll('div.highcharts-legend-item');
       });
 
       it('graphs 0 series', function() {
         assert.equal(series.length, 2); // the actual series + navigator are on the chart
-        var seriesCount0 = series[0].querySelector('path').attributes.d.value.length;
-        assert.equal(seriesCount0 < 50, true); // but no line is drawn (had to look at svg path line... yuck.)
-        var seriesCount1 = series[0].querySelector('path').attributes.d.value.length;
-        assert.equal(seriesCount1 < 50, true); // but no line is drawn (had to look at svg path line... yuck.)
+        assert.equal(isSeriesNotDisplayed(series, 0), true); // but no line is drawn (had to look at svg path line... yuck.)
+        assert.equal(isSeriesNotDisplayed(series, 0), true); // but no line is drawn (had to look at svg path line... yuck.)
       });
 
       it('does have my series in legend in this case', function() {
@@ -267,7 +269,7 @@
           };
           setTimeout(function() {
             legendItems = tsChart.querySelectorAll('div.highcharts-legend-item');
-            series = tsChart.querySelectorAll('.highcharts-series');
+            series = tsChart.querySelectorAll('.highcharts-markers');
             done();
           }, 500);
         });
