@@ -1042,7 +1042,7 @@ Polymer({
             },
             column: {
               borderWidth: 0,
-              pointPadding: 0.2
+              pointPadding: 0.0
             },
             series: {
               marker: {},
