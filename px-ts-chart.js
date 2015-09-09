@@ -551,9 +551,11 @@ Polymer({
           var seriesEl = seriesElOrEvt.target || seriesElOrEvt;
           _this.addSeries(seriesEl.buildConfig(), /*noRedraw*/false);
           seriesEl.addEventListener("data-changed", function(evt) {
+            console.log('px-ts-chart: data-changed event. ');
             _this.updateSeries(seriesEl.id, evt.detail.value, /*noRedraw*/false);
           });
           seriesEl.addEventListener("data-events-changed", function(evt) {
+            console.log('px-ts-chart: data-events-changed event. ');
             _this.updateSeriesEvents({id: seriesEl.id}, evt.detail.value, /*noRedraw*/false);
           });
         };
@@ -1086,8 +1088,8 @@ Polymer({
             labels: getXaxisLabelsOptions(this.type),
             lineColor: this.dataVisColors["dv-dark-black"],
             tickColor: this.dataVisColors["dv-dark-black"],
-            showFirstLabel: false,
-            showLastLabel: false,
+            showFirstLabel: true,
+            showLastLabel: true,
             startOnTick: true,
             title: {
               text: null

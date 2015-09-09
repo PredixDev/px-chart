@@ -34,23 +34,24 @@
 
 <section>
   <px-ts-chart type="histogram">
-    <px-histogram-series id="simple" name="Lynn's Histogram" data="[1, 5, 22, 55, 11, 11, 11, 22]"></px-histogram-series>
+    <px-histogram-series id="simple" name="Lynn's Histogram" rawdata="[1, 5, 22, 55, 11, 11, 11, 22]"></px-histogram-series>
   </px-ts-chart>
 </section>
 
-<!-- can't consume this file format yet
 <section>
   <px-ts-chart type="histogram">
-    </px-histogram-series>
+    <px-histogram-series id="simple2" name="Lynn's Histogram 2" rawdata="[ [1397102460000, 11.4403], [1397139660000, 13.1913], [1397177400000, 12.8485], [1397228040000, 10.975], [1397888040000, 10.975] ]"></px-histogram-series>
+  </px-ts-chart>
+</section>
+
+<section>
+  <px-ts-chart type="histogram">
+    <px-histogram-series id="ajaxdata">
       <iron-ajax url="bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json" handle-as="json">
       </iron-ajax>
     </px-histogram-series>
   </px-ts-chart>
 </section>
--->
 
-<script>
-
-</script>
 </body>
 </html>
