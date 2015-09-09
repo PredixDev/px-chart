@@ -10,6 +10,15 @@ Polymer({
   */
   properties: {
 
+    /**
+    * Determines that what type of chart to display. Note that chart type influences the series type for the navigator.
+    *
+    * Can only be statically configured (not data-bindable). Accepts values of 'line', 'scatter' or 'bar'.
+    *
+    * @type {String}
+    * @default line
+    */
+
     type: {
       type: String,
       value: 'line'

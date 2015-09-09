@@ -15,7 +15,7 @@
 <!--
 Element that defines a time series chart, using sub-elements for axis, series and controls configuration.
 
-See the demo page (demo.html) for a working example.
+See the demo page (demo.html, demo-scatter.html, demo-barchart.html, demo-histogram.html) for a working examples.
 
 See px-chart-series, px-chart-yaxis, and px-ts-chart-controls for more API docs (selector in upper left corner).
 
@@ -61,6 +61,15 @@ See px-chart-series, px-chart-yaxis, and px-ts-chart-controls for more API docs 
         <px-chart-series id="hpt-acc-position-cruise" data="{{myData2}}" axis-id="vib"></px-chart-series>
     </px-ts-chart>
 
+#### Scatter configuration - multiple series, chart controls
+
+    <px-ts-chart export-server-url="http://export.highcharts.com" type="scatter">
+        <px-chart-yaxis offset="0" id="fan"></px-chart-yaxis>
+        <px-chart-yaxis opposite="true" offset="-10" id="vib"></px-chart-yaxis>
+        <px-ts-chart-controls data-controls show-export="true" zoom-buttons="[]"></px-ts-chart-controls>
+        <px-chart-series-scatter id="fan-vibration-cruise" data="{{myData}}" axis-id="fan"></px-chart-series-scatter>
+        <px-chart-series-scatter id="hpt-acc-position-cruise" data="{{myData2}}" axis-id="vib"></px-chart-series-scatter>
+    </px-ts-chart>
 
 #### Dynamically adding series
 
