@@ -1116,13 +1116,13 @@ Polymer({
               formatter: function () {
                 var s = '<div class="px-chart-tooltip">';
                 for (var i = 0; i < this.points.length; i++) {
-                  s += '<span class="value"><b>' + this.points[i].y + '</b><br/><b style="color: ' + this.points[i].series.color + '" class="name">' + this.points[i].series.name + '</b></span>';
+                  s += '<span><b class="value">' + Math.round(this.points[i].y*100)/100 + '</b><br/><b style="color: ' + this.points[i].series.color + '" class="name">' + this.points[i].series.name + '</b></span>';
                 }
                 s += '</div>';
                 return s;
               },
               positioner: function(labelWidth, labelHeight, point) {
-                tooltipX = this.chart.chartWidth - (labelWidth + 0);
+                tooltipX = this.chart.chartWidth - (labelWidth + 10);
                 tooltipY = this.chart.plotTop - 60;
                 return {
                     x: tooltipX,

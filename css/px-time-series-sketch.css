@@ -2663,9 +2663,16 @@ px-rangepicker {
   text-align: right; }
   .px-chart-tooltip span {
     display: inline-block;
-    padding-left: 20px;
+    padding-left: 15px;
     text-align: left; }
+  .px-chart-tooltip .value {
+    font-size: 15px;
+    padding: 0;
+    margin-bottom: -10px; }
   .px-chart-tooltip .name {
+    position: relative;
+    top: -2px;
+    font-size: 12px;
     text-transform: capitalize; }
 
 /*------------------------------------*    #PX-CLEARFIX-DESIGN
