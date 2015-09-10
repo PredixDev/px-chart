@@ -1103,15 +1103,27 @@ Polymer({
             }
           },
           tooltip: {
+              shared: true,
               useHTML: true,
               backgroundColor: 'none',
               borderWidth: 0,
               shadow: false,
               padding: 0,
-              pointFormat: '<span>{point.value}</span><br/><span>{point.name}</span>',
+              style: {
+                'width': '400px',
+                'background-color': 'red'
+              },
+              formatter: function () {
+                var s = '<div class="px-chart-tooltip">';
+                for (var i = 0; i < this.points.length; i++) {
+                  s += '<span class="value"><b>' + this.points[i].y + '</b><br/><b style="color: ' + this.points[i].series.color + '" class="name">' + this.points[i].series.name + '</b></span>';
+                }
+                s += '</div>';
+                return s;
+              },
               positioner: function(labelWidth, labelHeight, point) {
-                tooltipX = this.chart.chartWidth - (labelWidth + 20);
-                tooltipY = this.chart.plotTop - labelHeight;
+                tooltipX = this.chart.chartWidth - (labelWidth + 0);
+                tooltipY = this.chart.plotTop - 60;
                 return {
                     x: tooltipX,
                     y: tooltipY

@@ -2660,7 +2660,7 @@ button.btn {
 header {
   position: relative;
   z-index: 1;
-  margin-bottom: -6.4rem; }
+  margin-bottom: -3.7333333333rem; }
 
 figure .fa {
   cursor: pointer; }
@@ -2670,6 +2670,16 @@ figure .fa {
 
 px-rangepicker {
   text-align: left; }
+
+.px-chart-tooltip {
+  min-width: 400px;
+  text-align: right; }
+  .px-chart-tooltip span {
+    display: inline-block;
+    padding-left: 20px;
+    text-align: left; }
+  .px-chart-tooltip .name {
+    text-transform: capitalize; }
 
 /*------------------------------------*    #PX-CLEARFIX-DESIGN
 \*------------------------------------*/
