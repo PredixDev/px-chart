@@ -1101,6 +1101,22 @@ Polymer({
             title: {
               text: null
             }
+          },
+          tooltip: {
+              useHTML: true,
+              backgroundColor: 'none',
+              borderWidth: 0,
+              shadow: false,
+              padding: 0,
+              pointFormat: '<span>{point.value}</span><br/><span>{point.name}</span>',
+              positioner: function(labelWidth, labelHeight, point) {
+                tooltipX = this.chart.chartWidth - (labelWidth + 20);
+                tooltipY = this.chart.plotTop - labelHeight;
+                return {
+                    x: tooltipX,
+                    y: tooltipY
+                };
+              }
           }
         };
       }
