@@ -107,7 +107,7 @@ Polymer({
                   align: "right",
                   useHTML: true,
                   /* <i class='fa fa-lg u-mr- fa-pencil style-scope px-ts-chart' onclick='alert(this.innerHTML)' title='Annotate'></i> */
-                  text: "<i class='fa fa-lg fa-search-plus u-mr- style-scope px-ts-chart'" +
+                  text: "<i class='fa fa-lg fa-search-plus u-mr- style-scope px-chart'" +
                   "onclick='" +
                   "var wc=this;" +
                   "while(!wc.chart) {" +
@@ -121,7 +121,7 @@ Polymer({
                   moment(evt.xAxis[0].min).format('LLL') + " to " +
                   moment(evt.xAxis[0].max).format('LLL') + ";'>" +
                   "</i>" +
-                  "<i class='fa fa-lg u-mr- fa-times style-scope px-ts-chart'" +
+                  "<i class='fa fa-lg u-mr- fa-times style-scope px-chart'" +
                   "onclick='" +
                   "var wc=this;" +
                   "while(!wc.chart) {" +
@@ -454,7 +454,7 @@ Polymer({
     _initializeMargins: function() {
       var margin = this.margin;
       if (margin && margin[0] === 50) {//adjust top margin if zoom controls not present
-        var controls = Polymer.dom(this).querySelector('px-ts-chart-controls');
+        var controls = Polymer.dom(this).querySelector('px-chart-controls');
         if (controls && controls.getAttribute('zoom-buttons') !== 'null' && controls.getAttribute('zoom-buttons') !== '[]') {
           this.margin = [100, margin[1], margin[2], margin[3]];
           if (this.legend && this.legend.align === 'right') {
@@ -558,11 +558,9 @@ Polymer({
           var seriesEl = seriesElOrEvt.target || seriesElOrEvt;
           _this.addSeries(seriesEl.buildConfig(), /*noRedraw*/false);
           seriesEl.addEventListener("data-changed", function(evt) {
-            console.log('px-ts-chart: data-changed event. ');
             _this.updateSeries(seriesEl.id, evt.detail.value, /*noRedraw*/false);
           });
           seriesEl.addEventListener("data-events-changed", function(evt) {
-            console.log('px-ts-chart: data-events-changed event. ');
             _this.updateSeriesEvents({id: seriesEl.id}, evt.detail.value, /*noRedraw*/false);
           });
         };
@@ -719,7 +717,7 @@ Polymer({
                   fontSize: '0.8rem',
                   color: _this.dataVisColors["dv-basic-red"]
                 },
-                text: "<span class='style-scope px-ts-chart data-event-icon' title='" + event.label + "' style='cursor:pointer; display:block; margin-top: -1.10rem; margin-left:-0.87rem'><i class='fa fa-lg fa-exclamation-triangle style-scope px-ts-chart'></i> </span>"
+                text: "<span class='style-scope px-chart data-event-icon' title='" + event.label + "' style='cursor:pointer; display:block; margin-top: -1.10rem; margin-left:-0.87rem'><i class='fa fa-lg fa-exclamation-triangle style-scope px-chart'></i> </span>"
               }
             };
             _this.chart.xAxis[0].addPlotLine(eventConfig);
