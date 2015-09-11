@@ -6,21 +6,24 @@ Template element for default time controls on a time series chart
 
 ##### Usage
 
-    <px-ts-chart-controls data-controls>
-      <button class="btn">My Special button</button>
-    </px-ts-chart-controls>
-
     <px-ts-chart-controls
         data-controls
         show-export="true"
         show-date-range="true">
     </px-ts-chart-controls>
 
-    <px-ts-chart-controls data-controls zoom-buttons='[]'>
+    <px-ts-chart-controls
+        data-controls
+        preset-ranges='[{"label": "1 m", "value": 1, "unit": "months"},{"label": "3 m", "value": 3, "unit": "months"}]'>
+    </px-ts-chart-controls>
 
     <px-ts-chart-controls
         data-controls
-        zoom-buttons='[{"label": "1 m", "value": 1, "unit": "months"},{"label": "3 m", "value": 3, "unit": "months"}]'>
+        preset-ranges='[]'>
+    </px-ts-chart-controls>
+
+    <px-ts-chart-controls data-controls>
+      <button class="btn">My Special button</button>
     </px-ts-chart-controls>
 
 @element px-ts-chart-controls
@@ -32,30 +35,19 @@ Template element for default time controls on a time series chart
   <link rel="import" type="css" href="css/px-time-series.css"/>
   <template>
     <div>
-      <template is="dom-if" if="{{showDateRange}}">
-        <px-rangepicker range="{{rangeDisplay}}" class="float--right"></px-rangepicker>
-      </template>
-
       <template is="dom-if" if="{{showExport}}">
         <button class="btn btn--icon u-ml- float--right" on-click="_exportHandler" title="Export chart">
           <i class="fa fa-share-square-o"></i>
         </button>
       </template>
+
+      <template is="dom-if" if="{{showDateRange}}">
+        <px-rangepicker id="rangepicker" range="{{rangeDisplay}}" preset-ranges="{{presetsForRangepicker}}" class="float--right"></px-rangepicker>
+      </template>
     </div>
 
-    <div class="clearfix"></div>
-
-    <template is="dom-if" if="{{hasZoomButtons}}">
-      <p class="u-mb+ float--right">
-        <span class="u-mr-">Zoom</span>
-        <span>
-          <template is="dom-repeat" items="[[zoomButtons]]">
-            <button on-click="_setRangeFromPresent" data-time-value$="[[item.value]]" data-unit$="[[item.unit]]" class="btn">[[item.label]]</button>
-          </template>
-        </span>
-      </p>
-    </template>
     <content></content>
+
   </template>
 </dom-module>
 
@@ -101,19 +93,18 @@ Template element for default time controls on a time series chart
       },
 
       /**
-       * Array of object representing the time zoom buttons.  Each object in the Array has the following members:
+       * Array of object representing the range presets.  Each object in the Array has the following members:
        *
        * * "label" {String} The text in the button, e.g. "3 m"
        * * "value" {Number} The time value, e.g. 3
        * * "unit" {String} A momentjs unit string, e.g. "months"
        *
-       * Can only be statically configured (not data-bindable).
-       *
        * @type {Array}
        * @default [{label: "1 m", value: 1, unit: "months"},{label: "3 m", value: 3, unit: "months"},{label: "6 m", value: 6, unit: "months"},{label: "1 y", value: 1, unit: "year"}]
        */
-      zoomButtons: {
+      presetRanges: {
         type: Array,
+        observer: '_changePresetRanges',
         value: [
           {label: "1 m", value: 1, unit: "months"},
           {label: "3 m", value: 3, unit: "months"},
@@ -121,15 +112,6 @@ Template element for default time controls on a time series chart
           {label: "1 y", value: 1, unit: "year"},
           {label: "YTD", value: Date.now() - moment().startOf("year").valueOf(), unit: "ms"}
         ]
-      },
-
-      /**
-       * Whether the zoomButtons array is empty
-       * @private
-       */
-      hasZoomButtons: {
-        type: Boolean,
-        computed: '_zoomButtonsNotEmpty(zoomButtons)'
       },
 
       /**
@@ -155,10 +137,6 @@ Template element for default time controls on a time series chart
       '_submitRange(rangeDisplay)'
     ],
 
-    _zoomButtonsNotEmpty: function(zoomButtons) {
-      return zoomButtons && zoomButtons.length > 0;
-    },
-
     _updateRange: function() {
       var startMoment = moment(this.rangeMs.from, 'x');
       var endMoment = moment(this.rangeMs.to, 'x');
@@ -177,23 +155,27 @@ Template element for default time controls on a time series chart
       }
     },
 
+    _changePresetRanges: function(presetRanges) {
+
+      var presetsForRangepicker = presetRanges.map(function(presetRange) {
+        var preset = {};
+        preset.displayText = presetRange.label;
+        preset.startDateTime = moment().subtract(presetRange.value, presetRange.unit).toISOString();
+        preset.endDateTime = moment().toISOString();
+        return preset;
+      });
+
+      if(presetsForRangepicker.length < 1) {
+        presetsForRangepicker = null; // if no presets, don't show preset section at all (empty array will still display that section)
+      }
+
+      this.set('presetsForRangepicker', presetsForRangepicker);
+    },
+
     _submitRange: function() {
       var newStartMs = moment(this.rangeDisplay.from, moment.ISO_8601).format('x');
       var newEndMs = moment(this.rangeDisplay.to, moment.ISO_8601).format('x');
       Polymer.dom(this).parentNode.setExtremesIfChanged(newStartMs, newEndMs);
-    },
-
-    _setRangeFromPresent: function(evt) {
-      var value = evt.target.getAttribute("data-time-value");
-      var unit = evt.target.getAttribute("data-unit");
-
-      var now = moment();
-      var fromTime = moment(now).subtract(value, unit);
-
-      this.set('rangeMs', {
-        to: now.format('x'),
-        from: fromTime.format('x')
-      });
     },
 
     _exportHandler: function(evt) {
