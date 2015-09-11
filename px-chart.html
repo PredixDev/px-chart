@@ -5,15 +5,16 @@
     See https://github.sw.ge.com/jreichenberg/grunt-dep-serve#why-do-we-need-this
 -->
 <link rel="import" href="../polymer/polymer.html"/>
-<link rel="import" href="px-chart-series.html"/>
-<link rel="import" href="px-histogram-series.html"/>
-<link rel="import" href="px-bar-series.html"/>
-<link rel="import" href="px-ts-chart-controls.html"/>
+<link rel="import" href="px-chart-series-line.html"/>
+<link rel="import" href="px-chart-series-scatter.html"/>
+<link rel="import" href="px-chart-series-histogram.html"/>
+<link rel="import" href="px-chart-series-bar.html"/>
+<link rel="import" href="px-chart-controls.html"/>
 <link rel="import" href="px-chart-yaxis.html"/>
 <link rel="import" href="../google-analytics/google-analytics.html">
 
 <!--
-Element that defines a time series chart, using sub-elements for axis, series and controls configuration.
+Element that defines a chart, using sub-elements for axis, series and controls configuration.
 
 See the demo page (demo.html, demo-scatter.html, demo-barchart.html, demo-histogram.html) for a working examples.
 
@@ -21,9 +22,9 @@ See px-chart-series, px-chart-yaxis, and px-ts-chart-controls for more API docs 
 
 #### Minimal Usage - 1 series of data
 
-    <px-ts-chart>
+    <px-chart>
       <px-chart-series id="hpt-acc-position-cruise" data="{{...}}"></px-chart-series>
-    </px-ts-chart>
+    </px-chart>
 
 ```js
 // Expected data format
@@ -53,23 +54,23 @@ See px-chart-series, px-chart-yaxis, and px-ts-chart-controls for more API docs 
 
 #### Full configuration - multiple series, axis, chart controls
 
-    <px-ts-chart>
+    <px-chart>
         <px-ts-chart-controls data-controls show-refresh="true" show-date-range="true"></px-ts-chart-controls>
         <px-chart-yaxis offset="0" id="fan"></px-chart-yaxis>
         <px-chart-yaxis opposite="true" offset="-10" id="vib"></px-chart-yaxis>
         <px-chart-series id="fan-vibration-cruise" data="{{myData}}" axis-id="fan"></px-chart-series>
         <px-chart-series id="hpt-acc-position-cruise" data="{{myData2}}" axis-id="vib"></px-chart-series>
-    </px-ts-chart>
+    </px-chart>
 
 #### Scatter configuration - multiple series, chart controls
 
-    <px-ts-chart export-server-url="http://export.highcharts.com" type="scatter">
+    <px-chart export-server-url="http://export.highcharts.com" type="scatter">
         <px-chart-yaxis offset="0" id="fan"></px-chart-yaxis>
         <px-chart-yaxis opposite="true" offset="-10" id="vib"></px-chart-yaxis>
         <px-ts-chart-controls data-controls show-export="true" preset-ranges="[]"></px-ts-chart-controls>
         <px-chart-series-scatter id="fan-vibration-cruise" data="{{myData}}" axis-id="fan"></px-chart-series-scatter>
         <px-chart-series-scatter id="hpt-acc-position-cruise" data="{{myData2}}" axis-id="vib"></px-chart-series-scatter>
-    </px-ts-chart>
+    </px-chart>
 
 #### Dynamically adding series
 
@@ -97,10 +98,7 @@ See px-chart-series, px-chart-yaxis, and px-ts-chart-controls for more API docs 
 }
 ```
 
-@element px-time-series
 @demo demo.html
-@blurb Element that defines a time series chart, using sub-elements for axis, series and controls configuration.
-@homepage index.html
 -->
 
 <script src="../highstock-release/adapters/standalone-framework.js"></script>
@@ -109,8 +107,8 @@ See px-chart-series, px-chart-yaxis, and px-ts-chart-controls for more API docs 
 <script src="../annotations/js/annotations.js"></script>
 <script src="../moment/min/moment.min.js"></script>
 
-<dom-module id="px-ts-chart">
-  <link rel="import" type="css" href="css/px-time-series.css"/>
+<dom-module id="px-chart">
+  <link rel="import" type="css" href="css/px-chart.css"/>
   <template>
     <google-analytics code="UA-35812695-2"></google-analytics>
     <section role="region">
@@ -123,4 +121,4 @@ See px-chart-series, px-chart-yaxis, and px-ts-chart-controls for more API docs 
   </template>
 </dom-module>
 
-<script type="text/javascript" src="px-ts-chart.js"></script>
+<script type="text/javascript" src="px-chart.js"></script>

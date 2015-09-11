@@ -24,8 +24,8 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'css/noprefix/px-time-series-sketch.css': 'sass/px-time-series-sketch.scss',
-          'css/noprefix/px-time-series.css': 'sass/px-time-series-predix.scss'
+          'css/noprefix/px-chart-sketch.css': 'sass/px-chart-sketch.scss',
+          'css/noprefix/px-chart.css': 'sass/px-chart-predix.scss'
         }
       }
     },

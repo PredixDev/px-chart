@@ -1,6 +1,6 @@
 Polymer({
 
-  is: 'px-ts-chart',
+  is: 'px-chart',
 
   /**
   * Properties block, expose attribute values to the DOM via 'reflect'
@@ -545,7 +545,7 @@ Polymer({
 
         var _this = this;
         var seriesEls = [];
-        ["px-chart-series", "px-histogram-series", "px-bar-series", "px-chart-series-scatter"].forEach(function(series) {
+        ["px-chart-series-line", "px-chart-series-histogram", "px-chart-series-bar", "px-chart-series-scatter"].forEach(function(series) {
           var nodelist = Polymer.dom(_this).querySelectorAll(series);
           if (nodelist) {
             nodelist.forEach(function(node) {

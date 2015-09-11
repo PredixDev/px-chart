@@ -2,37 +2,34 @@
 <link rel="import" href="../px-rangepicker/px-rangepicker.html"/>
 
 <!--
-Template element for default time controls on a time series chart
+Template element for default time controls on a chart
 
 ##### Usage
 
-    <px-ts-chart-controls
+    <px-chart-controls
         data-controls
         show-export="true"
         show-date-range="true">
-    </px-ts-chart-controls>
+    </px-chart-controls>
 
-    <px-ts-chart-controls
+    <px-chart-controls
         data-controls
         preset-ranges='[{"label": "1 m", "value": 1, "unit": "months"},{"label": "3 m", "value": 3, "unit": "months"}]'>
-    </px-ts-chart-controls>
+    </px-chart-controls>
 
-    <px-ts-chart-controls
+    <px-chart-controls
         data-controls
         preset-ranges='[]'>
-    </px-ts-chart-controls>
+    </px-chart-controls>
 
-    <px-ts-chart-controls data-controls>
+    <px-chart-controls data-controls>
       <button class="btn">My Special button</button>
-    </px-ts-chart-controls>
+    </px-chart-controls>
 
-@element px-ts-chart-controls
-@blurb Template element for default time controls on a time series chart
 @demo demo.html
-@homepage index.html
 -->
-<dom-module id="px-ts-chart-controls">
-  <link rel="import" type="css" href="css/px-time-series.css"/>
+<dom-module id="px-chart-controls">
+  <link rel="import" type="css" href="css/px-chart.css"/>
   <template>
     <div>
       <template is="dom-if" if="{{showExport}}">
@@ -56,7 +53,7 @@ Template element for default time controls on a time series chart
 <script>
   Polymer({
 
-    is: 'px-ts-chart-controls',
+    is: 'px-chart-controls',
 
     /**
      * Properties block, expose attribute values to the DOM via 'reflect'

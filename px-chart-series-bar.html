@@ -70,16 +70,14 @@ Element defining a chart series
 @homepage index.html
 -->
 
-<script type="text/javascript" src="../d3/d3.js"></script>
-
-<dom-module id="px-histogram-series">
+<dom-module id="px-chart-series-bar">
 </dom-module>
 
 
 <script>
 Polymer({
 
-  is: 'px-histogram-series',
+  is: 'px-chart-series-bar',
 
   /**
    * Properties block, expose attribute values to the DOM via 'reflect'
@@ -89,13 +87,8 @@ Polymer({
    */
   properties: {
 
-    rawdata: {
-      type: Array,
-      notify: true
-    },
-
     /**
-     * The histogram data associated with the series, an Array of Arrays with the first value of each inner Array being a unix
+     * The data associated with the series, an Array of Arrays with the first value of each inner Array being a unix
      * timestamp and the second value being the value.
      *
      * Fires a "data-changed" event via the "notify" flag when the data changes, the assumption is that the chart will
@@ -287,7 +280,6 @@ Polymer({
       type: Boolean
     }
      */
-
   },
 
   /**
@@ -314,7 +306,6 @@ Polymer({
     var fireFn = function(ironAjaxEl) {
       if (ironAjaxEl.generateRequest && ironAjaxEl.activeRequests) {
         ironAjaxEl.addEventListener("response", function(evt) {
-          console.log('px-histogram-series: ajax data response received. ' + this.id);
           _this.seriesObj = evt.detail.response;
         });
         ironAjaxEl.generateRequest();
@@ -337,63 +328,17 @@ Polymer({
    */
   seriesObjObserver: function(newObj, oldObj) {
     if (!newObj) {
-      console.log('px-histogram-series: seriesObjObserver: seriesObj cleared. ' + this.id);
       this.data = null;
-      this.rawdata = null;
     }
     else {
-      console.log('px-histogram-series: seriesObjObserver: seriesObj set. ' + this.id);
       if (newObj[this.seriesObjNameKey]) {
         this.name = newObj[this.seriesObjNameKey];
       }
-      this.rawdata = newObj[this.seriesObjDataKey];
-      this.data = this._binData(this.rawdata);
+      this.data = newObj[this.seriesObjDataKey];
       if (newObj[this.seriesObjDataEventsKey]) {
         this.dataEvents = newObj[this.seriesObjDataEventsKey];
       }
     }
-  },
-
-  _binData: function(rawdata) {
-    // For the "column" series type, Highcharts supports the following data formats:
-    //   data: [0, 5, 3, 5]
-    //   data: [ [0, 6], [1, 2], [2, 6] ]
-    //   data: [ { x: 1, y: 5, name: "Point2", color: "#00FF00" }, {...} ]
-    // Note: We currently only support the first 2 for now.
-
-    if (rawdata) {
-      // find the first non-null point
-      var i = 0, firstPoint = null;
-      while (firstPoint === null && i < rawdata.length) {
-        firstPoint = rawdata[i];
-        i++;
-      }
-
-      var yData = [];
-      if ((typeof firstPoint === 'number')) { // is a number
-        // one-dimensional array
-        yData = rawdata;
-      }
-      else if (Object.prototype.toString.call(firstPoint) === '[object Array]') {
-        // array of [x, y] format
-        for (i = 0; i < rawdata.length; i++) {
-          var pt = rawdata[i];
-          yData[i] = pt[1];
-        }
-      }
-
-      // XXX can't use d3 object as is.  need to figure out a more efficient way for large data set.
-      var histogram = d3.layout.histogram()(yData);
-      var histdata = [];
-      for (var i = 0; i < histogram.length; i++) {
-        var point = histogram[i];
-        histdata.push({ x: point.x, y: point.y });
-      }
-
-      console.log('px-histogram-series: histogram data has been calculated. ' + this.id);
-      return histdata;
-    }
-    return null;
   },
 
   /**
@@ -418,12 +363,6 @@ Polymer({
       config.name = config.id;
     }
     config.type = 'column';
-
-    // data was passed in as the "data" property.
-    if (this.rawdata) {
-        this.data = this._binData(this.rawdata);
-        config.data = this.data;
-    }
 
     return config;
   }
