@@ -14,6 +14,7 @@
   <link rel="import" href="../px-theme/px-theme.html"/>
   <link rel="import" href="../iron-ajax/iron-ajax.html"/>
   <link rel="import" href="px-ts-chart.html"/>
+  <link rel="import" href="../px-chart-series-scatter/px-chart-series-scatter.html"/>
 
   <style is="custom-style">
     html {
@@ -35,10 +36,40 @@
   See also <a href="demo-sync.html">Demo of chart-chart communication</a>.
 </section>
 
-<section class="minimal-config-example u-mb+">
-  <h1>Minimal Configuration</h1>
-  <px-ts-chart export-server-url="http://export.highcharts.com"> <!-- WARNING, export.highcharts.com is a public server for demo only -->
-    <px-ts-chart-controls data-controls show-export="true" zoom-buttons="[]"></px-ts-chart-controls>
+<section class="full-config-example u-mt+">
+
+  <h1>Full Configuration Chart</h1>
+
+  <px-ts-chart>
+    <px-ts-chart-controls data-controls show-date-range="true"></px-ts-chart-controls>
+    <px-chart-yaxis id="firstAxis" offset="0"></px-chart-yaxis>
+    <px-chart-yaxis id="anotherAxis" opposite="true" offset="-2.5"></px-chart-yaxis>
+    <px-chart-series id="delta-egt-cruise" axis-id="firstAxis" upper-threshold="30.5" lower-threshold="6.25">
+      <iron-ajax
+        url="bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json"
+        handle-as="json"></iron-ajax>
+    </px-chart-series>
+    <px-chart-series id="fan-vibration-cruise" axis-id="anotherAxis">
+      <iron-ajax
+        url="bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
+        handle-as="json"></iron-ajax>
+    </px-chart-series>
+  </px-ts-chart>
+
+  <p class="u-mt+">
+    Demo controls for full configuration chart:
+    <button class="btn" onclick="togglePointMarkers()">Toggle Point Markers</button>
+    <button class="btn" onclick="addSeries('core-vibe-rear-cruise', '../bower_components/px-demo-data/demo-data/aviation/core-vibe-rear-cruise.json')">Add Core Vibration Series</button>
+    <button class="btn" onclick="removeSeries('core-vibe-rear-cruise')">Remove Core Vibration Series</button>
+    <button class="btn" onclick="addSeries('fan-vibration-cruise', '../bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json')">Add Fan Vibration Series</button>
+    <button class="btn" onclick="removeSeries('fan-vibration-cruise')">Remove Fan Vibration Series</button>
+  </p>
+
+</section>
+
+<section class="simple-chart u-mb+">
+  <h1>Line series</h1>
+  <px-ts-chart>
     <px-chart-series id="fan-vibration-cruise">
       <iron-ajax
         url="bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
@@ -47,38 +78,37 @@
   </px-ts-chart>
 </section>
 
-<section class="full-config-example u-mt+">
-
-  <h1>Full Configuration</h1>
-
-  <px-ts-chart>
-    <px-ts-chart-controls data-controls show-refresh="true" show-date-range="true"></px-ts-chart-controls>
-    <px-chart-yaxis id="firstAxis" offset="0"></px-chart-yaxis>
-    <px-chart-yaxis id="anotherAxis" opposite="true" offset="-2.5"></px-chart-yaxis>
-    <px-chart-series id="delta-egt-cruise" axis-id="firstAxis" upper-threshold="30.5" lower-threshold="6.25">
+<section class="scatter u-mb+">
+  <h1>Scatter series</h1>
+  <px-ts-chart type="scatter">
+    <px-chart-series-scatter id="fan-vibration-cruise">
       <iron-ajax
-          url="bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json"
-          handle-as="json"></iron-ajax>
-    </px-chart-series>
-    <px-chart-series id="fan-vibration-cruise" axis-id="anotherAxis">
-      <iron-ajax
-          url="bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
-          handle-as="json"></iron-ajax>
-    </px-chart-series>
+        url="bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
+        handle-as="json"></iron-ajax>
+    </px-chart-series-scatter>
   </px-ts-chart>
+</section>
 
-  <p class="u-mt+">
-    Demo controls for bottom chart:
-    <!--Toggle Point Markers:-->
-    <!--<input id="demo-point-toggle" class="toggle__input" type="checkbox"/>-->
-    <!--<label for="demo-point-toggle" class="toggle__label">…</label>-->
-    <button class="btn" onclick="togglePointMarkers()">Toggle Point Markers</button>
-    <button class="btn" onclick="addSeries('core-vibe-rear-cruise', '../bower_components/px-demo-data/demo-data/aviation/core-vibe-rear-cruise.json')">Add Core Vibration Series</button>
-    <button class="btn" onclick="removeSeries('core-vibe-rear-cruise')">Remove Core Vibration Series</button>
-    <button class="btn" onclick="addSeries('fan-vibration-cruise', '../bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json')">Add Fan Vibration Series</button>
-        <button class="btn" onclick="removeSeries('fan-vibration-cruise')">Remove Fan Vibration Series</button>
-  </p>
+<section class="bar u-mb+">
+  <h1>Bar series</h1>
+  <px-ts-chart type="bar">
+    <px-bar-series id="fan-vibration-cruise">
+      <iron-ajax
+        url="bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
+        handle-as="json"></iron-ajax>
+    </px-bar-series>
+  </px-ts-chart>
+</section>
 
+<section class="histogram u-mb+">
+  <h1>Histogram series</h1>
+  <px-ts-chart type="histogram">
+    <px-histogram-series id="fan-vibration-cruise">
+      <iron-ajax
+        url="bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
+        handle-as="json"></iron-ajax>
+    </px-histogram-series>
+  </px-ts-chart>
 </section>
 
 <script>
