@@ -1,8 +1,8 @@
 {
-  "name": "px-ts-chart",
-  "version": "0.3.11",
+  "name": "px-chart",
+  "version": "0.4.0",
   "main": [
-    "px-time-series-chart.html"
+    "px-chart.html"
   ],
   "ignore": [
     ".*",
