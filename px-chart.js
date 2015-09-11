@@ -1071,17 +1071,17 @@ Polymer({
       title: {
         text: null
       },
-      tooltip: {
-        backgroundColor: "white",
-        borderColor: this.dataVisColors["dv-dark-gray"],
-        shadow: false,
-        style: {
-          fontFamily: 'inherit',
-          fontSize: '0.8rem'
-        },
-        headerFormat: "",
-        pointFormat: '<span><span style="color:{point.color};">\u25CF</span> {series.name} </span> <span style="font-weight: bold;">{point.y}</span><br/>'
-      },
+      // tooltip: {
+      //   backgroundColor: "white",
+      //   borderColor: this.dataVisColors["dv-dark-gray"],
+      //   shadow: false,
+      //   style: {
+      //     fontFamily: 'inherit',
+      //     fontSize: '0.8rem'
+      //   },
+      //   headerFormat: "",
+      //   pointFormat: '<span><span style="color:{point.color};">\u25CF</span> {series.name} </span> <span style="font-weight: bold;">{point.y}</span><br/>'
+      // },
       yAxis: {
         lineColor: this.dataVisColors["dv-basic-gray"],
         tickColor: this.dataVisColors["dv-basic-gray"],
@@ -1120,8 +1120,12 @@ Polymer({
         },
         formatter: function() {
           var s = '<div class="px-chart-tooltip">';
-          for (var i = 0; i < this.points.length; i++) {
-            s += '<span><b class="value">' + Math.round(this.points[i].y * 100) / 100 + '</b><br/><b style="color: ' + this.points[i].series.color + '" class="name">' + this.points[i].series.name + '</b></span>';
+          if(this.points) {
+            for (var i = 0; i < this.points.length; i++) {
+              s += '<span><b class="value">' + Math.round(this.points[i].y * 100) / 100 + '</b><br/><b style="color: ' + this.points[i].series.color + '" class="name">' + this.points[i].series.name + '</b></span>';
+            }
+          } else {
+            s += '<span><b class="value">' + Math.round(this.point.y * 100) / 100 + '</b><br/><b style="color: ' + this.point.series.color + '" class="name">' + this.point.series.name + '</b></span>';
           }
           s += '</div>';
           return s;
