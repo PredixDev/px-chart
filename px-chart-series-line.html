@@ -1,15 +1,17 @@
 <link rel="import" href="../polymer/polymer.html"/>
 
 <!--
-Element defining a chart series
+Element defining a chart series that is displayed as a line.
 
 ### Usage
 
 #### Data
 
-    <px-chart-series data="{{...}}" id="hpt-acc-position-cruise"></px-chart-series>
+    <px-chart-series-line data="{{...}}" id="hpt-acc-position-cruise">
+    </px-chart-series-line>
 
-    <px-chart-series name="The Display Name" line-width="5" lower-threshold="12" upper-threshold="16" id="hpt-acc-position-cruise" marker='{"enabled": false, "radius": 15}' data="{{...}}"></px-chart-series>
+    <px-chart-series-line name="The Display Name" line-width="5" lower-threshold="12" upper-threshold="16" id="hpt-acc-position-cruise" marker='{"enabled": false, "radius": 15}' data="{{...}}">
+    </px-chart-series-line>
 
 ```js
 // Expected data format:
@@ -34,9 +36,10 @@ Element defining a chart series
 
 #### Series Object
 
-    <px-chart-series id="my-series"
+    <px-chart-series-line id="my-series"
       series-obj-name-key="myName"
-      series-obj-data-key="myData"></px-chart-series>
+      series-obj-data-key="myData">
+    </px-chart-series-line>
 
 ```js
   document.querySelector('#my-series').seriesObj = {
@@ -51,17 +54,14 @@ Element defining a chart series
 
 #### Using iron-ajax
 
-    <px-chart-series id="..." upper-threshold="0.75" lower-threshold="0.25">
+    <px-chart-series-line id="..." upper-threshold="0.75" lower-threshold="0.25">
       <iron-ajax
           url="../demo-data/aviation/fan-vibration-cruise.json"
           handleas="json"></iron-ajax>
-    </px-chart-series>
+    </px-chart-series-line>
 
 
-@element px-chart-series
-@blurb Element defining a chart series
 @demo demo.html
-@homepage index.html
 -->
 
 <dom-module id="px-chart-series-line">

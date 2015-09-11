@@ -1,22 +1,15 @@
-<!--
-    Relative paths assume component is being run from inside an app or another component, where dependencies are flat
-    siblings. When this component is run from its own repo (e.g. ui tests, examples), we assume the server is started with
-    'grunt depserve' (or similar server setup) to enable correct finding of bower dependencies for local runs
-    See https://github.sw.ge.com/jreichenberg/grunt-dep-serve#why-do-we-need-this
--->
 <link rel="import" href="../polymer/polymer.html"/>
 
 <!--
-Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highcharts#yAxis
+Element to define y-axis configuration.
+
+Maps to Highcharts yaxis config, see docs at http://api.highcharts.com/highcharts#yAxis
 
 ##### Usage
 
     <px-chart-yaxis attr-1="..." attr-2="..."></px-chart-yaxis>
 
-@element px-chart-yaxis
-@blurb Maps to highcharts yaxis config, see docs at http://api.highcharts.com/highcharts#yAxis
 @demo demo.html
-@homepage index.html
 -->
 <dom-module id="px-chart-yaxis">
 

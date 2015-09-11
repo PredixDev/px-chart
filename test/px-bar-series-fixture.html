@@ -8,24 +8,21 @@
 
   <link rel="import" href="../../iron-ajax/iron-ajax.html"/>
 
-  <link rel="import" href="../px-ts-chart.html"/>
-
-  <link rel="import" href="../px-bar-series.html"/>
-
+  <link rel="import" href="../px-chart.html"/>
 </head>
 
 <body>
 
-<px-ts-chart id="oneHardcodedSeries" type="bar">
-  <px-bar-series id="simple" name="Simple" data="[1, 5, 22, 55, 11, 11, 11, 22]"></px-bar-series>
-</px-ts-chart>
+<px-chart id="oneHardcodedSeries" type="bar">
+  <px-chart-series-bar id="simple" name="Simple" data="[1, 5, 22, 55, 11, 11, 11, 22]"></px-chart-series-bar>
+</px-chart>
 
-<px-ts-chart id="ironAjax1Series" type="bar">
-  <px-bar-series id="filedata">
+<px-chart id="ironAjax1Series" type="bar">
+  <px-chart-series-bar id="filedata">
     <iron-ajax url="../bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json" handle-as="json">
     </iron-ajax>
-  </px-bar-series>
-</px-ts-chart>
+  </px-chart-series-bar>
+</px-chart>
 
   <script>
 
@@ -95,7 +92,7 @@
           }
 
           waitFor(done, seriesAreDisplayed);
-         
+
           series = tsChart.querySelectorAll('.highcharts-series');
           legendItems = tsChart.querySelectorAll('div.highcharts-legend-item');
         });

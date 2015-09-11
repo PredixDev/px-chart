@@ -8,44 +8,41 @@
 
   <link rel="import" href="../../iron-ajax/iron-ajax.html"/>
 
-  <link rel="import" href="../px-ts-chart.html"/>
-
-  <link rel="import" href="../../px-chart-series-scatter/px-chart-series-scatter.html"/>
-
+  <link rel="import" href="../px-chart.html"/>
 </head>
 
 <body>
 
-  <px-ts-chart id="oneHardcodedSeries" type="scatter">
+  <px-chart id="oneHardcodedSeries" type="scatter">
     <px-chart-series-scatter id="fan-vibration-cruise"
                      data="[[1397102460000, 121.4403],[1397139660000, 123.1913],[1397177400000, 122.8485],[1397228040000, 10.975],[1397248260000, 12.9377]]">
     </px-chart-series-scatter>
-  </px-ts-chart>
+  </px-chart>
 
-  <px-ts-chart id="dataBinding" type="scatter">
+  <px-chart id="dataBinding" type="scatter">
     <px-chart-series-scatter id="db-series">
     </px-chart-series-scatter>
-  </px-ts-chart>
+  </px-chart>
 
-  <px-ts-chart id="ironAjax1Series" type="scatter">
+  <px-chart id="ironAjax1Series" type="scatter">
     <px-chart-series-scatter id="delta-egt-cruise">
       <iron-ajax url="../bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json" handle-as="json"></iron-ajax>
     </px-chart-series-scatter>
-  </px-ts-chart>
+  </px-chart>
 
-  <px-ts-chart id="ironAjax2Series" type="scatter">
+  <px-chart id="ironAjax2Series" type="scatter">
     <px-chart-series-scatter id="fan-vibration-cruise">
       <iron-ajax url="../bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json" handle-as="json"></iron-ajax>
     </px-chart-series-scatter>
     <px-chart-series-scatter id="delta-egt-cruise">
       <iron-ajax url="../bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json" handle-as="json"></iron-ajax>
     </px-chart-series-scatter>
-  </px-ts-chart>
+  </px-chart>
 
-  <px-ts-chart id="seriesObject" type="scatter">
+  <px-chart id="seriesObject" type="scatter">
     <px-chart-series-scatter id="my-series" series-obj-name-key="myName" series-obj-data-key="myData">
     </px-chart-series-scatter>
-  </px-ts-chart>
+  </px-chart>
 
   <script>
 

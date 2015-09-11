@@ -1,75 +1,18 @@
-<!--
-    Relative paths assume component is being run from inside an app or another component, where dependencies are flat
-    siblings. When this component is run from its own repo (e.g. ui tests, examples), we assume the server is started with
-    'grunt depserve' (or similar server setup) to enable correct finding of bower dependencies for local runs
-    See https://github.sw.ge.com/jreichenberg/grunt-dep-serve#why-do-we-need-this
--->
 <link rel="import" href="../polymer/polymer.html"/>
 
 <!--
-Element defining a chart series
+Element defining a chart series that is displayed as a histogram.
 
 ### Usage
 
-#### Data
+    <px-chart-series-histogram data="{{...}}" id="hpt-acc-position-cruise">
+    </px-chart-series-histogram>
 
-    <px-chart-series data="{{...}}" id="hpt-acc-position-cruise"></px-chart-series>
+For full details on usage, see px-chart-series-line.html.  All examples should work for displaying the series as a histogram chart
+(replacing px-chart-series-line for px-chart-series-histogram in all examples).
 
-    <px-chart-series name="The Display Name" line-width="5" lower-threshold="12" upper-threshold="16" id="hpt-acc-position-cruise" marker='{"enabled": false, "radius": 15}' data="{{...}}"></px-chart-series>
-
-```js
-// Expected data format:
-[
-  [1397102460000, 11.4403],
-  [1397139660000, 13.1913],
-  [1397177400000, 12.8485],
-  [1397228040000, 10.975]
-]
-// or
-[
-  {'x': 1397102460000, 'y': 11.4403},
-  {'x': 1397139660000, 'y': 13.1913},
-  {'x': 1397177400000, 'y': 12.8485},
-  {'x': 1397228040000, 'y': 10.975},
-  {'x': 1397248260000, 'y': 12.9377},
-  {'x': 1397291280000, 'y': 13.3795},
-  {'x': 1397318100000, 'y': 13.0869},
-  {'x': 1397342100000, 'y': 17.3758}
-]
-```
-
-#### Series Object
-
-    <px-chart-series id="my-series"
-      series-obj-name-key="myName"
-      series-obj-data-key="myData"></px-chart-series>
-
-```js
-  document.querySelector('#my-series').seriesObj = {
-          myData: [
-              [1397102460000, 11.4403],
-              [1397139660000, 13.1913],
-              [1397177400000, 12.8485],
-              [1397228040000, 10.975]],
-          myName: 'foo'
-      };
-  ```
-
-#### Using iron-ajax
-
-    <px-chart-series id="..." upper-threshold="0.75" lower-threshold="0.25">
-      <iron-ajax
-          url="../demo-data/aviation/fan-vibration-cruise.json"
-          handleas="json"></iron-ajax>
-    </px-chart-series>
-
-
-@element px-chart-series
-@blurb Element defining a chart series
 @demo demo.html
-@homepage index.html
 -->
-
 <script type="text/javascript" src="../d3/d3.js"></script>
 
 <dom-module id="px-chart-series-histogram">
@@ -89,6 +32,9 @@ Polymer({
    */
   properties: {
 
+    /**
+     * @private
+     */
     rawdata: {
       type: Array,
       notify: true

@@ -8,42 +8,42 @@
 
   <link rel="import" href="../../iron-ajax/iron-ajax.html"/>
 
-  <link rel="import" href="../px-ts-chart.html"/>
+  <link rel="import" href="../px-chart.html"/>
 
 </head>
 
 <body>
 
-  <px-ts-chart id="oneHardcodedSeries">
-    <px-chart-series id="fan-vibration-cruise"
+  <px-chart id="oneHardcodedSeries">
+    <px-chart-series-line id="fan-vibration-cruise"
                      data="[[1397102460000, 121.4403],[1397139660000, 123.1913],[1397177400000, 122.8485],[1397228040000, 10.975],[1397248260000, 12.9377]]">
-    </px-chart-series>
-  </px-ts-chart>
+    </px-chart-series-line>
+  </px-chart>
 
-  <px-ts-chart id="dataBinding">
-    <px-chart-series id="db-series">
-    </px-chart-series>
-  </px-ts-chart>
+  <px-chart id="dataBinding">
+    <px-chart-series-line id="db-series">
+    </px-chart-series-line>
+  </px-chart>
 
-  <px-ts-chart id="ironAjax1Series">
-    <px-chart-series id="delta-egt-cruise">
+  <px-chart id="ironAjax1Series">
+    <px-chart-series-line id="delta-egt-cruise">
       <iron-ajax url="../bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json" handle-as="json"></iron-ajax>
-    </px-chart-series>
-  </px-ts-chart>
+    </px-chart-series-line>
+  </px-chart>
 
-  <px-ts-chart id="ironAjax2Series">
-    <px-chart-series id="fan-vibration-cruise">
+  <px-chart id="ironAjax2Series">
+    <px-chart-series-line id="fan-vibration-cruise">
       <iron-ajax url="../bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json" handle-as="json"></iron-ajax>
-    </px-chart-series>
-    <px-chart-series id="delta-egt-cruise">
+    </px-chart-series-line>
+    <px-chart-series-line id="delta-egt-cruise">
       <iron-ajax url="../bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json" handle-as="json"></iron-ajax>
-    </px-chart-series>
-  </px-ts-chart>
+    </px-chart-series-line>
+  </px-chart>
 
-  <px-ts-chart id="seriesObject">
-    <px-chart-series id="my-series" series-obj-name-key="myName" series-obj-data-key="myData">
-    </px-chart-series>
-  </px-ts-chart>
+  <px-chart id="seriesObject">
+    <px-chart-series-line id="my-series" series-obj-name-key="myName" series-obj-data-key="myData">
+    </px-chart-series-line>
+  </px-chart>
 
   <script>
 

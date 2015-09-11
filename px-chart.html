@@ -1,9 +1,3 @@
-<!--
-    Relative paths assume component is being run from inside an app or another component, where dependencies are flat
-    siblings. When this component is run from its own repo (e.g. ui tests, examples), we assume the server is started with
-    'grunt depserve' (or similar server setup) to enable correct finding of bower dependencies for local runs
-    See https://github.sw.ge.com/jreichenberg/grunt-dep-serve#why-do-we-need-this
--->
 <link rel="import" href="../polymer/polymer.html"/>
 <link rel="import" href="px-chart-series-line.html"/>
 <link rel="import" href="px-chart-series-scatter.html"/>
@@ -16,14 +10,15 @@
 <!--
 Element that defines a chart, using sub-elements for axis, series and controls configuration.
 
-See the demo page (demo.html, demo-scatter.html, demo-barchart.html, demo-histogram.html) for a working examples.
+See the demo page (demo.html) for working examples.
 
-See px-chart-series, px-chart-yaxis, and px-ts-chart-controls for more API docs (selector in upper left corner).
+See px-chart-series-line, px-chart-yaxis, px-chart-controls, etc. for more API docs (selector in upper left corner).
 
 #### Minimal Usage - 1 series of data
 
     <px-chart>
-      <px-chart-series id="hpt-acc-position-cruise" data="{{...}}"></px-chart-series>
+      <px-chart-series-line id="hpt-acc-position-cruise" data="{{...}}">
+      </px-chart-series-line>
     </px-chart>
 
 ```js
@@ -55,22 +50,21 @@ See px-chart-series, px-chart-yaxis, and px-ts-chart-controls for more API docs 
 #### Full configuration - multiple series, axis, chart controls
 
     <px-chart>
-        <px-ts-chart-controls data-controls show-refresh="true" show-date-range="true"></px-ts-chart-controls>
+        <px-chart-controls data-controls show-refresh="true" show-date-range="true"></px-chart-controls>
         <px-chart-yaxis offset="0" id="fan"></px-chart-yaxis>
         <px-chart-yaxis opposite="true" offset="-10" id="vib"></px-chart-yaxis>
-        <px-chart-series id="fan-vibration-cruise" data="{{myData}}" axis-id="fan"></px-chart-series>
-        <px-chart-series id="hpt-acc-position-cruise" data="{{myData2}}" axis-id="vib"></px-chart-series>
+        <px-chart-series-line id="fan-vibration-cruise" data="{{myData}}" axis-id="fan">
+        </px-chart-series-line>
+        <px-chart-series-line id="hpt-acc-position-cruise" data="{{myData2}}" axis-id="vib">
+        </px-chart-series-line>
     </px-chart>
 
-#### Scatter configuration - multiple series, chart controls
+#### Different types of series
 
-    <px-chart export-server-url="http://export.highcharts.com" type="scatter">
-        <px-chart-yaxis offset="0" id="fan"></px-chart-yaxis>
-        <px-chart-yaxis opposite="true" offset="-10" id="vib"></px-chart-yaxis>
-        <px-ts-chart-controls data-controls show-export="true" preset-ranges="[]"></px-ts-chart-controls>
-        <px-chart-series-scatter id="fan-vibration-cruise" data="{{myData}}" axis-id="fan"></px-chart-series-scatter>
-        <px-chart-series-scatter id="hpt-acc-position-cruise" data="{{myData2}}" axis-id="vib"></px-chart-series-scatter>
-    </px-chart>
+    <px-chart-series-line>
+    <px-chart-series-scatter>
+    <px-chart-series-histogram>
+    <px-chart-series-bar>
 
 #### Dynamically adding series
 
