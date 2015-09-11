@@ -1,6 +1,6 @@
 {
   "name": "px-chart",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "main": [
     "px-chart.html"
   ],
