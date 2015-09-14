@@ -862,9 +862,6 @@ figure .fa {
 .data-event-icon:hover {
   cursor: pointer; }
 
-px-rangepicker {
-  text-align: left; }
-
 .px-chart-tooltip {
   min-width: 400px;
   text-align: right; }

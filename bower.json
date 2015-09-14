@@ -19,7 +19,7 @@
     "highstock-release": "~2.1.5",
     "moment": "~2.10.6",
     "polymer": "~v1.0.3",
-    "px-rangepicker": "https://github.build.ge.com/PXc/px-rangepicker.git#~v0.0.6",
+    "px-rangepicker": "https://github.build.ge.com/PXc/px-rangepicker.git#~v0.0.8",
     "px-theme": "https://github.build.ge.com/PXc/px-theme.git#~v0.3.0",
     "d3": "~3.5.6"
   },
