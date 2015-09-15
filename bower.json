@@ -15,7 +15,6 @@
   ],
   "dependencies": {
     "annotations": "https://github.com/blacklabel/annotations.git#~1.2.6",
-    "google-analytics": "~0.1.0",
     "highstock-release": "~2.1.5",
     "moment": "~2.10.6",
     "polymer": "~v1.0.3",
