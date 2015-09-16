@@ -112,7 +112,9 @@
 
 <script>
 
-  //register series refresh listener for full config chart:
+  document.addEventListener('WebComponentsReady', function() {
+
+//register series refresh listener for full config chart:
   Polymer.dom(document).querySelector('.full-config-example px-chart').addEventListener("refresh-series", function(evt) {
     if (evt.detail === "fan-vibration-cruise") {
       var ironAjaxEl = document.createElement('iron-ajax');
@@ -165,6 +167,8 @@
       console.log("series " + seriesId + " does not exist on chart.");
     }
   }
+
+  });
 
 </script>
 </body>
