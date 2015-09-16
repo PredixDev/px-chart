@@ -990,10 +990,6 @@ Polymer({
             borderWidth: 0,
             shadow: false,
             padding: 0,
-            style: {
-              'width': '400px',
-              'background-color': 'red'
-            },
             formatter: function() {
               var s = '<div class="px-chart-tooltip">';
               if(this.points) {
@@ -1023,10 +1019,6 @@ Polymer({
             borderWidth: 0,
             shadow: false,
             padding: 0,
-            style: {
-              'width': '400px',
-              'background-color': 'red'
-            },
             formatter: function() {
               var s = '<div class="px-chart-tooltip">';
               if(this.points) {
