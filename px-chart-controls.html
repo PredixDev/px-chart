@@ -39,7 +39,7 @@ Element for default time controls on a chart
       </template>
 
       <template is="dom-if" if="{{showDateRange}}">
-        <px-rangepicker id="rangepicker" range="{{rangeDisplay}}" preset-ranges="{{presetsForRangepicker}}" class="float--right"></px-rangepicker>
+        <px-rangepicker id="rangepicker" range="{{rangeDisplay}}" preset-ranges="{{presetsForRangepicker}}" class="float--right" display-options="{{displayOptions}}"></px-rangepicker>
       </template>
     </div>
 
@@ -126,7 +126,25 @@ Element for default time controls on a chart
       rangeMs: {
         type: Object,
         observer: '_updateRange'
-      }
+      },
+
+      /**
+       * (optional)
+       *
+       * Display configuration that allows optional display patterns
+       *
+       *```
+       * ```
+       *
+       * @default no presets
+       */
+       displayOptions: {
+         type: Object,
+         value: {
+           displayType: 'normal',
+           submitButtonText: 'Submit'
+         }
+       }
 
     },
 
