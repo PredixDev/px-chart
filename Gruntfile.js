@@ -62,35 +62,37 @@ module.exports = function(grunt) {
       }
     },
 
-    copy: {
-      icons: {
-        expand: true,
-        flatten: true,
-        src: '*/font-awesome/fonts/*',
-        dest: 'icons'
-      },
-      type: {
-        expand: true,
-        flatten: true,
-        src: '*/px-typography-design/type/*',
-        dest: 'type'
-      }
-    },
-
     watch: {
-      sass: {
-        files: ['sass/**/*.scss'],
-        tasks: ['sass', 'autoprefixer'],
-        options: {
-          interrupt: true
+        sass: {
+            files: ['sass/**/*.scss'],
+            tasks: ['sass', 'autoprefixer'],
+            options: {
+                interrupt: true,
+                livereload: true
+            }
+        },
+        htmljs: {
+            files: ['*.html', '*.js'],
+            options: {
+                interrupt: true,
+                livereload: true
+            }
         }
-      }
     },
 
     depserve: {
       options: {
         open: '<%= depserveOpenUrl %>'
       }
+    },
+
+    concurrent: {
+        devmode: {
+            tasks: ['watch', 'depserve'],
+            options: {
+                logConcurrentOutput: true
+            }
+        }
     }
 
   });
@@ -100,8 +102,7 @@ module.exports = function(grunt) {
   // Default task.
   grunt.registerTask('default', 'Basic build', [
     'sass',
-    'autoprefixer',
-    'copy'
+    'autoprefixer'
   ]);
 
   // First run task.
@@ -110,6 +111,10 @@ module.exports = function(grunt) {
     grunt.task.run('default');
     grunt.task.run('depserve');
   });
+
+  grunt.registerTask('devmode', 'Development Mode', [
+      'concurrent:devmode'
+  ]);
 
   grunt.registerTask('release', 'Release', [
     'clean',
