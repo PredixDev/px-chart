@@ -227,11 +227,11 @@ Polymer({
      *
      * Can only be statically configured (not data-bindable).
      *
-     * @default [50,20,30,40] or [100,20,30,40] if zoom buttons exist
+     * @default [50,50,30,50] or [100,50,30,50] if zoom buttons exist
      */
     margin: {
       type: Array,
-      value: [50, 20, 30, 40]
+      value: [50, 50, 30, 50]
     },
 
     /**
@@ -281,6 +281,18 @@ Polymer({
         return {};
       },
       notify: true
+    },
+
+    /**
+     * Selects the chart tooltip type
+     *
+     * See the charts demo (demo.html) for an example. Can select between normal and condensed
+     *
+     * @default {}
+     */
+    tooltipType: {
+      type: String,
+      value: 'normal'
     },
 
     /**
@@ -967,6 +979,70 @@ Polymer({
       }
     };
 
+
+    var getTooltipOptions = function(tooltipType) {
+      switch (tooltipType) {
+        case 'condensed':
+          return {
+            shared: true,
+            useHTML: true,
+            backgroundColor: 'none',
+            borderWidth: 0,
+            shadow: false,
+            padding: 0,
+            formatter: function() {
+              var s = '<div class="px-chart-tooltip">';
+              if(this.points) {
+                for (var i = 0; i < this.points.length; i++) {
+                  s += '<span><div style="background-color: ' + this.points[i].series.color + '" class="series-icon"></div><b class="value">' + Math.round(this.points[i].y * 100) / 100 + '</b></span>';
+                }
+              } else {
+                s += '<span> <div style="background-color: ' + this.point.series.color + '" class="series-icon"></div><b class="value">' + Math.round(this.point.y * 100) / 100 + '</b></span>';
+              }
+              s += '</div>';
+              return s;
+            },
+            positioner: function(labelWidth, labelHeight, point) {
+              tooltipX = this.chart.chartWidth - (labelWidth + 10);
+              tooltipY = this.chart.plotTop - 40;
+              return {
+                x: tooltipX,
+                y: tooltipY
+              };
+            }
+          };
+        default:
+          return {
+            shared: true,
+            useHTML: true,
+            backgroundColor: 'none',
+            borderWidth: 0,
+            shadow: false,
+            padding: 0,
+            formatter: function() {
+              var s = '<div class="px-chart-tooltip">';
+              if(this.points) {
+                for (var i = 0; i < this.points.length; i++) {
+                  s += '<span><b class="value">' + Math.round(this.points[i].y * 100) / 100 + '</b><br/><b style="color: ' + this.points[i].series.color + '" class="name">' + this.points[i].series.name + '</b></span>';
+                }
+              } else {
+                s += '<span><b class="value">' + Math.round(this.point.y * 100) / 100 + '</b><br/><b style="color: ' + this.point.series.color + '" class="name">' + this.point.series.name + '</b></span>';
+              }
+              s += '</div>';
+              return s;
+            },
+            positioner: function(labelWidth, labelHeight, point) {
+              tooltipX = this.chart.chartWidth - (labelWidth + 10);
+              tooltipY = this.chart.plotTop - 60;
+              return {
+                x: tooltipX,
+                y: tooltipY
+              };
+            }
+          };
+      }
+    };
+
     return {
 
       colors: createSeriesColorsArray(this.dataVisColors, this.seriesColorOrder),
@@ -1107,38 +1183,7 @@ Polymer({
           text: null
         }
       },
-      tooltip: {
-        shared: true,
-        useHTML: true,
-        backgroundColor: 'none',
-        borderWidth: 0,
-        shadow: false,
-        padding: 0,
-        style: {
-          'width': '400px',
-          'background-color': 'red'
-        },
-        formatter: function() {
-          var s = '<div class="px-chart-tooltip">';
-          if(this.points) {
-            for (var i = 0; i < this.points.length; i++) {
-              s += '<span><b class="value">' + Math.round(this.points[i].y * 100) / 100 + '</b><br/><b style="color: ' + this.points[i].series.color + '" class="name">' + this.points[i].series.name + '</b></span>';
-            }
-          } else {
-            s += '<span><b class="value">' + Math.round(this.point.y * 100) / 100 + '</b><br/><b style="color: ' + this.point.series.color + '" class="name">' + this.point.series.name + '</b></span>';
-          }
-          s += '</div>';
-          return s;
-        },
-        positioner: function(labelWidth, labelHeight, point) {
-          tooltipX = this.chart.chartWidth - (labelWidth + 10);
-          tooltipY = this.chart.plotTop - 60;
-          return {
-            x: tooltipX,
-            y: tooltipY
-          };
-        }
-      }
+      tooltip: getTooltipOptions(this.tooltipType)
     };
   }
 });
