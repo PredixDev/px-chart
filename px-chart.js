@@ -227,11 +227,11 @@ Polymer({
      *
      * Can only be statically configured (not data-bindable).
      *
-     * @default [50,20,30,40] or [100,20,30,40] if zoom buttons exist
+     * @default [50,50,30,50] or [100,50,30,50] if zoom buttons exist
      */
     margin: {
       type: Array,
-      value: [50, 20, 30, 40]
+      value: [50, 50, 30, 50]
     },
 
     /**
