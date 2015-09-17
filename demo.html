@@ -114,19 +114,21 @@
 
   document.addEventListener('WebComponentsReady', function() {
 
-//register series refresh listener for full config chart:
-  Polymer.dom(document).querySelector('.full-config-example px-chart').addEventListener("refresh-series", function(evt) {
-    if (evt.detail === "fan-vibration-cruise") {
-      var ironAjaxEl = document.createElement('iron-ajax');
-      ironAjaxEl.url = '/bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise2.json';
-      ironAjaxEl.handleAs = "json";
-      ironAjaxEl.addEventListener('response', function(evt) {
-        var tsChart = Polymer.dom(document).querySelector('.full-config-example px-chart');
-        tsChart.updateSeries('fan-vibration-cruise', evt.detail.response.series, /*noRedraw*/false);
-      });
+    //register series refresh listener for full config chart:
+    Polymer.dom(document).querySelector('.full-config-example px-chart').addEventListener("refresh-series", function(evt) {
+      if (evt.detail === "fan-vibration-cruise") {
+        var ironAjaxEl = document.createElement('iron-ajax');
+        ironAjaxEl.url = '/bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise2.json';
+        ironAjaxEl.handleAs = "json";
+        ironAjaxEl.addEventListener('response', function(evt) {
+          var tsChart = Polymer.dom(document).querySelector('.full-config-example px-chart');
+          tsChart.updateSeries('fan-vibration-cruise', evt.detail.response.series, /*noRedraw*/false);
+        });
 
-      ironAjaxEl.generateRequest();
-    }
+        ironAjaxEl.generateRequest();
+      }
+    });
+
   });
 
   function togglePointMarkers(evt){
@@ -167,8 +169,6 @@
       console.log("series " + seriesId + " does not exist on chart.");
     }
   }
-
-  });
 
 </script>
 </body>
