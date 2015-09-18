@@ -1178,7 +1178,7 @@ Polymer({
         tickColor: this.dataVisColors["dv-basic-gray"],
         showFirstLabel: true,
         showLastLabel: true,
-        startOnTick: true,
+        startOnTick: false,
         title: {
           text: null
         }
