@@ -1130,7 +1130,9 @@ Polymer({
         },
         column: {
           borderWidth: 0,
-          pointPadding: 0.0
+          pointPadding: 0,
+          grouping: true,
+          groupPadding: 0.2
         },
         series: {
           marker: {},
