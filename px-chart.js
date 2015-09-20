@@ -168,6 +168,17 @@ Polymer({
       }
     },
 
+
+    seriesEventsWidth: {
+      type: Number,
+      value: 2
+    },
+
+    seriesEventsColor: {
+      type: String,
+      value: "rgb(59,59,63)"
+    },
+
     /**
      * See http://api.highcharts.com/highcharts#legend
      *
@@ -723,10 +734,10 @@ Polymer({
       var _this = this;
       events.forEach(function(event) {
         var eventConfig = {
-          color: _this.dataVisColors["dv-basic-gray"],
+          color: _this.seriesEventsColor,
           value: event.time,
           id: event.id,
-          width: 2,
+          width: _this.seriesEventsWidth,
           textAlign: "left",
           label: {
             align: "top",
