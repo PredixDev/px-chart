@@ -169,11 +169,27 @@ Polymer({
     },
 
 
+    /**
+     * The width of the vertical line drawn for series events.
+     *
+     * Can only be statically configured (not data-bindable).
+     *
+     * @type Number
+     * @default 2
+     */
     seriesEventsWidth: {
       type: Number,
       value: 2
     },
 
+    /**
+     * The color of the vertical line drawn for series events. Any valid CSS color string is supported.
+     *
+     * Can only be statically configured (not data-bindable).
+     *
+     * @type String
+     * @default "rgb(59,59,63)"
+     */
     seriesEventsColor: {
       type: String,
       value: "rgb(59,59,63)"
