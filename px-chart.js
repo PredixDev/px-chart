@@ -157,13 +157,11 @@ Polymer({
       value: {
         show: function() {
           var tsChart = Polymer.dom(this.chart.renderTo).parentNode.parentNode;
-          // tsChart.chartState.seriesState = this.chart.series;
-          tsChart.set('chartState.seriesState', this.chart.series)
+          tsChart.set('chartState.seriesState', this.chart.series);
         },
         hide: function() {
           var tsChart = Polymer.dom(this.chart.renderTo).parentNode.parentNode;
-          // tsChart.chartState.seriesState = this.chart.series;
-          tsChart.set('chartState.seriesState', this.chart.series)
+          tsChart.set('chartState.seriesState', this.chart.series);
         }
       }
     },
@@ -1030,8 +1028,8 @@ Polymer({
               return s;
             },
             positioner: function(labelWidth, labelHeight, point) {
-              tooltipX = this.chart.chartWidth - (labelWidth + 10);
-              tooltipY = this.chart.plotTop - 40;
+              var tooltipX = this.chart.chartWidth - (labelWidth + 10);
+              var tooltipY = this.chart.plotTop - 40;
               return {
                 x: tooltipX,
                 y: tooltipY
@@ -1059,8 +1057,8 @@ Polymer({
               return s;
             },
             positioner: function(labelWidth, labelHeight, point) {
-              tooltipX = this.chart.chartWidth - (labelWidth + 10);
-              tooltipY = this.chart.plotTop - 60;
+              var tooltipX = this.chart.chartWidth - (labelWidth + 10);
+              var tooltipY = this.chart.plotTop - 60;
               return {
                 x: tooltipX,
                 y: tooltipY
