@@ -555,7 +555,7 @@ Polymer({
     if (!this.legend) {
       this.legend = this.legendRight ? this.defaultLegendRight : this.defaultLegendTop;
     }
-
+    this.pointMarkersToggled=false;
     this._initializeMargins();
 
     this.chart = new Highcharts.StockChart(this.buildConfig());
@@ -673,6 +673,9 @@ Polymer({
       if (!noRedraw) {
         this.chart.redraw();
       }
+    }
+    if(this.pointMarkersToggled){
+      this.togglePointMarkers([seriesConfig.id]);
     }
   },
 
@@ -826,6 +829,11 @@ Polymer({
       series.update({marker: {enabled: (!existingMarkerOpts || !existingMarkerOpts.enabled)}}, /*redraw*/false);
     });
     this.chart.redraw();
+    /*a global toggle calls this function with seriesId == null but this function can also be called
+     to initialize a newly added series in the toggled state*/
+    if(seriesIds == null) {
+      this.pointMarkersToggled = !this.pointMarkersToggled;
+    }
   },
 
   /**
