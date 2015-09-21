@@ -829,6 +829,8 @@ Polymer({
       series.update({marker: {enabled: (!existingMarkerOpts || !existingMarkerOpts.enabled)}}, /*redraw*/false);
     });
     this.chart.redraw();
+    /*a global toggle calls this function with seriesId == null but this function can also be called
+     to initialize a newly added series in the toggled state*/
     if(seriesIds == null) {
       this.pointMarkersToggled = !this.pointMarkersToggled;
     }
