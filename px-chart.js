@@ -87,10 +87,12 @@ Polymer({
           if (tsChart.debounce) {//in export case this function will be called outside the realm of a polymer components
             tsChart.debounce(
               'set-extremes', function() {
-                this.rangeMs = {
-                  start: extremes.min,
-                  end: extremes.max
-                };
+                if(extremes.min !== undefined && extremes.max !== undefined && extremes.min !== null && extremes.max !== null) {
+                  this.rangeMs = {
+                    start: extremes.min,
+                    end: extremes.max
+                  };
+                }
               }, 250);
           }
         },
@@ -487,7 +489,7 @@ Polymer({
 
   _rangeObserver: function() {
     var controlsEl = Polymer.dom(this).querySelector("[data-controls]");
-    if (controlsEl && controlsEl.set && this.rangeMs.start !== null && this.rangeMs.end !== null) {
+    if (controlsEl && controlsEl.set) {
       controlsEl.set("rangeMs", {
         from: this.rangeMs.start,
         to: this.rangeMs.end
