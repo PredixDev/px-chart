@@ -850,8 +850,7 @@ figure .fa {
   cursor: pointer; }
 
 .px-chart-tooltip {
-  min-width: 400px;
-  text-align: right; }
+  min-width: 400px; }
   .px-chart-tooltip .series-icon {
     display: inline-block;
     width: 10px;
