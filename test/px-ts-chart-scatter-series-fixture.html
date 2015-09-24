@@ -1,0 +1,292 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
+  <script src="../web-component-tester/browser.js"></script>
+
+  <link rel="import" href="../../iron-ajax/iron-ajax.html"/>
+
+  <link rel="import" href="../px-chart.html"/>
+</head>
+
+<body>
+
+  <px-chart id="oneHardcodedSeries" type="scatter">
+    <px-chart-series-scatter id="fan-vibration-cruise"
+                     data="[[1397102460000, 121.4403],[1397139660000, 123.1913],[1397177400000, 122.8485],[1397228040000, 10.975],[1397248260000, 12.9377]]">
+    </px-chart-series-scatter>
+  </px-chart>
+
+  <px-chart id="dataBinding" type="scatter">
+    <px-chart-series-scatter id="db-series">
+    </px-chart-series-scatter>
+  </px-chart>
+
+  <px-chart id="ironAjax1Series" type="scatter">
+    <px-chart-series-scatter id="delta-egt-cruise">
+      <iron-ajax url="../bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json" handle-as="json"></iron-ajax>
+    </px-chart-series-scatter>
+  </px-chart>
+
+  <px-chart id="ironAjax2Series" type="scatter">
+    <px-chart-series-scatter id="fan-vibration-cruise">
+      <iron-ajax url="../bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json" handle-as="json"></iron-ajax>
+    </px-chart-series-scatter>
+    <px-chart-series-scatter id="delta-egt-cruise">
+      <iron-ajax url="../bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json" handle-as="json"></iron-ajax>
+    </px-chart-series-scatter>
+  </px-chart>
+
+  <px-chart id="seriesObject" type="scatter">
+    <px-chart-series-scatter id="my-series" series-obj-name-key="myName" series-obj-data-key="myData">
+    </px-chart-series-scatter>
+  </px-chart>
+
+  <script>
+
+    function waitFor(done, fn) {
+      var myInterval, myTimeout;
+
+      myTimeout = setTimeout(function() {
+        clearInterval(myInterval); // worst case, kill interval after 1/2 a second
+        clearTimeout(myTimeout);
+        done();
+      }, 1001);
+
+      // loop until calendar cells have rendered
+      myInterval = setInterval(function() {
+        if (fn()) { // if the function returns true, call done()
+          clearInterval(myInterval);
+          clearTimeout(myTimeout);
+          done();
+        }
+      }, 50);
+    }
+
+    function isSeriesDisplayed(series, num) {
+      var seriesCount = series[num].querySelector('path').attributes.d.value.length;
+      return seriesCount > 75; // a line IS drawn (had to look at svg path line... yuck.)
+    }
+
+    function isSeriesNotDisplayed(series, num) {
+      var paths = series[num].querySelector('path'); // serie (sing)
+      var count = 0; // if paths doesn't exist we call it zero.
+      if(paths) {
+        count = paths.attributes.d.value.length;
+      }
+      return count < 50; // a line IS drawn (had to look at svg path line... yuck.)
+    }
+
+    describe('1 series with hardcoded data', function() {
+
+      var tsChart, series, legendItems;
+
+      before(function(done) {
+        tsChart = document.getElementById('oneHardcodedSeries');
+        series = tsChart.querySelectorAll('.highcharts-markers');
+        legendItems = tsChart.querySelectorAll('div.highcharts-legend-item');
+        done();
+      });
+
+
+      it('graphs 1 series + the navigator', function() {
+        assert.equal(series.length, 2);
+        assert.equal(isSeriesDisplayed(series, 0), true);
+      });
+
+      it('has 1 series in the legend', function() {
+        assert.equal(legendItems.length, 1);
+        assert.equal(legendItems[0].textContent, 'fan-vibration-cruise');
+      });
+
+
+    });
+
+    describe('setting data for series after the chart loaded (like data-binding)', function() {
+
+      var tsChart, series, legendItems, pxSeries;
+
+      before(function(done) {
+        tsChart = document.getElementById('dataBinding');
+        series = tsChart.querySelectorAll('.highcharts-markers');
+        pxSeries = tsChart.querySelector('#db-series');
+        legendItems = tsChart.querySelectorAll('div.highcharts-legend-item');
+        done();
+      });
+
+      it('graphs 0 series', function() {
+        assert.equal(series.length, 2); // the actual series + navigator are on the chart
+        assert.equal(isSeriesNotDisplayed(series, 0), true); // but no line is drawn
+        // assert.equal(isSeriesNotDisplayed(series, 1), true);
+      });
+
+      it('has my-series in the legend', function() {
+        assert.equal(legendItems.length, 1);
+        assert.equal(legendItems[0].textContent, 'db-series');
+      });
+
+      describe('when add data', function() {
+
+        before(function(done) {
+          pxSeries.data = [[1397102460000, 121.4403], [1397139660000, 123.1913], [1397177400000, 122.8485], [1397228040000, 10.975], [1397248260000, 12.9377]];
+
+          function twoSeriesAreDisplayed() {
+            var series = tsChart.querySelectorAll('.highcharts-markers');
+            return isSeriesDisplayed(series, 0) && isSeriesDisplayed(series, 1);
+          }
+
+          waitFor(done, twoSeriesAreDisplayed);
+
+          series = tsChart.querySelectorAll('.highcharts-markers');
+        });
+
+        it('graphs 1 series + navigator', function() {
+          assert.equal(series.length, 2); // the actual series + navigator are on the chart
+          assert.equal(isSeriesDisplayed(series, 0), true);
+          assert.equal(isSeriesDisplayed(series, 1), true);
+        });
+      });
+
+    });
+
+    describe('iron ajax support in series', function() {
+
+      describe('1 series', function() {
+
+        var tsChart, series, legendItems;
+
+        before(function(done) {
+          tsChart = document.getElementById('ironAjax1Series');
+
+          function twoSeriesAreDisplayed() {
+            var series = tsChart.querySelectorAll('.highcharts-markers');
+            return false;
+            return isSeriesDisplayed(series, 0) && isSeriesDisplayed(series, 1);
+          }
+
+          waitFor(done, twoSeriesAreDisplayed);
+
+          series = tsChart.querySelectorAll('.highcharts-markers');
+          legendItems = tsChart.querySelectorAll('div.highcharts-legend-item');
+        });
+
+        it('graphs 1 series + the navigator', function() {
+          assert.equal(series.length, 2);
+          assert.equal(isSeriesDisplayed(series, 0), true);
+          assert.equal(isSeriesDisplayed(series, 1), true);
+        });
+
+        it('has only fan-vibration-cruise in the legend', function() {
+          assert.equal(legendItems.length, 1);
+          assert.equal(legendItems[0].textContent, 'delta-egt-cruise');
+        });
+
+
+      });
+
+      describe('multiple series', function() {
+
+        var tsChart, series, legendItems;
+
+        before(function(done) {
+          tsChart = document.getElementById('ironAjax2Series');
+
+          function twoSeriesAreDisplayed() {
+            var series = tsChart.querySelectorAll('.highcharts-markers');
+            return false;
+            return isSeriesDisplayed(series, 0) && isSeriesDisplayed(series, 1);
+          }
+
+          waitFor(done, twoSeriesAreDisplayed);
+
+          series = tsChart.querySelectorAll('.highcharts-markers');
+          legendItems = tsChart.querySelectorAll('div.highcharts-legend-item');
+        });
+
+        it('graphs 2 series + the navigator', function() {
+          assert.equal(series.length, 3);
+          assert.equal(series[0].querySelector('path').attributes.d.value.length > 75, true); // line IS drawn (had to look at svg path line... yuck.)
+          assert.equal(series[1].querySelector('path').attributes.d.value.length > 75, true); // line IS drawn (had to look at svg path line... yuck.)
+          assert.equal(series[2].querySelector('path').attributes.d.value.length > 75, true); // line IS drawn (had to look at svg path line... yuck.)
+        });
+
+        it('has delta-egt-cruise & fan-vibration-cruise in the legend', function() {
+          assert.equal(legendItems.length, 2);
+          assert.equal(legendItems[0].textContent, 'fan-vibration-cruise');
+          assert.equal(legendItems[1].textContent, 'delta-egt-cruise');
+        });
+
+      });
+
+    });
+
+    describe('series-object set late (like data-binding)', function() {
+
+      var tsChart, series, legendItems, pxSeries;
+
+      before(function(done) {
+        tsChart = document.getElementById('seriesObject');
+
+        function twoSeriesAreDisplayed() {
+          var series = tsChart.querySelectorAll('.highcharts-markers');
+          return false;
+          return isSeriesDisplayed(series, 0) && isSeriesDisplayed(series, 1);
+        }
+
+        waitFor(done, twoSeriesAreDisplayed);
+
+        series = tsChart.querySelectorAll('.highcharts-markers');
+        pxSeries = tsChart.querySelector('#my-series');
+        legendItems = tsChart.querySelectorAll('div.highcharts-legend-item');
+      });
+
+      it('graphs 0 series', function() {
+        assert.equal(series.length, 2); // the actual series + navigator are on the chart
+        assert.equal(isSeriesNotDisplayed(series, 0), true); // but no line is drawn (had to look at svg path line... yuck.)
+        assert.equal(isSeriesNotDisplayed(series, 0), true); // but no line is drawn (had to look at svg path line... yuck.)
+      });
+
+      it('does have my series in legend in this case', function() {
+        assert.equal(legendItems.length, 1);
+        assert.equal(legendItems[0].textContent, 'my-series');
+      });
+
+      describe('when add data', function() {
+
+        before(function(done) {
+          pxSeries.seriesObj = {
+            myData: [
+              [1397102460000, 11.4403],
+              [1397139660000, 13.1913],
+              [1397177400000, 12.8485],
+              [1397228040000, 10.975]],
+            myName: 'foo'
+          };
+          setTimeout(function() {
+            legendItems = tsChart.querySelectorAll('div.highcharts-legend-item');
+            series = tsChart.querySelectorAll('.highcharts-markers');
+            done();
+          }, 500);
+        });
+
+        it('has my-series in the legend', function() {
+          assert.equal(legendItems.length, 1);
+          assert.equal(legendItems[0].textContent, 'my-series');
+        });
+
+        it('graphs 1 series + navigator', function() {
+          assert.equal(series.length, 2); // the actual series + navigator are on the chart
+          assert.equal(series[0].querySelector('path').attributes.d.value.length > 75, true); // a line IS drawn (had to look at svg path line... yuck.)
+          assert.equal(series[1].querySelector('path').attributes.d.value.length > 75, true); // a line IS drawn (had to look at svg path line... yuck.)
+        });
+      });
+
+    });
+
+  </script>
+
+</body>
+
+</html>

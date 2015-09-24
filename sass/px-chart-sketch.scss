@@ -1,0 +1,97 @@
+/*
+ * Copyright (c) 2014 GE Global Research. All rights reserved.
+ *
+ * The copyright to the computer software herein is the property of
+ * GE Global Research. The software may be used and/or copied only
+ * with the written permission of GE Global Research or in accordance
+ * with the terms and conditions stipulated in the agreement/contract
+ * under which the software has been supplied.
+ */
+
+//
+// Sass for the "sketch" notion of the px-time-series component
+//
+// @author
+//
+
+/*
+THIS FILE SHOULD CONTAIN ONLY ABSTRACT/'SKETCH' THEME RULES, NOT SPECIFIC TO PREDIX BRANDING
+Predix branding rules go in px-time-series-predix.scss, not in this file.
+*/
+
+/*
+See https://github.com/PredixDev/px-getting-started#a-note-about-relative-import-paths for an explanation of the `../`
+in import paths
+*/
+
+// Settings
+@import "px-defaults-design/_settings.defaults.scss";
+
+// Generic
+@import "px-normalize-design/_generic.normalize.scss";
+@import "px-box-sizing-design/_generic.box-sizing.scss";
+@import "px-helpers-design/_generic.helpers.scss";
+
+// Base
+@import "px-flexbox-design/_base.flexbox.scss";
+@import "px-viewport-design/_base.viewport.scss";
+
+$inuit-enable-input--small           : true;
+$inuit-enable-inline-fields          : true;
+
+@import "px-forms-design/_base.forms.scss";
+
+// Objects
+$inuit-enable-btn--icon              : true;
+
+@import "px-buttons-design/_objects.buttons.scss";
+@import "px-toggle-design/_objects.toggle.scss";
+
+// Component
+header {
+  position: relative;
+  z-index: 1;
+  margin-bottom: -#{calculateRem(56px)};
+}
+
+figure .fa {
+  cursor: pointer;
+}
+
+.data-event-icon:hover {
+  cursor: pointer;
+}
+
+.px-chart-tooltip {
+  min-width: 400px;
+  .series-icon {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 100px;
+    margin-right: 5px;
+  }
+  span {
+    display: inline-block;
+    padding-left: 15px;
+    text-align: left;
+  }
+  .name {
+    position: relative;
+    top: -2px;
+    font-size: 12px;
+    text-transform: capitalize;
+  }
+}
+
+// Trumps
+@import "inuit-clearfix/_trumps.clearfix.scss";
+
+$inuit-enable-margins--small          : true;
+$inuit-enable-margins--large          : true;
+$inuit-enable-margins--none           : true;
+$inuit-enable-paddings--none          : true;
+$inuit-enable-margins--negative       : true;
+
+@import "px-spacing-responsive-design/_trumps.spacing-responsive.scss";
+@import "px-widths-responsive-design/_trumps.widths-responsive.scss";

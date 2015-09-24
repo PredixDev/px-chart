@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
+  <script src="../web-component-tester/browser.js"></script>
+
+  <link rel="import" href="../../iron-ajax/iron-ajax.html"/>
+
+  <link rel="import" href="../px-chart.html"/>
+</head>
+
+<body>
+
+<section>
+  <px-chart id="hardcodedSeries1" type="histogram">
+    <px-chart-series-histogram id="simple1" name="Histogram 1" rawdata="[1, 5, 22, 55, 11, 11, 11, 22]"></px-chart-series-histogram>
+  </px-chart>
+</section>
+
+<section>
+  <px-chart id="hardcodedSeries2" type="histogram">
+    <px-chart-series-histogram id="simple2" name="Histogram 2" rawdata="[ [1397102460000, 11.4403], [1397139660000, 13.1913], [1397177400000, 12.8485], [1397228040000, 10.975], [1397888040000, 10.975] ]"></px-chart-series-histogram>
+  </px-chart>
+</section>
+
+<section>
+  <px-chart id="ironAjax1Series" type="histogram">
+    <px-chart-series-histogram id="filedata">
+      <iron-ajax url="../bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json" handle-as="json">
+      </iron-ajax>
+    </px-chart-series-histogram>
+  </px-chart>
+</section>
+
+  <script>
+
+    function waitFor(done, fn) {
+      var myInterval, myTimeout;
+
+      myTimeout = setTimeout(function() {
+        clearInterval(myInterval); // worst case, kill interval after 1/2 a second
+        clearTimeout(myTimeout);
+        done();
+      }, 1001);
+
+      // loop until calendar cells have rendered
+      myInterval = setInterval(function() {
+        if (fn()) { // if the function returns true, call done()
+          clearInterval(myInterval);
+          clearTimeout(myTimeout);
+          done();
+        }
+      }, 50);
+    }
+
+    function isSeriesDisplayed(series, num) {
+      if (series[num]) {
+        var seriesCount = series[num].querySelectorAll('rect').length; // selects the svg rectangle
+        return seriesCount > 1; // at least one bar was rendered.
+      }
+      return false;
+    }
+
+    function isSeriesNotDisplayed(series, num) {
+      return !isSeriesDisplayed(series, num);
+    }
+
+    describe('1 series with hardcoded data', function() {
+
+      var tsChart, series, legendItems;
+
+      before(function(done) {
+        tsChart = document.getElementById('hardcodedSeries1');
+        series = tsChart.querySelectorAll('.highcharts-series');
+        legendItems = tsChart.querySelectorAll('div.highcharts-legend-item');
+        done();
+      });
+
+
+      it('graphs 1 series + the navigator', function() {
+        assert.equal(series.length, 2);
+        assert.equal(isSeriesDisplayed(series, 0), true);
+      });
+
+      it('has 1 series in the legend', function() {
+        assert.equal(legendItems.length, 1);
+        assert.equal(legendItems[0].textContent, 'Histogram 1');
+      });
+    });
+
+    describe('iron ajax support in series', function() {
+
+      describe('1 series', function() {
+
+        var tsChart, series, legendItems;
+
+        before(function (done) {
+          tsChart = document.getElementById('ironAjax1Series');
+
+          function seriesAreDisplayed() {
+            series = tsChart.querySelectorAll('.highcharts-series');
+            return isSeriesDisplayed(series, 0);
+          }
+
+          waitFor(done, seriesAreDisplayed);
+
+          series = tsChart.querySelectorAll('.highcharts-series');
+          legendItems = tsChart.querySelectorAll('div.highcharts-legend-item');
+        });
+
+        it('graphs 1 series + the navigator', function () {
+          assert.equal(series.length, 2);
+          assert.equal(isSeriesDisplayed(series, 0), true);
+        });
+
+        it('has only filedata in the legend', function () {
+          assert.equal(legendItems.length, 1);
+          assert.equal(legendItems[0].textContent, 'filedata');
+        });
+      })
+    });
+
+  </script>
+
+</body>
+
+</html>
