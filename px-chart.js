@@ -1029,10 +1029,10 @@ Polymer({
               var s = '<div class="flex flex--right px-chart-tooltip style-scope px-chart">';
               if(this.points) {
                 for (var i = 0; i < this.points.length; i++) {
-                  s += '<span class="flex flex--middle u-mr-"><div style="background-color: ' + this.points[i].series.color + '" class="series-icon"></div><b class="value">' + Math.round(this.points[i].y * 100) / 100 + '</b></span>';
+                  s += '<span class="flex flex--middle u-mr-"><div style="background-color: ' + this.points[i].series.color + '" class="series-icon"></div><b class="um-b- u-p0">' + Math.round(this.points[i].y * 100) / 100 + '</b></span>';
                 }
               } else {
-                s += '<span class="flex flex--middle u-mr-"> <div style="background-color: ' + this.point.series.color + '" class="series-icon"></div><b class="value">' + Math.round(this.point.y * 100) / 100 + '</b></span>';
+                s += '<span class="flex flex--middle u-mr-"> <div style="background-color: ' + this.point.series.color + '" class="series-icon"></div><b class="um-b- u-p0">' + Math.round(this.point.y * 100) / 100 + '</b></span>';
               }
               s += '</div>';
               return s;
@@ -1058,10 +1058,10 @@ Polymer({
               var s = '<div class="flex flex--right px-chart-tooltip style-scope px-chart">';
               if(this.points) {
                 for (var i = 0; i < this.points.length; i++) {
-                  s += '<span class="u-mr-"><b class="value">' + Math.round(this.points[i].y * 100) / 100 + '</b><br/><b style="color: ' + this.points[i].series.color + '" class="name">' + this.points[i].series.name + '</b></span>';
+                  s += '<span class="u-mr-"><b class="um-b- u-p0">' + Math.round(this.points[i].y * 100) / 100 + '</b><br/><b style="color: ' + this.points[i].series.color + '" class="name">' + this.points[i].series.name + '</b></span>';
                 }
               } else {
-                s += '<span class="u-mr-"><b class="value">' + Math.round(this.point.y * 100) / 100 + '</b><br/><b style="color: ' + this.point.series.color + '" class="name">' + this.point.series.name + '</b></span>';
+                s += '<span class="u-mr-"><b class="um-b- u-p0">' + Math.round(this.point.y * 100) / 100 + '</b><br/><b style="color: ' + this.point.series.color + '" class="name">' + this.point.series.name + '</b></span>';
               }
               s += '</div>';
               return s;

@@ -76,11 +76,6 @@ figure .fa {
     padding-left: 15px;
     text-align: left;
   }
-  .value {
-    font-size: 15px;
-    padding: 0;
-    margin-bottom: -10px;
-  }
   .name {
     position: relative;
     top: -2px;
@@ -95,6 +90,8 @@ figure .fa {
 $inuit-enable-margins--small          : true;
 $inuit-enable-margins--large          : true;
 $inuit-enable-margins--none           : true;
+$inuit-enable-paddings--none          : true;
+$inuit-enable-margins--negative       : true;
 
 @import "px-spacing-responsive-design/_trumps.spacing-responsive.scss";
 @import "px-widths-responsive-design/_trumps.widths-responsive.scss";
