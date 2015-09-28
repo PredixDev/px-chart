@@ -341,7 +341,7 @@ Polymer({
         "dv-basic-purple": "rgb(178, 118, 178)",
         "dv-basic-yellow": "rgb(222, 207, 63)",
         "dv-basic-red": "rgb(241, 88, 84)",
-        "dv-basic-gray": "rgb(59,59,63)",
+        "dv-basic-gray": "rgb(77,77,77)",
 
         "dv-light-blue": "rgb(136, 189, 230)",
         "dv-light-orange": "rgb(251, 178, 88)",
@@ -351,6 +351,7 @@ Polymer({
         "dv-light-purple": "rgb(188, 153, 199)",
         "dv-light-yellow": "rgb(237, 221, 70)",
         "dv-light-red": "rgb(240, 126, 110)",
+        "dv-light-gray": "rgb(140,140,140)",
 
         "dv-dark-blue": "rgb(38, 93, 171)",
         "dv-dark-orange": "rgb(223, 92, 36)",
