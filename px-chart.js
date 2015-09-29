@@ -333,7 +333,6 @@ Polymer({
       type: String,
       value: 'normal'
     },
-
     /**
      * Mapping of color name to rgb value for use in datavis (axis, navigator, series, etc. colors)
      *
@@ -373,9 +372,7 @@ Polymer({
         "dv-dark-purple": "rgb(123, 58, 150)",
         "dv-dark-yellow": "rgb(199, 180, 46)",
         "dv-dark-red": "rgb(203, 32, 39)",
-        "dv-dark-gray": "rgb(0, 0, 0)",
-        "gray9" : "#3b3b3f",
-        "black" : "#000000"
+        "dv-dark-gray": "rgb(0, 0, 0)"
       }
     },
 
@@ -637,7 +634,7 @@ Polymer({
     if (!axisConfig) {
       this.defaultYAxisConfig = this.defaultYAxisConfig || document.createElement("px-chart-yaxis");
       this.defaultYAxisConfig.offset = this.defaultYAxisConfig.offset + 10;
-      axisConfig = this.defaultYAxisConfig.buildConfig(defaultColor || this.dataVisColors["black"]);
+      axisConfig = this.defaultYAxisConfig.buildConfig(defaultColor || "rgb(0,0,0)");
     }
     this.chart.addAxis(axisConfig, /*isX*/false, !noRedraw);
   },
@@ -1007,7 +1004,7 @@ Polymer({
             align: "left",
             style: {
               fontSize: '0.8rem',
-              color: self.dataVisColors["black"]
+              color: "rgb(0,0,0)"
             },
             x: 3,
             y: 12,
@@ -1020,7 +1017,7 @@ Polymer({
             align: "left",
             style: {
               fontSize: '0.8rem',
-              color: self.dataVisColors["black"]
+              color: "rgb(0,0,0)"
             },
             x: 3,
             y: 12
@@ -1104,7 +1101,7 @@ Polymer({
         height: this.height,
         margin: this.margin,
         spacingBottom: this.spacingBottom,
-        plotBorderColor: this.dataVisColors["gray9"],
+        plotBorderColor: "rgb(59,59,63)",
         plotBorderWidth: this.plotBorderWidth,
         renderTo: this.$.container,
         //spacingRight: 200,
@@ -1154,7 +1151,7 @@ Polymer({
           labels: {
             style: {
               fontSize: '0.8rem',
-              color: this.dataVisColors["black"]
+              color: "rgb(0,0,0)"
             },
             y: 15
           }
@@ -1211,13 +1208,14 @@ Polymer({
       //   pointFormat: '<span><span style="color:{point.color};">\u25CF</span> {series.name} </span> <span style="font-weight: bold;">{point.y}</span><br/>'
       // },
       yAxis: {
-        lineColor: this.dataVisColors["gray9"],
-        tickColor: this.dataVisColors["gray9"],
+        lineColor: "rgb(59,59,63)",
+        tickColor: "rgb(59,59,63)",
         labels: {
           style: {
-            color: this.dataVisColors["black"]
+            color: "rgb(0,0,0)"
           }
-        }
+        },
+        gridLineColor : "rgb(228,228,234)"
       },
       xAxis: {
         events: {
@@ -1226,8 +1224,8 @@ Polymer({
           }
         },
         labels: getXaxisLabelsOptions(this.type),
-        lineColor: this.dataVisColors["gray9"],
-        tickColor: this.dataVisColors["gray9"],
+        lineColor: "rgb(59,59,63)",
+        tickColor: "rgb(59,59,63)",
         showFirstLabel: true,
         showLastLabel: true,
         startOnTick: false,
