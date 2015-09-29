@@ -262,6 +262,18 @@ Polymer({
     },
 
     /**
+     * See http://api.highcharts.com/highstock#chart.spacingBottom
+     *
+     * Can only be statically configured (not data-bindable).
+     *
+     * @default 20
+     */
+    spacingBottom: {
+      type: Number,
+      value: 20
+    },
+
+    /**
      * See http://api.highcharts.com/highcharts#chart.plotBorderWidth
      *
      * Can only be statically configured (not data-bindable).
@@ -909,7 +921,6 @@ Polymer({
     if (this.chart && this.chartZoomed === false) {
       this.chart.zoomOut();
     }
-    ;
   },
 
   /**
@@ -1090,6 +1101,7 @@ Polymer({
         events: this.events,
         height: this.height,
         margin: this.margin,
+        spacingBottom: this.spacingBottom,
         plotBorderColor: this.dataVisColors["dv-basic-gray"],
         plotBorderWidth: this.plotBorderWidth,
         renderTo: this.$.container,
