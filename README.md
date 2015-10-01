@@ -391,6 +391,298 @@ Updates a series on the chart, adding a default series as needed and redrawing a
 <br />
 <hr />
 
+### px-chart-series-*
+
+Element defining a chart series that is displayed as a line.
+
+Can be: px-chart-series-line, px-chart-series-bar, px-chart-series-scatter, or px-chart-series-histogram.
+
+#### Usage
+
+##### Data
+
+    <px-chart-series-line data="{{...}}" id="hpt-acc-position-cruise">
+    </px-chart-series-line>
+
+    <px-chart-series-line name="The Display Name" line-width="5" lower-threshold="12" upper-threshold="16" id="hpt-acc-position-cruise" marker='{"enabled": false, "radius": 15}' data="{{...}}">
+    </px-chart-series-line>
+
+```js
+// Expected data format:
+[
+  [1397102460000, 11.4403],
+  [1397139660000, 13.1913],
+  [1397177400000, 12.8485],
+  [1397228040000, 10.975]
+]
+// or
+[
+  {'x': 1397102460000, 'y': 11.4403},
+  {'x': 1397139660000, 'y': 13.1913},
+  {'x': 1397177400000, 'y': 12.8485},
+  {'x': 1397228040000, 'y': 10.975},
+  {'x': 1397248260000, 'y': 12.9377},
+  {'x': 1397291280000, 'y': 13.3795},
+  {'x': 1397318100000, 'y': 13.0869},
+  {'x': 1397342100000, 'y': 17.3758}
+]
+```
+
+##### Series Object
+
+    <px-chart-series-line id="my-series"
+      series-obj-name-key="myName"
+      series-obj-data-key="myData">
+    </px-chart-series-line>
+
+```js
+  document.querySelector('#my-series').seriesObj = {
+          myData: [
+              [1397102460000, 11.4403],
+              [1397139660000, 13.1913],
+              [1397177400000, 12.8485],
+              [1397228040000, 10.975]],
+          myName: 'foo'
+      };
+  ```
+
+##### Using iron-ajax
+
+    <px-chart-series-line id="..." upper-threshold="0.75" lower-threshold="0.25">
+      <iron-ajax
+          url="../demo-data/aviation/fan-vibration-cruise.json"
+          handleas="json"></iron-ajax>
+    </px-chart-series-line>
+
+<br />
+<hr />
+
+## Attributes
+
+#### axisId
+
+*Type:* **String** - (*Optional*)
+
+Optional declaration of which y axis id this series should be plotted against, if more than one.
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-series-line
+	...
+	axis-id="first-axis">
+</px-chart-series-line>
+```
+
+#### data
+
+*Type:* **Array** - (*Optional*)
+
+The data associated with the series, an Array of Arrays with the first value of each inner Array being a unix timestamp and the second value being the value.
+
+Fires a "data-changed" event via the "notify" flag when the data changes, the assumption is that the chart will listen for this event.
+
+```
+<px-chart-series-line
+	...
+	data="{{myData}}">
+</px-chart-series-line>
+```
+
+#### dataEvents
+
+*Type:* **Array** - (*Optional*)
+
+Events associated with the series, an Array of Objects with the keys:
+
+* "time" {Number}, a unix timestamp of the event time
+* "id" {String}, unique id of the event
+* "label" {String}, the text label associated with the event
+
+Fires a "dataEvents-changed" event via the "notify" flag when the events changes, the assumption is that the chart will listen for this event.
+
+```
+<px-chart-series-line
+	...
+	data-events="[...]">
+</px-chart-series-line>
+```
+
+#### id
+
+*Type:* **String** - (*Required:*)
+
+Unique id of this series
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-series-line
+	...
+	id="my-series">
+</px-chart-series-line>
+```
+
+#### lineWidth
+
+*Type:* **Number** - (*Optional*) - *Default:* 1
+
+The width of the line for this series
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-series-line
+	...
+	line-width="3">
+</px-chart-series-line>
+```
+
+#### lowerThreshold
+
+*Type:* **Number** - (*Optional*)
+
+Lower value beyond which the data should be shown as "above threshold".
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-series-line
+	...
+	lower-threshold="24">
+</px-chart-series-line>
+```
+
+#### marker
+
+*Type:* **Object** - (*Optional*) - *Default:* {"enabled": false, "radius": 2}
+
+Config for each plotted point on the line
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-series-line
+	...
+	marker='{"enabled": false, "radius": 15}'>
+</px-chart-series-line>
+```
+
+#### name
+
+*Type:* **String** - (*Optional*) - *Default:* id
+
+Display name of the series, defaults to id
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-series-line
+	...
+	name="my-series-name">
+</px-chart-series-line>
+```
+
+#### seriesObj
+
+*Type:* **Object** - (*Optional*) 
+
+Optional object that contains members that map to #name and #data via the seriesObjDataKey and seriesObjNameKey,
+
+e.g. seriesObj[seriesObjDataKey] and seriesObj[seriesObjNameKey]
+
+```
+<px-chart-series-line
+	...
+	series-obj="{{...}}">
+</px-chart-series-line>
+```
+
+#### seriesObjDataEventsKey
+
+*Type:* **String** - (*Optional*) - *Default:* "events"
+
+Key in the optional seriesObj to be used for #events
+
+Can only be statically configured (not data-bindable)
+
+```
+<px-chart-series-line
+	...
+	series-obj-data-events-key="my-events">
+</px-chart-series-line>
+```
+#### seriesObjDataKey
+
+*Type:* **String** - (*Optional*) - *Default:* "series"
+
+Key in the optional seriesObj to be used for #data
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-series-line
+	...
+	series-obj-data-key="my-data">
+</px-chart-series-line>
+```
+#### seriesObjNameKey
+
+*Type:* **String** - (*Optional*) - *Default:* "name" 
+
+Key in the optional seriesObj to be used for #name
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-series-line
+	...
+	series-obj-name-key="my-series-name">
+</px-chart-series-line>
+```
+#### tooltip
+
+*Type:* **Object** - (*Optional*) - *Default:* {"valueDecimals": 2}
+
+Config for the tooltip for each point
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-series-line
+	...
+	tooltip='{"valueDecimals": 3}'>
+</px-chart-series-line>
+```
+#### upperThreshold
+
+*Type:* **Number** - (*Optional*)
+
+Upper value beyond which the data should be shown as "above threshold".
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-series-line
+	...
+	upper-threshold="250">
+</px-chart-series-line>
+```
+
+<br />
+<hr />
+
+
+
+
+
+
+
+
+
+
+
+
 ## Usage
 
 ### Prerequisites
