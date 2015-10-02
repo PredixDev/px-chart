@@ -457,9 +457,9 @@ Can be: px-chart-series-line, px-chart-series-bar, px-chart-series-scatter, or p
 <br />
 <hr />
 
-## Attributes
+#### Attributes
 
-#### axisId
+##### axisId
 
 *Type:* **String** - (*Optional*)
 
@@ -474,7 +474,7 @@ Can only be statically configured (not data-bindable).
 </px-chart-series-line>
 ```
 
-#### data
+##### data
 
 *Type:* **Array** - (*Optional*)
 
@@ -489,7 +489,7 @@ Fires a "data-changed" event via the "notify" flag when the data changes, the as
 </px-chart-series-line>
 ```
 
-#### dataEvents
+##### dataEvents
 
 *Type:* **Array** - (*Optional*)
 
@@ -508,7 +508,7 @@ Fires a "dataEvents-changed" event via the "notify" flag when the events changes
 </px-chart-series-line>
 ```
 
-#### id
+##### id
 
 *Type:* **String** - (*Required:*)
 
@@ -523,7 +523,7 @@ Can only be statically configured (not data-bindable).
 </px-chart-series-line>
 ```
 
-#### lineWidth
+##### lineWidth
 
 *Type:* **Number** - (*Optional*) - *Default:* 1
 
@@ -538,7 +538,7 @@ Can only be statically configured (not data-bindable).
 </px-chart-series-line>
 ```
 
-#### lowerThreshold
+##### lowerThreshold
 
 *Type:* **Number** - (*Optional*)
 
@@ -553,7 +553,7 @@ Can only be statically configured (not data-bindable).
 </px-chart-series-line>
 ```
 
-#### marker
+##### marker
 
 *Type:* **Object** - (*Optional*) - *Default:* {"enabled": false, "radius": 2}
 
@@ -568,7 +568,7 @@ Can only be statically configured (not data-bindable).
 </px-chart-series-line>
 ```
 
-#### name
+##### name
 
 *Type:* **String** - (*Optional*) - *Default:* id
 
@@ -583,7 +583,7 @@ Can only be statically configured (not data-bindable).
 </px-chart-series-line>
 ```
 
-#### seriesObj
+##### seriesObj
 
 *Type:* **Object** - (*Optional*) 
 
@@ -598,7 +598,7 @@ e.g. seriesObj[seriesObjDataKey] and seriesObj[seriesObjNameKey]
 </px-chart-series-line>
 ```
 
-#### seriesObjDataEventsKey
+##### seriesObjDataEventsKey
 
 *Type:* **String** - (*Optional*) - *Default:* "events"
 
@@ -612,7 +612,7 @@ Can only be statically configured (not data-bindable)
 	series-obj-data-events-key="my-events">
 </px-chart-series-line>
 ```
-#### seriesObjDataKey
+##### seriesObjDataKey
 
 *Type:* **String** - (*Optional*) - *Default:* "series"
 
@@ -626,7 +626,7 @@ Can only be statically configured (not data-bindable).
 	series-obj-data-key="my-data">
 </px-chart-series-line>
 ```
-#### seriesObjNameKey
+##### seriesObjNameKey
 
 *Type:* **String** - (*Optional*) - *Default:* "name" 
 
@@ -640,7 +640,7 @@ Can only be statically configured (not data-bindable).
 	series-obj-name-key="my-series-name">
 </px-chart-series-line>
 ```
-#### tooltip
+##### tooltip
 
 *Type:* **Object** - (*Optional*) - *Default:* {"valueDecimals": 2}
 
@@ -654,7 +654,7 @@ Can only be statically configured (not data-bindable).
 	tooltip='{"valueDecimals": 3}'>
 </px-chart-series-line>
 ```
-#### upperThreshold
+##### upperThreshold
 
 *Type:* **Number** - (*Optional*)
 
@@ -672,16 +672,366 @@ Can only be statically configured (not data-bindable).
 <br />
 <hr />
 
+### px-chart-yaxis
 
+Element to define y-axis configuration.
 
+Maps to Highcharts yaxis config, see docs at [http://api.highcharts.com/highcharts#yAxis](http://api.highcharts.com/highcharts#yAxis)
 
+#### Usage
 
+    <px-chart-yaxis attr-1="..." attr-2="..."></px-chart-yaxis>
 
+<br />
+<hr />
 
+#### Attributes
 
+##### dateTimeLabelFormats
 
+*Type:* **Object** - (*Optional*)
 
+[http://api.highcharts.com/highcharts#yAxis.dateTimeLabelFormats](http://api.highcharts.com/highcharts#yAxis.dateTimeLabelFormats)
 
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-yaxis
+	...
+	date-time-label-formats="{...}">
+</px-chart-yaxis>
+```
+
+##### defaultColorProps
+
+*Type:* **Array** - (*Optional*) - *Default:* ["tickColor", "lineColor"]
+
+List of property names in the axis config that should be given a default color (based on the index of this axis as passed from the containing chart).
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-yaxis
+	...
+	default-color-props="[...]">
+</px-chart-yaxis>
+```
+
+##### gridLineWidth
+
+*Type:* **Number** - (*Optional*)
+
+[http://api.highcharts.com/highcharts#yAxis.gridLineWidth](http://api.highcharts.com/highcharts#yAxis.gridLineWidth)
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-yaxis
+	...
+	grid-line-width="37">
+</px-chart-yaxis>
+```
+
+##### id
+
+*Type:* **String** - (*Required*)
+
+Unique id of this axis, primarily for associating series to it
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-yaxis
+	...
+	id="firstAxis">
+</px-chart-yaxis>
+```
+
+##### labels
+
+*Type:* **Object** - (*Optional*) - *Default:* {"style": {"fontSize": 0.8rem, "color": #000000}, "y": 5}
+
+[http://api.highcharts.com/highcharts#yAxis.labels](http://api.highcharts.com/highcharts#yAxis.labels)
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-yaxis
+	...
+	labels="{...}">
+</px-chart-yaxis>
+```
+
+##### lineColor
+
+*Type:* **String** - (*Optional*)
+
+[http://api.highcharts.com/highcharts#yAxis.lineColor](http://api.highcharts.com/highcharts#yAxis.lineColor)
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-yaxis
+	...
+	line-color="rgb(0,0,0)">
+</px-chart-yaxis>
+```
+
+##### lineWidth
+
+*Type:* **Number** - (*Optional*)
+
+[http://api.highcharts.com/highcharts#yAxis.lineWidth](http://api.highcharts.com/highcharts#yAxis.lineWidth)
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-yaxis
+	...
+	line-width="7">
+</px-chart-yaxis>
+```
+
+##### max
+
+*Type:* **Number** - (*Optional*)
+
+[http://api.highcharts.com/highcharts#yAxis.max](http://api.highcharts.com/highcharts#yAxis.max)
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-yaxis
+	...
+	max="100">
+</px-chart-yaxis>
+```
+
+##### min
+
+*Type:* **Number** - (*Optional*)
+
+[http://api.highcharts.com/highcharts#yAxis.min](http://api.highcharts.com/highcharts#yAxis.min)
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-yaxis
+	...
+	min="10">
+</px-chart-yaxis>
+```
+
+##### offset
+
+*Type:* **Number** - (*Optional*)
+
+[http://api.highcharts.com/highcharts#yAxis.offset](http://api.highcharts.com/highcharts#yAxis.offset)
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-yaxis
+	...
+	offset="10">
+</px-chart-yaxis>
+```
+
+##### opposite
+
+*Type:* **Boolean** - (*Optional*)
+
+[http://api.highcharts.com/highcharts#yAxis.opposite](http://api.highcharts.com/highcharts#yAxis.opposite)
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-yaxis
+	...
+	opposite>
+</px-chart-yaxis>
+```
+
+##### startOnTick
+
+*Type:* **Boolean** - (*Optional*)
+
+[http://api.highcharts.com/highcharts#yAxis.startOnTick](http://api.highcharts.com/highcharts#yAxis.startOnTick)
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-yaxis
+	...
+	start-on-tick>
+</px-chart-yaxis>
+```
+
+##### tickColor
+
+*Type:* **String** - (*Optional*)
+
+[http://api.highcharts.com/highcharts#yAxis.tickColor](http://api.highcharts.com/highcharts#yAxis.tickColor)
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-yaxis
+	...
+	tick-color="rgb(5,5,5)">
+</px-chart-yaxis>
+```
+
+##### tickInterval
+
+*Type:* **Number** - (*Optional*)
+
+[http://api.highcharts.com/highcharts#yAxis.tickInterval](http://api.highcharts.com/highcharts#yAxis.tickInterval)
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-yaxis
+	...
+	tick-interval="10">
+</px-chart-yaxis>
+```
+
+##### tickWidth
+
+*Type:* **Number** - (*Optional*)
+
+[http://api.highcharts.com/highcharts#yAxis.tickWidth](http://api.highcharts.com/highcharts#yAxis.tickWidth)
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-yaxis
+	...
+	tick-width="10">
+</px-chart-yaxis>
+```
+
+##### title
+
+*Type:* **Object** - (*Optional*)
+
+[http://api.highcharts.com/highcharts#yAxis.title](http://api.highcharts.com/highcharts#yAxis.title)
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-yaxis
+	...
+	title="{...}">
+</px-chart-yaxis>
+```
+
+##### type
+
+*Type:* **String** - (*Optional*)
+
+[http://api.highcharts.com/highcharts#yAxis.type](http://api.highcharts.com/highcharts#yAxis.type)
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-yaxis
+	...
+	type="linear">
+</px-chart-yaxis>
+```
+
+### px-chart-controls
+
+Element for default time controls on a chart
+
+##### Usage
+
+    <px-chart-controls
+        data-controls
+        show-export="true"
+        show-date-range="true">
+    </px-chart-controls>
+
+    <px-chart-controls
+        data-controls
+        preset-ranges='[{"label": "1 m", "value": 1, "unit": "months"},{"label": "3 m", "value": 3, "unit": "months"}]'>
+    </px-chart-controls>
+
+    <px-chart-controls
+        data-controls
+        preset-ranges='[]'>
+    </px-chart-controls>
+
+    <px-chart-controls data-controls>
+      <button class="btn">My Special button</button>
+    </px-chart-controls>
+
+<br />
+<hr />
+
+#### Attributes
+
+##### showDateRange
+
+*Type:* **Boolean** - (*Optional*) - *Default:* false
+
+Whether to show date range control
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-controls
+	...
+	show-date-range>
+</px-chart-controls>
+```
+
+##### showExport
+
+*Type:* **Boolean** - (*Optional*) - *Default:* false
+
+Whether to show export control
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-controls
+	...
+	show-export>
+</px-chart-controls>
+```
+
+##### presetRanges
+
+*Type:* **Array** - (*Optional*) - *Default:*  [{label: "1 m", value: 1, unit: "months"},{label: "3 m", value: 3, unit: "months"},{label: "6 m", value: 6, unit: "months"},{label: "1 y", value: 1, unit: "year"}]
+
+Array of object representing the range presets. Each object in the Array has the following members:
+* "label" {String} The text in the button, e.g. "3 m"
+* "value" {Number} The time value, e.g. 3
+* "unit" {String} A momentjs unit string, e.g. "months"
+
+```
+<px-chart-controls
+	...
+	preset-ranges="{{presetRanges}}">
+</px-chart-controls>
+```
+
+##### displayOptions
+
+*Type:* **Object** - (*Optional*) - *Default:* {displayType: 'normal', submitButtonText: 'Submit', submitButtonIcon: ''}
+
+Display configuration that allows optional display patterns
+
+Can only be statically configured (not data-bindable).
+```
+<px-chart-controls
+	...
+	display-options="{...}">
+</px-chart-controls>
+```
 
 ## Usage
 
