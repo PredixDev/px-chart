@@ -459,6 +459,21 @@ Can be: px-chart-series-line, px-chart-series-bar, px-chart-series-scatter, or p
 
 #### Attributes
 
+##### id
+
+*Type:* **String** - (*Required:*)
+
+Unique id of this series
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-series-line
+  ...
+  id="my-series">
+</px-chart-series-line>
+```
+
 ##### axisId
 
 *Type:* **String** - (*Optional*)
@@ -505,21 +520,6 @@ Fires a "dataEvents-changed" event via the "notify" flag when the events changes
 <px-chart-series-line
 	...
 	data-events="[...]">
-</px-chart-series-line>
-```
-
-##### id
-
-*Type:* **String** - (*Required:*)
-
-Unique id of this series
-
-Can only be statically configured (not data-bindable).
-
-```
-<px-chart-series-line
-	...
-	id="my-series">
 </px-chart-series-line>
 ```
 
@@ -687,6 +687,21 @@ Maps to Highcharts yaxis config, see docs at [http://api.highcharts.com/highchar
 
 #### Attributes
 
+##### id
+
+*Type:* **String** - (*Required*)
+
+Unique id of this axis, primarily for associating series to it
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-yaxis
+  ...
+  id="firstAxis">
+</px-chart-yaxis>
+```
+
 ##### dateTimeLabelFormats
 
 *Type:* **Object** - (*Optional*)
@@ -729,21 +744,6 @@ Can only be statically configured (not data-bindable).
 <px-chart-yaxis
 	...
 	grid-line-width="37">
-</px-chart-yaxis>
-```
-
-##### id
-
-*Type:* **String** - (*Required*)
-
-Unique id of this axis, primarily for associating series to it
-
-Can only be statically configured (not data-bindable).
-
-```
-<px-chart-yaxis
-	...
-	id="firstAxis">
 </px-chart-yaxis>
 ```
 
@@ -1045,21 +1045,24 @@ Node, npm and bower are necessary to install the component and dependencies. web
 
 ### Getting Started
 
-First, install the component via bower on the command line.
+First, install the px-chart via bower on the command line.
 
 ```
-bower install https://github.com/PredixDev/px-simple-bar-chart.git --save
+bower install https://github.com/PredixDev/px-chart.git --save
 ```
-Second, import the component to your application with the following tag in your head.
+Second, import the px-chart component to your application with the following tag in your head.
 
 ```
-<link rel="import" href="/bower_components/px-simple-bar-chart/px-simple-bar-chart.html" ></link>
+<link rel="import" href="/bower_components/px-chart/px-chart.html" ></link>
 ```
 
 Finally, use the component in your application:
 
 ```
-<px-component></px-component>
+    <px-chart>
+      <px-chart-series-line id="hpt-acc-position-cruise" data="{{...}}">
+      </px-chart-series-line>
+    </px-chart>
 ```
 
 <br />
@@ -1108,4 +1111,4 @@ $ grunt devmode
 
 ## Known Issues
 
-Please use [Github Issues](https://github.com/PredixDev/COMPONENT/issues) to submit any bugs you might find.
+Please use [Github Issues](https://github.com/PredixDev/px-chart/issues) to submit any bugs you might find.
