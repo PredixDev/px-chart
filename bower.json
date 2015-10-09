@@ -1,6 +1,6 @@
 {
   "name": "px-chart",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "main": [
     "px-chart.html"
   ],
@@ -15,7 +15,7 @@
   ],
   "dependencies": {
     "annotations": "https://github.com/blacklabel/annotations.git#~1.2.6",
-    "highstock-release": "~2.1.5",
+    "highstock-release": "~2.1.9",
     "moment": "~2.10.6",
     "polymer": "~v1.0.4",
     "px-rangepicker": "https://github.com/PredixDev/px-rangepicker.git#~v0.0.8",
