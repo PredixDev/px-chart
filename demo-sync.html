@@ -13,7 +13,7 @@
   <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
   <link rel="import" href="../px-theme/px-theme.html"/>
   <link rel="import" href="../iron-ajax/iron-ajax.html"/>
-  <link rel="import" href="px-chart.html"/>
+  <link rel="import" href="my-new-component.html"/>
 
   <style is="custom-style">
     html {
@@ -30,61 +30,10 @@
 
 <body>
 <template is="dom-bind">
-  <section>
-    <px-chart chart-state={{sharedState}}>
-      <px-chart-yaxis id="firstAxis" offset="0"></px-chart-yaxis>
-      <px-chart-yaxis id="anotherAxis" opposite="true" offset="-2.5"></px-chart-yaxis>
-      <px-chart-series-line id="delta-egt-cruise" axis-id="firstAxis">
-        <iron-ajax
-            url="/bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json"
-            handle-as="json"></iron-ajax>
-      </px-chart-series-line>
-      <px-chart-series-line id="fan-vibration-cruise" axis-id="anotherAxis">
-        <iron-ajax
-            url="/bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
-            handle-as="json"></iron-ajax>
-      </px-chart-series-line>
-    </px-chart>
-  </section>
 
-  <section>
-    <px-chart chart-state={{sharedState}}>
-      <px-chart-yaxis id="firstAxis" offset="0"></px-chart-yaxis>
-      <px-chart-yaxis id="anotherAxis" opposite="true" offset="-2.5"></px-chart-yaxis>
-      <px-chart-series-line id="delta-egt-cruise" axis-id="firstAxis">
-        <iron-ajax
-            url="/bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json"
-            handle-as="json"></iron-ajax>
-      </px-chart-series-line>
-      <px-chart-series-line id="fan-vibration-cruise" axis-id="anotherAxis">
-        <iron-ajax
-            url="/bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
-            handle-as="json"></iron-ajax>
-      </px-chart-series-line>
-    </px-chart>
-
-  </section>
-
-    <section>
-      <px-chart chart-state={{sharedState}}>
-        <px-chart-yaxis id="firstAxis" offset="0"></px-chart-yaxis>
-        <px-chart-yaxis id="anotherAxis" opposite="true" offset="-2.5"></px-chart-yaxis>
-        <px-chart-series-line id="delta-egt-cruise" axis-id="firstAxis">
-          <iron-ajax
-              url="/bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json"
-              handle-as="json"></iron-ajax>
-        </px-chart-series-line>
-        <px-chart-series-line id="fan-vibration-cruise" axis-id="anotherAxis">
-          <iron-ajax
-              url="/bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
-              handle-as="json"></iron-ajax>
-        </px-chart-series-line>
-      </px-chart>
-
-    </section>
+  <my-new-component></my-new-component>
 
 </template>
-
 
 </body>
 </html>

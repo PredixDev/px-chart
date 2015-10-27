@@ -1,0 +1,121 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="px-chart.html"/>
+
+<dom-module id="my-new-component">
+  <template>
+    
+    <px-rangepicker id="rngpk" range="{{isoRange}}">
+    </px-rangepicker>
+
+  <section>
+
+    <px-chart id="firstchart" chart-state={{sharedState}}>
+      <px-chart-yaxis id="firstAxis" offset="0"></px-chart-yaxis>
+      <px-chart-yaxis id="anotherAxis" opposite="true" offset="-2.5"></px-chart-yaxis>
+      <px-chart-series-line id="delta-egt-cruise" axis-id="firstAxis">
+        <iron-ajax
+            url="/bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json"
+            handle-as="json"></iron-ajax>
+      </px-chart-series-line>
+      <px-chart-series-line id="fan-vibration-cruise" axis-id="anotherAxis">
+        <iron-ajax
+            url="/bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
+            handle-as="json"></iron-ajax>
+      </px-chart-series-line>
+    </px-chart>
+
+  </section>
+
+  <section>
+    <px-chart chart-state={{sharedState}}>
+      <px-chart-yaxis id="firstAxis" offset="0"></px-chart-yaxis>
+      <px-chart-yaxis id="anotherAxis" opposite="true" offset="-2.5"></px-chart-yaxis>
+      <px-chart-series-line id="delta-egt-cruise" axis-id="firstAxis">
+        <iron-ajax
+            url="/bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json"
+            handle-as="json"></iron-ajax>
+      </px-chart-series-line>
+      <px-chart-series-line id="fan-vibration-cruise" axis-id="anotherAxis">
+        <iron-ajax
+            url="/bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
+            handle-as="json"></iron-ajax>
+      </px-chart-series-line>
+    </px-chart>
+
+  </section>
+
+    <section>
+      <px-chart chart-state={{sharedState}}>
+        <px-chart-yaxis id="firstAxis" offset="0"></px-chart-yaxis>
+        <px-chart-yaxis id="anotherAxis" opposite="true" offset="-2.5"></px-chart-yaxis>
+        <px-chart-series-line id="delta-egt-cruise" axis-id="firstAxis">
+          <iron-ajax
+              url="/bower_components/px-demo-data/demo-data/aviation/delta-egt-cruise.json"
+              handle-as="json"></iron-ajax>
+        </px-chart-series-line>
+        <px-chart-series-line id="fan-vibration-cruise" axis-id="anotherAxis">
+          <iron-ajax
+              url="/bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
+              handle-as="json"></iron-ajax>
+        </px-chart-series-line>
+      </px-chart> 
+
+    </section>
+
+  </template>
+</dom-module>
+
+
+<script>
+  Polymer({
+
+    is: 'my-new-component',
+
+    observers: [
+    	'changeChartRange(isoRange)',
+    	'updateRangepicker(sharedState)'
+    ],
+
+    changeChartRange: function(isoRange) {
+
+    	var newStartMs = moment(isoRange.from, moment.ISO_8601).format('x');
+      	var newEndMs = moment(isoRange.to, moment.ISO_8601).format('x');
+
+      	// I'm adding the new range to the shared state object, but I didn't want to
+      	// wipe out the rest of the shared state object
+		var newState = {};
+        Polymer.Base.mixin(newState, this.sharedState);
+      	newState.chartZoom = {
+      		min: newStartMs,
+      		max: newEndMs
+      	}
+      	this.set('sharedState', newState); 
+    },
+
+
+    updateRangepicker: function(sharedState) {
+    	
+    	if(sharedState && sharedState.chartZoom) {
+
+		 	var min = sharedState.chartZoom.min; // milliseconds
+		    var max = sharedState.chartZoom.max;   
+		    console.log(min, max);
+
+		    var startMoment = moment(min, 'x'); // moment object
+		    var endMoment = moment(max, 'x');
+
+		    var objectRangepickerExpects = {
+		      from: startMoment.toISOString(),
+		      to: endMoment.toISOString()
+		    };    
+
+		    if(objectRangepickerExpects.from !== this.isoRange.from &&
+		    	objectRangepickerExpects.to !== this.isoRange.to) {
+			    this.set('isoRange', objectRangepickerExpects);
+			}
+    	}
+
+    }
+
+  });
+</script>
