@@ -109,10 +109,13 @@
 		      to: endMoment.toISOString()
 		    };    
 
-		    if(objectRangepickerExpects.from !== this.isoRange.from &&
+		    if(this.isoRange && this.isoRange.from && objectRangepickerExpects.from !== this.isoRange.from &&
 		    	objectRangepickerExpects.to !== this.isoRange.to) {
 			    this.set('isoRange', objectRangepickerExpects);
-			}
+			  }
+        else if (this.isoRange === undefined) {
+          this.set('isoRange', objectRangepickerExpects);
+        }
     	}
 
     }
