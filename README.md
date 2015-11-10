@@ -1053,7 +1053,7 @@ bower install https://github.com/PredixDev/px-chart.git --save
 Second, import the px-chart component to your application with the following tag in your head.
 
 ```
-<link rel="import" href="/bower_components/px-chart/px-chart.html" ></link>
+<link rel="import" href="/bower_components/px-chart/px-chart.html"/>
 ```
 
 Finally, use the component in your application:
