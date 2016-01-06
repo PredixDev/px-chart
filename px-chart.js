@@ -334,6 +334,19 @@ Polymer({
       value: 'normal'
     },
     /**
+     * Sets the pixel distance of the tooltip from the top of the chart plot area.
+     *
+     * If no value is supplied, a 40px for condensed and 60px for normal tooltips offset is applied.
+     *
+     * @default 0
+     */
+
+    tooltipOffset: {
+      type: Number,
+      value: 0
+    },
+
+    /**
      * Mapping of color name to rgb value for use in datavis (axis, navigator, series, etc. colors)
      *
      * Can only be statically configured (not data-bindable).
@@ -607,7 +620,7 @@ Polymer({
       var nodelist = Polymer.dom(_this).querySelectorAll(series);
       if (nodelist) {
         nodelist.forEach(function(node) {
-          seriesEls.push(node)
+          seriesEls.push(node);
         });
       }
     });
@@ -836,7 +849,7 @@ Polymer({
   togglePointMarkers: function(seriesIds) {
     var _this = this;
     var seriesToUpdate = seriesIds ? seriesIds.map(function(id) {
-      return _this.chart.get(id)
+      return _this.chart.get(id);
     }) : this.chart.series;
     seriesToUpdate.forEach(function(series) {
       var existingMarkerOpts = series.options.marker;
@@ -1026,7 +1039,7 @@ Polymer({
     };
 
 
-    var getTooltipOptions = function(tooltipType) {
+    var getTooltipOptions = function(tooltipType, tooltipOffset) {
       switch (tooltipType) {
         case 'condensed':
           return {
@@ -1050,7 +1063,8 @@ Polymer({
             },
             positioner: function(labelWidth, labelHeight, point) {
               var tooltipX = this.chart.chartWidth - (labelWidth + 10);
-              var tooltipY = this.chart.plotTop - 40;
+
+              var tooltipY = this.chart.plotTop - ((tooltipOffset > 0) ? tooltipOffset : 40);
               return {
                 x: tooltipX,
                 y: tooltipY
@@ -1079,7 +1093,7 @@ Polymer({
             },
             positioner: function(labelWidth, labelHeight, point) {
               var tooltipX = this.chart.chartWidth - (labelWidth + 10);
-              var tooltipY = this.chart.plotTop - 60;
+              var tooltipY = this.chart.plotTop - ((tooltipOffset > 0) ? tooltipOffset : 60);
               return {
                 x: tooltipX,
                 y: tooltipY
@@ -1196,17 +1210,6 @@ Polymer({
       title: {
         text: null
       },
-      // tooltip: {
-      //   backgroundColor: "white",
-      //   borderColor: this.dataVisColors["dv-dark-gray"],
-      //   shadow: false,
-      //   style: {
-      //     fontFamily: 'inherit',
-      //     fontSize: '0.8rem'
-      //   },
-      //   headerFormat: "",
-      //   pointFormat: '<span><span style="color:{point.color};">\u25CF</span> {series.name} </span> <span style="font-weight: bold;">{point.y}</span><br/>'
-      // },
       yAxis: {
         lineColor: "rgb(59,59,63)",
         tickColor: "rgb(59,59,63)",
@@ -1233,7 +1236,7 @@ Polymer({
           text: null
         }
       },
-      tooltip: getTooltipOptions(this.tooltipType)
+      tooltip: getTooltipOptions(this.tooltipType, this.tooltipOffset)
     };
   }
 });
