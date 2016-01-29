@@ -58,6 +58,10 @@ figure .fa {
   cursor: pointer;
 }
 
+figure {
+  overflow-x: hidden;
+}
+
 .data-event-icon:hover {
   cursor: pointer;
 }
