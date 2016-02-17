@@ -94,7 +94,7 @@ Determines that what type of chart to display.  This type influences the series 
 This does NOT affect the type of the series displayed on the graph.  To change the type of series, change the ```<px-chart-series-*>``` web component to line, bar, histogram, etc.
 
 Can only be statically configured (not data-bindable).
-     
+
 Accepts values of 'line', 'scatter' or 'bar'.
 
 ```
@@ -192,7 +192,7 @@ Note that a default legend will be enabled but can set this as an override.
 
 Can only be statically configured (not data-bindable).
 ```
-<px-chart 
+<px-chart
 	...
 	legend='{
      "enabled": true,
@@ -325,6 +325,21 @@ Can only be statically configured (not data-bindable).
 <px-chart
 	...
 	tooltip-type="condensed">
+</px-chart>
+```
+##### zoomControls
+
+*Type:* **String** - (*Optional*) - *Default:* "controls"
+
+Valid values are: 'none' & 'controls'
+
+Specifies if zoom should open Predix custom overlay with controls or just run default zoom.
+Running default zoom allows for more zoomTypes as specified below.
+
+```
+<px-chart
+	...
+	zoom-controls="none">
 </px-chart>
 ```
 ##### zoomType
@@ -585,7 +600,7 @@ Can only be statically configured (not data-bindable).
 
 ##### seriesObj
 
-*Type:* **Object** - (*Optional*) 
+*Type:* **Object** - (*Optional*)
 
 Optional object that contains members that map to #name and #data via the seriesObjDataKey and seriesObjNameKey,
 
@@ -628,7 +643,7 @@ Can only be statically configured (not data-bindable).
 ```
 ##### seriesObjNameKey
 
-*Type:* **String** - (*Optional*) - *Default:* "name" 
+*Type:* **String** - (*Optional*) - *Default:* "name"
 
 Key in the optional seriesObj to be used for #name
 
@@ -1112,3 +1127,5 @@ $ grunt devmode
 ## Known Issues
 
 Please use [Github Issues](https://github.com/PredixDev/px-chart/issues) to submit any bugs you might find.
+
+When using Predix zoom (zoom-controls = "controls"), you cannot specify zoomType. Only 'x' zoomType is supported currently. If you other zoomTypes, set zoom-controls to 'none'.

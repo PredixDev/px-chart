@@ -96,11 +96,28 @@ Polymer({
               }, 250);
           }
         },
+        /**
+         * Interupts the default zoom selection and runs out own.
+         * Returning 'true' will run Highcharts default zoom after
+         * Returning 'false' does not run Highcharts zoom
+         *
+         * @private
+         */
         selection: function(evt) {
-          if (evt.originalEvent && evt.originalEvent.shiftKey) {
+          var pxChartElem = this.container;
+          while(pxChartElem.tagName !== 'PX-CHART' && pxChartElem !== document){
+            pxChartElem = pxChartElem.parentNode;
+          }
+          //(not sure what evt.originalEvent is for) && if zoomControls attr is none or the user held shift key
+          //Run default highcharts zoom
+          if (evt.originalEvent && (pxChartElem.zoomControls === 'none' || evt.originalEvent.shiftKey)) {
+            //manually trigger our reset button
+            pxChartElem.setZoom(true);
             return true;
           }
-          else if (evt.xAxis) {
+          // if we want our controls...
+          //create overlay with controls
+          else if (pxChartElem.zoomControls === 'controls' && evt.xAxis) {
             var axis = evt.xAxis[0];
             this.xAxis[0].removePlotBand("selection");
             this.xAxis[0].addPlotBand({
@@ -124,7 +141,7 @@ Polymer({
                 "}" +
                 "wc.chart.xAxis[0].setExtremes(" + evt.xAxis[0].min + ", " + evt.xAxis[0].max + ");" +
                 "wc.chart.xAxis[0].removePlotBand(\"selection\");" +
-                "wc.setZoom(true);" +
+               "wc.setZoom(true);" +
                 "'" +
                 "title='Zoom to " +
                 moment(evt.xAxis[0].min).format('LLL') + " to " +
@@ -283,6 +300,19 @@ Polymer({
     plotBorderWidth: {
       type: Number,
       value: 1
+    },
+    /**
+     * Sets the type of zoom method to use
+     * Use either the default Highcharts zoom or Predix custrom zoom
+     *  - 'none' : The default zoom in highcharts allows for all zoomTypes.
+     *  - 'controls' : Predix custom zoom currently only allows zoom on the x-axis
+     *
+     *
+     * @default "controls"
+     */
+    zoomControls: {
+      type: String,
+      value: 'controls'
     },
 
     /**
@@ -578,7 +608,6 @@ Polymer({
    * This is in attached because the size of the parent container for the Highchart is set in attached
    */
   attached: function() {
-
     if (!this.legend) {
       this.legend = this.legendRight ? this.defaultLegendRight : this.defaultLegendTop;
     }
