@@ -329,9 +329,9 @@ Can only be statically configured (not data-bindable).
 ```
 ##### zoomControls
 
-*Type:* **String** - (*Optional*) - *Default:* "controls"
+*Type:* **String** - (*Optional*) - *Default:* "showcontrols"
 
-Valid values are: 'none' & 'controls'
+Valid values are: 'hidecontrols' & 'showcontrols'
 
 Specifies if zoom should open Predix custom overlay with controls or just run default zoom.
 Running default zoom allows for more zoomTypes as specified below.
@@ -339,7 +339,7 @@ Running default zoom allows for more zoomTypes as specified below.
 ```
 <px-chart
 	...
-	zoom-controls="none">
+	zoom-controls="hidecontrols">
 </px-chart>
 ```
 ##### zoomType
@@ -1128,4 +1128,4 @@ $ grunt devmode
 
 Please use [Github Issues](https://github.com/PredixDev/px-chart/issues) to submit any bugs you might find.
 
-When using Predix zoom (zoom-controls = "controls"), you cannot specify zoomType. Only 'x' zoomType is supported currently. If you other zoomTypes, set zoom-controls to 'none'.
+When using Predix zoom (zoom-controls = "showcontrols"), you cannot specify zoomType. Only 'x' zoomType is supported currently. If you other zoomTypes, set zoom-controls to 'hidecontrols'.

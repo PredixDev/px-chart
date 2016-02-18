@@ -69,12 +69,19 @@ Polymer({
       notify: true,
       observer: 'chartZoomedObserver'
     },
+    thisComp: {
+      type: Object,
+      value: this
+    },
 
     /**
      * See http://api.highcharts.com/highcharts#chart.events
      *
      * @default redraw function()
      * @private
+     *
+     *
+     * When we refactor, conside putting this in an extension: http://www.highcharts.com/docs/extending-highcharts/extending-highcharts
      */
     events: {
       type: Object,
@@ -104,20 +111,16 @@ Polymer({
          * @private
          */
         selection: function(evt) {
-          var pxChartElem = this.container;
-          while(pxChartElem.tagName !== 'PX-CHART' && pxChartElem !== document){
-            pxChartElem = pxChartElem.parentNode;
-          }
-          //(not sure what evt.originalEvent is for) && if zoomControls attr is none or the user held shift key
+          // if zoomControls attr is hidecontrols or the user held shift key
           //Run default highcharts zoom
-          if (evt.originalEvent && (pxChartElem.zoomControls === 'none' || evt.originalEvent.shiftKey)) {
+          if (evt.originalEvent && (this.options._polymerRef.zoomControls === 'hidecontrols' || evt.originalEvent.shiftKey)) {
             //manually trigger our reset button
-            pxChartElem.setZoom(true);
+            this.options._polymerRef.setZoom(true);
             return true;
           }
           // if we want our controls...
           //create overlay with controls
-          else if (pxChartElem.zoomControls === 'controls' && evt.xAxis) {
+          else if (this.options._polymerRef.zoomControls === 'showcontrols' && evt.xAxis) {
             var axis = evt.xAxis[0];
             this.xAxis[0].removePlotBand("selection");
             this.xAxis[0].addPlotBand({
@@ -304,21 +307,22 @@ Polymer({
     /**
      * Sets the type of zoom method to use
      * Use either the default Highcharts zoom or Predix custrom zoom
-     *  - 'none' : The default zoom in highcharts allows for all zoomTypes.
-     *  - 'controls' : Predix custom zoom currently only allows zoom on the x-axis
+     *  - 'hidecontrols' : The default zoom in highcharts allows for all zoomTypes.
+     *  - 'showcontrols' : Predix custom zoom currently only allows zoom on the x-axis
      *
      *
-     * @default "controls"
+     * @default "showcontrols"
      */
     zoomControls: {
       type: String,
-      value: 'controls'
+      value: 'showcontrols'
     },
 
     /**
      * See http://api.highcharts.com/highcharts#chart.zoomType
      *
      * Can only be statically configured (not data-bindable).
+     * This only currently works with zoom-controls = 'hidecontrols'
      *
      * @default "x"
      */
@@ -617,6 +621,7 @@ Polymer({
     this.chart = new Highcharts.StockChart(this.buildConfig());
 
     this._addAxisAndSeries();
+
   },
 
   listeners: {
@@ -1265,7 +1270,9 @@ Polymer({
           text: null
         }
       },
-      tooltip: getTooltipOptions(this.tooltipType, this.tooltipOffset)
+      tooltip: getTooltipOptions(this.tooltipType, this.tooltipOffset),
+      // get a reference to Polymer in here so we can call properties and methods from within Highcharts
+      _polymerRef:this
     };
   }
 });
