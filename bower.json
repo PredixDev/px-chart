@@ -1,6 +1,6 @@
 {
   "name": "px-chart",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "main": [
     "px-chart.html"
   ],
@@ -27,7 +27,7 @@
     "px-demo-data": "https://github.com/PredixDev/px-demo-data.git#~v0.0.1",
     "iron-component-page": "PolymerElements/iron-component-page#~v1.1.0",
     "px-starter-kit-design": "https://github.com/PredixDev/px-starter-kit-design.git#~0.4.0",
-    "px-buttons-design": "https://github.com/PredixDev/px-buttons-design.git#~0.5.0",
+    "px-buttons-design": "https://github.com/PredixDev/px-buttons-design.git#~0.4.22",
     "px-toggle-design": "https://github.com/PredixDev/px-toggle-design.git#~0.2.0",
     "px-forms-design": "https://github.com/PredixDev/px-forms-design.git#~0.3.0",
     "web-component-tester": "~3.3.14"
