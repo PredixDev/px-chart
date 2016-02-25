@@ -357,11 +357,11 @@ Polymer({
     },
 
     /**
-     * Selects the chart tooltip type
+     * Selects the chart tooltip type - simgle line 'condensed' or two line 'normal'
      *
      * See the charts demo (demo.html) for an example. Can select between normal and condensed
      *
-     * @default {}
+     * @default normal
      */
     tooltipType: {
       type: String,
@@ -378,6 +378,54 @@ Polymer({
     tooltipOffset: {
       type: Number,
       value: 0
+    },
+
+    /**
+     * Shows or hides the timestamp in the tooltip
+     * - 'show': shows the timestamp in the tooltip
+     * - 'hide': does not show the timestamp in the tooltip
+     *
+     * @default show
+     */
+    tooltipTimestamp: {
+      type: String,
+      value: 'show'
+    },
+
+    /**
+     * Sets the chart tooltip timestamp format
+     *
+     * See http://momentjs.com/docs/#/parsing/string-format/ for String formats
+     *
+     * @default HH:mm:ss ZZ
+     */
+    tooltipTimeFormat: {
+      type: String,
+      value: 'HH:mm:ss ZZ'
+    },
+
+    /**
+     * Sets the chart tooltip Date stamp format
+     *
+     * See http://momentjs.com/docs/#/parsing/string-format/ for String formats
+     *
+     * @default MMM DD, YYYY
+     */
+    tooltipDateFormat: {
+      type: String,
+      value: 'MMM DD, YYYY'
+    },
+
+    /**
+     * Sets the chart tooltip Datetime stamp format used with the condensed tooltipType
+     *
+     * See http://momentjs.com/docs/#/parsing/string-format/ for String formats
+     *
+     * @default HH:mm:ss ZZ | DD MMM YYYY
+     */
+    tooltipDatetimeFormat: {
+      type: String,
+      value: 'HH:mm:ss ZZ | DD MMM YYYY'
     },
 
     /**
@@ -1072,71 +1120,114 @@ Polymer({
       }
     };
 
-
+// http://api.highcharts.com/highstock#tooltip.formatter
     var getTooltipOptions = function(tooltipType, tooltipOffset) {
-      switch (tooltipType) {
-        case 'condensed':
-          return {
-            shared: true,
-            useHTML: true,
-            backgroundColor: 'none',
-            borderWidth: 0,
-            shadow: false,
-            padding: 0,
-            formatter: function() {
-              var s = '<div class="flex flex--right px-chart-tooltip style-scope px-chart">';
-              if(this.points) {
-                for (var i = 0; i < this.points.length; i++) {
-                  s += '<span class="flex flex--middle u-mr-"><div style="background-color: ' + this.points[i].series.color + '" class="series-icon"></div><b class="um-b- u-p0">' + Math.round(this.points[i].y * 100) / 100 + '</b></span>';
-                }
-              } else {
-                s += '<span class="flex flex--middle u-mr-"> <div style="background-color: ' + this.point.series.color + '" class="series-icon"></div><b class="um-b- u-p0">' + Math.round(this.point.y * 100) / 100 + '</b></span>';
-              }
-              s += '</div>';
-              return s;
-            },
-            positioner: function(labelWidth, labelHeight, point) {
-              var tooltipX = this.chart.chartWidth - (labelWidth + 10);
 
-              var tooltipY = this.chart.plotTop - ((tooltipOffset > 0) ? tooltipOffset : 40);
-              return {
-                x: tooltipX,
-                y: tooltipY
-              };
+      return {
+        shared: true,
+        useHTML: true,
+        backgroundColor: 'none',
+        borderWidth: 0,
+        shadow: false,
+        padding: 0,
+        formatter: function() {
+          /*
+            will build html in this form:
+              <span class="flex flex--right px-chart-tooltip style-scope px-chart">
+                <span class="u-mr-">
+                  <--if tooltipType is condensed -->
+                    <div style="background-color: "{{series.color}}" class="series-icon"></div>
+
+                  <b class="um-b- u-p0">{{point.val}}</b>
+
+                  <--if tooltipType is normal -->
+                    <br/>
+                    <b style="color:{{series.color}}" class="name">{{series.name}}</b>
+
+                </span>
+              </span>
+          */
+
+          /*
+            first, set some vars which depend on if we are dealing with a single point or multiple points
+            by looking to see if the multi-point array exists
+          */
+          // set a max val for our for loop
+          var iMax = (typeof(this.points) === 'undefined') ? 1 : this.points.length;
+          //define which variable to look at; wrap the single in an array so it works in our for.
+          var pointsVar = (typeof(this.points) === 'undefined') ? [ this.point ] : this.points;
+          // build our html in an array and insert the wrapper span
+          var htmlArr = ['<span class="flex flex--right px-chart-tooltip style-scope px-chart">'];
+
+          for (var i = 0; i < iMax; i++) {
+            // wrap each group in a span
+            htmlArr.push('<span class="u-mr-">');
+
+            // if condensed, create the series icon dot
+            // <div style="background-color: "{{series.color}}" class="series-icon"></div>
+            if(tooltipType === 'condensed'){
+              // in theory, divs are not supported by highstock's formater...but they become oblong if you use spans...
+              htmlArr.push('<div style="background-color: ');
+              htmlArr.push(pointsVar[i].series.color);
+              htmlArr.push('" class="series-icon"></div>');
             }
-          };
-        default:
+            // insert the vale for all cases
+            // <b class="um-b- u-p0">{{point.val}}</b>
+            htmlArr.push('<b class="um-b- u-p0">');
+            htmlArr.push(Math.round(pointsVar[i].y * 100) / 100);
+            htmlArr.push(' ');
+            htmlArr.push(pointsVar[i].series.options.units);
+            htmlArr.push('</b>');
+            // if normal, insert the series name below
+            // <br/>
+            // <b style="color:{{series.color}}" class="name">{{series.name}}</b>
+            if(tooltipType === 'normal'){
+              htmlArr.push('<br/><b style="color: ');
+              htmlArr.push(pointsVar[i].series.color);
+              htmlArr.push('" class="name">');
+              htmlArr.push(pointsVar[i].series.name);
+              htmlArr.push('</b>');
+            }
+            htmlArr.push('</span>');
+          }
+
+          // Add the tooltip Timestamp if needed
+          // same format as a value marker
+          var polymerRef = pointsVar[0].series.chart.options._polymerRef;
+          if(polymerRef.tooltipTimestamp !== 'hide'){
+            var datetimeStamp = moment(pointsVar[0].x);
+            htmlArr.push('<span class="u-mr-">');
+            htmlArr.push('<b class="um-b- u-p0">');
+            if(tooltipType === 'condensed'){
+              htmlArr.push(datetimeStamp.utcOffset('+0000').format(polymerRef.tooltipDatetimeFormat));
+            } else {
+              htmlArr.push(datetimeStamp.utcOffset('+0000').format(polymerRef.tooltipTimeFormat));
+              htmlArr.push('</b>');
+              htmlArr.push('<br/>');
+              htmlArr.push('<b style="color: black" class="name">');
+              htmlArr.push(datetimeStamp.format(polymerRef.tooltipDateFormat));
+            }
+            htmlArr.push('</b>');
+            htmlArr.push('</span>');
+          }
+
+          htmlArr.push('</span>');
+          return htmlArr.join('');
+        },
+        positioner: function(labelWidth, labelHeight, point) {
+          var defaultOffset = (tooltipType === 'condensed') ? 40 : 60;
+
+          var tooltipX = this.chart.chartWidth - (labelWidth + 10);
+          var tooltipY = this.chart.plotTop - ((tooltipOffset > 0) ? tooltipOffset : defaultOffset);
           return {
-            shared: true,
-            useHTML: true,
-            backgroundColor: 'none',
-            borderWidth: 0,
-            shadow: false,
-            padding: 0,
-            formatter: function() {
-              var s = '<div class="flex flex--right px-chart-tooltip style-scope px-chart">';
-              if(this.points) {
-                for (var i = 0; i < this.points.length; i++) {
-                  s += '<span class="u-mr-"><b class="um-b- u-p0">' + Math.round(this.points[i].y * 100) / 100 + '</b><br/><b style="color: ' + this.points[i].series.color + '" class="name">' + this.points[i].series.name + '</b></span>';
-                }
-              } else {
-                s += '<span class="u-mr-"><b class="um-b- u-p0">' + Math.round(this.point.y * 100) / 100 + '</b><br/><b style="color: ' + this.point.series.color + '" class="name">' + this.point.series.name + '</b></span>';
-              }
-              s += '</div>';
-              return s;
-            },
-            positioner: function(labelWidth, labelHeight, point) {
-              var tooltipX = this.chart.chartWidth - (labelWidth + 10);
-              var tooltipY = this.chart.plotTop - ((tooltipOffset > 0) ? tooltipOffset : 60);
-              return {
-                x: tooltipX,
-                y: tooltipY
-              };
-            }
+            x: tooltipX,
+            y: tooltipY
           };
-      }
+        }
+      };
     };
 
+    // return on the whole Polymer definition to run highcharts
     return {
 
       colors: createSeriesColorsArray(this.dataVisColors, this.seriesColorOrder),
@@ -1268,7 +1359,8 @@ Polymer({
         startOnTick: false,
         title: {
           text: null
-        }
+        },
+        ordinal:false
       },
       tooltip: getTooltipOptions(this.tooltipType, this.tooltipOffset),
       // get a reference to Polymer in here so we can call properties and methods from within Highcharts

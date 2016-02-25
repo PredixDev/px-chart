@@ -327,6 +327,71 @@ Can only be statically configured (not data-bindable).
 	tooltip-type="condensed">
 </px-chart>
 ```
+##### tooltipOffset
+
+*Type:* **Number** - (*Optional*) - *Default:* 0
+
+Sets the pixel distance of the tooltip from the top of the chart plot area.
+
+If no value is supplied, a 40px for condensed and 60px for normal tooltips offset is applied.
+```
+<px-chart
+	...
+	tooltip-offset="20">
+</px-chart>
+```
+##### tooltipTimestamp
+
+*Type:* **String** - (*Optional*) - *Default:* 'show'
+
+Valid values are: 'show' & 'hide'
+
+Shows or hides the timestamp in the tooltip
+```
+<px-chart
+	...
+	tooltip-timestamp="hide">
+</px-chart>
+```
+##### tooltipTimeFormat
+
+*Type:* **String** - (*Optional*) - *Default:* 'HH:mm:ss ZZ'
+
+Configures how the time is displayed in the normal tooltip
+
+See http://momentjs.com/docs/#/parsing/string-format/ for String formats
+```
+<px-chart
+	...
+	tooltip-time-format="HH:mm:ss ZZ">
+</px-chart>
+```
+##### tooltipDateFormat
+
+*Type:* **String** - (*Optional*) - *Default:* 'MMM DD, YYYY'
+
+Configures how the date is displayed in the normal tooltip
+
+See http://momentjs.com/docs/#/parsing/string-format/ for String formats
+```
+<px-chart
+	...
+	tooltip-date-format="DD MMM YYYY">
+</px-chart>
+```
+##### tooltipDatetimeFormat
+
+*Type:* **String** - (*Optional*) - *Default:* 'HH:mm:ss ZZ | DD MMM YYYY'
+
+Configures how the time and date are displayed in the condensed tooltip
+
+See http://momentjs.com/docs/#/parsing/string-format/ for String formats
+```
+<px-chart
+	...
+	tooltip-datetime-format="HH:mm:ss - MM/DD/YY">
+</px-chart>
+```
 ##### zoomControls
 
 *Type:* **String** - (*Optional*) - *Default:* "showcontrols"
@@ -595,6 +660,21 @@ Can only be statically configured (not data-bindable).
 <px-chart-series-line
 	...
 	name="my-series-name">
+</px-chart-series-line>
+```
+
+##### units
+
+*Type:* **String** - (*Optional*) - *Default:* ''
+
+Set the units of the series. It can then be displayed in the chart tooltip
+
+Can only be statically configured (not data-bindable).
+
+```
+<px-chart-series-line
+	...
+	units="morgens">
 </px-chart-series-line>
 ```
 
