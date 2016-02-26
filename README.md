@@ -312,6 +312,23 @@ Can only be statically configured (not data-bindable).
 	spacing-bottom="13">
 </px-chart>
 ```
+##### tooltipKind
+
+*Type:* **String** - (*Optional*) - *Default:* "px"
+
+Selects the kind of tooltip to display
+* px: default type with tooltip appearing in a row above the chart
+* hc: tooltip follows cursor
+
+See the charts demo (demo.html) for an example.
+
+Can only be statically configured (not data-bindable).
+```
+<px-chart
+	...
+	tooltip-type="condensed">
+</px-chart>
+```
 ##### tooltipType
 
 *Type:* **String** - (*Optional*) - *Default:* "normal"

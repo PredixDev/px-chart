@@ -1,3 +1,8 @@
+v1.4.0
+=================
+* Added tooltipKind attribute which allows the dev to decide on the kind of tooltip to display: px tooltip in a row above the chart or hc tooltip which follows the cursor
+
+=================
 v1.3.0
 =================
 * Added time and date stamp to tooltip with developer set configuration attributes on px-chart

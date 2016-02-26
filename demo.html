@@ -78,6 +78,17 @@
   </px-chart>
 </section>
 
+<section class="simple-chart u-mb+">
+  <h1>Line series with HC Tooltip</h1>
+  <px-chart tooltip-kind='hc'>
+    <px-chart-series-line id="fan-vibration-cruise" units="Hz">
+      <iron-ajax
+        url="/bower_components/px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
+        handle-as="json"></iron-ajax>
+    </px-chart-series-line>
+  </px-chart>
+</section>
+
 <section class="scatter u-mb+">
   <h1>Scatter series</h1>
   <px-chart type="scatter">
