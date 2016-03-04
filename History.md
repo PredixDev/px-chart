@@ -1,3 +1,7 @@
+v1.4.1
+=================
+* updated url for demo json
+
 v1.4.0
 =================
 * Added tooltipKind attribute which allows the dev to decide on the kind of tooltip to display: px tooltip in a row above the chart or hc tooltip which follows the cursor
