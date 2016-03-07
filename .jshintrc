@@ -32,6 +32,7 @@
         "angular": false,
         "Polymer": false,
         "Highcharts" : false,
-        "moment" : false
+        "moment" : false,
+        "assert" : false
     }
 }

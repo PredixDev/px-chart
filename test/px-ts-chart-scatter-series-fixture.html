@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 
-  <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
+  <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
   <script src="../web-component-tester/browser.js"></script>
 
   <link rel="import" href="../../iron-ajax/iron-ajax.html"/>
@@ -162,7 +162,6 @@
 
           function twoSeriesAreDisplayed() {
             var series = tsChart.querySelectorAll('.highcharts-markers');
-            return false;
             return isSeriesDisplayed(series, 0) && isSeriesDisplayed(series, 1);
           }
 
@@ -195,7 +194,6 @@
 
           function twoSeriesAreDisplayed() {
             var series = tsChart.querySelectorAll('.highcharts-markers');
-            return false;
             return isSeriesDisplayed(series, 0) && isSeriesDisplayed(series, 1);
           }
 
@@ -207,9 +205,9 @@
 
         it('graphs 2 series + the navigator', function() {
           assert.equal(series.length, 3);
-          assert.equal(series[0].querySelector('path').attributes.d.value.length > 75, true); // line IS drawn (had to look at svg path line... yuck.)
-          assert.equal(series[1].querySelector('path').attributes.d.value.length > 75, true); // line IS drawn (had to look at svg path line... yuck.)
-          assert.equal(series[2].querySelector('path').attributes.d.value.length > 75, true); // line IS drawn (had to look at svg path line... yuck.)
+          assert.equal(series[0].querySelector('path').attributes.d.value.length > 65, true); // line IS drawn (had to look at svg path line... yuck.)
+          assert.equal(series[1].querySelector('path').attributes.d.value.length > 65, true); // line IS drawn (had to look at svg path line... yuck.)
+          assert.equal(series[2].querySelector('path').attributes.d.value.length > 65, true); // line IS drawn (had to look at svg path line... yuck.)
         });
 
         it('has delta-egt-cruise & fan-vibration-cruise in the legend', function() {
@@ -229,17 +227,10 @@
       before(function(done) {
         tsChart = document.getElementById('seriesObject');
 
-        function twoSeriesAreDisplayed() {
-          var series = tsChart.querySelectorAll('.highcharts-markers');
-          return false;
-          return isSeriesDisplayed(series, 0) && isSeriesDisplayed(series, 1);
-        }
-
-        waitFor(done, twoSeriesAreDisplayed);
-
         series = tsChart.querySelectorAll('.highcharts-markers');
         pxSeries = tsChart.querySelector('#my-series');
         legendItems = tsChart.querySelectorAll('div.highcharts-legend-item');
+        done();
       });
 
       it('graphs 0 series', function() {
