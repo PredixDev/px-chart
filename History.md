@@ -1,3 +1,7 @@
+v1.5.0
+=================
+* Upgrade to Polymer 1.4.0
+
 v1.4.1
 =================
 * updated url for demo json
