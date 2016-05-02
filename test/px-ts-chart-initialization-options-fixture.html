@@ -68,7 +68,7 @@
 
     function isSeriesDisplayed(series, num) {
       var seriesCount = series[num].querySelector('path').attributes.d.value.length;
-      return seriesCount > 75; // a line IS drawn (had to look at svg path line... yuck.)
+      return seriesCount >= 60; // a line IS drawn (had to look at svg path line... yuck.)
     }
 
     function isSeriesNotDisplayed(series, num) {
@@ -139,9 +139,9 @@
         });
 
         it('graphs 1 series + navigator', function() {
-          assert.equal(series.length, 2); // the actual series + navigator are on the chart
-          assert.equal(isSeriesDisplayed(series, 0), true);
-          assert.equal(isSeriesDisplayed(series, 1), true);
+            assert.equal(series.length, 2); // the actual series + navigator are on the chart
+            assert.equal(isSeriesDisplayed(series, 0), true);
+            assert.equal(isSeriesDisplayed(series, 1), true);
         });
       });
 
@@ -202,9 +202,9 @@
 
         it('graphs 2 series + the navigator', function() {
           assert.equal(series.length, 3);
-          assert.equal(series[0].querySelector('path').attributes.d.value.length > 75, true); // line IS drawn (had to look at svg path line... yuck.)
-          assert.equal(series[1].querySelector('path').attributes.d.value.length > 75, true); // line IS drawn (had to look at svg path line... yuck.)
-          assert.equal(series[2].querySelector('path').attributes.d.value.length > 75, true); // line IS drawn (had to look at svg path line... yuck.)
+          assert.equal(series[0].querySelector('path').attributes.d.value.length > 60, true); // line IS drawn (had to look at svg path line... yuck.)
+          assert.equal(series[1].querySelector('path').attributes.d.value.length > 60, true); // line IS drawn (had to look at svg path line... yuck.)
+          assert.equal(series[2].querySelector('path').attributes.d.value.length > 60, true); // line IS drawn (had to look at svg path line... yuck.)
         });
 
         it('has delta-egt-cruise & fan-vibration-cruise in the legend', function() {
@@ -272,10 +272,10 @@
           assert.equal(legendItems[0].textContent, 'my-series');
         });
 
-        it('graphs 1 series + navigator', function() {
+        it('graphs 1 series + navigatooor', function() {
           assert.equal(series.length, 2); // the actual series + navigator are on the chart
-          assert.equal(series[0].querySelector('path').attributes.d.value.length > 75, true); // a line IS drawn (had to look at svg path line... yuck.)
-          assert.equal(series[1].querySelector('path').attributes.d.value.length > 75, true); // a line IS drawn (had to look at svg path line... yuck.)
+          assert.equal(isSeriesDisplayed(series, 0), true); // a line IS drawn (had to look at svg path line... yuck.)
+          assert.equal(isSeriesDisplayed(series, 1), true); // a line IS drawn (had to look at svg path line... yuck.)
         });
       });
 
