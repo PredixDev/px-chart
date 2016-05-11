@@ -1,6 +1,6 @@
 {
   "name": "px-chart",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "main": [
     "px-chart.html"
   ],
@@ -11,7 +11,8 @@
     "sass",
     "bower_components",
     "node_modules",
-    "test"
+    "test",
+    "OSS_Notice.pdf"
   ],
   "dependencies": {
     "annotations": "https://github.com/blacklabel/annotations.git#~1.2.6",
