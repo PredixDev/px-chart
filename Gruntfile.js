@@ -93,8 +93,15 @@ module.exports = function(grunt) {
                 logConcurrentOutput: true
             }
         }
-    }
-
+      },
+      bump: {
+        options:{
+          files: ['bower.json', 'package.json'],
+          updateConfigs: [],
+          commitFiles: ['package.json', 'bower.json'],
+          push: false
+        }
+      }
   });
 
   require('load-grunt-tasks')(grunt);
