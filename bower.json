@@ -1,6 +1,6 @@
 {
   "name": "px-chart",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "main": [
     "px-chart.html"
   ],
@@ -17,7 +17,7 @@
   "dependencies": {
     "annotations": "https://github.com/blacklabel/annotations.git#~1.2.6",
     "highstock-release": "~2.1.9",
-    "moment": "~2.10.6",
+    "px-datetime-common": "~0.4.0",
     "polymer": "^v1.5.0",
     "px-rangepicker": "https://github.com/PredixDev/px-rangepicker.git#~v0.4.0",
     "px-theme": "https://github.com/PredixDev/px-theme.git#~v0.8.0",
@@ -32,5 +32,8 @@
     "px-toggle-design": "https://github.com/PredixDev/px-toggle-design.git#~0.2.0",
     "px-forms-design": "https://github.com/PredixDev/px-forms-design.git#~0.3.0",
     "web-component-tester": "~3.3.14"
+  },
+  "resolutions": {
+    "moment": "~2.13.0"
   }
 }

@@ -1,3 +1,7 @@
+v1.6.1
+=================
+* Load moment from px-datetime-imports
+
 v1.6.0
 =================
 * Upgrade to Polymer 1.5.0

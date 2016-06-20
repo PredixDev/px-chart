@@ -1,5 +1,6 @@
 <link rel="import" href="../polymer/polymer.html"/>
 <link rel="import" href="../px-rangepicker/px-rangepicker.html"/>
+<link rel="import" href="../px-datetime-common/px-datetime-imports.html"/>
 
 <!--
 Element for default time controls on a chart
@@ -47,8 +48,6 @@ Element for default time controls on a chart
 
   </template>
 </dom-module>
-
-<script src="../moment/min/moment.min.js"></script>
 
 <script>
   Polymer({
@@ -153,20 +152,20 @@ Element for default time controls on a chart
       '_submitRange(rangeDisplay)'
     ],
 
-    ready: function() {    
-  
-      // TOTAL HACK for Polymer 1.0.5 which APM is stuck on for MVP3.  9/21/15   
-      // this code can be deleted once we're off that version; the rangepicker defaults    
-      // work fine without this hack.    
-      if(this.rangeMs === undefined) {   
-        this.set('rangeMs', {    
-            from: moment().subtract(7, 'day').format('x'),   
-            to: moment().format('x')   
-        });    
-      }    
-   
+    ready: function() {
+
+      // TOTAL HACK for Polymer 1.0.5 which APM is stuck on for MVP3.  9/21/15
+      // this code can be deleted once we're off that version; the rangepicker defaults
+      // work fine without this hack.
+      if(this.rangeMs === undefined) {
+        this.set('rangeMs', {
+            from: moment().subtract(7, 'day').format('x'),
+            to: moment().format('x')
+        });
+      }
+
     },
-    
+
     _updateRange: function() {
       var startMoment = moment(this.rangeMs.from, 'x');
       var endMoment = moment(this.rangeMs.to, 'x');
