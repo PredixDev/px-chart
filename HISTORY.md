@@ -1,3 +1,7 @@
+v1.6.3
+=================
+* Updated vulcanize index and demo
+
 v1.6.2
 =================
 * Added vulcanize
