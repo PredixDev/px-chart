@@ -1,3 +1,7 @@
+v1.6.2
+=================
+* Added vulcanize
+
 v1.6.1
 =================
 * Load moment from px-datetime-imports
