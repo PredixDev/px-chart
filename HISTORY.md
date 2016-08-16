@@ -1,3 +1,7 @@
+v1.6.4
+=================
+* added mega demo, fixed spelling mistake in ghp.sh
+
 v1.6.3
 =================
 * Updated vulcanize index and demo

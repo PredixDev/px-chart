@@ -12,26 +12,36 @@
     "bower_components",
     "node_modules",
     "test",
-    "OSS_Notice.pdf"
+    "OSS_Notice.pdf",
+    "scripts",
+    ".github"
   ],
   "dependencies": {
     "annotations": "https://github.com/blacklabel/annotations.git#~1.2.6",
     "highstock-release": "~2.1.9",
     "px-datetime-common": "~0.4.0",
     "polymer": "^v1.5.0",
-    "px-rangepicker": "https://github.com/PredixDev/px-rangepicker.git#~v0.4.0",
-    "px-theme": "https://github.com/PredixDev/px-theme.git#~v0.8.0",
+    "px-rangepicker": "~v0.4.0",
+    "px-theme": "~v0.8.0",
     "d3": "~3.5.6"
   },
   "devDependencies": {
     "iron-ajax": "PolymerElements/iron-ajax#~v1.1.1",
-    "px-demo-data": "https://github.com/PredixDev/px-demo-data.git#~v0.0.1",
-    "iron-component-page": "PolymerElements/iron-component-page#~v1.1.0",
-    "px-starter-kit-design": "https://github.com/PredixDev/px-starter-kit-design.git#~0.4.0",
-    "px-buttons-design": "https://github.com/PredixDev/px-buttons-design.git#~0.4.22",
-    "px-toggle-design": "https://github.com/PredixDev/px-toggle-design.git#~0.2.0",
-    "px-forms-design": "https://github.com/PredixDev/px-forms-design.git#~0.3.0",
-    "web-component-tester": "~3.3.14"
+    "px-demo-data": "~v0.0.1",
+    "px-starter-kit-design": "#~0.5.4",
+    "px-forms-design": "#~0.3.15",
+    "px-tables-design": "#~0.3.12",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#~1.2.3",
+    "px-polymer-font-awesome":"^0.1.8",
+    "px-tabs": "~0.4.0",
+    "px-api-viewer": "^0.0.4",
+    "px-demo-snippet": "^0.1.5",
+    "px-list-inline-design": "^0.2.11",
+    "px-toggle-design": "^0.2.12",
+    "px-headings-design": "^0.2.14",
+    "px-actionable-text-icons-design": "^0.0.3",
+    "px-code-design": "~0.2.11",
+    "px-dropdown": "^0.10.2"
   },
   "resolutions": {
     "moment": "~2.13.0"
