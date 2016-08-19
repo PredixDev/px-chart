@@ -39,7 +39,7 @@
       </a>
       <h1 class="delta">px-chart-series-bar</h1>
       <div class="description-text">
-
+        This is a sub-component of px-chart, and is meant to be used inside of px-chart. See examples below.
       </div>
     </div>
     <br />
@@ -147,6 +147,7 @@
       var template = document.querySelector('template[is=dom-bind]'),
           optionsArray = [
             {
+              "parentComponent": ["<px-chart>","</px-chart>"],
               "name": "The Display Name",
               "lineWidth": "5",
               "lowerThreshold": "12",

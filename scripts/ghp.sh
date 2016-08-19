@@ -46,11 +46,26 @@ bower install ${REPO_NAME} --force
 cd ${REPO_NAME} #go into the component folder
 npm install vulcanize
 vulcanize index.html -o index.vulcanized.html --inline-scripts --inline-css --strip-comments
-vulcanize demo.html -o demo.vulcanized.html --inline-scripts --inline-css --strip-comments
+vulcanize px-chart-controls-demo.html -o px-chart-controls-demo.vulcanized.html --inline-scripts --inline-css --strip-comments
+vulcanize px-chart-series-bar-demo.html -o px-chart-series-bar-demo.vulcanized.html --inline-scripts --inline-css --strip-comments
+vulcanize px-chart-series-histogram-demo.html -o px-chart-series-histogram-demo.vulcanized.html --inline-scripts --inline-css --strip-comments
+vulcanize px-chart-series-line-demo.html -o px-chart-series-line-demo.vulcanized.html --inline-scripts --inline-css --strip-comments
+vulcanize px-chart-series-scatter-demo.html -o px-chart-series-scatter-demo.vulcanized.html --inline-scripts --inline-css --strip-comments
+vulcanize px-chart-yaxis-demo.html -o px-chart-yaxis-demo.vulcanized.html --inline-scripts --inline-css --strip-comments
 yes | cp index.vulcanized.html index.html
-yes | cp demo.vulcanized.html demo.html
-rm demo.vulcanized.html
+yes | cp px-chart-controls-demo.vulcanized.html px-chart-controls-demo.html
+yes | cp px-chart-series-bar-demo.vulcanized.html px-chart-series-bar-demo.html
+yes | cp px-chart-series-histogram-demo.vulcanized.html px-chart-series-histogram-demo.html
+yes | cp px-chart-series-line-demo.vulcanized.html px-chart-series-line-demo.html
+yes | cp px-chart-series-scatter-demo.vulcanized.html px-chart-series-scatter-demo.html
+yes | cp px-chart-yaxis-demo.vulcanized.html px-chart-yaxis-demo.html
 rm index.vulcanized.html
+rm px-chart-controls-demo.vulcanized.html
+rm px-chart-series-bar-demo.vulcanized.html
+rm px-chart-series-histogram-demo.vulcanized.html
+rm px-chart-series-line-demo.vulcanized.html
+rm px-chart-series-scatter-demo.vulcanized.html
+rm px-chart-yaxis-demo.vulcanized.html
 cd ../ #remember to exit out of the component before you do any git stuff
 
 #do the git stuff

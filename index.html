@@ -39,7 +39,7 @@
       </a>
       <h1 class="delta">px-chart</h1>
       <div class="description-text">
-
+        Element that defines a chart, using sub-elements for axis, series and controls configuration.
       </div>
       <div class="flex">
         <img class="u-mr-- " src="https://img.shields.io/travis/PredixDev/px-chart.svg?style=flat-square" alt="Travis"  onerror="this.style.display='none'"/>
@@ -196,7 +196,8 @@
               "tooltipDateFormat": "MMM DD, YYYY",
               "tooltipTimeFormat": "HH:mm:ss ZZ",
               "tooltipTimestamp": "show",
-              "tooltipType": "normal"
+              "tooltipType": "normal",
+              "lightDomContent": "<px-chart-series-line id='hpt-acc-position-cruise' data='[[data]]'></px-chart-series-line>"
             },
             {
               "data":[
@@ -213,7 +214,8 @@
               "tooltipDateFormat": "MMM DD, YYYY",
               "tooltipTimeFormat": "HH:mm:ss ZZ",
               "tooltipTimestamp": "hide",
-              "tooltipType": "condensed"
+              "tooltipType": "condensed",
+              "lightDomContent": "<px-chart-series-line id='hpt-acc-position-cruise' data='[[data]]'></px-chart-series-line>"
             }
           ],
           indexPlusOne = function(num) {
