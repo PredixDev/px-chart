@@ -27,6 +27,11 @@ module.exports = function(grunt) {
           'css/noprefix/px-chart-sketch.css': 'sass/px-chart-sketch.scss',
           'css/noprefix/px-chart.css': 'sass/px-chart-predix.scss'
         }
+      },
+      demo: {
+        files: {
+          'css/noprefix/px-chart-demo.css': 'sass/px-chart-demo.scss'
+        }
       }
     },
 

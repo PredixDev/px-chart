@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>px-chart Demo</title>
+  <title>px-chart-series-scatter Demo</title>
   <link rel="stylesheet" type="text/css" href="css/px-chart-demo.css" />
   <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
   <script src="../webcomponentsjs/webcomponents-lite.js"></script>
@@ -34,17 +34,12 @@
 
     <!-- discription -->
     <div class="hero u-p++ text--shadow">
-      <a class="actionable flex flex--right flex--middle" href="https://github.com/PredixDev/px-chart" target="_blank">
+      <a class="actionable flex flex--right flex--middle" href="https://github.com/PredixDev/px-chart-series-scatter" target="_blank">
         <iron-icon class="menu__open" icon="fa:fa-github"></iron-icon>View on Github
       </a>
-      <h1 class="delta">px-chart</h1>
+      <h1 class="delta">px-chart-series-scatter</h1>
       <div class="description-text">
-        Element that defines a chart, using sub-elements for axis, series and controls configuration.
-      </div>
-      <div class="flex">
-        <img class="u-mr-- " src="https://img.shields.io/travis/PredixDev/px-chart.svg?style=flat-square" alt="Travis"  onerror="this.style.display='none'"/>
-        <img class="u-mr--" src="https://img.shields.io/bower/v/px-chart.svg?style=flat-square" alt="Bower" onerror="this.style.display='none'" />
-        <img class="u-mr--" src="https://img.shields.io/github/issues-raw/PredixDev/px-chart.svg?style=flat-square" alt="Issues" onerror="this.style.display='none'" />
+        This is a sub-component of px-chart, and is meant to be used inside of px-chart. See examples below.
       </div>
     </div>
     <br />
@@ -63,55 +58,25 @@
           <section class="tab-page">
             <div class="mega-demo flex u-ph++ u-pb++">
               <!-- Properties -->
-              <div class="properties u-ph+ u-pb+ u-mt+">
-                <p class="epsilon">Properties</p>
-                <div class="u-mb-">Tooltip Time Stamp:
-                  <div style="width: 100%;">
-                    <px-dropdown id="tooltipTimestamp{{indexPlusOne(index)}}" value="{{item.tooltipTimestamp}}" display-value="{{item.tooltipTimestamp}}" bound-target="properties">
-                      <px-dropdown-content
-                        items='[
-                          {"key":"one", "val": "show"},
-                          {"key":"two", "val": "hide"}]'>
-                      </px-dropdown-content>
-                    </px-dropdown>
-                  </div>
-                </div>
-                <div class="u-mb-">Zoom Controls:
-                  <div style="width: 100%;">
-                    <px-dropdown id="zoomControls{{indexPlusOne(index)}}" value="{{item.zoomControls}}" display-value="{{item.zoomControls}}" bound-target="properties">
-                      <px-dropdown-content
-                        items='[
-                          {"key":"one", "val": "hidecontrols"},
-                          {"key":"two", "val": "showcontrols"}]'>
-                      </px-dropdown-content>
-                    </px-dropdown>
-                  </div>
-                </div>
-                <div class="u-mb-">Tooltip Date Format: <input class="text-input" type="text" placeholder="{{item.tooltipDateFormat}}" value="{{item.tooltipDateFormat::input}}" /></div>
-                <div class="u-mb-">Tooltip Time Format: <input class="text-input" type="text" placeholder="{{item.tooltipTimeFormat}}" value="{{item.tooltipTimeFormat::input}}" /></div>
-
-              </div>
 
               <div class="demoContainer u-mt+">
                 <!-- demo -->
                 <div class="flex flex--col">
                   <div class="flex__item demo u-ph+ u-pb+">
                     <div class="u-mt+">
-                      <px-chart
-                      zoom-controls="[[item.zoomControls]]"
-                      tooltip-date-format="[[item.tooltipDateFormat]]"
-                      tooltip-time-format="[[item.tooltipTimeFormat]]"
-                      tooltip-timestamp="[[item.tooltipTimestamp]]"
-                      >
-                        <px-chart-series-line id="hpt-acc-position-cruise{{indexPlusOne(index)}}" data="[[item.data]]">
-                        </px-chart-series-line>
+                      <px-chart>
+                        <px-chart-series-scatter name="The Display Name" line-width="5" lower-threshold="12" upper-threshold="16" id="hpt-acc-position-cruise" marker='{"enabled": false, "radius": 15}'>
+                          <iron-ajax
+                            url="../px-demo-data/demo-data/aviation/fan-vibration-cruise.json"
+                            handle-as="json"></iron-ajax>
+                        </px-chart-series-scatter>
                       </px-chart>
                     </div>
                   </div>
                   <div class="flex__item">
                     <px-demo-snippet
                       element-properties={{item}}
-                      element-name="px-chart">
+                      element-name="px-chart-series-scatter">
                     </px-demo-snippet>
                   </div>
                 </div>
@@ -126,9 +91,8 @@
                       <div class="componentList">
                         <ul>
                           <li><a href="px-chart-series-line-demo.html">px-chart-series-line</a></li>
-                          <li><a href="px-chart-series-histogram-demo.html">px-chart-series-histogram</a></li>
                           <li><a href="px-chart-series-bar-demo.html">px-chart-series-bar</a></li>
-                          <li><a href="px-chart-series-scatter-demo.html">px-chart-series-scatter</a></li>
+                          <li><a href="px-chart-series-histogram-demo.html">px-chart-series-histogram</a></li>
                           <li><a href="px-chart-controls-demo.html">px-chart-controls</a></li>
                           <li><a href="px-chart-yaxis-demo.html">px-chart-yaxis</a></li>
                         </ul>
@@ -141,13 +105,14 @@
                       <div class="componentList">
                         <ul>
                           <li><a href="http://predixdev.github.io/px-vis/px-vis/index.html">px-vis</a></li>
+                          <li><a href="index.html">px-chart</a></li>
                         </ul>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div>
-                  <px-api-viewer source="px-chart"></px-api-viewer>
+                  <px-api-viewer source="px-chart-series-scatter"></px-api-viewer>
                 </div>
               </div>
             </div>
@@ -182,40 +147,13 @@
       var template = document.querySelector('template[is=dom-bind]'),
           optionsArray = [
             {
-              "data":[
-                [1397102460000, 11.4403],
-                [1397139660000, 13.1913],
-                [1397177400000, 12.8485],
-                [1397228040000, 10.975],
-                [1397248260000, 12.9377],
-                [1397291280000, 13.3795],
-                [1397318100000, 13.0869],
-                [1397342100000, 17.3758]
-              ],
-              "zoomControls": "hidecontrols",
-              "tooltipDateFormat": "MMM DD, YYYY",
-              "tooltipTimeFormat": "HH:mm:ss ZZ",
-              "tooltipTimestamp": "show",
-              "tooltipType": "normal",
-              "lightDomContent": "<px-chart-series-line id='hpt-acc-position-cruise' data='[[data]]'></px-chart-series-line>"
-            },
-            {
-              "data":[
-                [1397102460000, 11.4403],
-                [1397139660000, 13.1913],
-                [1397177400000, 12.8485],
-                [1397228040000, 10.975],
-                [1397248260000, 12.9377],
-                [1397291280000, 13.3795],
-                [1397318100000, 13.0869],
-                [1397342100000, 17.3758]
-              ],
-              "zoomControls": "showcontrols",
-              "tooltipDateFormat": "MMM DD, YYYY",
-              "tooltipTimeFormat": "HH:mm:ss ZZ",
-              "tooltipTimestamp": "hide",
-              "tooltipType": "condensed",
-              "lightDomContent": "<px-chart-series-line id='hpt-acc-position-cruise' data='[[data]]'></px-chart-series-line>"
+              "parentComponent": ["<px-chart>","</px-chart>"],
+              "name": "The Display Name",
+              "lineWidth": "5",
+              "lowerThreshold": "12",
+              "upperThreshold": "16",
+              "id": "hpt-acc-position-cruise",
+              "marker": {"enabled": false, "radius": 15}
             }
           ],
           indexPlusOne = function(num) {

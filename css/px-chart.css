@@ -654,6 +654,7 @@ select {
   padding: 0 3em 0 1em;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
   line-height: calc(2em - 2px);
+  height: calc(2em - 2px);
   cursor: pointer;
   background-color: #e4e4ea;
   background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20viewBox%3D%220%200%20658%201024%22%3E%3Cpath%20fill%3D%22%233b3b3f%22%20d%3D%22M614.286%20420.571q0%207.429-5.714%2013.143l-266.286%20266.286q-5.714%205.714-13.143%205.714t-13.143-5.714l-266.286-266.286q-5.714-5.714-5.714-13.143t5.714-13.143l28.571-28.571q5.714-5.714%2013.143-5.714t13.143%205.714l224.571%20224.571%20224.571-224.571q5.714-5.714%2013.143-5.714t13.143%205.714l28.571%2028.571q5.714%205.714%205.714%2013.143z%22%2F%3E%3C%2Fsvg%3E");
@@ -753,70 +754,6 @@ textarea {
 
 .form-field--inline .text-input {
   margin-bottom: 1.3333333333rem; }
-
-.btn {
-  display: inline-block;
-  overflow: visible;
-  height: 2em;
-  margin: 0;
-  border: 1px solid #b1b1bc;
-  border-radius: 3px;
-  padding: 0 1em;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-  font: inherit;
-  line-height: calc(2em - 2px);
-  -webkit-font-smoothing: antialiased;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  text-transform: none;
-  white-space: nowrap;
-  background-color: #e4e4ea; }
-  .btn, .btn:link, .btn:visited, .btn:hover, .btn:active {
-    color: black; }
-  .btn:hover {
-    border-color: #9999a3;
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
-    background-color: #b1b1bc; }
-  .btn:active {
-    border-color: #7c7c84;
-    box-shadow: none;
-    background-color: #9999a3; }
-  .btn:active {
-    outline: none; }
-
-/** Workaround for FF since it does not support calc().
-  * Other buttons appear ok with the height declaration, but non-button elements do not.
-**/
-@-moz-document url-prefix() {
-  .btn:not(button) {
-    line-height: 1.8em; } }
-
-button.btn {
-  -webkit-appearance: button; }
-
-/**
-* Establish default space between adjacent buttons
-*/
-.btn + .btn {
-  margin-left: 0.6666666667rem; }
-
-/**
-   * Round-ended buttons.
-   *
-   * 1. Overly-large value to ensure the radius rounds the whole end of the
-   *    button.
-   */
-.btn--icon {
-  width: 2em;
-  border-radius: 6.6666666667em;
-  padding: 1px 0 0 1px; }
-
-/** Workaround for FF since it does not support calc().
-  **/
-@-moz-document url-prefix() {
-  .btn--icon {
-    line-height: 1.8em; } }
 
 .toggle__input {
   position: absolute !important;
@@ -1130,7 +1067,7 @@ figure {
   -ms-flex: none !important;
       flex: none !important; }
 
-@media screen and (max-width: 47.9375rem) {
+@media screen and (max-width: 47.9rem) {
   .u-1\/1-palm {
     width: 100% !important; }
   .u-1\/2-palm {
@@ -1178,7 +1115,7 @@ figure {
     -ms-flex: none !important;
         flex: none !important; } }
 
-@media screen and (min-width: 48rem) and (max-width: 68.204166667rem) {
+@media screen and (min-width: 48rem) and (max-width: 63.9rem) {
   .u-1\/1-lap {
     width: 100% !important; }
   .u-1\/2-lap {
@@ -1274,7 +1211,7 @@ figure {
     -ms-flex: none !important;
         flex: none !important; } }
 
-@media screen and (max-width: 68.2rem) {
+@media screen and (max-width: 63.9rem) {
   .u-1\/1-portable {
     width: 100% !important; }
   .u-1\/2-portable {
@@ -1322,7 +1259,7 @@ figure {
     -ms-flex: none !important;
         flex: none !important; } }
 
-@media screen and (min-width: 68.266666667rem) {
+@media screen and (min-width: 63.9rem) {
   .u-1\/1-desk {
     width: 100% !important; }
   .u-1\/2-desk {
@@ -1370,7 +1307,7 @@ figure {
     -ms-flex: none !important;
         flex: none !important; } }
 
-@media screen and (min-width: 80rem) {
+@media screen and (min-width: 100%) {
   .u-1\/1-desk-wide {
     width: 100% !important; }
   .u-1\/2-desk-wide {

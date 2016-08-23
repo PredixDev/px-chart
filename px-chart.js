@@ -369,7 +369,7 @@ Polymer({
     },
 
     /**
-     * Selects the chart tooltip type - simgle line 'condensed' or two line 'normal'
+     * Selects the chart tooltip type - single line 'condensed' or two line 'normal'
      *
      * See the charts demo (demo.html) for an example. Can select between normal and condensed
      *
@@ -1135,7 +1135,6 @@ Polymer({
 
 // http://api.highcharts.com/highstock#tooltip.formatter
     var getTooltipOptions = function(tooltipType, tooltipOffset, tooltipKind) {
-      console.log(tooltipKind);
       if(tooltipKind === 'hc'){
         return {};
       } else {
@@ -1269,8 +1268,6 @@ Polymer({
         resetZoomButton: this.resetZoomButton,
         selectionMarkerFill: "rgba(200,231,251,0.5)"
       },
-
-
       exporting: {
         chartOptions: {
           rangeSelector: {
@@ -1280,9 +1277,8 @@ Polymer({
         buttons: {
           enabled: true
         },
-        url: this.exportServerUrl || "javascript:alert('No export-server-url attribute configrued on this chart')"
+        url: this.exportServerUrl || "javascript:alert('No export-server-url attribute configured on this chart')"
       },
-
       credits: {
         enabled: false
       },
