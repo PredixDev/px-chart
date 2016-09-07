@@ -1,6 +1,6 @@
 v1.6.7
 =================
-* fixed bower iron-ajax conflict
+* fixed bower conflicts
 
 v1.6.6
 =================
