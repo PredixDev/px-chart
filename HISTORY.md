@@ -1,3 +1,7 @@
+v1.6.7
+=================
+* fixed bower iron-ajax conflict
+
 v1.6.6
 =================
 * fixed inception bug in index file with vix-timeseries link
