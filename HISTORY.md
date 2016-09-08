@@ -1,3 +1,11 @@
+v1.6.7
+=================
+* fixed bower conflicts
+
+v1.6.6
+=================
+* fixed inception bug in index file with vix-timeseries link
+
 v1.6.5
 =================
 * added deprecation warning
