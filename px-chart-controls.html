@@ -29,9 +29,13 @@ Element for default time controls on a chart. the "data-controls" attribute MUST
 
 @demo demo.html
 -->
+
+<link rel="import" href="css/px-chart-styles.html">
+
 <dom-module id="px-chart-controls">
-  <link rel="import" type="css" href="css/px-chart.css"/>
   <template>
+    <style include="px-chart-styles"></style>
+    <style include="px-theme-styles"></style>
     <div>
       <template is="dom-if" if="{{showExport}}">
         <button class="btn btn--icon u-ml- float--right" on-click="_exportHandler" title="Export chart">
