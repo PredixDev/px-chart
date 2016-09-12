@@ -96,9 +96,12 @@ Element that defines a chart, using sub-elements for axis, series and controls c
 <script src="../highstock-release/modules/exporting.src.js"></script>
 <script src="../annotations/js/annotations.js"></script>
 
+<link rel="import" href="css/px-chart-styles.html">
+
 <dom-module id="px-chart">
-  <link rel="import" type="css" href="css/px-chart.css"/>
   <template>
+    <style include="px-chart-styles"></style>
+    <style include="px-theme-styles"></style>
     <section role="region">
       <header id="pxChartHeader" class="text--right float--right">
         <content></content>
