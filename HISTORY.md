@@ -1,3 +1,7 @@
+v1.7.1
+=================
+* Update dependencies
+
 v1.6.7
 =================
 * fixed bower conflicts
