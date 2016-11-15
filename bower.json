@@ -1,49 +1,49 @@
 {
-  "name": "px-chart",
-  "version": "1.7.1",
-  "main": [
-    "px-chart.html"
-  ],
-  "ignore": [
-    ".*",
-    "npm-debug.log",
-    "Gruntfile.js",
-    "sass",
-    "bower_components",
-    "node_modules",
-    "test",
-    "OSS_Notice.pdf",
-    "scripts",
-    ".github"
-  ],
-  "dependencies": {
-    "annotations": "https://github.com/blacklabel/annotations.git#~1.2.6",
-    "highstock-release": "~2.1.9",
-    "px-datetime-common": "~0.6.3",
-    "polymer": "^1.6.1",
-    "px-rangepicker": "~1.2.1",
-    "px-theme": "~1.1.2",
-    "d3": "~3.5.6"
-  },
-  "devDependencies": {
-    "iron-ajax": "PolymerElements/iron-ajax#^1.1.1",
-    "px-demo-data": "~0.0.15",
-    "px-starter-kit-design": "#~0.6.0",
-    "px-forms-design": "#~0.3.15",
-    "px-tables-design": "#~0.3.12",
-    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#~1.2.3",
-    "px-polymer-font-awesome": "^0.1.9",
-    "px-tabs": "~0.5.2",
-    "px-api-viewer": "^0.1.0",
-    "px-demo-snippet": "^0.6.4",
-    "px-list-inline-design": "^0.2.11",
-    "px-toggle-design": "^0.2.12",
-    "px-headings-design": "^0.2.14",
-    "px-actionable-text-icons-design": "^0.1.0",
-    "px-code-design": "~0.2.11",
-    "px-dropdown": "^0.12.1"
-  },
-  "resolutions": {
-    "moment": "~2.13.0"
-  }
+    "name": "px-chart",
+    "version": "1.7.2",
+    "main": [
+        "px-chart.html"
+    ],
+    "ignore": [
+        ".*",
+        "npm-debug.log",
+        "Gruntfile.js",
+        "sass",
+        "bower_components",
+        "node_modules",
+        "test",
+        "OSS_Notice.pdf",
+        "scripts",
+        ".github"
+    ],
+    "dependencies": {
+        "annotations": "https://github.com/blacklabel/annotations.git#~1.2.6",
+        "highstock-release": "~2.1.9",
+        "px-datetime-common": "~0.6.3",
+        "polymer": "^1.6.1",
+        "px-rangepicker": "~1.2.1",
+        "px-theme": "~1.1.2",
+        "d3": "~3.5.6"
+    },
+    "devDependencies": {
+        "iron-ajax": "PolymerElements/iron-ajax#^1.1.1",
+        "px-demo-data": "~0.0.15",
+        "px-starter-kit-design": "#~0.6.0",
+        "px-forms-design": "#~0.3.15",
+        "px-tables-design": "#~0.3.12",
+        "iron-demo-helpers": "PolymerElements/iron-demo-helpers#~1.2.3",
+        "px-polymer-font-awesome": "^0.1.9",
+        "px-tabs": "~0.5.2",
+        "px-api-viewer": "^0.1.0",
+        "px-demo-snippet": "^0.6.9",
+        "px-list-inline-design": "^0.2.11",
+        "px-toggle-design": "^0.2.12",
+        "px-headings-design": "^0.2.14",
+        "px-actionable-text-icons-design": "^0.1.0",
+        "px-code-design": "~0.2.11",
+        "px-dropdown": "^0.12.1"
+    },
+    "resolutions": {
+        "moment": "~2.13.0"
+    }
 }
