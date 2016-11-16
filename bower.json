@@ -1,13 +1,13 @@
 {
     "name": "px-chart",
-    "version": "1.7.2",
+    "version": "1.7.3",
     "main": [
         "px-chart.html"
     ],
     "ignore": [
         ".*",
         "npm-debug.log",
-        "Gruntfile.js",
+        "gulpfile.js",
         "sass",
         "bower_components",
         "node_modules",
