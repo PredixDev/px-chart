@@ -1,6 +1,6 @@
 {
     "name": "px-chart",
-    "version": "1.7.5",
+    "version": "1.7.6",
     "main": [
         "px-chart.html"
     ],
@@ -22,7 +22,7 @@
         "px-datetime-common": "~0.6.3",
         "polymer": "^1.6.1",
         "px-rangepicker": "~1.2.1",
-        "px-theme": "~1.1.2",
+        "px-theme": "^2.0.1",
         "d3": "~3.5.6"
     },
     "devDependencies": {
