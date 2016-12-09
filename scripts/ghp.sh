@@ -44,7 +44,7 @@ bower install ${REPO_NAME} --force
 
 #optimize for production
 cd ${REPO_NAME} #go into the component folder
-npm install vulcanize
+npm install vulcanize -g
 vulcanize index.html -o index.vulcanized.html --inline-scripts --inline-css --strip-comments
 vulcanize px-chart-controls-demo.html -o px-chart-controls-demo.vulcanized.html --inline-scripts --inline-css --strip-comments
 vulcanize px-chart-series-bar-demo.html -o px-chart-series-bar-demo.vulcanized.html --inline-scripts --inline-css --strip-comments
