@@ -1,3 +1,7 @@
+v1.8.4
+==================
+* Updated deprecation warning
+
 v1.8.3
 ==================
 * Updating so px-demo-snippet and px-api-viewer get new grays
