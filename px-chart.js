@@ -585,7 +585,7 @@ Polymer({
   },
 
   created: function(){
-    console.warn("px-chart will be deprecated in a future release. The deprecation date is TBD and will be published in the future along with a migration path. This component is being replaced by px-vis-timeseries (https://github.com/PredixDev/px-vis-timeseries). If you are a new chart user, please consider using px-vis-timeseries at this point.")
+    console.warn("px-chart will be deprecated on March 1, 2017. This component is being replaced by px-vis-timeseries (https://github.com/PredixDev/px-vis-timeseries). After March 1st, this component shall remain through 2017, but will no longer receive updates or be supported.")
   },
 
   /**
