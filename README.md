@@ -1,3 +1,6 @@
+# PX-CHART IS NOW DEPRECATED
+## It has been replaced by px-vis-timeseries: [https://github.com/PredixDev/px-vis-timeseries](https://github.com/PredixDev/px-vis-timeseries)
+
 # px-chart
 
 Element that defines a chart, using sub-elements for axis, series and controls configuration.

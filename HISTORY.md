@@ -1,3 +1,7 @@
+v1.8.5
+==================
+* Deprecated
+
 v1.8.4
 ==================
 * Updated deprecation warning
