@@ -875,6 +875,8 @@ Polymer({
     if (events) {
       var _this = this;
       events.forEach(function(event) {
+        event.icon = event.icon || "fa-exclamation-triangle";
+        event.color = event.color || "dv-basic-red";
         var eventConfig = {
           color: _this.seriesEventsColor,
           value: event.time,
@@ -887,9 +889,9 @@ Polymer({
             rotation: 0,
             style: {
               fontSize: '0.8rem',
-              color: _this.dataVisColors["dv-basic-red"]
+              color: _this.dataVisColors[event.color]
             },
-            text: "<span class='style-scope px-chart data-event-icon' title='" + event.label + "' style='cursor:pointer; display:block; margin-top: -1.10rem; margin-left:-0.87rem'><i class='fa fa-lg fa-exclamation-triangle style-scope px-chart'></i> </span>"
+            text: "<span class='style-scope px-chart data-event-icon' title='" + event.label + "' style='cursor:pointer; display:block; margin-top: -1.10rem; margin-left:-0.87rem'><i class='fa fa-lg " + event.icon +" style-scope px-chart'></i> </span>"
           }
         };
         _this.chart.xAxis[0].addPlotLine(eventConfig);
