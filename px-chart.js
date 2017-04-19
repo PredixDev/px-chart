@@ -936,6 +936,7 @@ Polymer({
    * @return {Boolean}
    */
   hasSeries: function(seriesId) {
+    if (!this.chart) return false;
     return (this.chart.get(seriesId) != null);
   },
 
